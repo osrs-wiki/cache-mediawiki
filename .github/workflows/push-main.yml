@@ -1,0 +1,40 @@
+name: Push Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint_build_test:
+    name: "Lint, Built, & Test"
+    uses: ./.github/workflows/action-lint-build-test.yml
+
+  changeset:
+    needs: lint_build_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          cache: yarn
+          node-version: 18
+
+      - name: Install yarn packages
+        run: yarn install --frozen-lockfile
+
+      - name: Create Release Pull Request or Release
+        id: changeset
+        uses: changesets/action@v1
+        with:
+          publish: echo Release && echo "New tag:"
+          title: Release
+          commit: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_PACKAGES }}

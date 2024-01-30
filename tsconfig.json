@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es2022",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "paths": {
+      "@config": ["./src/config/dotenv.ts"]
+    },
+    "plugins": [{ "transform": "typescript-transform-paths" }]
+  },
+  "include": ["src/**/*"]
+}
