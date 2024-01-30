@@ -1,0 +1,39 @@
+name: Run News Scraper
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Task type"
+        required: true
+
+      infobox:
+        description: "Infobox type (optional)"
+        required: false
+
+jobs:
+  scrapeNews:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Run task
+        run: yarn start:node -t ${{ github.event.inputs.task }} -infobox ${{ github.event.inputs.infobox }}
+
+      - name: Upload Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: out-${{ github.run_id }}-${{ github.run_attempt }}
+          path: out/
