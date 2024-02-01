@@ -2,15 +2,18 @@ import config from "@config";
 import { parseArgs } from "node:util";
 
 import generateCluePages from "./scripts/clues";
-import differences from "./scripts/difference/difference";
+import differencesCache from "./scripts/differences/differencesCache";
 import infoboxGenerator from "./scripts/infoboxGenernator";
 
 console.log(`Running ${config.environment}`);
 
 const {
-  values: { task, infobox },
+  values: { oldCache, task, infobox },
 } = parseArgs({
   options: {
+    oldCache: {
+      type: "string",
+    },
     task: {
       type: "string",
       short: "t",
@@ -21,8 +24,8 @@ const {
   },
 });
 
-if (task === "differences") {
-  differences();
+if (task === "differences" && oldCache) {
+  differencesCache(oldCache);
 } else if (task === "infobox" && infobox) {
   infoboxGenerator(infobox);
 } else if (task === "clues") {
