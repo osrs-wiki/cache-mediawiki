@@ -1,6 +1,11 @@
+import {
+  ArchiveDifferences,
+  CacheDifferences,
+  IndexDifferences,
+} from "./differences.types";
 import { isEqualBytes } from "./differences.utils";
-import differencesFile from "./file/File";
-import { FlatIndexData, ArchiveData } from "../../utils/cache2";
+import differencesFile from "./file/file";
+import { FlatIndexData, ArchiveData, IndexType } from "../../utils/cache2";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 import { getCacheProviderGithub } from "../clues/utils";
 
@@ -12,6 +17,7 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
     getCacheProviderGithub(newVersion)
   ).asPromise();
 
+  const cacheDifferences: CacheDifferences = {};
   for (let index = 0; index <= 21; index++) {
     const oldIndex = await oldCache.getIndex(index);
     const newIndex = await newCache.getIndex(index);
@@ -19,26 +25,37 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
       console.log(
         `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
       );
-      differencesIndex(oldIndex, newIndex);
+      cacheDifferences[index] = differencesIndex(oldIndex, newIndex);
     } else {
       console.log(`No changes in index ${index}.`);
     }
   }
+  console.log(JSON.stringify(cacheDifferences));
 };
 
-const differencesIndex = (oldIndex: FlatIndexData, newIndex: FlatIndexData) => {
+const differencesIndex = (
+  oldIndex: FlatIndexData,
+  newIndex: FlatIndexData
+): IndexDifferences => {
   const newKeys = Array.from(newIndex.archives.keys());
   const oldKeys = Array.from(oldIndex.archives.keys());
+  const indexDifferences: IndexDifferences = {};
 
   const sharedKeys = newKeys.filter((key) => oldIndex.archives.has(key));
   sharedKeys.forEach((archiveKey) => {
     const newArchive = newIndex.archives.get(archiveKey);
     const oldArchive = oldIndex.archives.get(archiveKey);
+
     if (newArchive.crc !== oldArchive.crc) {
       console.log(
         `[Index=${newIndex.id}] Changed archive: ${newArchive.archive} - (${oldArchive.files.size} -> ${newArchive.files.size})`
       );
-      differencesArchive(oldIndex, oldArchive, newIndex, newArchive);
+      indexDifferences[archiveKey] = differencesArchive(
+        oldIndex,
+        oldArchive,
+        newIndex,
+        newArchive
+      );
     }
   });
 
@@ -56,6 +73,8 @@ const differencesIndex = (oldIndex: FlatIndexData, newIndex: FlatIndexData) => {
       `[Index=${newIndex.id}] Removed archive: ${oldArchive.toString()}`
     );
   });
+
+  return indexDifferences;
 };
 
 const differencesArchive = (
@@ -63,9 +82,10 @@ const differencesArchive = (
   oldArchive: ArchiveData,
   newIndex: FlatIndexData,
   newArchive: ArchiveData
-) => {
+): ArchiveDifferences => {
   const newKeys = Array.from(newArchive.files.keys());
   const oldKeys = Array.from(oldArchive.files.keys());
+  const archiveDifferences: ArchiveDifferences = {};
 
   const sharedKeys = newKeys.filter((key) => oldArchive.files.has(key));
   sharedKeys.forEach((fileKey) => {
@@ -75,10 +95,11 @@ const differencesArchive = (
       console.log(
         `[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`
       );
-      differencesFile(
-        { index: newIndex, archive: newArchive, file: newFile },
-        { index: oldIndex, archive: oldArchive, file: oldFile }
-      );
+      const results = differencesFile({
+        newFile: { index: newIndex, archive: newArchive, file: newFile },
+        oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
+      });
+      archiveDifferences[fileKey] = results;
     }
   });
 
@@ -98,6 +119,8 @@ const differencesArchive = (
       }] Removed file: ${oldArchive.toString()}`
     );
   });
+
+  return archiveDifferences;
 };
 
 export default differencesCache;

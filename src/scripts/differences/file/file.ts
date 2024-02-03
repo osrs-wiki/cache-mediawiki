@@ -1,22 +1,27 @@
 import compareItems from "./content/items";
-import { ComaparisonResult, CompareFn } from "./file.types";
-import { Item } from "../../../utils/cache2";
+import compareNpcs from "./content/npcs";
+import { ConfigType, IndexType } from "../../../utils/cache2";
+import { CompareFn, FileDifferences } from "../differences.types";
 
-const indexMap: { [key: number]: { [key: number]: CompareFn } | CompareFn } = {
-  2: {
-    [Item.archive]: compareItems,
+const indexMap: {
+  [key in IndexType]?: { [key: number]: CompareFn } | CompareFn;
+} = {
+  [IndexType.Configs]: {
+    [ConfigType.Item]: compareItems,
+    [ConfigType.Npc]: compareNpcs,
   },
 };
 
-const differencesFile: CompareFn = (oldFile, newFile): ComaparisonResult => {
-  let comparisonFn = indexMap[oldFile.index.id];
+const differencesFile: CompareFn = ({ oldFile, newFile }): FileDifferences => {
+  let comparisonFn = indexMap[oldFile.index.id as IndexType];
+  let results: FileDifferences = {};
   if (typeof comparisonFn === "function") {
-    comparisonFn(oldFile, newFile);
+    results = comparisonFn({ oldFile, newFile });
   } else {
-    comparisonFn = comparisonFn[oldFile.archive.archive];
-    comparisonFn?.(oldFile, newFile);
+    comparisonFn = comparisonFn?.[oldFile.archive.archive];
+    results = comparisonFn?.({ oldFile, newFile }) ?? {};
   }
-  return {};
+  return results;
 };
 
 export default differencesFile;

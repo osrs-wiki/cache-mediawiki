@@ -1,29 +1,29 @@
 import _ from "underscore";
 
-import { Item, ItemID, Reader } from "../../../../utils/cache2";
+import { NPC, NPCID, Reader } from "../../../../utils/cache2";
 import { CompareFn, FileDifferences } from "../../differences.types";
 
-const compareItems: CompareFn = ({ oldFile, newFile }) => {
-  const oldItem = Item.decode(
+const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
+  const oldItem = NPC.decode(
     new Reader(oldFile.file.data, {
       era: "osrs",
       indexRevision: oldFile.index.revision,
     }),
-    <ItemID>oldFile.file.id
+    <NPCID>oldFile.file.id
   );
 
-  const newItem = Item.decode(
+  const newItem = NPC.decode(
     new Reader(newFile.file.data, {
       era: "osrs",
       indexRevision: newFile.index.revision,
     }),
-    <ItemID>newFile.file.id
+    <NPCID>newFile.file.id
   );
 
   const results: FileDifferences = {};
   Object.keys(oldItem).forEach((key) => {
-    const oldItemValue = oldItem[key as keyof Item];
-    const newItemValue = newItem[key as keyof Item];
+    const oldItemValue = oldItem[key as keyof NPC];
+    const newItemValue = newItem[key as keyof NPC];
 
     if (
       ((typeof oldItemValue === "string" || typeof oldItemValue === "number") &&
@@ -44,4 +44,4 @@ const compareItems: CompareFn = ({ oldFile, newFile }) => {
   return results;
 };
 
-export default compareItems;
+export default compareNpcs;

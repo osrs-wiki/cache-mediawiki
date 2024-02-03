@@ -27,7 +27,7 @@ const {
   },
 });
 
-if (task === "differences" && oldCache) {
+if (task === "differences" || (task === "diffs" && oldCache)) {
   differencesCache(oldCache, newCache);
 } else if (task === "infobox" && infobox) {
   infoboxGenerator(infobox);
