@@ -1,5 +1,6 @@
 import compareItems from "./content/items";
 import compareNpcs from "./content/npcs";
+import compareStructs from "./content/struct";
 import { ConfigType, IndexType } from "../../../utils/cache2";
 import { CompareFn, FileDifferences } from "../differences.types";
 
@@ -9,6 +10,7 @@ const indexMap: {
   [IndexType.Configs]: {
     [ConfigType.Item]: compareItems,
     [ConfigType.Npc]: compareNpcs,
+    [ConfigType.Struct]: compareStructs,
   },
 };
 

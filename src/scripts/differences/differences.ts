@@ -89,17 +89,23 @@ const differencesArchive = (
 
   const sharedKeys = newKeys.filter((key) => oldArchive.files.has(key));
   sharedKeys.forEach((fileKey) => {
-    const newFile = newArchive.getFile(fileKey);
-    const oldFile = oldArchive.getFile(fileKey);
-    if (!isEqualBytes(oldFile.data, newFile.data)) {
-      console.log(
-        `[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`
+    try {
+      const newFile = newArchive.getFile(fileKey);
+      const oldFile = oldArchive.getFile(fileKey);
+      if (!isEqualBytes(oldFile.data, newFile.data)) {
+        console.log(
+          `[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`
+        );
+        const results = differencesFile({
+          newFile: { index: newIndex, archive: newArchive, file: newFile },
+          oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
+        });
+        archiveDifferences[fileKey] = results;
+      }
+    } catch (error) {
+      console.error(
+        `Error checking diffs for ${oldIndex.id}/${oldArchive.archive}/${fileKey}`
       );
-      const results = differencesFile({
-        newFile: { index: newIndex, archive: newArchive, file: newFile },
-        oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
-      });
-      archiveDifferences[fileKey] = results;
     }
   });
 

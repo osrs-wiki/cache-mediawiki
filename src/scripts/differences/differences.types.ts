@@ -33,6 +33,7 @@ export type ResultValue =
   | ItemID[]
   | number[]
   | Params
+  | object
   | undefined;
 
 export type CacheDifferences = {
