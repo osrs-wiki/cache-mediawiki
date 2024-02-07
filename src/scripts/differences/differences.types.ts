@@ -4,7 +4,6 @@ import {
   CategoryID,
   FlatIndexData,
   HSL,
-  IndexType,
   ItemID,
   ModelID,
   Params,
