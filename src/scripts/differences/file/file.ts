@@ -15,12 +15,14 @@ const indexMap: {
 };
 
 const differencesFile: CompareFn = ({ oldFile, newFile }): FileDifferences => {
-  let comparisonFn = indexMap[oldFile.index.id as IndexType];
+  const indexId = oldFile?.index?.id ?? newFile?.index?.id;
+  let comparisonFn = indexMap[indexId as IndexType];
   let results: FileDifferences = {};
   if (typeof comparisonFn === "function") {
     results = comparisonFn({ oldFile, newFile });
   } else {
-    comparisonFn = comparisonFn?.[oldFile.archive.archive];
+    const archiveId = oldFile?.archive?.archive ?? newFile?.archive?.archive;
+    comparisonFn = comparisonFn?.[archiveId];
     results = comparisonFn?.({ oldFile, newFile }) ?? {};
   }
   return results;

@@ -49,14 +49,14 @@ export type ArchiveDifferences = {
 };
 
 export type FileDifferences = {
-  [key: string]: {
-    added?: Result;
-    changed?: {
+  added?: Result;
+  changed?: {
+    [key: string]: {
       oldValue: ResultValue;
       newValue: ResultValue;
     };
-    removed?: Result;
   };
+  removed?: Result;
 };
 
 export type CompareFn = (params: {
