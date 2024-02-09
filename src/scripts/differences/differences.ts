@@ -1,3 +1,5 @@
+import { mkdir, writeFile } from "fs/promises";
+
 import differencesBuilder from "./builder";
 import {
   ArchiveDifferences,
@@ -31,8 +33,12 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
       console.log(`No changes in index ${index}.`);
     }
   }
+
   console.log(JSON.stringify(cacheDifferences));
-  differencesBuilder(cacheDifferences);
+  const builder = differencesBuilder(cacheDifferences);
+  const dir = `./out/differences`;
+  await mkdir(dir, { recursive: true });
+  await writeFile(`${dir}/${newVersion}.txt`, builder.build());
 };
 
 const differencesIndex = (
@@ -142,7 +148,7 @@ const differencesArchive = ({
   const addedKeys = oldArchive
     ? newKeys.filter((key) => !oldArchive.files.has(key))
     : newKeys;
-  addedKeys.forEach((fileKey) => {
+  addedKeys?.forEach((fileKey) => {
     const newFile = newArchive.getFile(fileKey);
     console.log(
       `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
@@ -158,11 +164,11 @@ const differencesArchive = ({
   const removedKeys = newArchive
     ? oldKeys.filter((key) => !newArchive.files.has(key))
     : oldKeys;
-  removedKeys.forEach((fileKey) => {
+  removedKeys?.forEach((fileKey) => {
     const oldFile = oldArchive.getFile(fileKey);
     console.log(
-      `[Index=${newArchive.index}][Archive=${
-        newArchive.archive
+      `[Index=${oldArchive.index}][Archive=${
+        oldArchive.archive
       }] Removed file: ${fileKey.toString()}`
     );
     const results = differencesFile({
