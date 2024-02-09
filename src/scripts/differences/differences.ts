@@ -1,3 +1,4 @@
+import differencesBuilder from "./builder";
 import {
   ArchiveDifferences,
   CacheDifferences,
@@ -5,7 +6,7 @@ import {
 } from "./differences.types";
 import { isEqualBytes } from "./differences.utils";
 import differencesFile from "./file/file";
-import { FlatIndexData, ArchiveData, IndexType } from "../../utils/cache2";
+import { FlatIndexData, ArchiveData } from "../../utils/cache2";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 import { getCacheProviderGithub } from "../clues/utils";
 
@@ -31,6 +32,7 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
     }
   }
   console.log(JSON.stringify(cacheDifferences));
+  differencesBuilder(cacheDifferences);
 };
 
 const differencesIndex = (

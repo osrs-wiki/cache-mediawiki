@@ -1,31 +1,31 @@
 import _ from "underscore";
 
-import { Item, ItemID, Reader } from "../../../../utils/cache2";
+import { Obj, ObjID, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file";
 
-const compareItems: CompareFn = ({ oldFile, newFile }) => {
+const compareObjects: CompareFn = ({ oldFile, newFile }) => {
   const oldEntry = oldFile
-    ? Item.decode(
+    ? Obj.decode(
         new Reader(oldFile.file.data, {
           era: "osrs",
           indexRevision: oldFile.index.revision,
         }),
-        <ItemID>oldFile.file.id
+        <ObjID>oldFile.file.id
       )
     : undefined;
 
   const newEntry = newFile
-    ? Item.decode(
+    ? Obj.decode(
         new Reader(newFile.file.data, {
           era: "osrs",
           indexRevision: newFile.index.revision,
         }),
-        <ItemID>newFile.file.id
+        <ObjID>newFile.file.id
       )
     : undefined;
 
   return getFileDifferences(oldEntry, newEntry);
 };
 
-export default compareItems;
+export default compareObjects;
