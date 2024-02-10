@@ -72,6 +72,18 @@ export const getFileDifferences = <T extends PerFileLoadable>(
         };
       }
     });
+    if ("id" in oldEntry && "id" in newEntry) {
+      results.changed["id"] = {
+        oldValue: oldEntry.id as number,
+        newValue: newEntry.id as number,
+      };
+    }
+    if ("name" in oldEntry && "name" in newEntry) {
+      results.changed["name"] = {
+        oldValue: oldEntry.name as string,
+        newValue: newEntry.name as string,
+      };
+    }
   } else if (oldEntry) {
     results.removed = {};
     Object.keys(oldEntry).forEach((key) => {

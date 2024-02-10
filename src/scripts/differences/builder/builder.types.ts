@@ -1,8 +1,10 @@
 import { IndexType, Item, NPC, Obj, Struct } from "../../../utils/cache2";
 import { PerFileLoadable } from "../../../utils/cache2/Loadable";
+import { Difference } from "../differences.types";
 
 export type IndexFeature<T extends PerFileLoadable, Name> = {
   name: Name;
+  identifiers: (keyof T)[];
   fields: (keyof T)[];
 };
 
@@ -12,23 +14,30 @@ export type IndexFeatures =
   | IndexFeature<Obj, "Objects">
   | IndexFeature<Struct, "Structs">;
 
+export const resultNameMap: { [key in Difference]: string } = {
+  added: "New",
+  changed: "Diff",
+  removed: "Removed",
+};
+
 export const indexNameMap: {
   [key in IndexType]?: { [key: number]: IndexFeatures } | IndexFeatures;
 } = {
   2: {
     6: {
       name: "Objects",
-      fields: ["name", "id", "actions"],
+      identifiers: ["name", "id"],
+      fields: ["actions"],
     },
     9: {
       name: "Npcs",
-      fields: ["name", "id", "combatLevel", "actions"],
+      identifiers: ["name", "id"],
+      fields: ["combatLevel", "actions"],
     },
     10: {
       name: "Items",
+      identifiers: ["name", "id"],
       fields: [
-        "name",
-        "id",
         "isMembers",
         "isGrandExchangable",
         "isStackable",
@@ -41,7 +50,8 @@ export const indexNameMap: {
     },
     34: {
       name: "Structs",
-      fields: ["id", "params"],
+      identifiers: ["id"],
+      fields: ["params"],
     },
   },
 };

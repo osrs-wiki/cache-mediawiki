@@ -7,14 +7,20 @@ import {
   MediaWikiTable,
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
-import type { MediaWikiTableRow } from "@osrs-wiki/mediawiki-builder";
+import type {
+  MediaWikiTableCell,
+  MediaWikiTableRow,
+} from "@osrs-wiki/mediawiki-builder";
 import _ from "underscore";
 
-import { IndexFeatures, indexNameMap } from "./builder.types";
+import { IndexFeatures, indexNameMap, resultNameMap } from "./builder.types";
+import { formatEntryValue } from "./builder.utils";
 import { IndexType } from "../../../utils/cache2";
 import {
   ArchiveDifferences,
   CacheDifferences,
+  ChangedResult,
+  Difference,
   Result,
 } from "../differences.types";
 
@@ -52,32 +58,76 @@ const buildArchiveDifferences = (
   archiveDifferences: ArchiveDifferences,
   indexFeatures: IndexFeatures
 ): MediaWikiContent[] => {
-  const tableFields = indexFeatures.fields.map((field) => field.toString());
   const content: MediaWikiContent[] = [
     new MediaWikiHeader(indexFeatures.name, 2),
     new MediaWikiBreak(),
+    ...buildFullResultTable(archiveDifferences, indexFeatures, "added"),
+    ...buildFullResultTable(archiveDifferences, indexFeatures, "removed"),
+    ...buildChangedResultTable(archiveDifferences, indexFeatures),
   ];
 
-  const added: Result[] = _.pluck(
+  return content;
+};
+
+const buildChangedResultTable = (
+  archiveDifferences: ArchiveDifferences,
+  indexFeatures: IndexFeatures
+) => {
+  const differenceName = resultNameMap.changed;
+  const content: MediaWikiContent[] = [];
+  const entries: ChangedResult[] = _.pluck(
     Object.values(archiveDifferences),
-    "added"
-  ).filter((added) => added !== null && added !== undefined);
-  console.log(`Added: ${JSON.stringify(added)}`);
-  if (added?.length > 0) {
-    const addedEntries: MediaWikiTableRow[] = added.map((entry) => {
-      const fields = Object.keys(entry).filter((key) =>
-        tableFields.includes(key)
-      );
-      return {
-        cells: fields.map((field) => ({
-          content: [new MediaWikiText(JSON.stringify(entry[field]))],
-        })),
-        minimal: true,
-      };
-    });
+    "changed"
+  ).filter((entry) => entry !== null && entry !== undefined);
+
+  if (entries?.length > 0) {
+    const rows: MediaWikiTableRow[] = entries
+      .map<MediaWikiTableRow[]>((entry) => {
+        const diffLength = Object.keys(entry).length;
+        return [
+          {
+            cells: indexFeatures.identifiers.map<MediaWikiTableCell>(
+              (identifier) => ({
+                content: [
+                  new MediaWikiText(
+                    formatEntryValue(entry?.[identifier]?.newValue)
+                  ),
+                ],
+                options: {
+                  rowspan: diffLength,
+                },
+              })
+            ),
+            minimal: true,
+          },
+          ...Object.keys(entry)
+            .filter(
+              (key) => !(indexFeatures.identifiers as string[]).includes(key)
+            )
+            .map<MediaWikiTableRow>((field) => ({
+              cells: [
+                {
+                  content: [new MediaWikiText(field)],
+                },
+                {
+                  content: [
+                    new MediaWikiText(formatEntryValue(entry[field].oldValue)),
+                  ],
+                },
+                {
+                  content: [
+                    new MediaWikiText(formatEntryValue(entry[field].newValue)),
+                  ],
+                },
+              ],
+              minimal: true,
+            })),
+        ];
+      })
+      .flat();
 
     content.push(
-      new MediaWikiHeader(`New ${indexFeatures.name}`, 3),
+      new MediaWikiHeader(`${differenceName} ${indexFeatures.name}`, 3),
       new MediaWikiBreak(),
       new MediaWikiTable({
         rows: [
@@ -86,9 +136,11 @@ const buildArchiveDifferences = (
             minimal: true,
             cells: [
               {
-                content: [new MediaWikiText(`New ${indexFeatures.name}`)],
+                content: [
+                  new MediaWikiText(`${differenceName} ${indexFeatures.name}`),
+                ],
                 options: {
-                  colspan: indexFeatures.fields.length + 1,
+                  colspan: 5,
                 },
               },
             ],
@@ -96,20 +148,78 @@ const buildArchiveDifferences = (
           {
             header: true,
             minimal: true,
-            cells: indexFeatures.fields.map((field) => ({
-              content: [new MediaWikiText(field)],
-            })),
-            options: {
-              style: "width: 15em",
-            },
+            cells: ["Name", "ID", "Key", "Previous Value", "New Value"].map(
+              (column) => ({
+                content: [new MediaWikiText(column)],
+              })
+            ),
           },
-          ...addedEntries,
+          ...rows,
         ],
       }),
       new MediaWikiBreak()
     );
   }
+  return content;
+};
 
+const buildFullResultTable = (
+  archiveDifferences: ArchiveDifferences,
+  indexFeatures: IndexFeatures,
+  type: Difference
+): MediaWikiContent[] => {
+  const differenceName = resultNameMap[type];
+  const tableFields = indexFeatures.fields.map((field) => field.toString());
+  const content: MediaWikiContent[] = [];
+  const entries: Result[] = _.pluck(
+    Object.values(archiveDifferences),
+    type
+  ).filter((entry) => entry !== null && entry !== undefined);
+
+  if (entries?.length > 0) {
+    const rows: MediaWikiTableRow[] = entries.map((entry) => {
+      return {
+        cells: tableFields.map((field) => ({
+          content: [new MediaWikiText(formatEntryValue(entry[field]))],
+        })),
+        minimal: true,
+      };
+    });
+
+    content.push(
+      new MediaWikiHeader(`${differenceName} ${indexFeatures.name}`, 3),
+      new MediaWikiBreak(),
+      new MediaWikiTable({
+        rows: [
+          {
+            header: true,
+            minimal: true,
+            cells: [
+              {
+                content: [
+                  new MediaWikiText(`${differenceName} ${indexFeatures.name}`),
+                ],
+                options: {
+                  colspan: indexFeatures.fields.length,
+                },
+              },
+            ],
+          },
+          {
+            header: true,
+            minimal: true,
+            cells: [...indexFeatures.identifiers, ...indexFeatures.fields].map(
+              (field) => ({
+                content: [new MediaWikiText(field)],
+              })
+            ),
+          },
+          ...rows,
+        ],
+      }),
+      new MediaWikiBreak()
+    );
+  }
   return content;
 };
 

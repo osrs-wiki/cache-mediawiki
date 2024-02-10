@@ -48,14 +48,18 @@ export type ArchiveDifferences = {
   [key: number]: FileDifferences;
 };
 
+export type Difference = "added" | "changed" | "removed";
+
+export type ChangedResult = {
+  [key: string]: {
+    oldValue: ResultValue;
+    newValue: ResultValue;
+  };
+};
+
 export type FileDifferences = {
   added?: Result;
-  changed?: {
-    [key: string]: {
-      oldValue: ResultValue;
-      newValue: ResultValue;
-    };
-  };
+  changed?: ChangedResult;
   removed?: Result;
 };
 

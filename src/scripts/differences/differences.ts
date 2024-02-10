@@ -21,7 +21,7 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};
-  for (let index = 0; index <= 21; index++) {
+  for (let index = 0; index <= 2; index++) {
     const oldIndex = await oldCache.getIndex(index);
     const newIndex = await newCache.getIndex(index);
     if (oldIndex.crc !== newIndex.crc) {
