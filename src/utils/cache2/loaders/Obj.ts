@@ -26,7 +26,8 @@ export class Obj extends PerFileLoadable {
   public static readonly index = 2;
   public static readonly archive = 6;
 
-  public models: null | { type: ObjType; model: ModelID }[] = null;
+  public models: null | ModelID[] = null;
+  public modelTypes: null | ObjType[] = null;
   public name = "null";
   public width = 1;
   public length = 1;
@@ -80,11 +81,11 @@ export class Obj extends PerFileLoadable {
         case 5: {
           const len = r.u8();
           v.models = new Array(len);
+          v.modelTypes = new Array(len);
           for (let i = 0; i < len; i++) {
-            v.models[i] = {
-              model: <ModelID>r.u16(),
-              type: opcode == 5 ? ObjType.CentrepieceStraight : <ObjType>r.u8(),
-            };
+            v.models[i] = <ModelID>r.u16();
+            v.modelTypes[i] =
+              opcode == 5 ? ObjType.CentrepieceStraight : <ObjType>r.u8();
           }
           break;
         }
@@ -256,7 +257,7 @@ export class Obj extends PerFileLoadable {
     if (v.isDoor === -1) {
       v.isDoor = 0;
       if (
-        v.models?.[0]?.type === ObjType.CentrepieceStraight ||
+        v.modelTypes?.[0] === ObjType.CentrepieceStraight ||
         v.actions.some((a) => a !== null)
       ) {
         v.isDoor = 1;

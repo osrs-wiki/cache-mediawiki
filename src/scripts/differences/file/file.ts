@@ -60,16 +60,24 @@ export const getFileDifferences = <T extends PerFileLoadable>(
         oldEntryValue instanceof Params &&
         newEntryValue instanceof Params
       ) {
-        /*const oldKeys = Array.from(oldEntryValue.keys());
+        const oldKeys = Array.from(oldEntryValue.keys());
         const newKeys = Array.from(newEntryValue.keys());
 
         const addedKeys = newKeys.filter((key) => !oldKeys.includes(key));
         const removedKeys = oldKeys.filter((key) => !newKeys.includes(key));
-        const sharedKeys = newKeys.filter(key => oldKeys.includes(key));*/
-        results.changed[key] = {
-          oldValue: Object.fromEntries(oldEntryValue),
-          newValue: Object.fromEntries(newEntryValue),
-        };
+        const sharedKeys = newKeys.filter((key) => oldKeys.includes(key));
+        const changedKeys = sharedKeys.filter(
+          (key) => oldEntryValue.get(key) !== newEntryValue.get(key)
+        );
+        if (
+          addedKeys.length > 0 ||
+          removedKeys.length > 0 ||
+          changedKeys.length > 0
+        )
+          results.changed[key] = {
+            oldValue: Object.fromEntries(oldEntryValue),
+            newValue: Object.fromEntries(newEntryValue),
+          };
       }
     });
     if ("id" in oldEntry && "id" in newEntry) {

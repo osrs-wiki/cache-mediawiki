@@ -6,7 +6,12 @@ export type IndexFeature<T extends PerFileLoadable, Name> = {
   name: Name;
   identifiers: (keyof T)[];
   fields: (keyof T)[];
+  urls?: IndexURLs;
 };
+
+export type IndexURLType = "abex" | "chisel";
+
+export type IndexURLs = { [key in IndexURLType]?: string };
 
 export type IndexFeatures =
   | IndexFeature<Item, "Items">
@@ -28,11 +33,19 @@ export const indexNameMap: {
       name: "Objects",
       identifiers: ["name", "id"],
       fields: ["actions"],
+      urls: {
+        chisel: "https://chisel.weirdgloop.org/moid/object_id.html#",
+        abex: "https://abextm.github.io/cache2/#/viewer/obj/",
+      },
     },
     9: {
       name: "Npcs",
       identifiers: ["name", "id"],
       fields: ["combatLevel", "actions"],
+      urls: {
+        chisel: "https://chisel.weirdgloop.org/moid/npc_id.html#",
+        abex: "https://abextm.github.io/cache2/#/viewer/npc/",
+      },
     },
     10: {
       name: "Items",
@@ -47,11 +60,20 @@ export const indexNameMap: {
         "price",
         "weight",
       ],
+      urls: {
+        chisel: "https://chisel.weirdgloop.org/moid/item_id.html#",
+        abex: "https://abextm.github.io/cache2/#/viewer/item/",
+      },
     },
     34: {
       name: "Structs",
       identifiers: ["id"],
       fields: ["params"],
+      urls: {
+        chisel:
+          "https://chisel.weirdgloop.org/structs/index.html?type=structs&id=",
+        abex: "https://abextm.github.io/cache2/#/viewer/struct/",
+      },
     },
   },
 };
