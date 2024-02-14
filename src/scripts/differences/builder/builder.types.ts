@@ -110,8 +110,8 @@ export const indexNameMap: {
     },
     [ConfigType.DbRow]: {
       name: "Database Rows",
-      identifiers: ["id", "table"],
-      fields: ["values"],
+      identifiers: ["id"],
+      fields: ["table", "values"],
       urls: {
         abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
       },

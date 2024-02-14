@@ -8,10 +8,15 @@ import {
 } from "./differences.types";
 import { isEqualBytes } from "./differences.utils";
 import differencesFile from "./file/file";
-import { FlatIndexData, ArchiveData } from "../../utils/cache2";
+import { FlatIndexData, ArchiveData, IndexType } from "../../utils/cache2";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 import { getCacheProviderGithub } from "../clues/utils";
 
+/**
+ * Write cache differences to output files.
+ * @param oldVersion The old abex cache version (ex: 2024-01-31-rev219)
+ * @param newVersion The new abex cache version (ex: 2024-02-07-rev219)
+ */
 const differencesCache = async (oldVersion: string, newVersion = "master") => {
   const oldCache = await new LazyPromise(() =>
     getCacheProviderGithub(oldVersion)
@@ -21,7 +26,8 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};
-  for (let index = 0; index <= 2; index++) {
+  // TODO: Support more than index 2
+  for (let index = 0; index <= IndexType.Configs; index++) {
     const oldIndex = await oldCache.getIndex(index);
     const newIndex = await newCache.getIndex(index);
     if (oldIndex.crc !== newIndex.crc) {
@@ -44,6 +50,12 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
   await writeFile(`${dir}/${newVersion}.txt`, builder.build());
 };
 
+/**
+ * Retrieve the differences between two indices, their archives, and their files.
+ * @param oldIndex The old index
+ * @param newIndex The new index
+ * @returns {IndexDifferences}
+ */
 const differencesIndex = (
   oldIndex: FlatIndexData,
   newIndex: FlatIndexData
@@ -109,6 +121,10 @@ const differencesIndex = (
   return indexDifferences;
 };
 
+/**
+ * Retrieve the differences between two archives and their files
+ * @returns {ArchiveDifferences}
+ */
 const differencesArchive = ({
   oldIndex,
   oldArchive,

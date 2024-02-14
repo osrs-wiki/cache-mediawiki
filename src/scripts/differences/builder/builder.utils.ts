@@ -2,13 +2,19 @@ import {
   MediaWikiContent,
   MediaWikiExternalLink,
   MediaWikiLink,
+  MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
 import { IndexURLType, IndexURLs } from "./builder.types";
-import { HSL } from "../../../utils/cache2";
 import { jagexHSLtoHex } from "../../../utils/colors";
 import { ResultValue } from "../differences.types";
 
+/**
+ * Format the value a field.
+ * @param field The field of a {Result}
+ * @param value The unformatted {ResultValue}
+ * @returns A formatted string.
+ */
 export const formatEntryValue = (field: string, value: ResultValue): string => {
   if (
     !value ||
@@ -52,6 +58,13 @@ export const formatEntryValue = (field: string, value: ResultValue): string => {
     .replaceAll(":", ": ");
 };
 
+/**
+ * Format a field's identifier.
+ * @param identifier The field identifier key
+ * @param value The Result value
+ * @param urls Supported urls for names and identifiers
+ * @returns
+ */
 export const formatEntryIdentifier = (
   identifier: string,
   value: ResultValue,
@@ -68,5 +81,7 @@ export const formatEntryIdentifier = (
       );
     case "name":
       return [new MediaWikiLink(value as string)];
+    default:
+      return [new MediaWikiText(formatEntryValue(identifier, value))];
   }
 };

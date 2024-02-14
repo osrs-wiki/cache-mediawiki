@@ -11,6 +11,9 @@ import { ConfigType, IndexType } from "../../../utils/cache2";
 import { PerFileLoadable } from "../../../utils/cache2/Loadable";
 import { CompareFn, FileDifferences, ResultValue } from "../differences.types";
 
+/**
+ * A map of index and archive types to decoding functions.
+ */
 const indexMap: {
   [key in IndexType]?: { [key: number]: CompareFn } | CompareFn;
 } = {
@@ -25,6 +28,12 @@ const indexMap: {
   },
 };
 
+/**
+ * Retrieve the file differences between two given files.
+ * @params
+ * @returns The differences between two files.
+ *  If either is undefined the difference will be considered additions or removals.
+ */
 const differencesFile: CompareFn = ({ oldFile, newFile }): FileDifferences => {
   const indexId = oldFile?.index?.id ?? newFile?.index?.id;
   let comparisonFn = indexMap[indexId as IndexType];
@@ -39,6 +48,12 @@ const differencesFile: CompareFn = ({ oldFile, newFile }): FileDifferences => {
   return results;
 };
 
+/**
+ * Retrieve the differences in a file: added, changed, and removed files.
+ * @param oldEntry The old file data
+ * @param newEntry The new file data
+ * @returns {FileDifferences}
+ */
 export const getFileDifferences = <T extends PerFileLoadable>(
   oldEntry: T,
   newEntry: T

@@ -25,6 +25,11 @@ import {
   Result,
 } from "../differences.types";
 
+/**
+ * Retrieve a MediaWikiBuilder filled with content from two cache differences.
+ * @param differences The differences between two caches.
+ * @returns {MediaWikiBuilder}
+ */
 const differencesBuilder = (
   differences: CacheDifferences
 ): MediaWikiBuilder => {
@@ -32,6 +37,7 @@ const differencesBuilder = (
 
   builder.addContents([new MediaWikiTOC()]);
 
+  // TODO: Build from supported index and archives
   /*Object.keys(indexNameMap).forEach((index) => {
     const indexFeatureMap = indexNameMap[index as unknown as IndexType];
     if (indexFeatureMap) {
@@ -71,6 +77,12 @@ const differencesBuilder = (
   return builder;
 };
 
+/**
+ * Build the media wiki content for the differences in two cache archive files.
+ * @param archiveDifferences Differences between two cache's archives
+ * @param indexFeatures Meta deta for indexes
+ * @returns {MediaWikiContent[]}
+ */
 const buildArchiveDifferences = (
   archiveDifferences: ArchiveDifferences,
   indexFeatures: IndexFeatures
@@ -86,6 +98,13 @@ const buildArchiveDifferences = (
   return content;
 };
 
+/**
+ * Builds media wiki content for archive file differences.
+ *  These tables include all changed fields.
+ * @param archiveDifferences Differences between two cache's archives
+ * @param indexFeatures Meta deta for indexes
+ * @returns {MediaWikiContent[]}
+ */
 const buildChangedResultTable = (
   archiveDifferences: ArchiveDifferences,
   indexFeatures: IndexFeatures
@@ -202,6 +221,14 @@ const buildChangedResultTable = (
   return content;
 };
 
+/**
+ * Build media wiki content for archive file's additions or removals.
+ *  These tables include specified fields from indexFeatures.
+ * @param archiveDifferences Differences between two cache's archive files
+ * @param indexFeatures Meta deta for indexes
+ * @param type Definition for added or removed content
+ * @returns
+ */
 const buildFullResultTable = (
   archiveDifferences: ArchiveDifferences,
   indexFeatures: IndexFeatures,
