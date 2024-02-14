@@ -146,3 +146,51 @@ export namespace DBColumnID {
     return [(c >>> 12) as DBTableID, (c >>> 4) & 0xff, c & 0xf];
   }
 }
+
+export enum IndexType {
+  Animations = 0,
+  Skeletons = 1,
+  Configs = 2,
+  Interfaces = 3,
+  SoundEffects = 4,
+  Maps = 5,
+  MusicTracks = 6,
+  Models = 7,
+  Sprites = 8,
+  Textures = 9,
+  Binary = 10,
+  MusicJingles = 11,
+  ClientScripts = 12,
+  Fonts = 13,
+  MusicSamples = 14,
+  MusicPatches = 15,
+  Unused = 16,
+  WorldMapGeography = 17,
+  WorldMap = 18,
+  WorldMapGrounds = 19,
+  DbTableIndex = 21,
+}
+
+export enum ConfigType {
+  Underlay = 1,
+  IndentityKit = 3,
+  Overlay = 4,
+  Inventory = 5,
+  Object = 6,
+  Enum = 8,
+  Npc = 9,
+  Item = 10,
+  Params = 11,
+  Sequence = 12,
+  SpotAnim = 13,
+  VarBit = 14,
+  VarClientString = 15,
+  VarPlayer = 16,
+  VarClient = 19,
+  Hitsplat = 32,
+  Healthbar = 33,
+  Struct = 34,
+  Area = 35,
+  DbRow = 38,
+  DbTable = 39,
+}

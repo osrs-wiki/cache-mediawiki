@@ -1,4 +1,4 @@
-name: Run News Scraper
+name: Run Cache Tasks
 
 on:
   workflow_dispatch:
@@ -9,6 +9,14 @@ on:
 
       infobox:
         description: "Infobox type (optional)"
+        required: false
+
+      oldCache:
+        description: "Old cache date (optional)"
+        required: false
+
+      newCache:
+        description: "New cache date (optional)"
         required: false
 
 jobs:
@@ -30,7 +38,7 @@ jobs:
         run: yarn build
 
       - name: Run task
-        run: yarn start:node -t ${{ github.event.inputs.task }} -infobox ${{ github.event.inputs.infobox }}
+        run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v3

@@ -21,11 +21,11 @@ export const getCacheProvider = async () => {
   });
 };
 
-export const getCacheProviderGithub = async () => {
+export const getCacheProviderGithub = async (version = "master") => {
   return new FlatCacheProvider({
     async getFile(name) {
       const req = await fetch(
-        `https://raw.githubusercontent.com/abextm/osrs-cache/master/${name}`
+        `https://raw.githubusercontent.com/abextm/osrs-cache/${version}/${name}`
       );
       if (!req.ok) {
         return;
