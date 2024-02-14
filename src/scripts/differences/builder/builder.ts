@@ -16,6 +16,7 @@ import _ from "underscore";
 import { IndexFeatures, indexNameMap, resultNameMap } from "./builder.types";
 import { formatEntryIdentifier, formatEntryValue } from "./builder.utils";
 import { IndexType } from "../../../utils/cache2";
+import { capitalize } from "../../../utils/string";
 import {
   ArchiveDifferences,
   CacheDifferences,
@@ -178,12 +179,17 @@ const buildChangedResultTable = (
         {
           header: true,
           minimal: true,
-          cells: ["Name", "ID", "Key", "Previous Value", "New Value"].map(
-            (column, index) => ({
-              content: [new MediaWikiText(column)],
-              options: index == 0 ? { style: "width: 15em" } : undefined,
-            })
-          ),
+          cells: [
+            ...indexFeatures.identifiers.map((identifier) =>
+              capitalize(identifier)
+            ),
+            "Key",
+            "Previous Value",
+            "New Value",
+          ].map((column, index) => ({
+            content: [new MediaWikiText(column)],
+            options: index == 0 ? { style: "width: 15em" } : undefined,
+          })),
         },
         ...rows,
       ],

@@ -191,6 +191,6 @@ export enum ConfigType {
   Healthbar = 33,
   Struct = 34,
   Area = 35,
-  DbRow = 36,
+  DbRow = 38,
   DbTable = 39,
 }

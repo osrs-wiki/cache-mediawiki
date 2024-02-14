@@ -34,10 +34,13 @@ const differencesCache = async (oldVersion: string, newVersion = "master") => {
     }
   }
 
-  console.log(JSON.stringify(cacheDifferences));
   const builder = differencesBuilder(cacheDifferences);
   const dir = `./out/differences`;
   await mkdir(dir, { recursive: true });
+  await writeFile(
+    `${dir}/${newVersion} JSON.json`,
+    JSON.stringify(cacheDifferences)
+  );
   await writeFile(`${dir}/${newVersion}.txt`, builder.build());
 };
 

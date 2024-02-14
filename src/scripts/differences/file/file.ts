@@ -1,10 +1,13 @@
 import _ from "underscore";
 
+import compareDBRows from "./content/dbrows";
+import compareEnums from "./content/enums";
 import compareItems from "./content/items";
 import compareNpcs from "./content/npcs";
 import compareObjects from "./content/objects";
+import compareParams from "./content/params";
 import compareStructs from "./content/struct";
-import { ConfigType, IndexType, Params } from "../../../utils/cache2";
+import { ConfigType, IndexType } from "../../../utils/cache2";
 import { PerFileLoadable } from "../../../utils/cache2/Loadable";
 import { CompareFn, FileDifferences, ResultValue } from "../differences.types";
 
@@ -12,9 +15,12 @@ const indexMap: {
   [key in IndexType]?: { [key: number]: CompareFn } | CompareFn;
 } = {
   [IndexType.Configs]: {
+    [ConfigType.DbRow]: compareDBRows,
+    [ConfigType.Enum]: compareEnums,
     [ConfigType.Item]: compareItems,
     [ConfigType.Npc]: compareNpcs,
     [ConfigType.Object]: compareObjects,
+    [ConfigType.Params]: compareParams,
     [ConfigType.Struct]: compareStructs,
   },
 };
@@ -56,10 +62,7 @@ export const getFileDifferences = <T extends PerFileLoadable>(
           oldValue: oldEntryValue,
           newValue: newEntryValue,
         };
-      } else if (
-        oldEntryValue instanceof Params &&
-        newEntryValue instanceof Params
-      ) {
+      } else if (oldEntryValue instanceof Map && newEntryValue instanceof Map) {
         const oldKeys = Array.from(oldEntryValue.keys());
         const newKeys = Array.from(newEntryValue.keys());
 
@@ -96,13 +99,19 @@ export const getFileDifferences = <T extends PerFileLoadable>(
     results.removed = {};
     Object.keys(oldEntry).forEach((key) => {
       const oldEntryValue = oldEntry[key as keyof T] as ResultValue;
-      results.removed[key] = oldEntryValue;
+      results.removed[key] =
+        oldEntryValue instanceof Map
+          ? Object.fromEntries(oldEntryValue)
+          : oldEntryValue;
     });
   } else if (newEntry) {
     results.added = {};
     Object.keys(newEntry).forEach((key) => {
       const newEntryValue = newEntry[key as keyof T] as ResultValue;
-      results.added[key] = newEntryValue;
+      results.added[key] =
+        newEntryValue instanceof Map
+          ? Object.fromEntries(newEntryValue)
+          : newEntryValue;
     });
   }
 
