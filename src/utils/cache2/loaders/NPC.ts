@@ -57,6 +57,8 @@ export class NPC extends PerFileLoadable {
   public isInteractible = true;
   public isClickable = true;
   public isPet = false;
+  public isFollower = false;
+  public lowPriorityOps = false;
   public runAnimation = <AnimationID>-1;
   public runRotate180Animation = <AnimationID>-1;
   public runRotateLeftAnimation = <AnimationID>-1;
@@ -163,7 +165,7 @@ export class NPC extends PerFileLoadable {
           v.contrast = r.i8();
           break;
         case 102:
-          if (r.isAfter({ era: "osrs", indexRevision: 3642 })) {
+          if (!r.isAfter({ era: "osrs", indexRevision: 3642 })) {
             v.headIconArchive = [-1 as SpriteID];
             v.headIconSpriteIndex = [r.u16()];
           } else {
@@ -201,7 +203,8 @@ export class NPC extends PerFileLoadable {
           v.isClickable = false;
           break;
         case 111:
-          v.isPet = true;
+          v.isFollower = true;
+          v.lowPriorityOps = true;
           break;
         case 114:
           v.runAnimation = <AnimationID>r.u16();
@@ -220,6 +223,12 @@ export class NPC extends PerFileLoadable {
           v.crawlRotate180Animation = <AnimationID>r.u16();
           v.crawlRotateLeftAnimation = <AnimationID>r.u16();
           v.crawlRotateRightAnimation = <AnimationID>r.u16();
+          break;
+        case 122:
+          v.isFollower = true;
+          break;
+        case 123:
+          v.lowPriorityOps = true;
           break;
         case 118: {
           v.varbit = <VarbitID>r.u16n();
