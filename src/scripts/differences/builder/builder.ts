@@ -236,10 +236,7 @@ const buildFullResultTable = (
 ): MediaWikiContent[] => {
   const differenceName = resultNameMap[type];
   const tableFields = indexFeatures.fields.map((field) => field.toString());
-  const fields =
-    type === "added"
-      ? [...indexFeatures.identifiers, ...tableFields]
-      : indexFeatures.identifiers;
+  const fields = [...indexFeatures.identifiers, ...tableFields];
   const content: MediaWikiContent[] = [];
   const entries: Result[] = _.pluck(
     Object.values(archiveDifferences),
@@ -259,19 +256,14 @@ const buildFullResultTable = (
             })
           );
           return {
-            cells:
-              type === "removed"
-                ? identifierCells
-                : [
-                    ...identifierCells,
-                    ...tableFields.map((field) => ({
-                      content: [
-                        new MediaWikiText(
-                          formatEntryValue(field, entry[field])
-                        ),
-                      ],
-                    })),
-                  ],
+            cells: [
+              ...identifierCells,
+              ...tableFields.map((field) => ({
+                content: [
+                  new MediaWikiText(formatEntryValue(field, entry[field])),
+                ],
+              })),
+            ],
             minimal: true,
           };
         })
