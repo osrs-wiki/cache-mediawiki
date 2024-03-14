@@ -118,9 +118,13 @@ const cluePageBuilder = ({
           ? `\nRequires: ${requirements.join(", ")}`
           : "") +
         (challenge
-          ? `\nThe clue has an additional challenge:${
-              challenge.task ? "\n\n" + challenge.task : ""
-            }${challenge.answer ? "\n\n" : ""}${challenge.answer}`
+          ? `\n${
+              challenge.answer
+                ? "The clue requires completion of a [[challenge scroll]]"
+                : "The clue has an additional challenge"
+            }:${challenge.task ? "\n\n" + challenge.task : ""}${
+              challenge.answer ? "\n\n" : ""
+            }${challenge.answer ?? ""}`
           : ""),
       _.flatten(
         answers.map((answer) => answer.worldLocs),
