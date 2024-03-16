@@ -6,8 +6,8 @@ import { BaseVarType, ScriptVarType } from "../ScriptVarType";
 import { DBColumnID, DBRowID, DBTableID, ScriptVarID } from "../types";
 
 function readTypes(r: Reader): ScriptVarID[] {
-	let size = r.u8();
-	let types = new Array(size).fill(undefined);
+	const size = r.u8();
+	const types = new Array(size).fill(undefined);
 	for (let i = 0; i < size; i++) {
 		types[i] = r.u8o16();
 	}
@@ -31,11 +31,11 @@ function readVarType(r: Reader, type: BaseVarType): string | number | bigint {
 }
 
 function readValues(r: Reader, types: ScriptVarID[]): (string | number | bigint)[] {
-	let strides = r.u8o16();
-	let values = new Array(types.length * strides).fill(undefined);
+	const strides = r.u8o16();
+	const values = new Array(types.length * strides).fill(undefined);
 	for (let stride = 0; stride < strides; stride++) {
 		for (let i = 0; i < types.length; i++) {
-			let type = ScriptVarType.forID(types[i]);
+			const type = ScriptVarType.forID(types[i]);
 			if (type === undefined) {
 				throw new Error(`unknown type ${types[i]}`);
 			}
@@ -63,17 +63,17 @@ export class DBRow extends PerFileLoadable {
 		for (let opcode: number; (opcode = r.u8()) != 0;) {
 			switch (opcode) {
 				case 3: {
-					let len = r.u8();
+					const len = r.u8();
 					v.values = new Array(len).fill(undefined);
 					v.types = new Array(len).fill(undefined);
 
 					for (;;) {
-						let column = r.u8();
+						const column = r.u8();
 						if (column == 255) {
 							break;
 						}
 
-						let types = v.types[column] = readTypes(r);
+						const types = v.types[column] = readTypes(r);
 						v.values[column] = readValues(r, types);
 					}
 					break;
@@ -106,17 +106,17 @@ export class DBTable extends PerFileLoadable {
 		for (let opcode: number; (opcode = r.u8()) != 0;) {
 			switch (opcode) {
 				case 1: {
-					let len = r.u8();
+					const len = r.u8();
 					v.defaultValues = new Array(len).fill(undefined);
 					v.types = new Array(len).fill(undefined);
 
 					for (;;) {
-						let bits = r.u8();
+						const bits = r.u8();
 						if (bits == 255) {
 							break;
 						}
-						let column = bits & 0x7F;
-						let types = v.types[column] = readTypes(r);
+						const column = bits & 0x7F;
+						const types = v.types[column] = readTypes(r);
 						if (bits & 0x80) {
 							v.defaultValues[column] = readValues(r, types);
 						}
@@ -134,8 +134,8 @@ export class DBTable extends PerFileLoadable {
 		cache: CacheProvider | Promise<CacheProvider>,
 		table: DBTableID | number,
 	): Promise<DBRowID[] | undefined> {
-		let idx = await DBTableIndex.load(cache, table, DBTableIndex.MASTER_COLUMN);
-		let vs = idx?.values[0];
+		const idx = await DBTableIndex.load(cache, table, DBTableIndex.MASTER_COLUMN);
+		const vs = idx?.values[0];
 		if (!vs) {
 			return undefined;
 		}
@@ -146,7 +146,7 @@ export class DBTable extends PerFileLoadable {
 		cache: CacheProvider | Promise<CacheProvider>,
 		table: DBTableID | number,
 	): Promise<DBRow[] | undefined> {
-		let rows = await this.loadRowIDs(cache, table);
+		const rows = await this.loadRowIDs(cache, table);
 		if (!rows) {
 			return undefined;
 		}
@@ -173,9 +173,9 @@ export class DBTableIndex extends Loadable {
 			args = DBColumnID.unpack(args[0] as DBColumnID);
 		}
 
-		let archive = await cache.getArchive(this.index, args[0]);
-		let version = await cache.getVersion(this.index);
-		let data = archive?.getFile(args[1] + 1)?.data;
+		const archive = await cache.getArchive(this.index, args[0]);
+		const version = await cache.getVersion(this.index);
+		const data = archive?.getFile(args[1] + 1)?.data;
 		return data ? new Reader(data, version) : undefined;
 	}
 
@@ -188,19 +188,19 @@ export class DBTableIndex extends Loadable {
 
 		const v = new DBTableIndex(args[0] as DBTableID, args[1]);
 
-		let len = r.leVarInt();
+		const len = r.leVarInt();
 		v.types = new Array(len).fill(undefined);
 		v.values = new Array(len).fill(undefined);
 
 		for (let tupleIndex = 0; tupleIndex < len; tupleIndex++) {
-			let type = v.types[tupleIndex] = BaseVarType.forOrdinal(r.u8());
-			let map = v.values[tupleIndex] = new Map();
+			const type = v.types[tupleIndex] = BaseVarType.forOrdinal(r.u8());
+			const map = v.values[tupleIndex] = new Map();
 
-			let numKeys = r.leVarInt();
+			const numKeys = r.leVarInt();
 			for (let i = 0; i < numKeys; i++) {
-				let key = readVarType(r, type);
-				let numRows = r.leVarInt();
-				let rows = new Array(numRows).fill(undefined);
+				const key = readVarType(r, type);
+				const numRows = r.leVarInt();
+				const rows = new Array(numRows).fill(undefined);
 				map.set(key, rows);
 
 				for (let i = 0; i < numRows; i++) {
