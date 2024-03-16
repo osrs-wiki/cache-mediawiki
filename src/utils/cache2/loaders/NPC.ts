@@ -56,7 +56,6 @@ export class NPC extends PerFileLoadable {
   public oobChild = <NPCID>-1;
   public isInteractible = true;
   public isClickable = true;
-  public isPet = false;
   public isFollower = false;
   public lowPriorityOps = false;
   public runAnimation = <AnimationID>-1;
@@ -203,6 +202,7 @@ export class NPC extends PerFileLoadable {
           v.isClickable = false;
           break;
         case 111:
+          // removed in 220
           v.isFollower = true;
           v.lowPriorityOps = true;
           break;
@@ -224,12 +224,6 @@ export class NPC extends PerFileLoadable {
           v.crawlRotateLeftAnimation = <AnimationID>r.u16();
           v.crawlRotateRightAnimation = <AnimationID>r.u16();
           break;
-        case 122:
-          v.isFollower = true;
-          break;
-        case 123:
-          v.lowPriorityOps = true;
-          break;
         case 118: {
           v.varbit = <VarbitID>r.u16n();
           v.varp = <VarPID>r.u16n();
@@ -241,6 +235,12 @@ export class NPC extends PerFileLoadable {
           }
           break;
         }
+        case 122:
+          v.isFollower = true;
+          break;
+        case 123:
+          v.lowPriorityOps = true;
+          break;
         case 249:
           v.params = r.params();
           break;

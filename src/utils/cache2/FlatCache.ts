@@ -1,3 +1,5 @@
+import { decode as fastAtob } from "base64-arraybuffer-es6";
+
 import {
   ArchiveData,
   CacheProvider,
@@ -56,11 +58,7 @@ export class FlatIndexData implements IndexData {
       } else {
         switch (key) {
           case "contents": {
-            const res = await fetch(
-              "data:application/octet-binary;base64," + value
-            );
-            const data = await res.arrayBuffer();
-            ar!.compressedData = new Uint8Array(data);
+            ar!.compressedData = new Uint8Array(fastAtob(value));
             break;
           }
           case "file": {
@@ -71,8 +69,9 @@ export class FlatIndexData implements IndexData {
           case "namehash":
           case "revision":
           case "crc":
-          case "compression":
             ar[key] = ~~value;
+            break;
+          case "compression":
             break;
         }
       }
