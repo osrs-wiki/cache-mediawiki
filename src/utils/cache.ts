@@ -1,13 +1,34 @@
 import { readFile } from "fs/promises";
 
-import { FlatCacheProvider } from "./cache2";
+import { DiskCacheProvider, FlatCacheProvider } from "./cache2";
 
-export type CacheMethod = "github" | "local";
+export type CacheSource = "github" | "local";
+export type CacheFileType = "flat" | "disk";
 
-export const getCacheProvider = async (version: string) => {
+export const getCacheProviderLocal = async (
+  version: string,
+  type: CacheFileType
+) => {
+  if (type === "disk") {
+    return getCacheProviderDiskLocal(version);
+  } else if (type === "flat") {
+    return getCacheProviderFlatLocal(version);
+  }
+};
+
+export const getCacheProviderDiskLocal = async (version: string) => {
+  return new DiskCacheProvider({
+    async getFile(name) {
+      const ab = (await readFile(`./data/diskcache/${version}/${name}`)).buffer;
+      return new Uint8Array(ab);
+    },
+  });
+};
+
+export const getCacheProviderFlatLocal = async (version: string) => {
   return new FlatCacheProvider({
     async getFile(name) {
-      const ab = (await readFile(`./data/cache/${version}/${name}`)).buffer;
+      const ab = (await readFile(`./data/flatcache/${version}/${name}`)).buffer;
       return new Uint8Array(ab);
     },
   });
