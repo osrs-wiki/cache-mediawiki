@@ -1,5 +1,17 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.3.0
+
+### Minor Changes
+
+- 163d175: Support both local & github cache reading
+- f4c4b77: Update cache2 from abex/cache2
+- f4c4b77: Add partial support for local disk cache reading
+
+### Patch Changes
+
+- 8fe2e11: Remove distinctions between added/removed content table columns
+
 ## 0.2.0
 
 ### Minor Changes
