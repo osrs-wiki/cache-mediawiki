@@ -1,62 +1,7 @@
-import { readFile } from "fs/promises";
-
 import { Answer, Challenge, WieldedItems } from "./builder";
-import {
-  CacheProvider,
-  DBRow,
-  FlatCacheProvider,
-  Item,
-  NPC,
-  Obj,
-} from "../../utils/cache2";
+import { CacheProvider, DBRow, Item, NPC, Obj } from "../../utils/cache2";
 
 export const ITEM_PARAM_ID = 623;
-
-export const getCacheProvider = async () => {
-  return new FlatCacheProvider({
-    async getFile(name) {
-      const ab = (await readFile(`./data/cache/${name}`)).buffer;
-      return new Uint8Array(ab);
-    },
-  });
-};
-
-export const getCacheProviderGithub = async (version = "master") => {
-  return new FlatCacheProvider({
-    async getFile(name) {
-      const req = await fetch(
-        `https://raw.githubusercontent.com/abextm/osrs-cache/${version}/${name}`
-      );
-      if (!req.ok) {
-        return;
-      }
-      const ab = await req.arrayBuffer();
-      return new Uint8Array(ab);
-    },
-  });
-};
-
-export const getExamines = async (
-  name: string
-): Promise<{ [key: string]: string }> => {
-  const examines: { [key: string]: string } = {};
-  const req = await fetch(
-    `https://raw.githubusercontent.com/Joshua-F/osrs-examines/master/${name}.csv`
-  );
-  if (!req.ok) {
-    return;
-  }
-  const fetchedExamines = await req.text();
-  fetchedExamines.split("\n").forEach((line) => {
-    const parsedLine = line.split(",");
-    const id = parsedLine[0];
-    const examine = parsedLine[1];
-    if (id) {
-      examines[id] = examine;
-    }
-  });
-  return examines;
-};
 
 export const getTier = (id: any) => {
   const idString = `${id}`;

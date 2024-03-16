@@ -1,3 +1,4 @@
+import { CacheMethod } from "../../utils/cache";
 import {
   ArchiveData,
   ArchiveFile,
@@ -10,6 +11,12 @@ import {
   TextureID,
   WearPos,
 } from "../../utils/cache2";
+
+export type DifferencesParams = {
+  newVersion: string;
+  oldVersion: string;
+  method: CacheMethod;
+};
 
 export type FileContext = {
   archive: ArchiveData;
