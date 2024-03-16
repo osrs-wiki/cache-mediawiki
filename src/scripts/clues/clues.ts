@@ -7,8 +7,9 @@ import {
   generateFairyCrypticPages,
   generateMapPages,
 } from "./types";
-import { getCacheProviderGithub, getExamines } from "./utils";
+import { getCacheProviderGithub } from "../../utils/cache";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
+import { getExamines } from "../../utils/examines";
 
 export const ITEM_EXAMINES: { [key: string]: string } = {};
 

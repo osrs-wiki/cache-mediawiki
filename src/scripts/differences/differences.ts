@@ -4,25 +4,34 @@ import differencesBuilder from "./builder";
 import {
   ArchiveDifferences,
   CacheDifferences,
+  DifferencesParams,
   IndexDifferences,
 } from "./differences.types";
 import { isEqualBytes } from "./differences.utils";
 import differencesFile from "./file/file";
+import { getCacheProviderGithub, getCacheProvider } from "../../utils/cache";
 import { FlatIndexData, ArchiveData, IndexType } from "../../utils/cache2";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
-import { getCacheProviderGithub } from "../clues/utils";
 
 /**
  * Write cache differences to output files.
  * @param oldVersion The old abex cache version (ex: 2024-01-31-rev219)
  * @param newVersion The new abex cache version (ex: 2024-02-07-rev219)
  */
-const differencesCache = async (oldVersion: string, newVersion = "master") => {
+const differencesCache = async ({
+  oldVersion,
+  newVersion = "master",
+  method = "github",
+}: DifferencesParams) => {
   const oldCache = await new LazyPromise(() =>
-    getCacheProviderGithub(oldVersion)
+    method === "github"
+      ? getCacheProviderGithub(oldVersion)
+      : getCacheProvider(oldVersion)
   ).asPromise();
   const newCache = await new LazyPromise(() =>
-    getCacheProviderGithub(newVersion)
+    method === "github"
+      ? getCacheProviderGithub(newVersion)
+      : getCacheProvider(newVersion)
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};

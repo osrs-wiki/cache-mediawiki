@@ -4,11 +4,12 @@ import { parseArgs } from "node:util";
 import generateCluePages from "./scripts/clues";
 import differencesCache from "./scripts/differences/differences";
 import infoboxGenerator from "./scripts/infoboxGenernator";
+import { CacheMethod } from "./utils/cache";
 
 console.log(`Running ${config.environment}`);
 
 const {
-  values: { oldCache, newCache, task, infobox },
+  values: { cacheMethod, oldCache, newCache, task, infobox },
 } = parseArgs({
   options: {
     oldCache: {
@@ -16,6 +17,10 @@ const {
     },
     newCache: {
       type: "string",
+    },
+    cacheMethod: {
+      type: "string",
+      default: "github",
     },
     task: {
       type: "string",
@@ -28,7 +33,11 @@ const {
 });
 
 if (task === "differences" || (task === "diffs" && oldCache)) {
-  differencesCache(oldCache, newCache);
+  differencesCache({
+    oldVersion: oldCache,
+    newVersion: newCache,
+    method: cacheMethod as CacheMethod,
+  });
 } else if (task === "infobox" && infobox) {
   infoboxGenerator(infobox);
 } else if (task === "clues") {
