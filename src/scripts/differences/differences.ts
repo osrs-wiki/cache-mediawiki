@@ -9,8 +9,16 @@ import {
 } from "./differences.types";
 import { isEqualBytes } from "./differences.utils";
 import differencesFile from "./file/file";
-import { getCacheProviderGithub, getCacheProvider } from "../../utils/cache";
-import { FlatIndexData, ArchiveData, IndexType } from "../../utils/cache2";
+import {
+  getCacheProviderGithub,
+  getCacheProviderLocal,
+} from "../../utils/cache";
+import {
+  FlatIndexData,
+  ArchiveData,
+  IndexType,
+  DiskIndexData,
+} from "../../utils/cache2";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 
 /**
@@ -22,16 +30,17 @@ const differencesCache = async ({
   oldVersion,
   newVersion = "master",
   method = "github",
+  type = "disk",
 }: DifferencesParams) => {
   const oldCache = await new LazyPromise(() =>
     method === "github"
       ? getCacheProviderGithub(oldVersion)
-      : getCacheProvider(oldVersion)
+      : getCacheProviderLocal(oldVersion, type)
   ).asPromise();
   const newCache = await new LazyPromise(() =>
     method === "github"
       ? getCacheProviderGithub(newVersion)
-      : getCacheProvider(newVersion)
+      : getCacheProviderLocal(newVersion, type)
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};
@@ -66,8 +75,8 @@ const differencesCache = async ({
  * @returns {IndexDifferences}
  */
 const differencesIndex = (
-  oldIndex: FlatIndexData,
-  newIndex: FlatIndexData
+  oldIndex: FlatIndexData | DiskIndexData,
+  newIndex: FlatIndexData | DiskIndexData
 ): IndexDifferences => {
   const newKeys = Array.from(newIndex.archives.keys());
   const oldKeys = Array.from(oldIndex.archives.keys());
@@ -140,9 +149,9 @@ const differencesArchive = ({
   newIndex,
   newArchive,
 }: {
-  oldIndex?: FlatIndexData;
+  oldIndex?: FlatIndexData | DiskIndexData;
   oldArchive?: ArchiveData;
-  newIndex?: FlatIndexData;
+  newIndex?: FlatIndexData | DiskIndexData;
   newArchive?: ArchiveData;
 }): ArchiveDifferences => {
   const newKeys = newArchive ? Array.from(newArchive.files.keys()) : [];

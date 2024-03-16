@@ -1,8 +1,9 @@
-import { CacheMethod } from "../../utils/cache";
+import { CacheFileType, CacheSource } from "../../utils/cache";
 import {
   ArchiveData,
   ArchiveFile,
   CategoryID,
+  DiskIndexData,
   FlatIndexData,
   HSL,
   ItemID,
@@ -15,12 +16,13 @@ import {
 export type DifferencesParams = {
   newVersion: string;
   oldVersion: string;
-  method: CacheMethod;
+  method: CacheSource;
+  type: CacheFileType;
 };
 
 export type FileContext = {
   archive: ArchiveData;
-  index: FlatIndexData;
+  index: FlatIndexData | DiskIndexData;
   file: ArchiveFile;
 };
 

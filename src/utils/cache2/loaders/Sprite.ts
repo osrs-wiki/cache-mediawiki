@@ -51,11 +51,7 @@ export class Sprite {
       }
     }
 
-    return new ImageData(
-      new Uint8ClampedArray(out.buffer, out.byteOffset, out.byteLength),
-      tw,
-      th
-    );
+    return new ImageData(Reader.makeViewOf(Uint8ClampedArray, out), tw, th);
   }
 }
 

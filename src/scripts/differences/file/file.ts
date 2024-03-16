@@ -43,7 +43,14 @@ const differencesFile: CompareFn = ({ oldFile, newFile }): FileDifferences => {
   } else {
     const archiveId = oldFile?.archive?.archive ?? newFile?.archive?.archive;
     comparisonFn = comparisonFn?.[archiveId];
-    results = comparisonFn?.({ oldFile, newFile }) ?? {};
+    try {
+      results = comparisonFn?.({ oldFile, newFile }) ?? {};
+    } catch (error) {
+      console.error(
+        `Error decoding [index=${indexId}][archive=${archiveId}][file=${newFile.file.id}]`,
+        error
+      );
+    }
   }
   return results;
 };

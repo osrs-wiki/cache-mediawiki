@@ -1,8 +1,9 @@
 import { gunzipSync } from "fflate";
 
 import * as bz2 from "./bz2";
+import { Reader } from "./Reader";
 import { CompressionType, XTEAKey } from "./types";
-import { decryptXTEA } from "./xtea";
+import { decryptXTEA, XTEAKeyManager } from "./xtea";
 
 export interface CacheProvider {
   getIndex(index: number): Promise<IndexData | undefined>;
@@ -13,6 +14,7 @@ export interface CacheProvider {
   ): Promise<ArchiveData | undefined>;
   getArchives(index: number): Promise<number[] | undefined>;
   getVersion(index: number): Promise<CacheVersion>;
+  getKeys?(): Promise<XTEAKeyManager>;
 }
 
 export interface FileProvider {
@@ -46,7 +48,6 @@ export class ArchiveData {
   public compressedData!: Uint8Array;
   public namehash!: number;
   public revision!: number;
-  public compression!: CompressionType;
   public crc!: number;
 
   /**@internal*/ files: Map<number, ArchiveFile> = new Map();
@@ -62,31 +63,34 @@ export class ArchiveData {
     this.files.set(id, new ArchiveFile(id, nameHash));
   }
 
+  public get compression() {
+    return this.compressedData[0] as CompressionType;
+  }
+
+  /**@internal*/ getCryptedBlob(): Uint8Array {
+    const dv = Reader.makeViewOf(DataView, this.compressedData);
+    const cLen = dv.getInt32(1);
+    return this.compressedData.subarray(
+      5,
+      5 + cLen + (this.compression == CompressionType.NONE ? 0 : 4)
+    );
+  }
+
   getDecryptedData(): Uint8Array {
     if (this.decryptedData) {
       return this.decryptedData;
     }
 
-    const dv = new DataView(
-      this.compressedData.buffer,
-      this.compressedData.byteOffset,
-      this.compressedData.byteLength
-    );
-    const mode = dv.getUint8(0) as CompressionType;
-    const cLen = dv.getInt32(1);
-    let data = this.compressedData.subarray(
-      5,
-      5 + cLen + (mode == CompressionType.NONE ? 0 : 4)
-    );
-    decryptXTEA(data, this.key);
+    const mode = this.compression;
+    let data = this.getCryptedBlob();
+    if (this.key) {
+      data = decryptXTEA(data, this.key);
+    }
+
     if (mode == CompressionType.NONE) {
       // noop
     } else if (mode == CompressionType.BZ2) {
-      const outLen = new DataView(
-        data.buffer,
-        data.byteOffset,
-        data.byteLength
-      ).getUint32(0);
+      const outLen = Reader.makeViewOf(DataView, data).getUint32(0);
       const inData = data.subarray(4);
       data = bz2.decompress(inData, 1, outLen);
     } else if (mode == CompressionType.GZIP) {
@@ -102,7 +106,7 @@ export class ArchiveData {
       this.files.get(0)!.data = data;
     } else {
       const fileCount = this.files.size;
-      const dv = new DataView(data.buffer, data.byteOffset, data.byteLength);
+      const dv = Reader.makeViewOf(DataView, data);
       const numChunks = dv.getUint8(dv.byteLength - 1);
 
       let off = dv.byteLength - 1 - numChunks * fileCount * 4;
