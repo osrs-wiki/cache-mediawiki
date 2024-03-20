@@ -1,5 +1,15 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.4.0
+
+### Minor Changes
+
+- 279c1a3: Add support for generating music clue pages
+- 279c1a3: Add CacheMediaWikiContext for globally tracking program args
+- 279c1a3: Add writeClueFile for centralizing clue page output
+- 279c1a3: Add options for building infoboxes when diff tool is ran
+- 279c1a3: Add support for DiskCacheProvider to clue page generation
+
 ## 0.3.0
 
 ### Minor Changes
