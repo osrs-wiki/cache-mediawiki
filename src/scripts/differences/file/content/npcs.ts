@@ -1,6 +1,8 @@
 import _ from "underscore";
 
+import Context from "../../../../context";
 import { NPC, NPCID, Reader } from "../../../../utils/cache2";
+import { buildNpcInfobox } from "../../../infoboxGenernator/infoboxes/npc";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file";
 
@@ -24,6 +26,14 @@ const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
         <NPCID>newFile.file.id
       )
     : undefined;
+
+  if (
+    Context.infoboxes &&
+    !oldEntry &&
+    newEntry.name.toLocaleLowerCase() !== "null"
+  ) {
+    buildNpcInfobox(newEntry);
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

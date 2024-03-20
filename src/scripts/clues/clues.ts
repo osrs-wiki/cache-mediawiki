@@ -6,15 +6,29 @@ import {
   generateEmotePages,
   generateFairyCrypticPages,
   generateMapPages,
+  generateMusicPages,
 } from "./types";
-import { getCacheProviderGithub } from "../../utils/cache";
+import {
+  CacheFileType,
+  CacheSource,
+  getCacheProviderGithub,
+  getCacheProviderLocal,
+} from "../../utils/cache";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 import { getExamines } from "../../utils/examines";
 
 export const ITEM_EXAMINES: { [key: string]: string } = {};
 
-const generateCluePages = async () => {
-  const cache = new LazyPromise(() => getCacheProviderGithub()).asPromise();
+const generateCluePages = async (
+  method: CacheSource,
+  version: string,
+  type: CacheFileType
+) => {
+  const cache = new LazyPromise(() =>
+    method === "github"
+      ? getCacheProviderGithub(version)
+      : getCacheProviderLocal(version, type)
+  ).asPromise();
 
   const itemExamines = await getExamines("objs");
   Object.keys(itemExamines).forEach((key) => {
@@ -23,6 +37,7 @@ const generateCluePages = async () => {
 
   generateAnagramPages(cache);
   generateMapPages(cache);
+  generateMusicPages(cache);
   generateCipherPages(cache);
   generateFairyCrypticPages(cache);
   generateCoordinatePages(cache);

@@ -4,11 +4,13 @@ import {
   MediaWikiBuilder,
   MediaWikiDate,
   MediaWikiFile,
+  MediaWikiLink,
   MediaWikiTemplate,
 } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
+import Context from "../../../context";
 import { CacheProvider, Item } from "../../../utils/cache2";
 
 const itemInfoboxGenerator = async (
@@ -18,13 +20,24 @@ const itemInfoboxGenerator = async (
   try {
     const item = await Item.load(cache, id);
 
+    buildItemInfobox(item);
+  } catch (e) {
+    console.error(`Error generating infobox for item ${id}: `, e);
+  }
+};
+
+export const buildItemInfobox = async (item: Item) => {
+  try {
     const infoboxItem = new InfoboxTemplate<InfoboxItem>("item", {
       name: item.name as string,
       image: new MediaWikiFile(`${item.name}.png`),
-      release: new MediaWikiDate(new Date()),
-      update: "",
+      release: Context.updateDate
+        ? new MediaWikiDate(new Date(Context.updateDate))
+        : undefined,
+      update: "Varlamore: Part One",
       members: item.isMembers as boolean,
       quest: "No",
+      exchange: item.isGrandExchangable,
       tradeable: item.isGrandExchangable,
       bankable: item.placeholderLinkedItem > 0,
       placeholder: item.placeholderLinkedItem > 1 ? true : undefined,
@@ -50,9 +63,9 @@ const itemInfoboxGenerator = async (
     ]);
 
     await mkdir("./out/infobox/item", { recursive: true });
-    await writeFile(`./out/infobox/item/${item.id}.txt`, builder.build());
+    writeFile(`./out/infobox/item/${item.id}.txt`, builder.build());
   } catch (e) {
-    console.error(`Error generating infobox for item ${id}: `, e);
+    console.error("Error building item infobox: ", e);
   }
 };
 

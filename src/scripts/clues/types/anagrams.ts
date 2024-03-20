@@ -1,7 +1,6 @@
-import { mkdir, writeFile } from "fs/promises";
-
 import {
   DBTable,
+  DiskCacheProvider,
   FlatCacheProvider,
   Item,
   ParamID,
@@ -14,9 +13,12 @@ import {
   getRequirements,
   getTblRegions,
   getTier,
+  writeClueFile,
 } from "../utils";
 
-const generateAnagramPages = async (cache: Promise<FlatCacheProvider>) => {
+const generateAnagramPages = async (
+  cache: Promise<FlatCacheProvider | DiskCacheProvider>
+) => {
   const rows = await DBTable.loadRows(cache, 4);
 
   const items = await Item.all(cache);
@@ -53,9 +55,7 @@ const generateAnagramPages = async (cache: Promise<FlatCacheProvider>) => {
         type: "anagram",
       });
 
-      const dir = `./out/clues/anagrams`;
-      await mkdir(dir, { recursive: true });
-      await writeFile(`${dir}/${itemName} - ${clue}.txt`, builder.build());
+      writeClueFile("anagrams", itemName, clue, builder);
     }
   });
 };
