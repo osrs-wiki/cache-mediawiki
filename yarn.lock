@@ -921,10 +921,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@osrs-wiki/mediawiki-builder@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@osrs-wiki/mediawiki-builder/-/mediawiki-builder-1.2.0.tgz#962ccff334668e402c1711ea6e8762dce1716bb3"
-  integrity sha512-X5+8wBiMBzsbp9j8a3oSa7SzriCBbwGFp12YF14VOEJuIXoL4GVoSDa8Sra8kYQJJ9JIhZUMLOcZRhuPh5DyfA==
+"@osrs-wiki/mediawiki-builder@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@osrs-wiki/mediawiki-builder/-/mediawiki-builder-1.2.2.tgz#3bfaf1db17e5cf5374ee4378226400fdff6ab45d"
+  integrity sha512-wScouPO2cq3hW2ckek6x+SmpL3SZk3ot1QcvuU1BhRd0A/wIc8AJCPT8IkvGf7LJV7AXdkM2yV/KQRJWnpXrJw==
   dependencies:
     tslib "^2.6.2"
 

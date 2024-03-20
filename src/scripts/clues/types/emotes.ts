@@ -1,7 +1,6 @@
-import { mkdir, writeFile } from "fs/promises";
-
 import {
   DBTable,
+  DiskCacheProvider,
   FlatCacheProvider,
   Item,
   ParamID,
@@ -15,9 +14,12 @@ import {
   getTblRegions,
   getTier,
   getWieldedItems,
+  writeClueFile,
 } from "../utils";
 
-const generateEmotePages = async (cache: Promise<FlatCacheProvider>) => {
+const generateEmotePages = async (
+  cache: Promise<FlatCacheProvider | DiskCacheProvider>
+) => {
   const rows = await DBTable.loadRows(cache, 9);
 
   const items = await Item.all(cache);
@@ -57,12 +59,7 @@ const generateEmotePages = async (cache: Promise<FlatCacheProvider>) => {
       });
       const truncatedClue = clue.split(".")?.[0];
 
-      const dir = `./out/clues/emotes`;
-      await mkdir(dir, { recursive: true });
-      await writeFile(
-        `${dir}/${itemName} - ${truncatedClue}.txt`,
-        builder.build()
-      );
+      writeClueFile("emotes", itemName, truncatedClue, builder);
     }
   });
 };

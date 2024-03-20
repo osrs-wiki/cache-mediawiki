@@ -5,3 +5,4 @@ export { default as generateCoordinatePages } from "./coordinate";
 export { default as generateEmotePages } from "./emotes";
 export { default as generateCrypticPages } from "./cryptics";
 export { default as generateMapPages } from "./maps";
+export { default as generateMusicPages } from "./music";

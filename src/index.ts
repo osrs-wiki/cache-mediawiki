@@ -1,15 +1,23 @@
 import config from "@config";
 import { parseArgs } from "node:util";
 
+import Context from "./context";
 import generateCluePages from "./scripts/clues";
 import differencesCache from "./scripts/differences/differences";
-import infoboxGenerator from "./scripts/infoboxGenernator";
 import { CacheSource } from "./utils/cache";
 
 console.log(`Running ${config.environment}`);
 
 const {
-  values: { cacheSource, oldCache, newCache, task, infobox },
+  values: {
+    cacheSource,
+    oldCache,
+    newCache,
+    task,
+    infobox,
+    update,
+    updateDate,
+  },
 } = parseArgs({
   options: {
     //TODO: Fix disk file type option.
@@ -34,8 +42,18 @@ const {
     infobox: {
       type: "string",
     },
+    update: {
+      type: "string",
+    },
+    updateDate: {
+      type: "string",
+    },
   },
 });
+
+Context.infoboxes = infobox === "true";
+Context.update = update;
+Context.updateDate = updateDate;
 
 if (task === "differences" || (task === "diffs" && oldCache)) {
   differencesCache({
@@ -45,10 +63,9 @@ if (task === "differences" || (task === "diffs" && oldCache)) {
     //type: cacheFileType as CacheFileType,
     type: "flat",
   });
-} else if (task === "infobox" && infobox) {
-  infoboxGenerator(infobox);
-} else if (task === "clues") {
-  generateCluePages();
+}
+if (task === "clues") {
+  generateCluePages(cacheSource as CacheSource, newCache, "flat");
 } else {
   console.log("Invalid type argument...");
 }

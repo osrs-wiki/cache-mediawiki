@@ -6,19 +6,12 @@ import {
   ParamID,
 } from "../../../utils/cache2";
 import cluePageBuilder from "../builder";
-import {
-  ITEM_PARAM_ID,
-  getAnswer,
-  getRequirements,
-  getTblRegions,
-  getTier,
-  writeClueFile,
-} from "../utils";
+import { ITEM_PARAM_ID, getAnswer, getTier, writeClueFile } from "../utils";
 
-const generateMapPages = async (
+const generateMusicPages = async (
   cache: Promise<FlatCacheProvider | DiskCacheProvider>
 ) => {
-  const rows = await DBTable.loadRows(cache, 5);
+  const rows = await DBTable.loadRows(cache, 13);
 
   const items = await Item.all(cache);
   const paramMap: { [key: string | number]: Item } = {};
@@ -39,23 +32,29 @@ const generateMapPages = async (
         const id = values[0][0] as string;
         const tier = getTier(values[1][0]);
 
-        const answers = await getAnswer(cache, values[2]);
+        const answers = await getAnswer(cache, values[4]);
+        const musicAnswer = await getAnswer(cache, values[2]);
+        const songName = musicAnswer.map((answer) => answer.answer).join(", ");
+        answers.push({
+          answer: ` Play the [[music]] track [[${songName}]].`,
+          entityName: "",
+          type: "music",
+          worldLocs: [],
+        });
 
         const itemName = `Clue scroll (${tier})`;
         const item = paramMap[dbRowId as number];
         const builder = cluePageBuilder({
           id,
           tier,
-          clue: answers.map((answer) => answer.answer).join(", "),
+          clue: `I'd like to hear some music.\nCome and see me on the bridge in\nFalador Park, and play:\n${songName}\nThanks,\nCecilia`,
           answers: answers,
-          requirements: await getRequirements(cache, values[3]),
-          tblRegions: getTblRegions(values[4]),
           itemName,
           item,
-          type: "map",
+          type: "music",
         });
 
-        writeClueFile("maps", itemName, answers[0].answer as string, builder);
+        writeClueFile("music", itemName, songName, builder);
       }
     } catch (e) {
       console.error(`Error creating clue ${row.id}: ${e}`);
@@ -63,4 +62,4 @@ const generateMapPages = async (
   });
 };
 
-export default generateMapPages;
+export default generateMusicPages;

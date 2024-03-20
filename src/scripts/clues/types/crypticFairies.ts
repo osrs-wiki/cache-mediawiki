@@ -1,15 +1,22 @@
-import { mkdir, writeFile } from "fs/promises";
-
 import {
   DBTable,
+  DiskCacheProvider,
   FlatCacheProvider,
   Item,
   ParamID,
 } from "../../../utils/cache2";
 import cluePageBuilder from "../builder";
-import { ITEM_PARAM_ID, getAnswer, getTblRegions, getTier } from "../utils";
+import {
+  ITEM_PARAM_ID,
+  getAnswer,
+  getTblRegions,
+  getTier,
+  writeClueFile,
+} from "../utils";
 
-const generateFairyCrypticPages = async (cache: Promise<FlatCacheProvider>) => {
+const generateFairyCrypticPages = async (
+  cache: Promise<FlatCacheProvider | DiskCacheProvider>
+) => {
   const rows = await DBTable.loadRows(cache, 10);
 
   const items = await Item.all(cache);
@@ -44,12 +51,7 @@ const generateFairyCrypticPages = async (cache: Promise<FlatCacheProvider>) => {
         type: "cryptic",
       });
 
-      const dir = `./out/clues/crypticFairies`;
-      await mkdir(dir, { recursive: true });
-      await writeFile(
-        `${dir}/${itemName} - ${clue.replaceAll(" ", "")}.txt`,
-        builder.build()
-      );
+      writeClueFile("crypticFairies", itemName, clue, builder);
     }
   });
 };

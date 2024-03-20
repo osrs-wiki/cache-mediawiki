@@ -1,6 +1,8 @@
 import _ from "underscore";
 
+import Context from "../../../../context";
 import { Item, ItemID, Reader } from "../../../../utils/cache2";
+import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file";
 
@@ -24,6 +26,14 @@ const compareItems: CompareFn = ({ oldFile, newFile }) => {
         <ItemID>newFile.file.id
       )
     : undefined;
+
+  if (
+    Context.infoboxes &&
+    !oldEntry &&
+    newEntry.name.toLocaleLowerCase() !== "null"
+  ) {
+    buildItemInfobox(newEntry);
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

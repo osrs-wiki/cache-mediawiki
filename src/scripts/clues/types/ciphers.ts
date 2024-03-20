@@ -1,7 +1,6 @@
-import { mkdir, writeFile } from "fs/promises";
-
 import {
   DBTable,
+  DiskCacheProvider,
   FlatCacheProvider,
   Item,
   ParamID,
@@ -13,9 +12,12 @@ import {
   getChallenge,
   getTblRegions,
   getTier,
+  writeClueFile,
 } from "../utils";
 
-const generateCipherPages = async (cache: Promise<FlatCacheProvider>) => {
+const generateCipherPages = async (
+  cache: Promise<FlatCacheProvider | DiskCacheProvider>
+) => {
   const rows = await DBTable.loadRows(cache, 6);
 
   const items = await Item.all(cache);
@@ -51,9 +53,7 @@ const generateCipherPages = async (cache: Promise<FlatCacheProvider>) => {
         type: "cipher",
       });
 
-      const dir = `./out/clues/ciphers`;
-      await mkdir(dir, { recursive: true });
-      await writeFile(`${dir}/${itemName} - ${clue}.txt`, builder.build());
+      writeClueFile("ciphers", itemName, clue, builder);
     }
   });
 };

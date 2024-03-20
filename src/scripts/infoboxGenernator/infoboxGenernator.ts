@@ -1,5 +1,3 @@
-import { readdir } from "fs/promises";
-
 import itemInfoboxGenerator from "./infoboxes/item";
 import npcInfoboxGenerator from "./infoboxes/npc";
 import { getCacheProviderGithub } from "../../utils/cache";
@@ -10,20 +8,10 @@ const infoboxGenerator = async (type: string, id?: number) => {
   if (type === "item_defs") {
     if (id) {
       itemInfoboxGenerator(cache, id);
-    } else {
-      const newItems = await readdir(`./out/differences/added/item_defs`);
-      newItems.forEach((file) => {
-        itemInfoboxGenerator(cache, parseInt(file.split(".")[0]));
-      });
     }
   } else if (type === "npc_defs") {
     if (id) {
       npcInfoboxGenerator(cache, id);
-    } else {
-      const newItems = await readdir(`./out/differences/added/npc_defs`);
-      newItems.forEach((file) => {
-        npcInfoboxGenerator(cache, parseInt(file.split(".")[0]));
-      });
     }
   }
 };

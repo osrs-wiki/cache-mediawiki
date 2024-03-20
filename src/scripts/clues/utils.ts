@@ -1,3 +1,6 @@
+import { MediaWikiBuilder } from "@osrs-wiki/mediawiki-builder";
+import { mkdir, writeFile } from "fs/promises";
+
 import { Answer, Challenge, WieldedItems } from "./builder";
 import { CacheProvider, DBRow, Item, NPC, Obj } from "../../utils/cache2";
 
@@ -96,6 +99,9 @@ export const getAnswer = async (
         type = "key";
       } else if (answerRow.table === 20) {
         answer = answerValues[2][0];
+      } else if (answerRow.table === 44) {
+        answer = answerValues[1].join(", ");
+        type = "music";
       }
       return {
         answer,
@@ -232,7 +238,7 @@ export const getDirections = (
   answerType: string,
   answer: string
 ) =>
-  `The ${type} reveals ${
+  `The clue reveals ${
     answerType === "npc"
       ? "who to speak to:"
       : answerType === "object"
@@ -313,4 +319,23 @@ export const vowel = (noun: string) => {
       .startsWith(vowel)
   );
   return startsWith.length > 0 ? "an" : "a";
+};
+
+export const writeClueFile = async (
+  type: string,
+  itemName: string,
+  clue: string,
+  builder: MediaWikiBuilder
+) => {
+  const formattedClue = (
+    clue.length > 20 ? clue.split(".")?.[0] : clue
+  ).replaceAll("?", "");
+  const dir = `./out/clues/${type}`;
+  const fileName = `${dir}/${itemName} - ${formattedClue}.txt`;
+  try {
+    await mkdir(dir, { recursive: true });
+    writeFile(fileName, builder.build());
+  } catch (e) {
+    console.error(`Error creating clue file: ${fileName}`, e);
+  }
 };
