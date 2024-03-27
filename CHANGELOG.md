@@ -1,5 +1,12 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.5.0
+
+### Minor Changes
+
+- b1007e2: Add support for versioned examines
+- b1007e2: Add new options to github workflow dispatch
+
 ## 0.4.0
 
 ### Minor Changes
