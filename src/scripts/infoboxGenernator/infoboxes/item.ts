@@ -45,7 +45,7 @@ export const buildItemInfobox = async (item: Item) => {
       stackable: item.isStackable,
       noteable: item.noteLinkedItem > 0,
       options: item.inventoryActions,
-      examine: "",
+      examine: Context.examines?.items ? Context.examines.items[item.id] : "",
       value: item.price,
       weight: (item.weight / 1000).toFixed(3),
       id: item.id.toString(),
@@ -53,7 +53,7 @@ export const buildItemInfobox = async (item: Item) => {
 
     const builder = new MediaWikiBuilder();
     builder.addContents([
-      new MediaWikiTemplate("Stub"),
+      new MediaWikiTemplate("New Content"),
       infoboxItem.build(),
       new MediaWikiFile(`${item.name} detail.png`, {
         horizontalAlignment: "left",
