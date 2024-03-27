@@ -8,7 +8,11 @@ on:
         required: true
 
       infobox:
-        description: "Infobox type (optional)"
+        description: "Include infoboxes (optional)"
+        required: false
+
+      examines:
+        description: "Include examines (optional)"
         required: false
 
       oldCache:
@@ -17,6 +21,14 @@ on:
 
       newCache:
         description: "New cache date (optional)"
+        required: false
+
+      update:
+        description: "The game update title (optional)"
+        required: false
+
+      updateDate:
+        description: "The game update date (optional)"
         required: false
 
 jobs:
@@ -38,7 +50,7 @@ jobs:
         run: yarn build
 
       - name: Run task
-        run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }}
+        run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v3

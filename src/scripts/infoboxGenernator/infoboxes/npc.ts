@@ -29,24 +29,26 @@ export const buildNpcInfobox = async (npc: NPC) => {
     const infoboxNpc = new InfoboxTemplate<InfoboxNpc>("NPC", {
       name: npc.name as string,
       image: new MediaWikiFile(`${npc.name}.png`, {
-        resizing: { width: 130 },
+        resizing: { width: 120 },
       }),
       release: Context.updateDate
         ? new MediaWikiDate(new Date(Context.updateDate))
         : undefined,
       update: Context.update,
       members: true,
-      level: npc.combatLevel.toString(),
-      quest: "No",
+      level: npc.combatLevel > 0 ? npc.combatLevel.toString() : undefined,
+      race: "[[Human]]",
+      location: "[[]]",
+      gender: "Male",
       options: npc.actions,
       map: "No",
-      examine: "",
+      examine: Context.examines?.npcs ? Context.examines.npcs[npc.id] : "",
       id: npc.id.toString(),
     });
 
     const builder = new MediaWikiBuilder();
     builder.addContents([
-      new MediaWikiTemplate("Stub"),
+      new MediaWikiTemplate("New Content"),
       infoboxNpc.build(),
       new MediaWikiFile(`${npc.name} chathead.png`, {
         horizontalAlignment: "left",

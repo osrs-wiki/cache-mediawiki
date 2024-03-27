@@ -1,4 +1,8 @@
 type CacheMediaWikiContext = {
+  examines?: {
+    items?: { [key: string]: string };
+    npcs?: { [key: string]: string };
+  };
   infoboxes?: boolean;
   update?: string;
   updateDate?: string;

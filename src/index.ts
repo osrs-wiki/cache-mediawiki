@@ -5,6 +5,7 @@ import Context from "./context";
 import generateCluePages from "./scripts/clues";
 import differencesCache from "./scripts/differences/differences";
 import { CacheSource } from "./utils/cache";
+import { getExamines } from "./utils/examines";
 
 console.log(`Running ${config.environment}`);
 
@@ -14,6 +15,8 @@ const {
     oldCache,
     newCache,
     task,
+    examines,
+    examinesVersion,
     infobox,
     update,
     updateDate,
@@ -39,6 +42,13 @@ const {
       type: "string",
       short: "t",
     },
+    examines: {
+      type: "string",
+    },
+    examinesVersion: {
+      type: "string",
+      default: "master",
+    },
     infobox: {
       type: "string",
     },
@@ -55,17 +65,37 @@ Context.infoboxes = infobox === "true";
 Context.update = update;
 Context.updateDate = updateDate;
 
-if (task === "differences" || (task === "diffs" && oldCache)) {
-  differencesCache({
-    oldVersion: oldCache,
-    newVersion: newCache,
-    method: cacheSource as CacheSource,
-    //type: cacheFileType as CacheFileType,
-    type: "flat",
-  });
-}
-if (task === "clues") {
-  generateCluePages(cacheSource as CacheSource, newCache, "flat");
-} else {
-  console.log("Invalid type argument...");
-}
+const runCacheTools = async () => {
+  if (examines === "true") {
+    Context.examines = {
+      items: {},
+      npcs: {},
+    };
+    const itemExamines = await getExamines("objs", examinesVersion);
+    Object.keys(itemExamines).forEach((key) => {
+      Context.examines.items[key] = itemExamines[key];
+    });
+
+    const npcExamines = await getExamines("npcs", examinesVersion);
+    Object.keys(npcExamines).forEach((key) => {
+      Context.examines.npcs[key] = npcExamines[key];
+    });
+  }
+
+  if ((task === "differences" || task === "diffs") && oldCache) {
+    differencesCache({
+      oldVersion: oldCache,
+      newVersion: newCache,
+      method: cacheSource as CacheSource,
+      //type: cacheFileType as CacheFileType,
+      type: "flat",
+    });
+  }
+  if (task === "clues") {
+    generateCluePages(cacheSource as CacheSource, newCache, "flat");
+  } else {
+    console.log("Invalid type argument...");
+  }
+};
+
+runCacheTools();
