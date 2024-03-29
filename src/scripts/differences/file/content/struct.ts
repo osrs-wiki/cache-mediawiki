@@ -1,8 +1,6 @@
-import _ from "underscore";
-
 import { Reader, Struct, StructID } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
-import { getFileDifferences } from "../file";
+import { getFileDifferences } from "../file.utils";
 
 const compareStructs: CompareFn = ({ oldFile, newFile }) => {
   const oldEntry = oldFile

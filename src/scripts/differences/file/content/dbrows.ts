@@ -2,7 +2,7 @@ import _ from "underscore";
 
 import { DBRow, DBRowID, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
-import { getFileDifferences } from "../file";
+import { getFileDifferences } from "../file.utils";
 
 const compareDBRows: CompareFn = ({ oldFile, newFile }) => {
   const oldEntry = oldFile

@@ -74,6 +74,7 @@ export const indexNameMap: {
       name: "Items",
       identifiers: ["name", "id"],
       fields: [
+        "examine",
         "isMembers",
         "isGrandExchangable",
         "isStackable",
