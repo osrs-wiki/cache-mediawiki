@@ -71,15 +71,24 @@ export const getFileDifferences = <T extends PerFileLoadable>(
     Object.keys(oldEntry).forEach((key) => {
       const oldEntryValue = oldEntry[key as keyof T] as ResultValue;
       const newEntryValue = newEntry[key as keyof T] as ResultValue;
+      const isOldArray = Array.isArray(oldEntryValue);
+      const isNewArray = Array.isArray(newEntryValue);
 
       if (
         ((typeof oldEntryValue === "string" ||
-          typeof oldEntryValue === "number") &&
+          typeof newEntryValue === "string" ||
+          typeof oldEntryValue === "number" ||
+          typeof newEntryValue === "number") &&
           oldEntryValue !== newEntryValue) ||
-        (Array.isArray(oldEntryValue) &&
-          Array.isArray(newEntryValue) &&
+        (isOldArray &&
+          isNewArray &&
           _.difference<any>(oldEntryValue, newEntryValue).length > 0)
       ) {
+        results.changed[key] = {
+          oldValue: oldEntryValue,
+          newValue: newEntryValue,
+        };
+      } else if (isOldArray || isNewArray) {
         results.changed[key] = {
           oldValue: oldEntryValue,
           newValue: newEntryValue,
@@ -103,6 +112,16 @@ export const getFileDifferences = <T extends PerFileLoadable>(
             oldValue: Object.fromEntries(oldEntryValue),
             newValue: Object.fromEntries(newEntryValue),
           };
+      } else if (oldEntryValue instanceof Map) {
+        results.changed[key] = {
+          oldValue: Object.fromEntries(oldEntryValue),
+          newValue: "",
+        };
+      } else if (newEntryValue instanceof Map) {
+        results.changed[key] = {
+          oldValue: "",
+          newValue: Object.fromEntries(newEntryValue),
+        };
       }
     });
     if ("id" in oldEntry && "id" in newEntry) {

@@ -34,7 +34,7 @@ export const buildItemInfobox = async (item: Item) => {
       release: Context.updateDate
         ? new MediaWikiDate(new Date(Context.updateDate))
         : undefined,
-      update: "Varlamore: Part One",
+      update: Context.update,
       members: item.isMembers as boolean,
       quest: "No",
       exchange: item.isGrandExchangable,
