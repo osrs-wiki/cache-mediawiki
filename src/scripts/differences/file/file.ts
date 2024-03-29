@@ -8,8 +8,7 @@ import compareObjects from "./content/objects";
 import compareParams from "./content/params";
 import compareStructs from "./content/struct";
 import { ConfigType, IndexType } from "../../../utils/cache2";
-import { PerFileLoadable } from "../../../utils/cache2/Loadable";
-import { CompareFn, FileDifferences, ResultValue } from "../differences.types";
+import { CompareFn, FileDifferences } from "../differences.types";
 
 /**
  * A map of index and archive types to decoding functions.
@@ -52,110 +51,6 @@ const differencesFile: CompareFn = ({ oldFile, newFile }): FileDifferences => {
       );
     }
   }
-  return results;
-};
-
-/**
- * Retrieve the differences in a file: added, changed, and removed files.
- * @param oldEntry The old file data
- * @param newEntry The new file data
- * @returns {FileDifferences}
- */
-export const getFileDifferences = <T extends PerFileLoadable>(
-  oldEntry: T,
-  newEntry: T
-): FileDifferences => {
-  const results: FileDifferences = {};
-  if (oldEntry && newEntry) {
-    results.changed = {};
-    Object.keys(oldEntry).forEach((key) => {
-      const oldEntryValue = oldEntry[key as keyof T] as ResultValue;
-      const newEntryValue = newEntry[key as keyof T] as ResultValue;
-      const isOldArray = Array.isArray(oldEntryValue);
-      const isNewArray = Array.isArray(newEntryValue);
-
-      if (
-        ((typeof oldEntryValue === "string" ||
-          typeof newEntryValue === "string" ||
-          typeof oldEntryValue === "number" ||
-          typeof newEntryValue === "number") &&
-          oldEntryValue !== newEntryValue) ||
-        (isOldArray &&
-          isNewArray &&
-          _.difference<any>(oldEntryValue, newEntryValue).length > 0)
-      ) {
-        results.changed[key] = {
-          oldValue: oldEntryValue,
-          newValue: newEntryValue,
-        };
-      } else if (isOldArray || isNewArray) {
-        results.changed[key] = {
-          oldValue: oldEntryValue,
-          newValue: newEntryValue,
-        };
-      } else if (oldEntryValue instanceof Map && newEntryValue instanceof Map) {
-        const oldKeys = Array.from(oldEntryValue.keys());
-        const newKeys = Array.from(newEntryValue.keys());
-
-        const addedKeys = newKeys.filter((key) => !oldKeys.includes(key));
-        const removedKeys = oldKeys.filter((key) => !newKeys.includes(key));
-        const sharedKeys = newKeys.filter((key) => oldKeys.includes(key));
-        const changedKeys = sharedKeys.filter(
-          (key) => oldEntryValue.get(key) !== newEntryValue.get(key)
-        );
-        if (
-          addedKeys.length > 0 ||
-          removedKeys.length > 0 ||
-          changedKeys.length > 0
-        )
-          results.changed[key] = {
-            oldValue: Object.fromEntries(oldEntryValue),
-            newValue: Object.fromEntries(newEntryValue),
-          };
-      } else if (oldEntryValue instanceof Map) {
-        results.changed[key] = {
-          oldValue: Object.fromEntries(oldEntryValue),
-          newValue: "",
-        };
-      } else if (newEntryValue instanceof Map) {
-        results.changed[key] = {
-          oldValue: "",
-          newValue: Object.fromEntries(newEntryValue),
-        };
-      }
-    });
-    if ("id" in oldEntry && "id" in newEntry) {
-      results.changed["id"] = {
-        oldValue: oldEntry.id as number,
-        newValue: newEntry.id as number,
-      };
-    }
-    if ("name" in oldEntry && "name" in newEntry) {
-      results.changed["name"] = {
-        oldValue: oldEntry.name as string,
-        newValue: newEntry.name as string,
-      };
-    }
-  } else if (oldEntry) {
-    results.removed = {};
-    Object.keys(oldEntry).forEach((key) => {
-      const oldEntryValue = oldEntry[key as keyof T] as ResultValue;
-      results.removed[key] =
-        oldEntryValue instanceof Map
-          ? Object.fromEntries(oldEntryValue)
-          : oldEntryValue;
-    });
-  } else if (newEntry) {
-    results.added = {};
-    Object.keys(newEntry).forEach((key) => {
-      const newEntryValue = newEntry[key as keyof T] as ResultValue;
-      results.added[key] =
-        newEntryValue instanceof Map
-          ? Object.fromEntries(newEntryValue)
-          : newEntryValue;
-    });
-  }
-
   return results;
 };
 

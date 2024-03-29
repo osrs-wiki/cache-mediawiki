@@ -4,7 +4,7 @@ import Context from "../../../../context";
 import { Item, ItemID, Reader } from "../../../../utils/cache2";
 import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item";
 import { CompareFn } from "../../differences.types";
-import { getFileDifferences } from "../file";
+import { getFileDifferences } from "../file.utils";
 
 const compareItems: CompareFn = ({ oldFile, newFile }) => {
   const oldEntry = oldFile
