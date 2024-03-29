@@ -38,7 +38,7 @@ export const getChangedResult = <T extends PerFileLoadable>(
         oldValue: oldEntryValue,
         newValue: newEntryValue,
       };
-    } else if (isOldArray || isNewArray) {
+    } else if ((isOldArray && !isNewArray) || (isNewArray && !isOldArray)) {
       changed[key] = {
         oldValue: oldEntryValue,
         newValue: newEntryValue,
