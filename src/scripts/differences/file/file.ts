@@ -1,5 +1,3 @@
-import _ from "underscore";
-
 import compareDBRows from "./content/dbrows";
 import compareEnums from "./content/enums";
 import compareItems from "./content/items";
