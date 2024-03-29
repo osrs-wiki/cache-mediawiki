@@ -1,5 +1,20 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.5.0
+
+### Minor Changes
+
+- b1007e2: Add support for versioned examines
+- b1007e2: Add new options to github workflow dispatch
+- 2660f32: Add examine to item diff mediawiki output
+
+### Patch Changes
+
+- 2660f32: Organize file difference utility functions
+- 82b6476: Fix an issue with array comparison
+- 2660f32: Fix item infobox update param
+- 2660f32: Fix null vs non-null diff checking
+
 ## 0.4.0
 
 ### Minor Changes
