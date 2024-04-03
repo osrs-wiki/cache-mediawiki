@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.5.1
+
+### Patch Changes
+
+- 7a76748: Fix a bug in detecting array differences and tests for getChangedResult
+
 ## 0.5.0
 
 ### Minor Changes
