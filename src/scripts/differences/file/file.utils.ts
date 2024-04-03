@@ -32,7 +32,8 @@ export const getChangedResult = <T extends PerFileLoadable>(
         oldEntryValue !== newEntryValue) ||
       (isOldArray &&
         isNewArray &&
-        _.difference<any>(oldEntryValue, newEntryValue).length > 0) ||
+        (_.difference<any>(oldEntryValue, newEntryValue).length > 0 ||
+          _.difference<any>(newEntryValue, oldEntryValue).length > 0)) ||
       (isOldArray && !isNewArray) ||
       (isNewArray && !isOldArray)
     ) {
