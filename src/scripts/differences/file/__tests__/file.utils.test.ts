@@ -1,4 +1,5 @@
-import { NPC } from "../../../../utils/cache2";
+import { NPC } from "@abextm/cache2";
+
 import { getChangedResult } from "../file.utils";
 
 describe("file utils", () => {

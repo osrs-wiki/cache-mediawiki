@@ -1,4 +1,6 @@
-import { Param, ParamID, Reader } from "../../../../utils/cache2";
+import { Param, Reader } from "@abextm/cache2";
+import type { ParamID } from "@abextm/cache2";
+
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 

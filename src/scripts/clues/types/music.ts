@@ -3,8 +3,9 @@ import {
   DiskCacheProvider,
   FlatCacheProvider,
   Item,
-  ParamID,
-} from "../../../utils/cache2";
+} from "@abextm/cache2";
+import type { ParamID } from "@abextm/cache2";
+
 import cluePageBuilder from "../builder";
 import { ITEM_PARAM_ID, getAnswer, getTier, writeClueFile } from "../utils";
 

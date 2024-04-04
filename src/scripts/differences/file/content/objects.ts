@@ -1,6 +1,7 @@
+import { Obj, Reader } from "@abextm/cache2";
+import type { ObjID } from "@abextm/cache2";
 import _ from "underscore";
 
-import { Obj, ObjID, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 

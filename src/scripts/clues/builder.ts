@@ -1,3 +1,4 @@
+import { Item } from "@abextm/cache2";
 import {
   ClueInfoTemplate,
   InfoboxTemplate,
@@ -12,7 +13,6 @@ import _ from "underscore";
 
 import { ITEM_EXAMINES } from "./clues";
 import { formatAnswers, getDirections, vowel } from "./utils";
-import { Item } from "../../utils/cache2";
 
 export type Answer = {
   answer: string | number | bigint;

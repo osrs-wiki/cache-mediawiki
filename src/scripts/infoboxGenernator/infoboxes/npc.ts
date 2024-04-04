@@ -1,3 +1,5 @@
+import { NPC } from "@abextm/cache2";
+import type { CacheProvider } from "@abextm/cache2";
 import {
   InfoboxTemplate,
   MediaWikiBreak,
@@ -10,7 +12,6 @@ import type { InfoboxNpc } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
 import Context from "../../../context";
-import { CacheProvider, NPC } from "../../../utils/cache2";
 
 const npcInfoboxGenerator = async (
   cache: Promise<CacheProvider>,

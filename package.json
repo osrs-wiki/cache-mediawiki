@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/osrs-wiki/cache-mediawiki#readme",
   "dependencies": {
+    "@abextm/cache2": "^0.1.0",
     "@osrs-wiki/mediawiki-builder": "^1.2.3",
     "base64-arraybuffer-es6": "^3.0.1",
     "dotenv": "^16.4.1",

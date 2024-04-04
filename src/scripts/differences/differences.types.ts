@@ -1,17 +1,20 @@
-import { CacheFileType, CacheSource } from "../../utils/cache";
 import {
   ArchiveData,
   ArchiveFile,
-  CategoryID,
   DiskIndexData,
   FlatIndexData,
+  Params,
+  WearPos,
+} from "@abextm/cache2";
+import type {
+  CategoryID,
   HSL,
   ItemID,
   ModelID,
-  Params,
   TextureID,
-  WearPos,
-} from "../../utils/cache2";
+} from "@abextm/cache2";
+
+import { CacheFileType, CacheSource } from "../../utils/cache";
 
 export type DifferencesParams = {
   newVersion: string;

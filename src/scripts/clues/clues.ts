@@ -14,7 +14,7 @@ import {
   getCacheProviderGithub,
   getCacheProviderLocal,
 } from "../../utils/cache";
-import { LazyPromise } from "../../utils/cache2/LazyPromise";
+import { LazyPromise } from "../../utils/cache2";
 import { getExamines } from "../../utils/examines";
 
 export const ITEM_EXAMINES: { [key: string]: string } = {};

@@ -1,6 +1,5 @@
+import { DiskCacheProvider, FlatCacheProvider } from "@abextm/cache2";
 import { readFile } from "fs/promises";
-
-import { DiskCacheProvider, FlatCacheProvider } from "./cache2";
 
 export type CacheSource = "github" | "local";
 export type CacheFileType = "flat" | "disk";

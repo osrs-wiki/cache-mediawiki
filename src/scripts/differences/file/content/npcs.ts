@@ -1,7 +1,8 @@
+import { NPC, Reader } from "@abextm/cache2";
+import type { NPCID } from "@abextm/cache2";
 import _ from "underscore";
 
 import Context from "../../../../context";
-import { NPC, NPCID, Reader } from "../../../../utils/cache2";
 import { buildNpcInfobox } from "../../../infoboxGenernator/infoboxes/npc";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";

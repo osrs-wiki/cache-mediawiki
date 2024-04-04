@@ -1,15 +1,7 @@
-import {
-  ConfigType,
-  DBRow,
-  Enum,
-  IndexType,
-  Item,
-  NPC,
-  Obj,
-  Param,
-  Struct,
-} from "../../../utils/cache2";
-import { PerFileLoadable } from "../../../utils/cache2/Loadable";
+import { DBRow, Enum, Item, NPC, Obj, Param, Struct } from "@abextm/cache2";
+import { PerFileLoadable } from "@abextm/cache2/dist/Loadable";
+
+import { IndexType, ConfigType } from "../../../utils/cache2";
 import { Difference } from "../differences.types";
 
 export type IndexFeature<T extends PerFileLoadable, Name> = {

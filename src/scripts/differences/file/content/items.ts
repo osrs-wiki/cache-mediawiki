@@ -1,7 +1,8 @@
+import { Item, Reader } from "@abextm/cache2";
+import type { ItemID } from "@abextm/cache2";
 import _ from "underscore";
 
 import Context from "../../../../context";
-import { Item, ItemID, Reader } from "../../../../utils/cache2";
 import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";

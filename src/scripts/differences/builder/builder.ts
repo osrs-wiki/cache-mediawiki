@@ -137,8 +137,8 @@ const buildChangedResultTable = (
                     cells: indexFeatures.identifiers.map<MediaWikiTableCell>(
                       (identifier) => ({
                         content: formatEntryIdentifier(
-                          identifier,
-                          entry[identifier].newValue,
+                          identifier as string,
+                          entry[identifier as string].newValue,
                           indexFeatures.urls
                         ),
                         options: {
@@ -200,7 +200,7 @@ const buildChangedResultTable = (
           minimal: true,
           cells: [
             ...indexFeatures.identifiers.map((identifier) =>
-              capitalize(identifier)
+              capitalize(identifier as string)
             ),
             "Key",
             "Previous Value",
@@ -249,8 +249,8 @@ const buildFullResultTable = (
           const identifierCells = indexFeatures.identifiers.map(
             (identifier) => ({
               content: formatEntryIdentifier(
-                identifier,
-                entry[identifier],
+                identifier as string,
+                entry[identifier as string],
                 indexFeatures.urls
               ),
             })
@@ -292,7 +292,7 @@ const buildFullResultTable = (
           header: true,
           minimal: true,
           cells: fields.map((field, index) => ({
-            content: [new MediaWikiText(field)],
+            content: [new MediaWikiText(field as string)],
             options: index == 0 ? { style: "width: 15em" } : undefined,
           })),
         },

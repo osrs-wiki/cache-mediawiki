@@ -1,7 +1,7 @@
 import itemInfoboxGenerator from "./infoboxes/item";
 import npcInfoboxGenerator from "./infoboxes/npc";
 import { getCacheProviderGithub } from "../../utils/cache";
-import { LazyPromise } from "../../utils/cache2/LazyPromise";
+import { LazyPromise } from "../../utils/cache2";
 
 const infoboxGenerator = async (type: string, id?: number) => {
   const cache = new LazyPromise(() => getCacheProviderGithub()).asPromise();

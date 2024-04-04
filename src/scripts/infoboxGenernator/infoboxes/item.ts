@@ -1,17 +1,17 @@
+import { Item } from "@abextm/cache2";
+import type { CacheProvider } from "@abextm/cache2";
 import {
   InfoboxTemplate,
   MediaWikiBreak,
   MediaWikiBuilder,
   MediaWikiDate,
   MediaWikiFile,
-  MediaWikiLink,
   MediaWikiTemplate,
 } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
 import Context from "../../../context";
-import { CacheProvider, Item } from "../../../utils/cache2";
 
 const itemInfoboxGenerator = async (
   cache: Promise<CacheProvider>,

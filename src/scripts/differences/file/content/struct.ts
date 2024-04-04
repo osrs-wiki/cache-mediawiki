@@ -1,4 +1,6 @@
-import { Reader, Struct, StructID } from "../../../../utils/cache2";
+import { Reader, Struct } from "@abextm/cache2";
+import type { StructID } from "@abextm/cache2";
+
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 

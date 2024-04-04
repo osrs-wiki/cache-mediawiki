@@ -1,6 +1,6 @@
+import { PerFileLoadable } from "@abextm/cache2/dist/Loadable";
 import _ from "underscore";
 
-import { PerFileLoadable } from "../../../utils/cache2/Loadable";
 import {
   ChangedResult,
   ResultValue,

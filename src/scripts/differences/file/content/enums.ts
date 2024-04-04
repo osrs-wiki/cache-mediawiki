@@ -1,6 +1,7 @@
+import { Enum, Reader } from "@abextm/cache2";
+import type { EnumID } from "@abextm/cache2";
 import _ from "underscore";
 
-import { Enum, EnumID, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 

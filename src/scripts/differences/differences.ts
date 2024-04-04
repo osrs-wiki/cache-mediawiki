@@ -1,3 +1,4 @@
+import { FlatIndexData, ArchiveData, DiskIndexData } from "@abextm/cache2";
 import { mkdir, writeFile } from "fs/promises";
 
 import differencesBuilder from "./builder";
@@ -13,13 +14,7 @@ import {
   getCacheProviderGithub,
   getCacheProviderLocal,
 } from "../../utils/cache";
-import {
-  FlatIndexData,
-  ArchiveData,
-  IndexType,
-  DiskIndexData,
-} from "../../utils/cache2";
-import { LazyPromise } from "../../utils/cache2/LazyPromise";
+import { IndexType, LazyPromise } from "../../utils/cache2";
 
 /**
  * Write cache differences to output files.

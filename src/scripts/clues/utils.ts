@@ -1,8 +1,9 @@
+import { DBRow, Item, NPC, Obj } from "@abextm/cache2";
+import type { CacheProvider } from "@abextm/cache2";
 import { MediaWikiBuilder } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
 import { Answer, Challenge, WieldedItems } from "./builder";
-import { CacheProvider, DBRow, Item, NPC, Obj } from "../../utils/cache2";
 
 export const ITEM_PARAM_ID = 623;
 

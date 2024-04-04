@@ -5,7 +5,7 @@ import compareNpcs from "./content/npcs";
 import compareObjects from "./content/objects";
 import compareParams from "./content/params";
 import compareStructs from "./content/struct";
-import { ConfigType, IndexType } from "../../../utils/cache2";
+import { IndexType, ConfigType } from "../../../utils/cache2";
 import { CompareFn, FileDifferences } from "../differences.types";
 
 /**
