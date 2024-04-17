@@ -90,8 +90,9 @@ const runCacheTools = async () => {
       //type: cacheFileType as CacheFileType,
       type: "flat",
     });
-  }
-  if (task === "clues") {
+  } else if (task === "clues") {
+    generateCluePages(cacheSource as CacheSource, newCache, "flat");
+  } else if (task === "cas") {
     generateCluePages(cacheSource as CacheSource, newCache, "flat");
   } else {
     console.log("Invalid type argument...");
