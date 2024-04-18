@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`combatAchievementPageBuilder it should build with all fields 1`] = `
+"{{Infobox Combat Achievement
+|name = Testing
+|image = [[File:Big Monster.png|150px]]
+|members = Yes
+|description = Testing a Description
+|tier = Elite
+|monster = Big Monster
+|type = Kill Count
+|id = 1
+}}
+'''Testing''' is an [[Combat Achievements/Elite|elite combat achievement]] which requires the player to testing a Description
+
+{{Combat Achievements}}
+"
+`;

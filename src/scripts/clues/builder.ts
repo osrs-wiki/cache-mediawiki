@@ -11,8 +11,9 @@ import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import _ from "underscore";
 
 import { ITEM_EXAMINES } from "./clues";
-import { formatAnswers, getDirections, vowel } from "./utils";
+import { formatAnswers, getDirections } from "./utils";
 import { Item } from "../../utils/cache2";
+import { vowel } from "../../utils/string";
 
 export type Answer = {
   answer: string | number | bigint;
