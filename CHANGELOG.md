@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.6.0
+
+### Minor Changes
+
+- 95cc26d: Add support for generating Combat Achievement pages
+
 ## 0.5.1
 
 ### Patch Changes
