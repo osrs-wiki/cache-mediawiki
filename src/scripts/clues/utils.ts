@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "fs/promises";
 
 import { Answer, Challenge, WieldedItems } from "./builder";
 import { CacheProvider, DBRow, Item, NPC, Obj } from "../../utils/cache2";
+import { lowerCaseFirst, vowel } from "../../utils/string";
 
 export const ITEM_PARAM_ID = 623;
 
@@ -305,20 +306,6 @@ const emotes: { [key: number]: string } = {
 
 export const getEmotePage = (emote: number): string => {
   return emotes[emote];
-};
-
-export const lowerCaseFirst = (value: string) =>
-  value.charAt(0).toLowerCase() + value.slice(1);
-
-export const vowel = (noun: string) => {
-  const vowels = ["a", "e", "i", "o", "u"];
-  const startsWith = vowels.filter((vowel) =>
-    noun
-      .toLocaleLowerCase()
-      .replaceAll(/[^a-z]/g, "")
-      .startsWith(vowel)
-  );
-  return startsWith.length > 0 ? "an" : "a";
 };
 
 export const writeClueFile = async (

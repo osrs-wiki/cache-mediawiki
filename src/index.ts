@@ -3,6 +3,7 @@ import { parseArgs } from "node:util";
 
 import Context from "./context";
 import generateCluePages from "./scripts/clues";
+import generateCombatAchievements from "./scripts/combatAchievements";
 import differencesCache from "./scripts/differences/differences";
 import { CacheSource } from "./utils/cache";
 import { getExamines } from "./utils/examines";
@@ -90,9 +91,10 @@ const runCacheTools = async () => {
       //type: cacheFileType as CacheFileType,
       type: "flat",
     });
-  }
-  if (task === "clues") {
+  } else if (task === "clues") {
     generateCluePages(cacheSource as CacheSource, newCache, "flat");
+  } else if (task === "combat-achievements") {
+    generateCombatAchievements(cacheSource as CacheSource, newCache, "flat");
   } else {
     console.log("Invalid type argument...");
   }

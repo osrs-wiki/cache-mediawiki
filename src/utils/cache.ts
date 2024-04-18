@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 
-import { DiskCacheProvider, FlatCacheProvider } from "./cache2";
+import { DiskCacheProvider, Enum, FlatCacheProvider } from "./cache2";
 
 export type CacheSource = "github" | "local";
 export type CacheFileType = "flat" | "disk";
@@ -47,4 +47,12 @@ export const getCacheProviderGithub = async (version = "master") => {
       return new Uint8Array(ab);
     },
   });
+};
+
+export const getEnumMap = async (
+  cache: Promise<FlatCacheProvider | DiskCacheProvider>,
+  id: number
+) => {
+  const tiers = await Enum.load(cache, id);
+  return tiers.map;
 };
