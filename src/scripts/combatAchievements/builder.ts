@@ -12,6 +12,11 @@ import { CombatAchievement } from "./types";
 import Context from "../../context";
 import { lowerCaseFirst, vowel } from "../../utils/string";
 
+/**
+ * Generate a MediaWikiBuillder from a CombatAchievement object.
+ * @param combatAchievement The CombatAchievement
+ * @returns A MediaWikiBuilder with all the CA page content
+ */
 const combatAchievementPageBuilder = (combatAchievement: CombatAchievement) => {
   const builder = new MediaWikiBuilder();
 

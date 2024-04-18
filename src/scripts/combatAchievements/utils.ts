@@ -1,4 +1,3 @@
-import { MediaWikiBuilder } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
 import combatAchievementPageBuilder from "./builder";
@@ -7,13 +6,7 @@ import {
   CombatAchievementTier,
   CombatAchievementType,
 } from "./types";
-import {
-  DiskCacheProvider,
-  Enum,
-  FlatCacheProvider,
-  ParamID,
-  Struct,
-} from "../../utils/cache2";
+import { ParamID, Struct } from "../../utils/cache2";
 
 /**
  * Enums
@@ -71,14 +64,11 @@ export const getCombatAchievement = (
   };
 };
 
-export const getEnumMap = async (
-  cache: Promise<FlatCacheProvider | DiskCacheProvider>,
-  id: number
-) => {
-  const tiers = await Enum.load(cache, id);
-  return tiers.map;
-};
-
+/**
+ * Write a CombatAchievement to a file.
+ *  The file name is the title of the achievement.
+ * @param combatAchievement The CombatAchievement object
+ */
 export const writeCombatAchievement = async (
   combatAchievement: CombatAchievement
 ) => {

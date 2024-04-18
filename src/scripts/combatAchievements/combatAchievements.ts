@@ -4,7 +4,6 @@ import {
   TIER_ENUM_ID,
   TYPE_ENUM_ID,
   getCombatAchievement,
-  getEnumMap,
   writeCombatAchievement,
 } from "./utils";
 import {
@@ -12,10 +11,17 @@ import {
   CacheFileType,
   getCacheProviderGithub,
   getCacheProviderLocal,
+  getEnumMap,
 } from "../../utils/cache";
 import { Enum, Struct } from "../../utils/cache2";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 
+/**
+ * Generate Combat Achievement pages from the cache.
+ * @param method The cache source: github vs local
+ * @param version The version of the cache to generate CA pages for
+ * @param type The cache type: disk vs flat
+ */
 const generateCombatAchievements = async (
   method: CacheSource,
   version: string,
