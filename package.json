@@ -28,6 +28,7 @@
   "dependencies": {
     "@osrs-wiki/mediawiki-builder": "^1.2.3",
     "base64-arraybuffer-es6": "^3.0.1",
+    "diff": "^5.2.0",
     "dotenv": "^16.4.1",
     "fflate": "^0.8.1",
     "tsconfig-paths": "^4.2.0",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.9",
     "@changesets/cli": "^2.27.1",
+    "@types/diff": "^5.2.0",
     "@types/jest": "^28.1.7",
     "@types/node": "^18.15.3",
     "@types/underscore": "^1.11.14",

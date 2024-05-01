@@ -2,12 +2,14 @@ import {
   MediaWikiContent,
   MediaWikiExternalLink,
   MediaWikiLink,
+  type MediaWikiTableRow,
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
+import { diffWords } from "diff";
 
 import { IndexURLType, IndexURLs } from "./builder.types";
 import { jagexHSLtoHex } from "../../../utils/colors";
-import { ResultValue } from "../differences.types";
+import { ChangedResult, ResultValue } from "../differences.types";
 
 /**
  * Format the value a field.
@@ -84,4 +86,49 @@ export const formatEntryIdentifier = (
     default:
       return [new MediaWikiText(formatEntryValue(identifier, value))];
   }
+};
+
+/**
+ * Format entry field values and highlight any differences.
+ * @param entry The field to check differences for
+ * @param field
+ * @returns A MediaWikiTableRow with formatted and highlighted columns.
+ */
+export const getFieldDifferencesRow = (
+  entry: ChangedResult,
+  field: string
+): MediaWikiTableRow => {
+  const oldValue = formatEntryValue(field, entry[field].oldValue);
+  const newValue = formatEntryValue(field, entry[field].newValue);
+
+  const differences = diffWords(oldValue, newValue);
+  let oldValueDiffs = "";
+  let newValueDiffs = "";
+  differences.forEach((part) => {
+    if (!part || !part.value) {
+      return;
+    }
+    if (part.added) {
+      newValueDiffs += `<span style="color: #6bc71f">${part.value}</span>`;
+    } else if (part.removed) {
+      oldValueDiffs += `<span style="color: #ee4231">${part.value}</span>`;
+    } else {
+      newValueDiffs += part.value;
+      oldValueDiffs += part.value;
+    }
+  });
+  return {
+    cells: [
+      {
+        content: [new MediaWikiText(field)],
+      },
+      {
+        content: [new MediaWikiText(oldValueDiffs)],
+      },
+      {
+        content: [new MediaWikiText(newValueDiffs)],
+      },
+    ],
+    minimal: true,
+  };
 };
