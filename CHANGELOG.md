@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.7.0
+
+### Minor Changes
+
+- 4f21ff9: Add difference value highlighting to file differences.
+
 ## 0.6.0
 
 ### Minor Changes
