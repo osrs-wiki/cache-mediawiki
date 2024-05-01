@@ -14,7 +14,11 @@ import type {
 import _ from "underscore";
 
 import { IndexFeatures, indexNameMap, resultNameMap } from "./builder.types";
-import { formatEntryIdentifier, formatEntryValue } from "./builder.utils";
+import {
+  formatEntryIdentifier,
+  formatEntryValue,
+  getFieldDifferencesRow,
+} from "./builder.utils";
 import { IndexType } from "../../../utils/cache2";
 import { capitalize } from "../../../utils/string";
 import {
@@ -147,28 +151,9 @@ const buildChangedResultTable = (
                       })
                     ),
                   },
-                  ...diffKeys.map<MediaWikiTableRow>((field) => ({
-                    cells: [
-                      {
-                        content: [new MediaWikiText(field)],
-                      },
-                      {
-                        content: [
-                          new MediaWikiText(
-                            formatEntryValue(field, entry[field].oldValue)
-                          ),
-                        ],
-                      },
-                      {
-                        content: [
-                          new MediaWikiText(
-                            formatEntryValue(field, entry[field].newValue)
-                          ),
-                        ],
-                      },
-                    ],
-                    minimal: true,
-                  })),
+                  ...diffKeys.map<MediaWikiTableRow>((field) =>
+                    getFieldDifferencesRow(entry, field)
+                  ),
                 ]
               : undefined;
           })
