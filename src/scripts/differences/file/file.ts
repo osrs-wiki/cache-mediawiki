@@ -4,6 +4,7 @@ import compareItems from "./content/items";
 import compareNpcs from "./content/npcs";
 import compareObjects from "./content/objects";
 import compareParams from "./content/params";
+import compareSprites from "./content/sprites";
 import compareStructs from "./content/struct";
 import { ConfigType, IndexType } from "../../../utils/cache2";
 import { CompareFn, FileDifferences } from "../differences.types";
@@ -23,6 +24,7 @@ const indexMap: {
     [ConfigType.Params]: compareParams,
     [ConfigType.Struct]: compareStructs,
   },
+  [IndexType.Sprites]: compareSprites,
 };
 
 /**
