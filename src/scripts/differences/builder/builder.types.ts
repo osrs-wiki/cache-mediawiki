@@ -7,6 +7,7 @@ import {
   NPC,
   Obj,
   Param,
+  Sprites,
   Struct,
 } from "../../../utils/cache2";
 import { PerFileLoadable } from "../../../utils/cache2/Loadable";
@@ -30,6 +31,7 @@ export type IndexFeatures =
   | IndexFeature<NPC, "Npcs">
   | IndexFeature<Obj, "Objects">
   | IndexFeature<Param, "Params">
+  | IndexFeature<Sprites, "Sprites">
   | IndexFeature<Struct, "Structs">;
 
 export const resultNameMap: { [key in Difference]: string } = {
@@ -116,6 +118,15 @@ export const indexNameMap: {
       urls: {
         abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
       },
+    },
+  },
+  [IndexType.Sprites]: {
+    name: "Sprites",
+    identifiers: ["id"],
+    fields: ["width", "height"],
+    urls: {
+      chisel: "",
+      abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
     },
   },
 };

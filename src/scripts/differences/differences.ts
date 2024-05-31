@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "fs/promises";
 
 import differencesBuilder from "./builder";
+import { indexNameMap } from "./builder/builder.types";
 import {
   ArchiveDifferences,
   CacheDifferences,
@@ -13,12 +14,7 @@ import {
   getCacheProviderGithub,
   getCacheProviderLocal,
 } from "../../utils/cache";
-import {
-  FlatIndexData,
-  ArchiveData,
-  IndexType,
-  DiskIndexData,
-} from "../../utils/cache2";
+import { FlatIndexData, ArchiveData, DiskIndexData } from "../../utils/cache2";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 
 /**
@@ -44,19 +40,22 @@ const differencesCache = async ({
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};
-  // TODO: Support more than index 2
-  for (let index = 0; index <= IndexType.Configs; index++) {
-    const oldIndex = await oldCache.getIndex(index);
-    const newIndex = await newCache.getIndex(index);
-    if (oldIndex.crc !== newIndex.crc) {
-      console.log(
-        `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
-      );
-      cacheDifferences[index] = differencesIndex(oldIndex, newIndex);
-    } else {
-      console.log(`No changes in index ${index}.`);
-    }
-  }
+  await Promise.all(
+    Object.keys(indexNameMap).map(async (indexString) => {
+      const index = parseInt(indexString);
+      console.log(`Checking index ${index} differences`);
+      const oldIndex = await oldCache.getIndex(index);
+      const newIndex = await newCache.getIndex(index);
+      if (oldIndex.crc !== newIndex.crc) {
+        console.log(
+          `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
+        );
+        cacheDifferences[index] = differencesIndex(oldIndex, newIndex);
+      } else {
+        console.log(`No changes in index ${index}.`);
+      }
+    })
+  );
 
   const builder = differencesBuilder(cacheDifferences);
   const dir = `./out/differences`;
