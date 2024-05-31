@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.8.0
+
+### Minor Changes
+
+- 716d26a: Add support for Sprite diffs
+
 ## 0.7.0
 
 ### Minor Changes
