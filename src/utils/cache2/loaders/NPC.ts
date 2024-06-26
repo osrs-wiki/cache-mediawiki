@@ -66,6 +66,13 @@ export class NPC extends PerFileLoadable {
   public crawlRotate180Animation = <AnimationID>-1;
   public crawlRotateLeftAnimation = <AnimationID>-1;
   public crawlRotateRightAnimation = <AnimationID>-1;
+  public attack?: number = undefined;
+  public defence?: number = undefined;
+  public strength?: number = undefined;
+  public hitpoints?: number = undefined;
+  public ranged?: number = undefined;
+  public magic?: number = undefined;
+  public height?: number = undefined;
   public params = new Params();
 
   public static decode(r: Reader, id: NPCID): NPC {
@@ -142,6 +149,24 @@ export class NPC extends PerFileLoadable {
           }
           break;
         }
+        case 74:
+          v.attack = r.u16();
+          break;
+        case 75:
+          v.defence = r.u16();
+          break;
+        case 76:
+          v.strength = r.u16();
+          break;
+        case 77:
+          v.hitpoints = r.u16();
+          break;
+        case 78:
+          v.ranged = r.u16();
+          break;
+        case 79:
+          v.magic = r.u16();
+          break;
         case 93:
           v.isMinimapVisible = false;
           break;
@@ -240,6 +265,9 @@ export class NPC extends PerFileLoadable {
           break;
         case 123:
           v.lowPriorityOps = true;
+          break;
+        case 124:
+          v.height = r.u16();
           break;
         case 249:
           v.params = r.params();
