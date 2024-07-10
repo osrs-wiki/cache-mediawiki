@@ -120,7 +120,7 @@ export const indexNameMap: {
       },
     },
   },
-  [IndexType.Sprites]: {
+  /*[IndexType.Sprites]: {
     name: "Sprites",
     identifiers: ["id"],
     fields: ["width", "height"],
@@ -128,5 +128,5 @@ export const indexNameMap: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
     },
-  },
+  },*/
 };
