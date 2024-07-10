@@ -1,5 +1,15 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.9.0
+
+### Minor Changes
+
+- d07011d: Add support for revision 223 changes: npc stats
+
+### Patch Changes
+
+- 6cb76b1: Temporarily disable sprite diffs
+
 ## 0.8.0
 
 ### Minor Changes
