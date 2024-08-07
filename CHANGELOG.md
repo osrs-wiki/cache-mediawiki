@@ -1,5 +1,15 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.10.0
+
+### Minor Changes
+
+- a5c8b1a: Add support for index-level (PerArchiveLoadable) difference building
+
+### Patch Changes
+
+- 71adf85: Bump @babel/traverse from 7.18.6 to 7.24.8
+
 ## 0.9.0
 
 ### Minor Changes
