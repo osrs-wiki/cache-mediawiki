@@ -17,7 +17,6 @@ export type IndexFeature<T extends Loadable, Name> = {
   name: Name;
   identifiers: (keyof T)[];
   fields: (keyof T)[];
-  loadable: Loadable;
   urls?: IndexURLs;
 };
 
@@ -49,7 +48,6 @@ export const indexNameMap: {
       name: "Objects",
       identifiers: ["name", "id"],
       fields: ["actions"],
-      loadable: Obj,
       urls: {
         chisel: "https://chisel.weirdgloop.org/moid/object_id.html#",
         abex: "https://abextm.github.io/cache2/#/viewer/obj/",
@@ -59,7 +57,6 @@ export const indexNameMap: {
       name: "Enums",
       identifiers: ["id"],
       fields: ["defaultValue", "map"],
-      loadable: Enum,
       urls: {
         chisel:
           "https://chisel.weirdgloop.org/structs/index.html?type=enums&id=",
@@ -70,7 +67,6 @@ export const indexNameMap: {
       name: "Npcs",
       identifiers: ["name", "id"],
       fields: ["combatLevel", "actions"],
-      loadable: NPC,
       urls: {
         chisel: "https://chisel.weirdgloop.org/moid/npc_id.html#",
         abex: "https://abextm.github.io/cache2/#/viewer/npc/",
@@ -90,7 +86,6 @@ export const indexNameMap: {
         "price",
         "weight",
       ],
-      loadable: Item,
       urls: {
         chisel: "https://chisel.weirdgloop.org/moid/item_id.html#",
         abex: "https://abextm.github.io/cache2/#/viewer/item/",
@@ -100,7 +95,6 @@ export const indexNameMap: {
       name: "Params",
       identifiers: ["id"],
       fields: ["type", "defaultInt", "defaultString", "isMembers"],
-      loadable: Param,
       urls: {
         chisel:
           "https://chisel.weirdgloop.org/structs/index.html?type=enums&id=",
@@ -111,7 +105,6 @@ export const indexNameMap: {
       name: "Structs",
       identifiers: ["id"],
       fields: ["params"],
-      loadable: Struct,
       urls: {
         chisel:
           "https://chisel.weirdgloop.org/structs/index.html?type=structs&id=",
@@ -122,7 +115,6 @@ export const indexNameMap: {
       name: "Database Rows",
       identifiers: ["id"],
       fields: ["table", "values"],
-      loadable: DBRow,
       urls: {
         abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
       },
@@ -132,7 +124,6 @@ export const indexNameMap: {
     name: "Sprites",
     identifiers: ["id"],
     fields: ["width", "height"],
-    loadable: Sprites,
     urls: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
