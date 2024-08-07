@@ -53,6 +53,17 @@ export class Sprite {
 
     return new ImageData(Reader.makeViewOf(Uint8ClampedArray, out), tw, th);
   }
+
+  toJSON() {
+    return {
+      offsetX: this.offsetX,
+      offsetY: this.offsetY,
+      pixelsWidth: this.pixelsWidth,
+      pixelsHeight: this.pixelsHeight,
+      encodingMode: this.encodingMode,
+      pixelsLength: this.pixels.length,
+    };
+  }
 }
 
 @Typed

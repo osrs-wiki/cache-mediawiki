@@ -10,10 +10,10 @@ import {
   Sprites,
   Struct,
 } from "../../../utils/cache2";
-import { PerFileLoadable } from "../../../utils/cache2/Loadable";
+import { Loadable } from "../../../utils/cache2/Loadable";
 import { Difference } from "../differences.types";
 
-export type IndexFeature<T extends PerFileLoadable, Name> = {
+export type IndexFeature<T extends Loadable, Name> = {
   name: Name;
   identifiers: (keyof T)[];
   fields: (keyof T)[];
@@ -120,7 +120,7 @@ export const indexNameMap: {
       },
     },
   },
-  /*[IndexType.Sprites]: {
+  [IndexType.Sprites]: {
     name: "Sprites",
     identifiers: ["id"],
     fields: ["width", "height"],
@@ -128,5 +128,5 @@ export const indexNameMap: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
     },
-  },*/
+  },
 };

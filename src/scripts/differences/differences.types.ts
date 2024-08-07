@@ -46,14 +46,17 @@ export type ResultValue =
   | undefined;
 
 export type CacheDifferences = {
+  // key: index id
   [key in number]?: IndexDifferences;
 };
 
 export type IndexDifferences = {
+  // key: archive id
   [key: number]: ArchiveDifferences;
 };
 
 export type ArchiveDifferences = {
+  // key: file id
   [key: number]: FileDifferences;
 };
 

@@ -20,12 +20,17 @@ import {
   getFieldDifferencesRow,
 } from "./builder.utils";
 import { IndexType } from "../../../utils/cache2";
+import {
+  NamedPerArchiveLoadable,
+  PerArchiveLoadable,
+} from "../../../utils/cache2/Loadable";
 import { capitalize } from "../../../utils/string";
 import {
   ArchiveDifferences,
   CacheDifferences,
   ChangedResult,
   Difference,
+  IndexDifferences,
   Result,
 } from "../differences.types";
 
@@ -61,24 +66,67 @@ const differencesBuilder = (
   Object.keys(differences).forEach((index) => {
     const indexFeatureMap = indexNameMap[index as unknown as IndexType];
     if (indexFeatureMap) {
-      const archives = differences[index as unknown as number];
-      Object.keys(archives).forEach((archive) => {
-        const archiveNumber = archive as unknown as number;
-        const archiveDifferences = archives[archiveNumber];
-        const indexFeature =
-          "name" in indexFeatureMap
-            ? indexFeatureMap
-            : indexFeatureMap[archiveNumber];
-        if (indexFeature) {
-          builder.addContents(
-            buildArchiveDifferences(archiveDifferences, indexFeature)
-          );
-        }
-      });
+      const indexDifferences = differences[index as unknown as number];
+      if ("name" in indexFeatureMap) {
+        const indexFeature = indexFeatureMap as IndexFeatures;
+        builder.addContents(
+          buildIndexDifferences(indexDifferences, indexFeature)
+        );
+      } else {
+        Object.keys(indexDifferences).forEach((archive) => {
+          const archiveNumber = archive as unknown as number;
+          const archiveDifferences = indexDifferences[archiveNumber];
+          const indexFeature = indexFeatureMap[archiveNumber];
+          if (indexFeature) {
+            builder.addContents(
+              buildArchiveDifferences(archiveDifferences, indexFeature)
+            );
+          }
+        });
+      }
     }
   });
-
   return builder;
+};
+
+/**
+ * Build the media wiki content for the differences in two cache index's archives.
+ * @param indexDifferences Differences between two cache's index's archives.
+ * @param indexFeatures Meta deta for indexes
+ * @returns {MediaWikiContent[]}
+ */
+const buildIndexDifferences = (
+  indexDifferences: IndexDifferences,
+  indexFeatures: IndexFeatures
+): MediaWikiContent[] => {
+  const fileDifferences = Object.values(indexDifferences).map(
+    (archive) => archive[0]
+  );
+  const addedResults: Result[] = _.pluck(fileDifferences, "added").filter(
+    (entry) => entry !== null && entry !== undefined
+  );
+
+  const removedResults: Result[] = _.pluck(fileDifferences, "removed").filter(
+    (entry) => entry !== null && entry !== undefined
+  );
+
+  const changedResults: ChangedResult[] = _.pluck(
+    fileDifferences,
+    "changed"
+  ).filter(
+    (entry) =>
+      entry !== null && entry !== undefined && Object.keys(entry).length > 0
+  );
+
+  const content: MediaWikiContent[] = [
+    new MediaWikiHeader(indexFeatures.name, 2),
+    new MediaWikiBreak(),
+    ...buildResultTable(addedResults, indexFeatures, "added"),
+    ...buildResultTable(removedResults, indexFeatures, "removed"),
+    ...buildChangedResultTable(changedResults, indexFeatures),
+  ];
+
+  return content;
 };
 
 /**
@@ -91,12 +139,30 @@ const buildArchiveDifferences = (
   archiveDifferences: ArchiveDifferences,
   indexFeatures: IndexFeatures
 ): MediaWikiContent[] => {
+  const addedResults: Result[] = _.pluck(
+    Object.values(archiveDifferences),
+    "added"
+  ).filter((entry) => entry !== null && entry !== undefined);
+
+  const removedResults: Result[] = _.pluck(
+    Object.values(archiveDifferences),
+    "removed"
+  ).filter((entry) => entry !== null && entry !== undefined);
+
+  const changedResults: ChangedResult[] = _.pluck(
+    Object.values(archiveDifferences),
+    "changed"
+  ).filter(
+    (entry) =>
+      entry !== null && entry !== undefined && Object.keys(entry).length > 0
+  );
+
   const content: MediaWikiContent[] = [
     new MediaWikiHeader(indexFeatures.name, 2),
     new MediaWikiBreak(),
-    ...buildFullResultTable(archiveDifferences, indexFeatures, "added"),
-    ...buildFullResultTable(archiveDifferences, indexFeatures, "removed"),
-    ...buildChangedResultTable(archiveDifferences, indexFeatures),
+    ...buildResultTable(addedResults, indexFeatures, "added"),
+    ...buildResultTable(removedResults, indexFeatures, "removed"),
+    ...buildChangedResultTable(changedResults, indexFeatures),
   ];
 
   return content;
@@ -110,22 +176,15 @@ const buildArchiveDifferences = (
  * @returns {MediaWikiContent[]}
  */
 const buildChangedResultTable = (
-  archiveDifferences: ArchiveDifferences,
+  changedResults: ChangedResult[],
   indexFeatures: IndexFeatures
 ) => {
   const differenceName = resultNameMap.changed;
   const content: MediaWikiContent[] = [];
-  const entries: ChangedResult[] = _.pluck(
-    Object.values(archiveDifferences),
-    "changed"
-  ).filter(
-    (entry) =>
-      entry !== null && entry !== undefined && Object.keys(entry).length > 0
-  );
 
   const rows: MediaWikiTableRow[] =
-    entries?.length > 0
-      ? entries
+    changedResults?.length > 0
+      ? changedResults
           .map<MediaWikiTableRow[]>((entry) => {
             const diffKeys = Object.keys(entry).filter((key) => {
               const isIdentifier = (
@@ -214,8 +273,8 @@ const buildChangedResultTable = (
  * @param type Definition for added or removed content
  * @returns
  */
-const buildFullResultTable = (
-  archiveDifferences: ArchiveDifferences,
+const buildResultTable = (
+  results: Result[],
   indexFeatures: IndexFeatures,
   type: Difference
 ): MediaWikiContent[] => {
@@ -223,14 +282,10 @@ const buildFullResultTable = (
   const tableFields = indexFeatures.fields.map((field) => field.toString());
   const fields = [...indexFeatures.identifiers, ...tableFields];
   const content: MediaWikiContent[] = [];
-  const entries: Result[] = _.pluck(
-    Object.values(archiveDifferences),
-    type
-  ).filter((entry) => entry !== null && entry !== undefined);
 
   const rows: MediaWikiTableRow[] =
-    entries?.length > 0
-      ? entries.map((entry) => {
+    results?.length > 0
+      ? results.map((entry) => {
           const identifierCells = indexFeatures.identifiers.map(
             (identifier) => ({
               content: formatEntryIdentifier(
