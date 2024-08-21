@@ -1,5 +1,20 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.10.0
+
+### Minor Changes
+
+- a5c8b1a: Add support for index-level (PerArchiveLoadable) difference building
+
+### Patch Changes
+
+- 612b69b: Bump json5 from 1.0.1 to 1.0.2
+- a7067e4: Bump braces from 3.0.2 to 3.0.3
+- 71adf85: Bump @babel/traverse from 7.18.6 to 7.24.8
+- 56dbf47: Bump semver from 5.7.1 to 5.7.2
+- ae7d27e: Bump word-wrap from 1.2.3 to 1.2.5
+- e6d0701: Bump tj-actions/changed-files from 35 to 41 in /.github/workflows
+
 ## 0.9.0
 
 ### Minor Changes
