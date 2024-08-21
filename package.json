@@ -1,6 +1,6 @@
 {
   "name": "@osrs-wiki/cache-mediawiki",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "A quick and easy way to setup a TypeScript node application.",
   "main": "index.js",
   "scripts": {
