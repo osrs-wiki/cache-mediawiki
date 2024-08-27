@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.10.1
+
+### Patch Changes
+
+- a1e1252: Add cache to setup-node
+
 ## 0.10.0
 
 ### Minor Changes
