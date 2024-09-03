@@ -6,27 +6,24 @@ Object {
     Object {
       "content": Array [
         MediaWikiText {
-          "children": undefined,
+          "children": "test",
           "styling": undefined,
-          "value": "test",
         },
       ],
     },
     Object {
       "content": Array [
         MediaWikiText {
-          "children": undefined,
+          "children": "test <span style=\\"color: #ee4231\\">removed</span> <span style=\\"color: #ee4231\\">first</span>",
           "styling": undefined,
-          "value": "test <span style=\\"color: #ee4231\\">removed</span> <span style=\\"color: #ee4231\\">first</span>",
         },
       ],
     },
     Object {
       "content": Array [
         MediaWikiText {
-          "children": undefined,
+          "children": "test <span style=\\"color: #6bc71f\\">added</span> <span style=\\"color: #6bc71f\\">second</span>",
           "styling": undefined,
-          "value": "test <span style=\\"color: #6bc71f\\">added</span> <span style=\\"color: #6bc71f\\">second</span>",
         },
       ],
     },
@@ -41,27 +38,24 @@ Object {
     Object {
       "content": Array [
         MediaWikiText {
-          "children": undefined,
+          "children": "test",
           "styling": undefined,
-          "value": "test",
         },
       ],
     },
     Object {
       "content": Array [
         MediaWikiText {
-          "children": undefined,
+          "children": "test <span style=\\"color: #ee4231\\">removed</span>",
           "styling": undefined,
-          "value": "test <span style=\\"color: #ee4231\\">removed</span>",
         },
       ],
     },
     Object {
       "content": Array [
         MediaWikiText {
-          "children": undefined,
+          "children": "test <span style=\\"color: #6bc71f\\">added</span>",
           "styling": undefined,
-          "value": "test <span style=\\"color: #6bc71f\\">added</span>",
         },
       ],
     },
