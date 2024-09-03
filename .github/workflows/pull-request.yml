@@ -9,7 +9,7 @@ jobs:
     if: github.head_ref != 'changeset-release/main'
     name: Test for presence of new Changeset files
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
