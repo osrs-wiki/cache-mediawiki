@@ -1,5 +1,15 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.10.2
+
+### Patch Changes
+
+- b8a6ab2: Replace examine source in clue & item pages with cache examine field
+- 458c1a1: Set release and update template params from context in clue pages
+- c5edca3: Use node@20.x and setup-node@v4 in github actions
+- d939b35: Bump micromatch from 4.0.5 to 4.0.8
+- 458c1a1: Update @osrs-wiki/mediawiki-builder to 1.6.1
+
 ## 0.10.1
 
 ### Patch Changes
