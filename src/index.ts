@@ -72,10 +72,6 @@ const runCacheTools = async () => {
       items: {},
       npcs: {},
     };
-    const itemExamines = await getExamines("objs", examinesVersion);
-    Object.keys(itemExamines).forEach((key) => {
-      Context.examines.items[key] = itemExamines[key];
-    });
 
     const npcExamines = await getExamines("npcs", examinesVersion);
     Object.keys(npcExamines).forEach((key) => {
