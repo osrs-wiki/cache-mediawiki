@@ -3,6 +3,7 @@ import {
   InfoboxTemplate,
   MediaWikiBreak,
   MediaWikiBuilder,
+  MediaWikiDate,
   MediaWikiFile,
   MediaWikiHeader,
   MediaWikiText,
@@ -12,6 +13,7 @@ import _ from "underscore";
 
 import { ITEM_EXAMINES } from "./clues";
 import { formatAnswers, getDirections } from "./utils";
+import Context from "../../context";
 import { Item } from "../../utils/cache2";
 import { vowel } from "../../utils/string";
 
@@ -82,9 +84,11 @@ const cluePageBuilder = ({
     new InfoboxTemplate<InfoboxItem>("Item", {
       name: itemName,
       image: new MediaWikiFile(`${itemName}.png`),
+      release: Context.updateDate
+        ? new MediaWikiDate(new Date(Context.updateDate))
+        : "",
+      update: Context.update ?? "",
       members: true,
-      release: "",
-      update: "",
       quest: "No",
       tradeable: false,
       equipable: false,
