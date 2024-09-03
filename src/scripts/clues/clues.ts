@@ -15,9 +15,6 @@ import {
   getCacheProviderLocal,
 } from "../../utils/cache";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
-import { getExamines } from "../../utils/examines";
-
-export const ITEM_EXAMINES: { [key: string]: string } = {};
 
 const generateCluePages = async (
   method: CacheSource,
@@ -29,11 +26,6 @@ const generateCluePages = async (
       ? getCacheProviderGithub(version)
       : getCacheProviderLocal(version, type)
   ).asPromise();
-
-  const itemExamines = await getExamines("objs");
-  Object.keys(itemExamines).forEach((key) => {
-    ITEM_EXAMINES[key] = itemExamines[key];
-  });
 
   generateAnagramPages(cache);
   generateMapPages(cache);

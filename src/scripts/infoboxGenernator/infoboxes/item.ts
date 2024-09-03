@@ -45,7 +45,7 @@ export const buildItemInfobox = async (item: Item) => {
       stackable: item.isStackable,
       noteable: item.noteLinkedItem > 0,
       options: item.inventoryActions,
-      examine: Context.examines?.items ? Context.examines.items[item.id] : "",
+      examine: item.examine,
       value: item.price,
       weight: (item.weight / 1000).toFixed(3),
       id: item.id.toString(),

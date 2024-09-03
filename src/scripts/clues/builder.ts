@@ -11,7 +11,6 @@ import {
 import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import _ from "underscore";
 
-import { ITEM_EXAMINES } from "./clues";
 import { formatAnswers, getDirections } from "./utils";
 import Context from "../../context";
 import { Item } from "../../utils/cache2";
@@ -94,7 +93,7 @@ const cluePageBuilder = ({
       equipable: false,
       stackable: false,
       options: item?.inventoryActions,
-      examine: item ? ITEM_EXAMINES[item.id] : "",
+      examine: item?.examine,
       value: item?.price,
       weight: `${item?.weight ? (item.weight / 1000).toFixed(3) : ""}`,
       id: `${item?.id}`,
