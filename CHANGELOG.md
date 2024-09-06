@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.10.3
+
+### Patch Changes
+
+- a338a41: Display cache diff table row id column as a string
+
 ## 0.10.2
 
 ### Patch Changes
