@@ -77,7 +77,7 @@ export const formatEntryIdentifier = (
       return Object.keys(urls).map(
         (url, index) =>
           new MediaWikiExternalLink(
-            index === 0 ? (value as string) : `(${index})`,
+            index === 0 ? `${value}` : `(${index})`,
             `${urls[url as IndexURLType]}${value as string}`
           )
       );
