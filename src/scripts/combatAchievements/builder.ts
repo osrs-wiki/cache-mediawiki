@@ -3,6 +3,7 @@ import {
   MediaWikiBuilder,
   MediaWikiDate,
   MediaWikiFile,
+  MediaWikiHeader,
   MediaWikiLink,
   MediaWikiTemplate,
   MediaWikiText,
@@ -44,6 +45,11 @@ const combatAchievementPageBuilder = (combatAchievement: CombatAchievement) => {
   infobox.add("type", combatAchievement.type);
   infobox.add("id", `${combatAchievement.id}`);
 
+  const combatAchievementsList = new MediaWikiTemplate(
+    "Combat Achievements list"
+  );
+  combatAchievementsList.add("", combatAchievement.monster);
+
   builder.addContents([
     infobox,
     new MediaWikiText(combatAchievement.title, { bold: true }),
@@ -58,6 +64,10 @@ const combatAchievementPageBuilder = (combatAchievement: CombatAchievement) => {
       )}`
     ),
     new MediaWikiBreak(),
+    new MediaWikiBreak(),
+    new MediaWikiHeader("Other tasks", 2),
+    new MediaWikiBreak(),
+    combatAchievementsList,
     new MediaWikiBreak(),
     new MediaWikiTemplate("Combat Achievements"),
   ]);

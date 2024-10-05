@@ -7,6 +7,7 @@ import {
   CombatAchievementType,
 } from "./types";
 import { ParamID, Struct } from "../../utils/cache2";
+import { formatFileName } from "../../utils/files";
 
 /**
  * Enums
@@ -74,8 +75,10 @@ export const writeCombatAchievement = async (
 ) => {
   const builder = combatAchievementPageBuilder(combatAchievement);
 
-  const dir = `./out/combatAchievements/${combatAchievement.tier}`;
-  const fileName = `${dir}/${combatAchievement.title}.txt`;
+  const dir = formatFileName(
+    `./out/combatAchievements/${combatAchievement.monster}`
+  );
+  const fileName = formatFileName(`${dir}/${combatAchievement.title}.txt`);
   try {
     await mkdir(dir, { recursive: true });
     writeFile(fileName, builder.build());
