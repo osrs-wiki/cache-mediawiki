@@ -4,7 +4,7 @@ export const getExamines = async (
 ): Promise<{ [key: string]: string }> => {
   const examines: { [key: string]: string } = {};
   const req = await fetch(
-    `https://raw.githubusercontent.com/Joshua-F/osrs-examines/${version}/${name}.csv`
+    `https://raw.githubusercontent.com/Joshua-F/osrs-examines/refs/heads/${version}/${name}.csv`
   );
   if (!req.ok) {
     return;

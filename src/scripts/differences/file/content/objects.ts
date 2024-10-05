@@ -1,4 +1,6 @@
+import Context from "../../../../context";
 import { Obj, ObjID, Reader } from "../../../../utils/cache2";
+import { buildsceneryInfobox } from "../../../infoboxGenernator/infoboxes/scenery";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
@@ -22,6 +24,14 @@ const compareObjects: CompareFn = ({ oldFile, newFile }) => {
         <ObjID>newFile.file.id
       )
     : undefined;
+
+  if (
+    Context.infoboxes &&
+    !oldEntry &&
+    newEntry.name.toLocaleLowerCase() !== "null"
+  ) {
+    buildsceneryInfobox(newEntry);
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

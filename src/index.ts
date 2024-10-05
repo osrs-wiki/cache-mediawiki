@@ -69,13 +69,18 @@ Context.updateDate = updateDate;
 const runCacheTools = async () => {
   if (examines === "true") {
     Context.examines = {
-      items: {},
       npcs: {},
+      scenery: {},
     };
 
     const npcExamines = await getExamines("npcs", examinesVersion);
     Object.keys(npcExamines).forEach((key) => {
       Context.examines.npcs[key] = npcExamines[key];
+    });
+
+    const objectExamines = await getExamines("locs", examinesVersion);
+    Object.keys(objectExamines).forEach((key) => {
+      Context.examines.scenery[key] = objectExamines[key];
     });
   }
 

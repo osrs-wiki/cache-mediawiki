@@ -20,10 +20,6 @@ import {
   getFieldDifferencesRow,
 } from "./builder.utils";
 import { IndexType } from "../../../utils/cache2";
-import {
-  NamedPerArchiveLoadable,
-  PerArchiveLoadable,
-} from "../../../utils/cache2/Loadable";
 import { capitalize } from "../../../utils/string";
 import {
   ArchiveDifferences,

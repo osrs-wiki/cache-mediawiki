@@ -1,7 +1,7 @@
 type CacheMediaWikiContext = {
   examines?: {
-    items?: { [key: string]: string };
     npcs?: { [key: string]: string };
+    scenery?: { [key: string]: string };
   };
   infoboxes?: boolean;
   update?: string;
