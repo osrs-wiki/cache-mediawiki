@@ -2,7 +2,10 @@ import _ from "underscore";
 
 import Context from "../../../../context";
 import { NPC, NPCID, Reader } from "../../../../utils/cache2";
-import { buildNpcInfobox } from "../../../infoboxGenernator/infoboxes/npc";
+import {
+  buildMonsterInfobox,
+  buildNpcInfobox,
+} from "../../../infoboxGenernator/infoboxes/npc/npc";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
@@ -32,7 +35,11 @@ const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
     !oldEntry &&
     newEntry.name.toLocaleLowerCase() !== "null"
   ) {
-    buildNpcInfobox(newEntry);
+    if (newEntry.combatLevel > 0) {
+      buildMonsterInfobox(newEntry);
+    } else {
+      buildNpcInfobox(newEntry);
+    }
   }
 
   return getFileDifferences(oldEntry, newEntry);
