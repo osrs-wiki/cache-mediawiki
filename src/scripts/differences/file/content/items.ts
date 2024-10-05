@@ -1,5 +1,3 @@
-import _ from "underscore";
-
 import Context from "../../../../context";
 import { Item, ItemID, Reader } from "../../../../utils/cache2";
 import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item";

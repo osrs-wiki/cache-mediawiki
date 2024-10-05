@@ -1,5 +1,5 @@
 import itemInfoboxGenerator from "./infoboxes/item";
-import npcInfoboxGenerator from "./infoboxes/npc";
+import npcInfoboxGenerator from "./infoboxes/npc/npc";
 import { getCacheProviderGithub } from "../../utils/cache";
 import { LazyPromise } from "../../utils/cache2/LazyPromise";
 
