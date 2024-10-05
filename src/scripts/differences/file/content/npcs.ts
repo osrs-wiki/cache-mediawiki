@@ -1,5 +1,3 @@
-import _ from "underscore";
-
 import Context from "../../../../context";
 import { NPC, NPCID, Reader } from "../../../../utils/cache2";
 import {

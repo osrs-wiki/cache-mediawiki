@@ -1,5 +1,3 @@
-import _ from "underscore";
-
 import { Reader, SpriteID, Sprites } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
