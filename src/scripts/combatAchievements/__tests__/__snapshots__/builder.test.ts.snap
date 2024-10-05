@@ -13,6 +13,9 @@ exports[`combatAchievementPageBuilder it should build with all fields 1`] = `
 }}
 '''Testing''' is an [[Combat Achievements/Elite|elite combat achievement]] which requires the player to testing a Description
 
+==Other tasks==
+{{Combat Achievements list|Big Monster}}
+
 {{Combat Achievements}}
 "
 `;
