@@ -42,7 +42,7 @@ describe("NPC Infobox", () => {
         actions: ["action1", "action2"],
         id: 1 as NPCID,
       });
-      expect(builder.build()).toMatchSnapshot();
+      expect(builder?.build()).toMatchSnapshot();
     });
   });
 
@@ -62,7 +62,7 @@ describe("NPC Infobox", () => {
         magic: 400,
         ranged: 500,
       });
-      expect(builder.build()).toMatchSnapshot();
+      expect(builder?.build()).toMatchSnapshot();
     });
   });
 });
