@@ -4,7 +4,6 @@ import {
   MediaWikiBuilder,
   MediaWikiDate,
   MediaWikiFile,
-  MediaWikiLink,
   MediaWikiTemplate,
 } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";

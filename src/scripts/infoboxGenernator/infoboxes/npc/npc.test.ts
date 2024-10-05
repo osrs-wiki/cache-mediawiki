@@ -1,5 +1,3 @@
-import fsPromises from "fs/promises";
-
 import npcInfoboxGenerator, {
   buildMonsterInfobox,
   buildNpcInfobox,
