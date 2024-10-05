@@ -63,6 +63,7 @@ export const buildNpcInfobox = async (npc: NPC) => {
 
     await mkdir("./out/infobox/npc", { recursive: true });
     await writeFile(`./out/infobox/npc/${npc.id}.txt`, builder.build());
+    return builder;
   } catch (e) {
     console.error("Error building npc infobox", e);
   }

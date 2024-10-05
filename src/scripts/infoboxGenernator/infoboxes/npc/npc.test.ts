@@ -34,25 +34,23 @@ describe("NPC Infobox", () => {
   });
   describe("buildNpcInfobox", () => {
     it("should build npc infobox", async () => {
-      const writeFileSpy = jest.spyOn(fsPromises, "writeFile");
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore Do not require all fields
-      await buildNpcInfobox({
+      const builder = await buildNpcInfobox({
         name: "name",
         combatLevel: 1,
         actions: ["action1", "action2"],
         id: 1 as NPCID,
       });
-      expect(writeFileSpy.mock.calls).toMatchSnapshot();
+      expect(builder.build()).toMatchSnapshot();
     });
   });
 
   describe("buildMonsterInfobox", () => {
     it("should build monster infobox", async () => {
-      const writeFileSpy = jest.spyOn(fsPromises, "writeFile");
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore Do not require all fields
-      await buildMonsterInfobox({
+      const builder = await buildMonsterInfobox({
         name: "name",
         combatLevel: 100,
         actions: ["action1", "action2"],
@@ -64,7 +62,7 @@ describe("NPC Infobox", () => {
         magic: 400,
         ranged: 500,
       });
-      expect(writeFileSpy.mock.calls).toMatchSnapshot();
+      expect(builder.build()).toMatchSnapshot();
     });
   });
 });

@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NPC Infobox buildMonsterInfobox should build monster infobox 1`] = `
-Array [
-  Array [
-    "./out/infobox/npc/1.txt",
-    "{{New Content}}
+"{{New Content}}
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
@@ -20,16 +17,11 @@ Array [
 |id = 1
 }}
 
-",
-  ],
-]
+"
 `;
 
 exports[`NPC Infobox buildNpcInfobox should build npc infobox 1`] = `
-Array [
-  Array [
-    "./out/infobox/npc/1.txt",
-    "{{New Content}}
+"{{New Content}}
 {{Infobox NPC
 |name = name
 |image = [[File:name.png|120px]]
@@ -44,23 +36,5 @@ Array [
 |id = 1
 }}
 [[File:name chathead.png|left]]
-",
-  ],
-  Array [
-    "./out/infobox/npc/1.txt",
-    "{{New Content}}
-{{Infobox NPC
-|image = [[File:undefined.png|120px]]
-|members = Yes
-|race = [[Human]]
-|location = [[]]
-|gender = Male
-|map = No
-|examine = 
-|id = 1
-}}
-[[File:undefined chathead.png|left]]
-",
-  ],
-]
+"
 `;
