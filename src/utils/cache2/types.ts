@@ -36,6 +36,7 @@ export type ScriptVarChar = NewType<number, "ScriptVarChar">;
 export type ScriptVarID = NewType<number, "ScriptVarID">;
 
 export type AnimationID = NewType<number, "AnimationID">;
+export type AreaID = NewType<number, "AreaID">;
 export type CategoryID = NewType<number, "CategoryID">;
 export type DBRowID = NewType<number, "DBRowID">;
 export type DBTableID = NewType<number, "DBTableID">;

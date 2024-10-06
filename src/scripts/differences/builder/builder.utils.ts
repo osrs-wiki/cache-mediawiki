@@ -74,15 +74,20 @@ export const formatEntryIdentifier = (
 ): MediaWikiContent[] => {
   switch (identifier) {
     case "id":
-      return Object.keys(urls).map(
-        (url, index) =>
-          new MediaWikiExternalLink(
-            index === 0 ? `${value}` : `(${index})`,
-            `${urls[url as IndexURLType]}${value as string}`
+      const urlKeys = Object.keys(urls);
+      return urlKeys.length > 0
+        ? urlKeys.map(
+            (url, index) =>
+              new MediaWikiExternalLink(
+                index === 0 ? `${value}` : `(${index})`,
+                `${urls[url as IndexURLType]}${value as string}`
+              )
           )
-      );
+        : [new MediaWikiText(formatEntryValue(identifier, value))];
     case "name":
-      return [new MediaWikiLink(value as string)];
+      return [
+        value ? new MediaWikiLink(value as string) : new MediaWikiText(""),
+      ];
     default:
       return [new MediaWikiText(formatEntryValue(identifier, value))];
   }

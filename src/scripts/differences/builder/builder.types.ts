@@ -1,4 +1,5 @@
 import {
+  Area,
   ConfigType,
   DBRow,
   Enum,
@@ -25,6 +26,7 @@ export type IndexURLType = "abex" | "chisel";
 export type IndexURLs = { [key in IndexURLType]?: string };
 
 export type IndexFeatures =
+  | IndexFeature<Area, "Areas">
   | IndexFeature<DBRow, "Database Rows">
   | IndexFeature<Enum, "Enums">
   | IndexFeature<Item, "Items">
@@ -44,6 +46,12 @@ export const indexNameMap: {
   [key in IndexType]?: { [key: number]: IndexFeatures } | IndexFeatures;
 } = {
   [IndexType.Configs]: {
+    [ConfigType.Area]: {
+      name: "Areas",
+      identifiers: ["name", "id"],
+      fields: ["category", "spriteId"],
+      urls: {},
+    },
     [ConfigType.Object]: {
       name: "Objects",
       identifiers: ["name", "id"],
