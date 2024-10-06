@@ -1,5 +1,17 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.11.0
+
+### Minor Changes
+
+- 87c24a9: Add support for scenery infobox generation
+- 28b9ff4: Add support for monster infobox generation
+- 35b7f93: Add area definition diffs
+
+### Patch Changes
+
+- 7dde2af: Combat achievement improvements
+
 ## 0.10.3
 
 ### Patch Changes
