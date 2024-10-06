@@ -56,7 +56,7 @@ export class Reader {
     this.view = Reader.makeViewOf(DataView, view);
   }
 
-  private bump(delta: number): number {
+  public bump(delta: number): number {
     const r = this.offset;
     this.offset += delta;
     return r;

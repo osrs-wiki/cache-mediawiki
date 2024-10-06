@@ -1,3 +1,4 @@
+import compareAreas from "./content/area";
 import compareDBRows from "./content/dbrows";
 import compareEnums from "./content/enums";
 import compareItems from "./content/items";
@@ -16,6 +17,7 @@ const indexMap: {
   [key in IndexType]?: { [key: number]: CompareFn } | CompareFn;
 } = {
   [IndexType.Configs]: {
+    [ConfigType.Area]: compareAreas,
     [ConfigType.DbRow]: compareDBRows,
     [ConfigType.Enum]: compareEnums,
     [ConfigType.Item]: compareItems,
