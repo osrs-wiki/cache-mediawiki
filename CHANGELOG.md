@@ -1,5 +1,15 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.12.0
+
+### Minor Changes
+
+- 1d06dd1: Add support for matching renders to diffs
+
+### Patch Changes
+
+- 1d06dd1: Fix combat achievement monster map enum id
+
 ## 0.11.0
 
 ### Minor Changes
