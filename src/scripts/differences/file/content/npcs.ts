@@ -4,6 +4,7 @@ import {
   buildMonsterInfobox,
   buildNpcInfobox,
 } from "../../../infoboxGenernator/infoboxes/npc/npc";
+import { renderNpcs } from "../../../renders/npcs";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
@@ -38,6 +39,10 @@ const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
     } else {
       buildNpcInfobox(newEntry);
     }
+  }
+
+  if (Context.renders) {
+    renderNpcs(newEntry);
   }
 
   return getFileDifferences(oldEntry, newEntry);

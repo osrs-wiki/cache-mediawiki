@@ -4,6 +4,7 @@ type CacheMediaWikiContext = {
     scenery?: { [key: string]: string };
   };
   infoboxes?: boolean;
+  renders?: boolean;
   update?: string;
   updateDate?: string;
 };

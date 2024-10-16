@@ -15,7 +15,7 @@ import { formatFileName } from "../../utils/files";
 export const TIER_ENUM_ID = 3967;
 export const TYPE_ENUM_ID = 3968;
 export const TIER_MAP_ENUM_ID = 3980;
-export const MONSTER_MAP_ENUM_ID = 3970;
+export const MONSTER_MAP_ENUM_ID = 3971;
 export const CA_TASKS = [3981, 3982, 3983, 3984, 3985, 3986];
 
 /**
@@ -52,6 +52,7 @@ export const getCombatAchievement = (
   const typeKey = struct.params.get(TYPE_PARAM_ID as ParamID) as number;
 
   const monster = monsterMap.get(monsterKey) as string;
+  const monsterFormatted = monster ? formatMonsterName(monster) : "";
   const tier = tierMap.get(tierKey) as CombatAchievementTier;
   const type = typeMap.get(typeKey) as CombatAchievementType;
 
@@ -59,10 +60,20 @@ export const getCombatAchievement = (
     id,
     title,
     description,
-    monster,
+    monster: monsterFormatted,
     tier,
     type,
   };
+};
+
+/**
+ * Format a monster name from the enum.
+ * @param monster The monster name from the enum
+ * @returns
+ */
+export const formatMonsterName = (monster: string) => {
+  const split = monster.split(", ");
+  return split.reverse().join(" ");
 };
 
 /**

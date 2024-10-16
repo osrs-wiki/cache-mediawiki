@@ -19,6 +19,7 @@ const {
     examines,
     examinesVersion,
     infobox,
+    renders,
     update,
     updateDate,
   },
@@ -53,6 +54,9 @@ const {
     infobox: {
       type: "string",
     },
+    renders: {
+      type: "string",
+    },
     update: {
       type: "string",
     },
@@ -63,6 +67,7 @@ const {
 });
 
 Context.infoboxes = infobox === "true";
+Context.renders = renders === "true";
 Context.update = update;
 Context.updateDate = updateDate;
 

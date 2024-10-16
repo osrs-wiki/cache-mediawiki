@@ -1,6 +1,7 @@
 import Context from "../../../../context";
 import { Item, ItemID, Reader } from "../../../../utils/cache2";
 import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item";
+import { renderItems } from "../../../renders";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
@@ -31,6 +32,10 @@ const compareItems: CompareFn = ({ oldFile, newFile }) => {
     newEntry.name.toLocaleLowerCase() !== "null"
   ) {
     buildItemInfobox(newEntry);
+  }
+
+  if (Context.renders) {
+    renderItems(newEntry);
   }
 
   return getFileDifferences(oldEntry, newEntry);
