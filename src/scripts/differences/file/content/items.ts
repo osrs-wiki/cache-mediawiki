@@ -34,7 +34,7 @@ const compareItems: CompareFn = ({ oldFile, newFile }) => {
     buildItemInfobox(newEntry);
   }
 
-  if (Context.renders) {
+  if (Context.renders && newEntry) {
     renderItems(newEntry);
   }
 
