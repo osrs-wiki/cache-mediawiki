@@ -1,3 +1,6 @@
 export const formatFileName = (name: string) => {
-  return name.replaceAll(":", "-").replaceAll("?", "");
+  return name
+    .replaceAll(":", "-")
+    .replaceAll("?", "")
+    .replaceAll(/<[^>]*>/g, "");
 };

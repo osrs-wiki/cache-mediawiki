@@ -41,7 +41,7 @@ const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
     }
   }
 
-  if (Context.renders) {
+  if (Context.renders && newEntry) {
     renderNpcs(newEntry);
   }
 

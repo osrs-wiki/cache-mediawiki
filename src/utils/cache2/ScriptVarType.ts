@@ -227,6 +227,12 @@ export class ScriptVarType {
     jag: "dbrow",
     type: "DBRowID",
   });
+  static readonly varp = this.t({
+    id: 209,
+    char: "7",
+    jag: "varp",
+    type: "VarPID",
+  });
 
   // 49, 56, 71, 110, 115, 116 are base long
 }
