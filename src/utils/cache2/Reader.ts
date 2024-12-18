@@ -1,5 +1,5 @@
 import { CacheVersion } from "./Cache";
-import { ParamID, Params } from "./types";
+import { ItemID, KitID, KitOrItem, ParamID, Params } from "./types";
 
 export const cp1252CharMap: string[] = (() => {
   const ext = "€?‚ƒ„…†‡ˆ‰Š‹Œ?Ž??‘’“”•–—˜™š›œ?žŸ";
@@ -177,12 +177,32 @@ export class Reader {
 
     return out;
   }
+  public kit(): KitOrItem {
+    const id = this.u16();
+    if (id === 0) {
+      return undefined;
+    } else if (id >= 512) {
+      return { item: (id - 512) as ItemID };
+    } else if (id >= 256) {
+      return { kit: (id - 256) as KitID };
+    } else {
+      throw new Error(`invalid KitOrItem ${id}`);
+    }
+  }
   public u32o16(): number {
     // rl BigSmart
     if (this.view.getUint8(this.offset) & 0x80) {
-      return this.u16();
-    } else {
       return this.i32() & (-1 >>> 1);
+    } else {
+      return this.u16();
+    }
+  }
+  public u32o16n(): number {
+    // rl BigSmart2
+    if (this.view.getUint8(this.offset) & 0x80) {
+      return this.i32() & (-1 >>> 1);
+    } else {
+      return this.u16n();
     }
   }
   public leVarInt(): number {

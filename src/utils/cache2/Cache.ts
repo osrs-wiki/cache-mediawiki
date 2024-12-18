@@ -110,7 +110,7 @@ export class ArchiveData {
       const numChunks = dv.getUint8(dv.byteLength - 1);
 
       let off = dv.byteLength - 1 - numChunks * fileCount * 4;
-      let doff = data.byteOffset;
+      let doff = 0;
 
       if (numChunks == 1) {
         let size = 0;
