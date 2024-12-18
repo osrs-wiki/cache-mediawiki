@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.13.0
+
+### Minor Changes
+
+- 793b2e7: Update cache2 from latest abextm/cache2 changes
+
 ## 0.12.0
 
 ### Minor Changes
