@@ -31,7 +31,12 @@ import {
   getEquipmentSlot,
 } from "./item.utils";
 import Context from "../../../../context";
-import { CacheProvider, Item, ParamID } from "../../../../utils/cache2";
+import {
+  CacheProvider,
+  Item,
+  ParamID,
+  WearPos,
+} from "../../../../utils/cache2";
 
 const itemInfoboxGenerator = async (
   cache: Promise<CacheProvider>,
@@ -46,7 +51,7 @@ const itemInfoboxGenerator = async (
   }
 };
 
-export const buildItemInfobox = async (item: Item) => {
+export const buildItemInfobox = async (item: Item, writeFiles = true) => {
   try {
     const infoboxItem = new InfoboxTemplate<InfoboxItem>("item", {
       name: item.name as string,
@@ -74,26 +79,59 @@ export const buildItemInfobox = async (item: Item) => {
     let infoboxBonuses = undefined;
     if (item.wearpos1 > 0) {
       infoboxBonuses = new InfoboxTemplate("bonuses", {
-        astab: formatBonus(item.params.get(STAB_ATTACK_PARAM as ParamID)),
-        aslash: formatBonus(item.params.get(SLASH_ATTACK_PARAM as ParamID)),
-        acrush: formatBonus(item.params.get(CRUSH_ATTACK_PARAM as ParamID)),
-        amagic: formatBonus(item.params.get(MAGIC_ATTACK_PARAM as ParamID)),
-        arange: formatBonus(item.params.get(RANGED_ATTACK_PARAM as ParamID)),
-        dstab: formatBonus(item.params.get(STAB_DEFENCE_PARAM as ParamID)),
-        dslash: formatBonus(item.params.get(SLASH_DEFENCE_PARAM as ParamID)),
-        dcrush: formatBonus(item.params.get(CRUSH_DEFENCE_PARAM as ParamID)),
-        dmagic: formatBonus(item.params.get(MAGIC_DEFENCE_PARAM as ParamID)),
-        drange: formatBonus(item.params.get(RANGED_DEFENCE_PARAM as ParamID)),
-        str: formatBonus(item.params.get(MELEE_STRENGTH_PARAM as ParamID)),
-        rstr: formatBonus(item.params.get(RANGED_STRENGTH_PARAM as ParamID)),
-        mdmg: `${
-          parseInt(item.params.get(MAGIC_DAMAGE_PARAM as ParamID).toString()) /
-          10
-        }`,
-        prayer: formatBonus(item.params.get(PRAYER_BONUS_PARAM as ParamID)),
+        astab: item.params.has(STAB_ATTACK_PARAM)
+          ? formatBonus(item.params.get(STAB_ATTACK_PARAM))
+          : "0",
+        aslash: item.params.has(SLASH_ATTACK_PARAM)
+          ? formatBonus(item.params.get(SLASH_ATTACK_PARAM))
+          : "0",
+        acrush: item.params.has(CRUSH_ATTACK_PARAM)
+          ? formatBonus(item.params.get(CRUSH_ATTACK_PARAM))
+          : "0",
+        amagic: item.params.has(MAGIC_ATTACK_PARAM)
+          ? formatBonus(item.params.get(MAGIC_ATTACK_PARAM))
+          : "0",
+        arange: item.params.has(RANGED_ATTACK_PARAM)
+          ? formatBonus(item.params.get(RANGED_ATTACK_PARAM))
+          : "0",
+        dstab: item.params.has(STAB_DEFENCE_PARAM)
+          ? formatBonus(item.params.get(STAB_DEFENCE_PARAM))
+          : "0",
+        dslash: item.params.has(SLASH_DEFENCE_PARAM)
+          ? formatBonus(item.params.get(SLASH_DEFENCE_PARAM))
+          : "0",
+        dcrush: item.params.has(CRUSH_DEFENCE_PARAM)
+          ? formatBonus(item.params.get(CRUSH_DEFENCE_PARAM))
+          : "0",
+        dmagic: item.params.has(MAGIC_DEFENCE_PARAM)
+          ? formatBonus(item.params.get(MAGIC_DEFENCE_PARAM))
+          : "0",
+        drange: item.params.has(RANGED_DEFENCE_PARAM)
+          ? formatBonus(item.params.get(RANGED_DEFENCE_PARAM))
+          : "0",
+        str: item.params.has(MELEE_STRENGTH_PARAM)
+          ? formatBonus(item.params.get(MELEE_STRENGTH_PARAM))
+          : "0",
+        rstr: item.params.has(RANGED_STRENGTH_PARAM)
+          ? formatBonus(item.params.get(RANGED_STRENGTH_PARAM))
+          : "0",
+        mdmg: item.params.has(MAGIC_DAMAGE_PARAM)
+          ? `${parseInt(item.params.get(MAGIC_DAMAGE_PARAM).toString()) / 10}`
+          : "0",
+        prayer: item.params.has(PRAYER_BONUS_PARAM)
+          ? formatBonus(item.params.get(PRAYER_BONUS_PARAM))
+          : "0",
         slot: getEquipmentSlot(item),
-        speed: item.params.get(ATTACK_SPEED_PARAM as ParamID),
-        attackrange: item.params.get(ATTACK_RANGE_PARAM as ParamID),
+        speed:
+          item.wearpos1 === WearPos.Weapon &&
+          item.params.has(ATTACK_SPEED_PARAM)
+            ? item.params.get(ATTACK_SPEED_PARAM) ?? "0"
+            : undefined,
+        attackrange:
+          item.wearpos1 === WearPos.Weapon &&
+          item.params.has(ATTACK_RANGE_PARAM)
+            ? item.params.get(ATTACK_RANGE_PARAM) ?? "0"
+            : undefined,
         image: new MediaWikiFile(`${item.name} equipped male.png`),
         altimage: new MediaWikiFile(`${item.name} equipped female.png`),
       });
@@ -112,14 +150,19 @@ export const buildItemInfobox = async (item: Item) => {
 
     if (infoboxBonuses) {
       builder.addContents([
+        new MediaWikiBreak(),
         new MediaWikiHeader("Combat stats", 2),
+        new MediaWikiBreak(),
         infoboxBonuses.build(),
         new MediaWikiBreak(),
       ]);
     }
 
-    await mkdir("./out/infobox/item", { recursive: true });
-    writeFile(`./out/infobox/item/${item.id}.txt`, builder.build());
+    if (writeFiles) {
+      await mkdir("./out/infobox/item", { recursive: true });
+      writeFile(`./out/infobox/item/${item.id}.txt`, builder.build());
+    }
+    return builder;
   } catch (e) {
     console.error("Error building item infobox: ", e);
   }
