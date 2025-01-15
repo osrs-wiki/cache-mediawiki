@@ -1,6 +1,6 @@
 import Context from "../../../../context";
 import { Item, ItemID, Reader } from "../../../../utils/cache2";
-import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item";
+import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item/item";
 import { renderItems } from "../../../renders";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
