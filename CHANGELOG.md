@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.14.0
+
+### Minor Changes
+
+- b437fc9: Add support for combat stats in item infobox
+
 ## 0.13.0
 
 ### Minor Changes
