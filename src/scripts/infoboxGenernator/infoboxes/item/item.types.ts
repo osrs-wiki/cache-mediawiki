@@ -29,6 +29,7 @@ export type WeaponType =
   | "Crossbow"
   | "Gun"
   | "Multi-Style"
+  | "Partisan"
   | "Pickaxe"
   | "Polearm"
   | "Polestaff"

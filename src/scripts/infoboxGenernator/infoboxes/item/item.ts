@@ -29,14 +29,10 @@ import {
   STAB_DEFENCE_PARAM,
   formatBonus,
   getEquipmentSlot,
+  getWeaponCategory,
 } from "./item.utils";
 import Context from "../../../../context";
-import {
-  CacheProvider,
-  Item,
-  ParamID,
-  WearPos,
-} from "../../../../utils/cache2";
+import { CacheProvider, Item, WearPos } from "../../../../utils/cache2";
 
 const itemInfoboxGenerator = async (
   cache: Promise<CacheProvider>,
@@ -77,6 +73,7 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
     });
 
     let infoboxBonuses = undefined;
+    let combatStyles = undefined;
     if (item.wearpos1 > 0) {
       infoboxBonuses = new InfoboxTemplate("bonuses", {
         astab: item.params.has(STAB_ATTACK_PARAM)
@@ -132,9 +129,23 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
           item.params.has(ATTACK_RANGE_PARAM)
             ? item.params.get(ATTACK_RANGE_PARAM) ?? "0"
             : undefined,
+        combatstyle: getWeaponCategory(item),
         image: new MediaWikiFile(`${item.name} equipped male.png`),
         altimage: new MediaWikiFile(`${item.name} equipped female.png`),
       });
+
+      if (item.wearpos1 === WearPos.Weapon && item.category > -1) {
+        combatStyles = new MediaWikiTemplate("CombatStyles");
+        combatStyles.add(
+          "speed",
+          item.params.get(ATTACK_SPEED_PARAM)?.toString() ?? "0"
+        );
+        combatStyles.add(
+          "attackrange",
+          item.params.get(ATTACK_RANGE_PARAM)?.toString() ?? "0"
+        );
+        combatStyles.add("combatstyle", getWeaponCategory(item));
+      }
     }
 
     const builder = new MediaWikiBuilder();
@@ -156,6 +167,10 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
         infoboxBonuses.build(),
         new MediaWikiBreak(),
       ]);
+
+      if (combatStyles) {
+        builder.addContents([combatStyles, new MediaWikiBreak()]);
+      }
     }
 
     if (writeFiles) {

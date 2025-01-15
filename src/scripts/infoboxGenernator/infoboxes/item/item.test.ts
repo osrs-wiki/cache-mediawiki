@@ -5,7 +5,6 @@ import {
   CRUSH_ATTACK_PARAM,
   CRUSH_DEFENCE_PARAM,
   MAGIC_ATTACK_PARAM,
-  MAGIC_DAMAGE_PARAM,
   MAGIC_DEFENCE_PARAM,
   RANGED_ATTACK_PARAM,
   RANGED_DEFENCE_PARAM,
@@ -14,7 +13,13 @@ import {
   STAB_ATTACK_PARAM,
   STAB_DEFENCE_PARAM,
 } from "./item.utils";
-import { Item, ItemID, Params, WearPos } from "../../../../utils/cache2";
+import {
+  CategoryID,
+  Item,
+  ItemID,
+  Params,
+  WearPos,
+} from "../../../../utils/cache2";
 
 const BASE_ITEM: Item = {
   name: "Test Item",
@@ -82,6 +87,7 @@ describe("Item Infobox", () => {
     const itemInfobox = await buildItemInfobox({
       ...BASE_ITEM,
       wearpos1: WearPos.Weapon,
+      category: 150 as CategoryID,
       params: new Params()
         .set(STAB_ATTACK_PARAM, 1)
         .set(SLASH_ATTACK_PARAM, 1)

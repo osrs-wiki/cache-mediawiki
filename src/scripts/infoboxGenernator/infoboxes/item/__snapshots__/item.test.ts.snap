@@ -112,5 +112,7 @@ exports[`Item Infobox Item infobox should be generated with weapon bonuses 1`] =
 |altimage = [[File:Test Item equipped female.png]]
 }}
 
+{{CombatStyles|speed=3|attackrange=2|combatstyle=undefined}}
+
 "
 `;
