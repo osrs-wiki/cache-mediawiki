@@ -54,7 +54,7 @@ jobs:
         run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
       - name: Upload Output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: out-${{ github.run_id }}-${{ github.run_attempt }}
           path: out/
