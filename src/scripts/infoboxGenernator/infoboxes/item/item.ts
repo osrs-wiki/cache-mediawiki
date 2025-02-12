@@ -29,6 +29,7 @@ import {
   STAB_DEFENCE_PARAM,
   formatBonus,
   getEquipmentSlot,
+  getInventoryActions,
   getWeaponCategory,
 } from "./item.utils";
 import Context from "../../../../context";
@@ -65,7 +66,7 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
       equipable: item.wearpos1 > 0,
       stackable: item.isStackable,
       noteable: item.noteLinkedItem > 0,
-      options: item.inventoryActions,
+      options: getInventoryActions(item),
       examine: item.examine,
       value: item.price,
       weight: (item.weight / 1000).toFixed(3),

@@ -1,4 +1,8 @@
-import { getEquipmentSlot, getWeaponCategory } from "./item.utils";
+import {
+  getEquipmentSlot,
+  getInventoryActions,
+  getWeaponCategory,
+} from "./item.utils";
 import {
   CategoryID,
   Item,
@@ -33,6 +37,7 @@ const BASE_ITEM: Item = {
   femaleModel1: undefined,
   groundActions: [],
   inventoryActions: ["Test Action"],
+  subops: [],
   recolorFrom: [],
   recolorTo: [],
   retextureFrom: [],
@@ -90,5 +95,28 @@ describe("item utils", () => {
         wearpos1: WearPos.Torso,
       })
     ).toBe("body");
+  });
+
+  test("getInventoryActions - no sub ops", () => {
+    expect(
+      getInventoryActions({
+        ...BASE_ITEM,
+        subops: [],
+      })
+    ).toEqual(["Test Action"]);
+  });
+
+  test("getInventoryActions - with sub ops", () => {
+    expect(
+      getInventoryActions({
+        ...BASE_ITEM,
+        inventoryActions: ["Test Action 1", "Test Action 2", "Test Action 3"],
+        subops: [["Sub Action 1"], ["Sub Action 2.1", "Sub Action 2.2"], []],
+      })
+    ).toEqual([
+      "Test Action 1 (Sub Action 1)",
+      "Test Action 2 (Sub Action 2.1, Sub Action 2.2)",
+      "Test Action 3",
+    ]);
   });
 });
