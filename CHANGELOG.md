@@ -1,5 +1,17 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.15.0
+
+### Minor Changes
+
+- c7b2d29: Add a scheduled task to run the diff tool at 6:35 AM EST on game update days (wednesday).
+- 1eb9e5a: Add sub-op support to InfoboxItem generator"
+- 1eb9e5a: Add subops to Item in cache2
+
+### Patch Changes
+
+- 19edefb: Upgrade upload-artifact to v4
+
 ## 0.14.0
 
 ### Minor Changes
