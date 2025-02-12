@@ -2,4 +2,4 @@
 "@osrs-wiki/cache-mediawiki": minor
 ---
 
-Add subops to Item in cache2
+Add sub-op support to InfoboxItem generator"
