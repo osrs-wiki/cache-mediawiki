@@ -47,6 +47,7 @@ const BASE_ITEM: Item = {
   femaleModel1: undefined,
   groundActions: [],
   inventoryActions: ["Test Action"],
+  subops: [],
   recolorFrom: [],
   recolorTo: [],
   retextureFrom: [],
@@ -110,6 +111,15 @@ describe("Item Infobox", () => {
         .set(STAB_DEFENCE_PARAM, 1)
         .set(MAGIC_DEFENCE_PARAM, 1)
         .set(RANGED_DEFENCE_PARAM, 1),
+    });
+    expect(itemInfobox.build()).toMatchSnapshot();
+  });
+
+  test("Item infobox with sub ops", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      inventoryActions: ["Test Action 1", "Test Action 2", "Test Action 3"],
+      subops: [["Sub Action 1"], ["Sub Action 2.1", "Sub Action 2.2"], []],
     });
     expect(itemInfobox.build()).toMatchSnapshot();
   });

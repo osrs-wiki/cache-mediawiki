@@ -9,18 +9,25 @@ export const renderNpcs = async (npc: NPC) => {
   if (npc.name.toLocaleLowerCase() === "null") {
     return;
   }
-  if (Context.renders && existsSync("./data/renders/npc/" + npc.id + ".png")) {
-    await mkdir("./out/renders/npc", { recursive: true });
-    copyFile(
-      "./data/renders/npc/" + npc.id + ".png",
-      formatFileName("./out/renders/npc/" + npc.name + ".png")
-    );
-    if (existsSync("./data/renders/chathead/" + npc.id + ".png")) {
-      await mkdir("./out/renders/chathead", { recursive: true });
+  try {
+    if (
+      Context.renders &&
+      existsSync("./data/renders/npc/" + npc.id + ".png")
+    ) {
+      await mkdir("./out/renders/npc", { recursive: true });
       copyFile(
-        "./data/renders/chathead/" + npc.id + ".png",
-        formatFileName("./out/renders/chathead/" + npc.name + ".png")
+        "./data/renders/npc/" + npc.id + ".png",
+        formatFileName("./out/renders/npc/" + npc.name + ".png")
       );
+      if (existsSync("./data/renders/chathead/" + npc.id + ".png")) {
+        await mkdir("./out/renders/chathead", { recursive: true });
+        copyFile(
+          "./data/renders/chathead/" + npc.id + ".png",
+          formatFileName("./out/renders/chathead/" + npc.name + ".png")
+        );
+      }
     }
+  } catch (e) {
+    console.error(e);
   }
 };

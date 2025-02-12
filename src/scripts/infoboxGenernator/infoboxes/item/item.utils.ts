@@ -79,3 +79,10 @@ const weaponCategoryMap: { [key: number]: WeaponType } = {
 export const getWeaponCategory = (item: Item): WeaponType | undefined => {
   return weaponCategoryMap[item.category];
 };
+
+export const getInventoryActions = (item: Item) => {
+  return item.inventoryActions.map((action, index) => {
+    const subops = item.subops[index];
+    return subops?.length > 0 ? `${action} (${subops.join(", ")})` : action;
+  });
+};

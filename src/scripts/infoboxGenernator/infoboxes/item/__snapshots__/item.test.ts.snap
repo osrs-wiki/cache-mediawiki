@@ -117,3 +117,26 @@ exports[`Item Infobox Item infobox should be generated with weapon bonuses 1`] =
 
 "
 `;
+
+exports[`Item Infobox Item infobox with sub ops 1`] = `
+"{{New Content}}
+{{Infobox Item
+|name = Test Item
+|image = [[File:Test Item.png]]
+|members = Yes
+|quest = No
+|exchange = Yes
+|tradeable = Yes
+|bankable = No
+|equipable = No
+|stackable = No
+|noteable = No
+|options = Test Action 1 (Sub Action 1), Test Action 2 (Sub Action 2.1, Sub Action 2.2), Test Action 3
+|examine = Examine text.
+|value = 
+|weight = 0.000
+|id = 1234
+}}
+[[File:Test Item detail.png|130px|left]]
+"
+`;
