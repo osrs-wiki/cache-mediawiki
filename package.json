@@ -6,9 +6,9 @@
   "scripts": {
     "build": "rm -rf ./dist && ts-patch install -s && tsc",
     "lint": "eslint \"src/**/*.{js,ts}\"",
-    "lint:fix": "yarn lint --fix",
+    "lint:fix": "npm run lint --fix",
     "prettier": "prettier \"src/**/*.{js,ts}\"",
-    "prettier:fix": "yarn prettier --write",
+    "prettier:fix": "npm run prettier --write",
     "start": "nodemon -r tsconfig-paths/register ./src/index.ts",
     "start:node": "node -r typescript-transform-paths/register ./dist/index.js",
     "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=.env.test jest --passWithNoTests",
@@ -28,6 +28,7 @@
   "dependencies": {
     "@osrs-wiki/mediawiki-builder": "^1.6.1",
     "base64-arraybuffer-es6": "^3.0.1",
+    "commander": "^13.1.0",
     "diff": "^5.2.0",
     "dotenv": "^16.4.1",
     "fflate": "^0.8.1",
@@ -62,8 +63,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,ts}": [
-      "yarn lint:fix",
-      "yarn prettier:fix"
+      "npm run lint:fix",
+      "npm run prettier:fix"
     ]
   },
   "nodemonConfig": {

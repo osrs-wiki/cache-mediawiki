@@ -14,14 +14,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
-          cache: yarn
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: "Get abex releases"
         id: get_releases
@@ -33,7 +33,7 @@ jobs:
           sort: "desc"
 
       - name: Run task
-        run: yarn start:node -t diffs --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }}
+        run: npm run start:node -t diffs --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v4
