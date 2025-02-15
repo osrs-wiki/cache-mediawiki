@@ -9,7 +9,7 @@
     "lint:fix": "npm run lint --fix",
     "prettier": "prettier \"src/**/*.{js,ts}\"",
     "prettier:fix": "npm run prettier --write",
-    "start": "nodemon -r tsconfig-paths/register ./src/index.ts",
+    "start": "tsx ./src/index.ts",
     "start:node": "node -r typescript-transform-paths/register ./dist/index.js",
     "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=.env.test jest --passWithNoTests",
     "release": "changeset publish",
@@ -59,6 +59,7 @@
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.1",
     "ts-patch": "^3.1.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.3.2"
   },
   "lint-staged": {
