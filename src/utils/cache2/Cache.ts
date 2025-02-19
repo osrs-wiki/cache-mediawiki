@@ -28,6 +28,7 @@ export interface IndexData {
   compression: number;
   crc: number;
   named: boolean;
+  sized: boolean;
 }
 
 export class ArchiveFile {
@@ -49,6 +50,8 @@ export class ArchiveData {
   public namehash!: number;
   public revision!: number;
   public crc!: number;
+  public compressedSize!: number;
+  public decompressedSize!: number;
 
   /**@internal*/ files: Map<number, ArchiveFile> = new Map();
 
@@ -102,8 +105,8 @@ export class ArchiveData {
 
     this.decryptedData = data;
 
-    if (this.maxFile == 0) {
-      this.files.get(0)!.data = data;
+    if (this.files.size == 1) {
+      this.files.values().next().value!.data = data;
     } else {
       const fileCount = this.files.size;
       const dv = Reader.makeViewOf(DataView, data);
