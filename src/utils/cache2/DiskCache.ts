@@ -15,6 +15,7 @@ export class DiskIndexData implements IndexData {
   public compression!: number;
   public crc!: number;
   public named!: boolean;
+  public sized!: boolean;
   /** @internal */ archives: Map<number, ArchiveData> = new Map();
 }
 
@@ -51,6 +52,11 @@ export class DiskCacheProvider implements CacheProvider {
 
           const flags = r.u8();
           const named = (out.named = !!(flags & 1));
+          const sized = (out.sized = !!(flags & 4));
+
+          if (flags & ~(1 | 4)) {
+            throw new Error(`unsupported flags ${flags.toString(16)}`);
+          }
 
           const numArchives = protocol <= 6 ? r.u16() : r.u32o16();
           const ams: ArchiveData[] = new Array(numArchives);
@@ -68,6 +74,12 @@ export class DiskCacheProvider implements CacheProvider {
           }
           for (const am of ams) {
             am.crc = r.i32();
+          }
+          if (sized) {
+            for (const am of ams) {
+              am.compressedSize = r.i32();
+              am.decompressedSize = r.i32();
+            }
           }
           for (const am of ams) {
             am.revision = r.i32();
