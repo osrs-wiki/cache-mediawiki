@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.16.0
+
+### Minor Changes
+
+- 1122703: Support sized flag & handle non id 0 single file archives
+
 ## 0.15.0
 
 ### Minor Changes
