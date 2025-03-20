@@ -47,11 +47,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
       - name: Run task
-        run: npm run start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
+        run: npm run start ${{ github.event.inputs.task }} --infoboxes ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v4

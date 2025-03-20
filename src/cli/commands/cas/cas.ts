@@ -1,6 +1,6 @@
 import { Command } from "commander";
 
-import generateCombatAchievements from "../../../scripts/combatAchievements";
+import generateCombatAchievements from "../../../tasks/combatAchievements";
 
 const cas = new Command("cas")
   .description("Generate combat achievement pages.")

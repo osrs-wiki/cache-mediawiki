@@ -20,9 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
       - name: "Get abex releases"
         id: get_releases
         uses: yakubique/github-releases@v1.2
@@ -33,7 +30,7 @@ jobs:
           sort: "desc"
 
       - name: Run task
-        run: npm run start:node -t diffs --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }}
+        run: npm run start differences -- --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v4
