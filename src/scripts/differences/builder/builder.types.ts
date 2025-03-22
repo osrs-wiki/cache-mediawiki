@@ -8,6 +8,7 @@ import {
   NPC,
   Obj,
   Param,
+  SpotAnim,
   Sprites,
   Struct,
 } from "../../../utils/cache2";
@@ -33,6 +34,7 @@ export type IndexFeatures =
   | IndexFeature<NPC, "Npcs">
   | IndexFeature<Obj, "Objects">
   | IndexFeature<Param, "Params">
+  | IndexFeature<SpotAnim, "Spot Anims">
   | IndexFeature<Sprites, "Sprites">
   | IndexFeature<Struct, "Structs">;
 
@@ -126,6 +128,12 @@ export const indexNameMap: {
       urls: {
         abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
       },
+    },
+    [ConfigType.SpotAnim]: {
+      name: "Spot Anims",
+      identifiers: ["id"],
+      fields: ["modelId", "animationId"],
+      urls: {},
     },
   },
   [IndexType.Sprites]: {

@@ -5,6 +5,7 @@ import compareItems from "./content/items";
 import compareNpcs from "./content/npcs";
 import compareObjects from "./content/objects";
 import compareParams from "./content/params";
+import compareSpotAnim from "./content/spotanim";
 import compareSprites from "./content/sprites";
 import compareStructs from "./content/struct";
 import { ConfigType, IndexType } from "../../../utils/cache2";
@@ -24,6 +25,7 @@ const indexMap: {
     [ConfigType.Npc]: compareNpcs,
     [ConfigType.Object]: compareObjects,
     [ConfigType.Params]: compareParams,
+    [ConfigType.SpotAnim]: compareSpotAnim,
     [ConfigType.Struct]: compareStructs,
   },
   [IndexType.Sprites]: compareSprites,

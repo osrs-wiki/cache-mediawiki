@@ -56,6 +56,7 @@ export type ParamID = NewType<number, "ParamID">;
 export type PoseID = NewType<number, "PoseID">;
 export type SkeletonID = NewType<number, "SkeletonID">;
 export type SoundEffectID = NewType<number, "SoundEffectID">;
+export type SpotAnimID = NewType<number, "SpotAnimID">;
 export type SpriteID = NewType<number, "SpriteID">;
 export type StructID = NewType<number, "StructID">;
 export type TextureID = NewType<number, "TextureID">;
