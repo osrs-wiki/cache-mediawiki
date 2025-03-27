@@ -8,6 +8,7 @@ import compareParams from "./content/params";
 import compareSpotAnim from "./content/spotanim";
 import compareSprites from "./content/sprites";
 import compareStructs from "./content/struct";
+import compareVarbit from "./content/varbit";
 import { ConfigType, IndexType } from "../../../utils/cache2";
 import { CompareFn, FileDifferences } from "../differences.types";
 
@@ -27,6 +28,7 @@ const indexMap: {
     [ConfigType.Params]: compareParams,
     [ConfigType.SpotAnim]: compareSpotAnim,
     [ConfigType.Struct]: compareStructs,
+    [ConfigType.VarBit]: compareVarbit,
   },
   [IndexType.Sprites]: compareSprites,
 };
