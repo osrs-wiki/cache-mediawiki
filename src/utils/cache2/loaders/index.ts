@@ -12,3 +12,5 @@ export * from "./SpotAnim";
 export * from "./Sprite";
 export * from "./Struct";
 export * from "./Underlay";
+export * from "./Varbit";
+export * from "./VarPlayer";
