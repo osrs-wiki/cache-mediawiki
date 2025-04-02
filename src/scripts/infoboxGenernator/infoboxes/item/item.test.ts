@@ -12,6 +12,8 @@ import {
   SLASH_DEFENCE_PARAM,
   STAB_ATTACK_PARAM,
   STAB_DEFENCE_PARAM,
+  RANGED_AMMO_STRENGTH_PARAM,
+  RANGED_EQUIPMENT_STRENGTH_PARAM,
 } from "./item.utils";
 import {
   CategoryID,
@@ -120,6 +122,34 @@ describe("Item Infobox", () => {
       ...BASE_ITEM,
       inventoryActions: ["Test Action 1", "Test Action 2", "Test Action 3"],
       subops: [["Sub Action 1"], ["Sub Action 2.1", "Sub Action 2.2"], []],
+    });
+    expect(itemInfobox.build()).toMatchSnapshot();
+  });
+
+  test("Item infobox should be generated with ranged ammo strength bonuses", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      wearpos1: WearPos.Weapon,
+      category: 150 as CategoryID,
+      params: new Params()
+        .set(RANGED_ATTACK_PARAM, 75)
+        .set(RANGED_AMMO_STRENGTH_PARAM, 35)
+        .set(ATTACK_SPEED_PARAM, 4)
+        .set(ATTACK_RANGE_PARAM, 5),
+    });
+    expect(itemInfobox.build()).toMatchSnapshot();
+  });
+
+  test("Item infobox should be generated with ranged equipment strength bonuses", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      wearpos1: WearPos.Weapon,
+      category: 150 as CategoryID,
+      params: new Params()
+        .set(RANGED_ATTACK_PARAM, 75)
+        .set(RANGED_EQUIPMENT_STRENGTH_PARAM, 42)
+        .set(ATTACK_SPEED_PARAM, 4)
+        .set(ATTACK_RANGE_PARAM, 5),
     });
     expect(itemInfobox.build()).toMatchSnapshot();
   });
