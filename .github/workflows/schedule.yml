@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: "Get abex releases"
+      - name: Get abex releases
         id: get_releases
         uses: yakubique/github-releases@v1.2
         env:
@@ -31,6 +31,21 @@ jobs:
         with:
           repository: abextm/osrs-cache
           sort: "desc"
+
+      - name: Get renderer workflow runs
+        id: get_render_runs
+        uses: satvik-s/workflow-runs-action@v0.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-repository: osrs-wiki/osrs-renderer-tools
+
+      - name: Download render artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: osrs-wiki/osrs-renderer-tools
+          run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
 
       - name: Run task
         run: yarn start:node -t diffs --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }}

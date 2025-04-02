@@ -50,6 +50,21 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Get renderer workflow runs
+        id: get_render_runs
+        uses: satvik-s/workflow-runs-action@v0.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-repository: osrs-wiki/osrs-renderer-tools
+
+      - name: Download render artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: osrs-wiki/osrs-renderer-tools
+          run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
+
       - name: Run task
         run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
