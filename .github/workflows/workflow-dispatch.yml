@@ -90,7 +90,7 @@ jobs:
           run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
 
       - name: Run task
-        run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --renders ${{ steps.download_render_artifacts.outputs.download-path != null && format('renders-${0}-1', github.event.inputs.newCache) || github.event.inputs.renders }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
+        run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --renders ${{ steps.download_render_artifacts.outputs.download-path != null && format('renders-{0}-1', github.event.inputs.newCache) || github.event.inputs.renders }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v4
