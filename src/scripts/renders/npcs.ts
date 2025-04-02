@@ -15,15 +15,15 @@ export const renderNpcs = async (npc: NPC) => {
       existsSync("./data/renders/npc/" + npc.id + ".png")
     ) {
       await mkdir("./out/renders/npc", { recursive: true });
-      copyFile(
+      await copyFile(
         "./data/renders/npc/" + npc.id + ".png",
         formatFileName("./out/renders/npc/" + npc.name + ".png")
       );
       if (existsSync("./data/renders/chathead/" + npc.id + ".png")) {
         await mkdir("./out/renders/chathead", { recursive: true });
-        copyFile(
+        await copyFile(
           "./data/renders/chathead/" + npc.id + ".png",
-          formatFileName("./out/renders/chathead/" + npc.name + ".png")
+          formatFileName("./out/renders/chathead/" + npc.name + " chathead.png")
         );
       }
     }

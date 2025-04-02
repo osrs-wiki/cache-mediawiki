@@ -5,12 +5,14 @@ import {
   MediaWikiDate,
   MediaWikiFile,
   MediaWikiTemplate,
+  MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
 import { InfoboxScenery } from "./scenery.types";
 import Context from "../../../../context";
 import { Obj, CacheProvider } from "../../../../utils/cache2";
+import { formatFileName } from "../../../../utils/files";
 
 const sceneryInfoboxGenerator = async (
   cache: Promise<CacheProvider>,
@@ -53,10 +55,17 @@ export const buildsceneryInfobox = async (scenery: Obj) => {
         resizing: { width: 130 },
       }),
       new MediaWikiBreak(),
+      new MediaWikiText(scenery.name, { bold: true }),
     ]);
 
     await mkdir("./out/infobox/scenery", { recursive: true });
     writeFile(`./out/infobox/scenery/${scenery.id}.txt`, builder.build());
+
+    await mkdir("./out/infobox_named/scenery", { recursive: true });
+    writeFile(
+      formatFileName(`./out/infobox_named/scenery/${scenery.name}.txt`),
+      builder.build()
+    );
     return builder;
   } catch (e) {
     console.error("Error building scenery infobox: ", e);
