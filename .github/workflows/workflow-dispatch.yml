@@ -54,14 +54,14 @@ jobs:
         id: get_render_runs
         uses: satvik-s/workflow-runs-action@v0.0.3
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_PACKAGES }}
         with:
           github-repository: osrs-wiki/osrs-renderer-tools
 
       - name: Download render artifacts
         uses: actions/download-artifact@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PUBLISH_PACKAGES }}
           repository: osrs-wiki/osrs-renderer-tools
           run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
 
