@@ -6,6 +6,7 @@ import {
   MediaWikiFile,
   MediaWikiHeader,
   MediaWikiTemplate,
+  MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
@@ -35,6 +36,7 @@ import {
 } from "./item.utils";
 import Context from "../../../../context";
 import { CacheProvider, Item, WearPos } from "../../../../utils/cache2";
+import { formatFileName } from "../../../../utils/files";
 
 const itemInfoboxGenerator = async (
   cache: Promise<CacheProvider>,
@@ -161,10 +163,12 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
         resizing: { width: 130 },
       }),
       new MediaWikiBreak(),
+      new MediaWikiText(item.name, { bold: true }),
     ]);
 
     if (infoboxBonuses) {
       builder.addContents([
+        new MediaWikiBreak(),
         new MediaWikiBreak(),
         new MediaWikiHeader("Combat stats", 2),
         new MediaWikiBreak(),
@@ -180,6 +184,12 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
     if (writeFiles) {
       await mkdir("./out/infobox/item", { recursive: true });
       writeFile(`./out/infobox/item/${item.id}.txt`, builder.build());
+
+      await mkdir("./out/infobox_named/item", { recursive: true });
+      writeFile(
+        formatFileName(`./out/infobox_named/item/${item.name}.txt`),
+        builder.build()
+      );
     }
     return builder;
   } catch (e) {
