@@ -16,11 +16,11 @@ export const renderItems = async (item: Item) => {
     ) {
       await mkdir("./out/renders/item", { recursive: true });
       await mkdir("./out/renders/miniitems", { recursive: true });
-      copyFile(
+      await copyFile(
         "./data/renders/item/" + item.id + ".png",
         formatFileName("./out/renders/item/" + item.name + " detail.png")
       );
-      copyFile(
+      await copyFile(
         "./data/renders/miniitems/" + item.id + ".png",
         formatFileName("./out/renders/miniitems/" + item.name + ".png")
       );

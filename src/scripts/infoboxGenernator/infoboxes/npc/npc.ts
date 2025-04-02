@@ -5,6 +5,7 @@ import {
   MediaWikiDate,
   MediaWikiFile,
   MediaWikiTemplate,
+  MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxNpc } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
@@ -12,6 +13,7 @@ import { mkdir, writeFile } from "fs/promises";
 import { InfoboxMonster } from "./npcs.types";
 import Context from "../../../../context";
 import { CacheProvider, NPC } from "../../../../utils/cache2";
+import { formatFileName } from "../../../../utils/files";
 
 const npcInfoboxGenerator = async (
   cache: Promise<CacheProvider>,
@@ -43,7 +45,7 @@ export const buildNpcInfobox = async (npc: NPC) => {
       members: true,
       level: npc.combatLevel > 0 ? npc.combatLevel.toString() : undefined,
       race: "[[Human]]",
-      location: "[[]]",
+      location: "",
       gender: "Male",
       options: npc.actions,
       map: "No",
@@ -59,10 +61,17 @@ export const buildNpcInfobox = async (npc: NPC) => {
         horizontalAlignment: "left",
       }),
       new MediaWikiBreak(),
+      new MediaWikiText(npc.name, { bold: true }),
     ]);
 
     await mkdir("./out/infobox/npc", { recursive: true });
     await writeFile(`./out/infobox/npc/${npc.id}.txt`, builder.build());
+
+    await mkdir("./out/infobox_named/npc", { recursive: true });
+    await writeFile(
+      formatFileName(`./out/infobox_named/npc/${npc.name}.txt`),
+      builder.build()
+    );
     return builder;
   } catch (e) {
     console.error("Error building npc infobox", e);
@@ -89,18 +98,24 @@ export const buildMonsterInfobox = async (npc: NPC) => {
       mage: npc.magic,
       range: npc.ranged,
       examine: Context.examines?.npcs ? Context.examines.npcs[npc.id] : "",
-      id: npc.id.toString(),
+      id: `beta${npc.id.toString()}`,
     });
 
     const builder = new MediaWikiBuilder();
     builder.addContents([
       new MediaWikiTemplate("New Content"),
       infoboxMonster.build(),
-      new MediaWikiBreak(),
+      new MediaWikiText(npc.name, { bold: true }),
     ]);
 
     await mkdir("./out/infobox/npc", { recursive: true });
     await writeFile(`./out/infobox/npc/${npc.id}.txt`, builder.build());
+
+    await mkdir("./out/infobox_named/npc", { recursive: true });
+    await writeFile(
+      formatFileName(`./out/infobox_named/npc/${npc.name}.txt`),
+      builder.build()
+    );
     return builder;
   } catch (e) {
     console.error("Error building monster infobox", e);
