@@ -7,6 +7,7 @@ import generateCombatAchievements from "./scripts/combatAchievements";
 import differencesCache from "./scripts/differences/differences";
 import { CacheSource } from "./utils/cache";
 import { getExamines } from "./utils/examines";
+import { getLatestNewsTitle } from "./utils/news";
 
 console.log(`Running ${config.environment}`);
 
@@ -67,7 +68,10 @@ const {
 });
 
 Context.infoboxes = infobox === "true";
-Context.renders = renders === "true";
+Context.newCache = newCache;
+Context.oldCache = oldCache;
+Context.renders =
+  renders === "true" ? "renders" : renders === "false" ? undefined : renders;
 Context.update = update;
 Context.updateDate = updateDate;
 
@@ -87,6 +91,14 @@ const runCacheTools = async () => {
     Object.keys(objectExamines).forEach((key) => {
       Context.examines.scenery[key] = objectExamines[key];
     });
+  }
+
+  if (update === "auto") {
+    const latestUpdate = await getLatestNewsTitle();
+    if (latestUpdate) {
+      Context.update = latestUpdate.title;
+      Context.updateDate = latestUpdate.date;
+    }
   }
 
   if ((task === "differences" || task === "diffs") && oldCache) {

@@ -12,17 +12,17 @@ export const renderItems = async (item: Item) => {
   try {
     if (
       Context.renders &&
-      existsSync("./data/renders/item/" + item.id + ".png")
+      existsSync(`./data/${Context.renders}/item/${item.id}.png`)
     ) {
-      await mkdir("./out/renders/item", { recursive: true });
-      await mkdir("./out/renders/miniitems", { recursive: true });
+      await mkdir(`./out/${Context.renders}/item`, { recursive: true });
+      await mkdir(`./out/${Context.renders}/miniitems`, { recursive: true });
       await copyFile(
-        "./data/renders/item/" + item.id + ".png",
-        formatFileName("./out/renders/item/" + item.name + " detail.png")
+        `./data/${Context.renders}/item/${item.id}.png`,
+        formatFileName(`./out/${Context.renders}/item/${item.name} detail.png`)
       );
       await copyFile(
-        "./data/renders/miniitems/" + item.id + ".png",
-        formatFileName("./out/renders/miniitems/" + item.name + ".png")
+        `./data/${Context.renders}/miniitems/${item.id}.png`,
+        formatFileName(`./out/${Context.renders}/miniitems/${item.name}.png`)
       );
     }
   } catch (e) {
