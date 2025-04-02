@@ -23,7 +23,8 @@ import {
   PRAYER_BONUS_PARAM,
   RANGED_ATTACK_PARAM,
   RANGED_DEFENCE_PARAM,
-  RANGED_STRENGTH_PARAM,
+  RANGED_AMMO_STRENGTH_PARAM,
+  RANGED_EQUIPMENT_STRENGTH_PARAM,
   SLASH_ATTACK_PARAM,
   SLASH_DEFENCE_PARAM,
   STAB_ATTACK_PARAM,
@@ -112,8 +113,10 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
         str: item.params.has(MELEE_STRENGTH_PARAM)
           ? formatBonus(item.params.get(MELEE_STRENGTH_PARAM))
           : "0",
-        rstr: item.params.has(RANGED_STRENGTH_PARAM)
-          ? formatBonus(item.params.get(RANGED_STRENGTH_PARAM))
+        rstr: item.params.has(RANGED_AMMO_STRENGTH_PARAM)
+          ? formatBonus(item.params.get(RANGED_AMMO_STRENGTH_PARAM))
+          : item.params.has(RANGED_EQUIPMENT_STRENGTH_PARAM)
+          ? formatBonus(item.params.get(RANGED_EQUIPMENT_STRENGTH_PARAM))
           : "0",
         mdmg: item.params.has(MAGIC_DAMAGE_PARAM)
           ? `${parseInt(item.params.get(MAGIC_DAMAGE_PARAM).toString()) / 10}`

@@ -1,5 +1,16 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.17.0
+
+### Minor Changes
+
+- 33ac15e: Add varbit diffs
+- a876606: Add spotanim diffs
+
+### Patch Changes
+
+- 33ac15e: Fix displaying of undefined-like values in diff table cells
+
 ## 0.16.0
 
 ### Minor Changes

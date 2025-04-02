@@ -19,8 +19,8 @@ import { ChangedResult, ResultValue } from "../differences.types";
  */
 export const formatEntryValue = (field: string, value: ResultValue): string => {
   if (
-    !value ||
-    (typeof value === "object" && Object.keys(value).length === 0)
+    value === undefined ||
+    (value && typeof value === "object" && Object.keys(value).length === 0)
   ) {
     return "";
   }
