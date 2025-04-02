@@ -169,6 +169,7 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
     if (infoboxBonuses) {
       builder.addContents([
         new MediaWikiBreak(),
+        new MediaWikiBreak(),
         new MediaWikiHeader("Combat stats", 2),
         new MediaWikiBreak(),
         infoboxBonuses.build(),

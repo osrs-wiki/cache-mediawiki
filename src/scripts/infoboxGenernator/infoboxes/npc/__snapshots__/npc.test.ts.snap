@@ -14,10 +14,9 @@ exports[`NPC Infobox buildMonsterInfobox should build monster infobox 1`] = `
 |mage = 400
 |range = 500
 |examine = 
-|id = 1
+|id = beta1
 }}
-
-"
+'''name'''"
 `;
 
 exports[`NPC Infobox buildNpcInfobox should build npc infobox 1`] = `
@@ -28,7 +27,7 @@ exports[`NPC Infobox buildNpcInfobox should build npc infobox 1`] = `
 |members = Yes
 |level = 1
 |race = [[Human]]
-|location = [[]]
+|location = 
 |gender = Male
 |options = action1, action2
 |map = No
@@ -36,5 +35,5 @@ exports[`NPC Infobox buildNpcInfobox should build npc infobox 1`] = `
 |id = 1
 }}
 [[File:name chathead.png|left]]
-"
+'''name'''"
 `;
