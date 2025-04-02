@@ -5,19 +5,19 @@ import Context from "../../context";
 import { Obj } from "../../utils/cache2";
 import { formatFileName } from "../../utils/files";
 
-export const renderScenery = async (obj: Obj) => {
-  if (obj.name.toLocaleLowerCase() === "null") {
+export const renderScenery = async (scenery: Obj) => {
+  if (scenery.name.toLocaleLowerCase() === "null") {
     return;
   }
   try {
     if (
       Context.renders &&
-      existsSync("./data/renders/object/" + obj.id + ".png")
+      existsSync(`./data/${Context.renders}/scenery/${scenery.id}.png`)
     ) {
-      await mkdir("./out/renders/scenery", { recursive: true });
+      await mkdir(`./out/${Context.renders}/scenery`, { recursive: true });
       await copyFile(
-        "./data/renders/object/" + obj.id + ".png",
-        formatFileName("./out/renders/scenery/" + obj.name + ".png")
+        `./data/${Context.renders}/scenery/${scenery.id}.png`,
+        formatFileName(`./out/${Context.renders}/scenery/${scenery.name}.png`)
       );
     }
   } catch (e) {

@@ -68,7 +68,10 @@ const {
 });
 
 Context.infoboxes = infobox === "true";
-Context.renders = renders === "true";
+Context.newCache = newCache;
+Context.oldCache = oldCache;
+Context.renders =
+  renders === "true" ? "renders" : renders === "false" ? undefined : renders;
 Context.update = update;
 Context.updateDate = updateDate;
 
