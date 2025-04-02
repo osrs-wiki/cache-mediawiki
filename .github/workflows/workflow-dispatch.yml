@@ -18,7 +18,7 @@ on:
         required: false
 
       renders:
-        description: "Include examines (optional)"
+        description: "Include renders (optional)"
         required: false
         default: "false"
 
