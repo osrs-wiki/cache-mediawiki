@@ -1,5 +1,19 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.18.0
+
+### Minor Changes
+
+- 0ee10a3: Pulls renders from https://github.com/osrs-wiki/osrs-renderer-tools & Set render argument to downloaded render artifact path
+- a46bc66: Add named page creation for items, npcs, and scenery
+- a46bc66: Add scenery renders
+
+### Patch Changes
+
+- f88b5d0: Bump tj-actions/changed-files from 41 to 46 in /.github/workflows
+- e54cdcb: Add distinction between ranged ammo str and ranged equipment str bonus for items
+- 0ee10a3: Update render argument to accept a path to renders if the value is not true or false.
+
 ## 0.17.0
 
 ### Minor Changes
