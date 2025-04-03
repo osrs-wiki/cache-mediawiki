@@ -6,6 +6,7 @@ import {
   MediaWikiFile,
   MediaWikiHeader,
   MediaWikiTemplate,
+  MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
@@ -22,7 +23,8 @@ import {
   PRAYER_BONUS_PARAM,
   RANGED_ATTACK_PARAM,
   RANGED_DEFENCE_PARAM,
-  RANGED_STRENGTH_PARAM,
+  RANGED_AMMO_STRENGTH_PARAM,
+  RANGED_EQUIPMENT_STRENGTH_PARAM,
   SLASH_ATTACK_PARAM,
   SLASH_DEFENCE_PARAM,
   STAB_ATTACK_PARAM,
@@ -34,6 +36,7 @@ import {
 } from "./item.utils";
 import Context from "../../../../context";
 import { CacheProvider, Item, WearPos } from "../../../../utils/cache2";
+import { formatFileName } from "../../../../utils/files";
 
 const itemInfoboxGenerator = async (
   cache: Promise<CacheProvider>,
@@ -110,8 +113,10 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
         str: item.params.has(MELEE_STRENGTH_PARAM)
           ? formatBonus(item.params.get(MELEE_STRENGTH_PARAM))
           : "0",
-        rstr: item.params.has(RANGED_STRENGTH_PARAM)
-          ? formatBonus(item.params.get(RANGED_STRENGTH_PARAM))
+        rstr: item.params.has(RANGED_AMMO_STRENGTH_PARAM)
+          ? formatBonus(item.params.get(RANGED_AMMO_STRENGTH_PARAM))
+          : item.params.has(RANGED_EQUIPMENT_STRENGTH_PARAM)
+          ? formatBonus(item.params.get(RANGED_EQUIPMENT_STRENGTH_PARAM))
           : "0",
         mdmg: item.params.has(MAGIC_DAMAGE_PARAM)
           ? `${parseInt(item.params.get(MAGIC_DAMAGE_PARAM).toString()) / 10}`
@@ -158,10 +163,12 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
         resizing: { width: 130 },
       }),
       new MediaWikiBreak(),
+      new MediaWikiText(item.name, { bold: true }),
     ]);
 
     if (infoboxBonuses) {
       builder.addContents([
+        new MediaWikiBreak(),
         new MediaWikiBreak(),
         new MediaWikiHeader("Combat stats", 2),
         new MediaWikiBreak(),
@@ -177,6 +184,12 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
     if (writeFiles) {
       await mkdir("./out/infobox/item", { recursive: true });
       writeFile(`./out/infobox/item/${item.id}.txt`, builder.build());
+
+      await mkdir("./out/infobox_named/item", { recursive: true });
+      writeFile(
+        formatFileName(`./out/infobox_named/item/${item.name}.txt`),
+        builder.build()
+      );
     }
     return builder;
   } catch (e) {

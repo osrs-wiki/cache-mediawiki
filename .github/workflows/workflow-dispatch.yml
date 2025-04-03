@@ -9,11 +9,18 @@ on:
 
       infobox:
         description: "Include infoboxes (optional)"
+        default: "false"
         required: false
 
       examines:
         description: "Include examines (optional)"
+        default: "false"
         required: false
+
+      renders:
+        description: "Include renders (optional)"
+        required: false
+        default: "false"
 
       oldCache:
         description: "Old cache date (optional)"
@@ -25,10 +32,12 @@ on:
 
       update:
         description: "The game update title (optional)"
+        default: "auto"
         required: false
 
       updateDate:
         description: "The game update date (optional)"
+        default: "auto"
         required: false
 
 jobs:
@@ -47,8 +56,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Get renderer workflow runs
+        id: get_render_runs
+        uses: satvik-s/workflow-runs-action@v0.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_PACKAGES }}
+        with:
+          github-repository: osrs-wiki/osrs-renderer-tools
+
+      - name: Check if workflow run is from today
+        id: check_date
+        run: |
+          WORKFLOW_DATE=$(echo '${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].created_at }}' | cut -d'T' -f1)
+          TODAY_DATE=$(date -u +"%Y-%m-%d")
+          if [ "$WORKFLOW_DATE" == "$TODAY_DATE" ]; then
+            echo "is_today=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_today=false" >> $GITHUB_OUTPUT
+          fi
+          echo "Workflow date: $WORKFLOW_DATE, Today: $TODAY_DATE"
+
+      - name: Download render artifacts
+        if: steps.check_date.outputs.is_today == 'true'
+        id: download_render_artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.PUBLISH_PACKAGES }}
+          path: data/
+          repository: osrs-wiki/osrs-renderer-tools
+          run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
+
       - name: Run task
-        run: npm run start ${{ github.event.inputs.task }} --infoboxes ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
+        run: npm run start -- -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --renders ${{ steps.download_render_artifacts.outputs.download-path != null && format('renders-{0}-1', github.event.inputs.newCache) || github.event.inputs.renders }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v4

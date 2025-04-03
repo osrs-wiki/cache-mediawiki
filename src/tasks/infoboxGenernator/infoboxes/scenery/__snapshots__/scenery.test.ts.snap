@@ -15,5 +15,5 @@ exports[`Scenery Infobox buildsceneryInfobox 1`] = `
 |id = 1
 }}
 [[File:name detail.png|130px|left]]
-"
+'''name'''"
 `;

@@ -8,8 +8,11 @@ import {
   NPC,
   Obj,
   Param,
+  SpotAnim,
   Sprites,
   Struct,
+  Varbit,
+  VarPlayer,
 } from "../../../utils/cache2";
 import { Loadable } from "../../../utils/cache2/Loadable";
 import { Difference } from "../differences.types";
@@ -33,8 +36,10 @@ export type IndexFeatures =
   | IndexFeature<NPC, "Npcs">
   | IndexFeature<Obj, "Objects">
   | IndexFeature<Param, "Params">
+  | IndexFeature<SpotAnim, "Spot Anims">
   | IndexFeature<Sprites, "Sprites">
-  | IndexFeature<Struct, "Structs">;
+  | IndexFeature<Struct, "Structs">
+  | IndexFeature<Varbit, "Varbits">;
 
 export const resultNameMap: { [key in Difference]: string } = {
   added: "New",
@@ -125,6 +130,20 @@ export const indexNameMap: {
       fields: ["table", "values"],
       urls: {
         abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
+      },
+    },
+    [ConfigType.SpotAnim]: {
+      name: "Spot Anims",
+      identifiers: ["id"],
+      fields: ["modelId", "animationId"],
+      urls: {},
+    },
+    [ConfigType.VarBit]: {
+      name: "Varbits",
+      identifiers: ["id"],
+      fields: ["index", "leastSignificantBit", "mostSignificantBit"],
+      urls: {
+        chisel: "https://chisel.weirdgloop.org/varbs/display?varbit=",
       },
     },
   },

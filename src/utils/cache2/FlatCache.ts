@@ -14,6 +14,7 @@ export class FlatIndexData implements IndexData {
   public compression!: number;
   public crc!: number;
   public named!: boolean;
+  public sized!: boolean;
 
   /**@internal*/ archives: Map<number, ArchiveData> = new Map();
   private constructor(public id: number) {}

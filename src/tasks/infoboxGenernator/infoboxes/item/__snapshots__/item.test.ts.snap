@@ -20,7 +20,7 @@ exports[`Item Infobox Item infobox should be generated 1`] = `
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-"
+'''Test Item'''"
 `;
 
 exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
@@ -43,6 +43,7 @@ exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -68,6 +69,108 @@ exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
 "
 `;
 
+exports[`Item Infobox Item infobox should be generated with ranged ammo strength bonuses 1`] = `
+"{{New Content}}
+{{Infobox Item
+|name = Test Item
+|image = [[File:Test Item.png]]
+|members = Yes
+|quest = No
+|exchange = Yes
+|tradeable = Yes
+|bankable = No
+|equipable = Yes
+|stackable = No
+|noteable = No
+|options = Test Action
+|examine = Examine text.
+|value = 
+|weight = 0.000
+|id = 1234
+}}
+[[File:Test Item detail.png|130px|left]]
+'''Test Item'''
+
+==Combat stats==
+{{Infobox Bonuses
+|astab = 0
+|aslash = 0
+|acrush = 0
+|amagic = 0
+|arange = +75
+|dstab = 0
+|dslash = 0
+|dcrush = 0
+|dmagic = 0
+|drange = 0
+|str = 0
+|rstr = +35
+|mdmg = 0
+|prayer = 0
+|slot = weapon
+|speed = 4
+|attackrange = 5
+|combatstyle = Whip
+|image = [[File:Test Item equipped male.png]]
+|altimage = [[File:Test Item equipped female.png]]
+}}
+
+{{CombatStyles|speed=4|attackrange=5|combatstyle=Whip}}
+
+"
+`;
+
+exports[`Item Infobox Item infobox should be generated with ranged equipment strength bonuses 1`] = `
+"{{New Content}}
+{{Infobox Item
+|name = Test Item
+|image = [[File:Test Item.png]]
+|members = Yes
+|quest = No
+|exchange = Yes
+|tradeable = Yes
+|bankable = No
+|equipable = Yes
+|stackable = No
+|noteable = No
+|options = Test Action
+|examine = Examine text.
+|value = 
+|weight = 0.000
+|id = 1234
+}}
+[[File:Test Item detail.png|130px|left]]
+'''Test Item'''
+
+==Combat stats==
+{{Infobox Bonuses
+|astab = 0
+|aslash = 0
+|acrush = 0
+|amagic = 0
+|arange = +75
+|dstab = 0
+|dslash = 0
+|dcrush = 0
+|dmagic = 0
+|drange = 0
+|str = 0
+|rstr = +42
+|mdmg = 0
+|prayer = 0
+|slot = weapon
+|speed = 4
+|attackrange = 5
+|combatstyle = Whip
+|image = [[File:Test Item equipped male.png]]
+|altimage = [[File:Test Item equipped female.png]]
+}}
+
+{{CombatStyles|speed=4|attackrange=5|combatstyle=Whip}}
+
+"
+`;
+
 exports[`Item Infobox Item infobox should be generated with weapon bonuses 1`] = `
 "{{New Content}}
 {{Infobox Item
@@ -88,6 +191,7 @@ exports[`Item Infobox Item infobox should be generated with weapon bonuses 1`] =
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -138,5 +242,5 @@ exports[`Item Infobox Item infobox with sub ops 1`] = `
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-"
+'''Test Item'''"
 `;

@@ -5,6 +5,7 @@ import options from "./options";
 import packageJson from "../../package.json";
 import Context from "../context";
 import { getExamines } from "../utils/examines";
+import { getLatestNewsTitle } from "../utils/news";
 
 const commands = [cas, clues, differences];
 
@@ -16,9 +17,24 @@ program
   .version(packageJson.version)
   .hook("preAction", async (command) => {
     Context.infoboxes = command.opts().infoboxes;
-    Context.renders = command.opts().renders;
     Context.update = command.opts().update;
     Context.updateDate = command.opts().updateDate;
+
+    const renders = command.opts().renders;
+    Context.renders =
+      renders === "true"
+        ? "renders"
+        : renders === "false"
+        ? undefined
+        : renders;
+
+    if (Context.update === "auto") {
+      const latestUpdate = await getLatestNewsTitle();
+      if (latestUpdate) {
+        Context.update = latestUpdate.title;
+        Context.updateDate = latestUpdate.date;
+      }
+    }
 
     if (command.opts().examines) {
       const version = command.opts().examinesVersion;
