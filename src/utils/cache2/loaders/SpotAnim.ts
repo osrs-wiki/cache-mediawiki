@@ -23,6 +23,7 @@ export class SpotAnim extends PerFileLoadable {
   public modelId: number;
   public ambient = 0;
   public contrast = 0;
+  public debugName: string;
 
   public static decode(r: Reader, id: SpotAnimID): SpotAnim {
     const v = new SpotAnim(id);
@@ -48,6 +49,9 @@ export class SpotAnim extends PerFileLoadable {
           break;
         case 8:
           v.contrast = r.u8();
+          break;
+        case 9:
+          v.debugName = r.string();
           break;
         case 40:
           const length = r.u8();

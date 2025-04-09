@@ -43,6 +43,7 @@ export type DBTableID = NewType<number, "DBTableID">;
 export type DBColumnID = NewType<number, "DBColumnID">;
 export type EnumID = NewType<number, "EnumID">;
 export type FontID = NewType<number, "FontID">;
+export type GameValID = NewType<number, "GameValID">;
 export type HealthBarID = NewType<number, "HealthBaID">;
 export type HitsplatID = NewType<number, "HitsplatID">;
 export type ItemID = NewType<number, "ItemID">;
@@ -202,6 +203,8 @@ export enum IndexType {
   WorldMap = 18,
   WorldMapGrounds = 19,
   DbTableIndex = 21,
+  Animayas = 22,
+  GameVals = 23,
 }
 
 export enum ConfigType {
@@ -226,4 +229,20 @@ export enum ConfigType {
   Area = 35,
   DbRow = 38,
   DbTable = 39,
+}
+
+export enum GameValType {
+  Items = 0,
+  Npcs = 1,
+  Inventories = 2,
+  Varps = 3,
+  VarBits = 4,
+  Objects = 6,
+  Animations = 7,
+  SpotAnims = 8,
+  DbRows = 9,
+  DbTables = 10,
+  Jingles = 11,
+  Sprites = 12,
+  Interfaces = 13,
 }
