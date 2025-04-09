@@ -159,3 +159,52 @@ export class PerFileLoadable extends Loadable {
       });
   }
 }
+
+export class ArchivePerFileLoadable extends Loadable {
+  public static async loadData(
+    this: { index: number },
+    cache: CacheProvider,
+    archiveIdentifier: number,
+    id: number
+  ): Promise<Reader | undefined> {
+    const archive = await cache.getArchive(this.index, archiveIdentifier);
+    const version = await cache.getVersion(this.index);
+    const data = archive?.getFile(id)?.data;
+    return data ? new Reader(data, version) : undefined;
+  }
+
+  public static async all<I extends PerFileLoadable, ID extends number>(
+    this: {
+      index: number;
+      decode(reader: Reader, archiveIdentifier: number, id: ID): I;
+    },
+    cache0: CacheProvider | Promise<CacheProvider>,
+    archiveIdentifier: number
+  ): Promise<I[]> {
+    const cache = await cache0;
+    const ad = await cache.getArchive(this.index, archiveIdentifier);
+    if (!ad) {
+      return [];
+    }
+
+    const version = await cache.getVersion(this.index);
+
+    return [...ad.getFiles().values()]
+      .filter((v) => v.data.length > 1 && v.data[0] != 0)
+      .map((v) => {
+        try {
+          return this.decode(
+            new Reader(v.data, version),
+            archiveIdentifier,
+            v.id as ID
+          );
+        } catch (e) {
+          if (typeof e === "object" && e && "message" in e) {
+            const ea = e as any;
+            ea.message = v.id + ": " + ea.message;
+          }
+          throw e;
+        }
+      });
+  }
+}
