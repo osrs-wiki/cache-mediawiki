@@ -4,6 +4,7 @@ import { Typed } from "../reflect";
 import {
   AnimationID,
   CategoryID,
+  GameValType,
   HSL,
   MapElementID,
   MapSceneIconID,
@@ -25,6 +26,7 @@ export class Obj extends PerFileLoadable {
 
   public static readonly index = 2;
   public static readonly archive = 6;
+  public static readonly gameval = GameValType.Objects;
 
   public models: null | ModelID[] = null;
   public modelTypes: null | ObjType[] = null;

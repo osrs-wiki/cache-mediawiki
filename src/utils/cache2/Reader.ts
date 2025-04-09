@@ -21,6 +21,10 @@ export class Reader {
   private readonly view: DataView;
   public offset = 0;
 
+  get dataView(): DataView {
+    return this.view;
+  }
+
   get buffer(): ArrayBuffer {
     return this.view.buffer;
   }

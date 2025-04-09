@@ -2,6 +2,7 @@ export * from "./Animation";
 export * from "./Area";
 export * from "./DBRow";
 export * from "./Enum";
+export * from "./GameVal";
 export * from "./HealthBar";
 export * from "./Hitsplat";
 export * from "./Item";

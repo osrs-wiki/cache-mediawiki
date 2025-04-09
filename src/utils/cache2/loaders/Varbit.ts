@@ -1,7 +1,7 @@
 import { PerFileLoadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
-import { ConfigType, IndexType, VarbitID } from "../types";
+import { ConfigType, GameValType, IndexType, VarbitID } from "../types";
 
 @Typed
 export class Varbit extends PerFileLoadable {
@@ -11,6 +11,7 @@ export class Varbit extends PerFileLoadable {
 
   public static readonly index = IndexType.Configs;
   public static readonly archive = ConfigType.VarPlayer;
+  public static readonly gameval = GameValType.VarBits;
 
   public index: number;
   public leastSignificantBit: number;

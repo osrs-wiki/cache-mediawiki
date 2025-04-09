@@ -3,7 +3,13 @@ import { Loadable, PerFileLoadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
 import { BaseVarType, ScriptVarType } from "../ScriptVarType";
-import { DBColumnID, DBRowID, DBTableID, ScriptVarID } from "../types";
+import {
+  DBColumnID,
+  DBRowID,
+  DBTableID,
+  GameValType,
+  ScriptVarID,
+} from "../types";
 
 function readTypes(r: Reader): ScriptVarID[] {
   const size = r.u8();
@@ -56,6 +62,7 @@ export class DBRow extends PerFileLoadable {
 
   public static readonly index = 2;
   public static readonly archive = 38;
+  public static readonly gameval = GameValType.DBRows;
 
   public table = <DBTableID>-1;
   public values: (string | number | bigint | undefined)[][] = [];
@@ -100,6 +107,7 @@ export class DBTable extends PerFileLoadable {
 
   public static readonly index = 2;
   public static readonly archive = 39;
+  public static readonly gameval = GameValType.DBTables;
 
   public types: (ScriptVarID | undefined)[][] = [];
   public defaultValues: (string | number | bigint | undefined)[][] = [];
