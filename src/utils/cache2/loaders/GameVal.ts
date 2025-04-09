@@ -1,8 +1,8 @@
-import { CacheProvider } from "../Cache.js";
-import { Loadable } from "../Loadable.js";
-import { Reader } from "../Reader.js";
-import { Typed } from "../reflect.js";
-import { GameValID, GameValType } from "../types.js";
+import { CacheProvider } from "../Cache";
+import { Loadable } from "../Loadable";
+import { Reader } from "../Reader";
+import { Typed } from "../reflect";
+import { GameValID, GameValType } from "../types";
 
 const decoder = new TextDecoder("utf-8");
 
@@ -132,7 +132,7 @@ export class GameVal extends Loadable {
           return [fid, this.decode(new Reader(file.data, version), id, fid)];
         } catch (e) {
           if (typeof e === "object" && e && "message" in e) {
-            const ea = e as any;
+            const ea = e as Error;
             ea.message = `${id}:${fid}: ${ea.message}`;
           }
           throw e;
