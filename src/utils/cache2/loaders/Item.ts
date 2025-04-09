@@ -3,6 +3,7 @@ import { Reader } from "../Reader";
 import { Typed } from "../reflect";
 import {
   CategoryID,
+  GameValType,
   HSL,
   ItemID,
   ModelID,
@@ -19,6 +20,7 @@ export class Item extends PerFileLoadable {
 
   public static readonly index = 2;
   public static readonly archive = 10;
+  public static readonly gameval = GameValType.Items;
 
   public inventoryModel = <ModelID>-1;
   public name: string | null = "null";

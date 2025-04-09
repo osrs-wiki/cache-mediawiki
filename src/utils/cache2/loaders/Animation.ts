@@ -5,6 +5,7 @@ import {
   AnimationID,
   AnimMayaID,
   AnimRestartMode,
+  GameValType,
   KitOrItem,
   PoseID,
   PostAnimMoveMode,
@@ -35,8 +36,11 @@ export class Animation extends PerFileLoadable {
     super();
   }
   public declare [Typed.type]: Typed.Any;
+
   public static readonly index = 2;
   public static readonly archive = 12;
+  public static readonly gameval = GameValType.Animations;
+
   public frameLengths?: number[] = undefined;
   public frameIDs?: [SkeletonID, PoseID][] = undefined;
   public chatheadFrameIDs?: [SkeletonID, PoseID][] = undefined;
@@ -44,6 +48,7 @@ export class Animation extends PerFileLoadable {
   public animMayaStart = 0;
   public animMayaEnd = 0;
   public masks?: boolean[] = undefined;
+  public debugName?: string;
   public frameStep = -1;
   public interleaveLeave?: number[] = undefined;
   public stretches = true;
@@ -156,6 +161,9 @@ export class Animation extends PerFileLoadable {
           }
           break;
         }
+        case 18:
+          v.debugName = r.string();
+          break;
         default:
           throw new Error(`unknown animation opcode ${opcode}`);
       }

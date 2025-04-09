@@ -4,6 +4,7 @@ import { Typed } from "../reflect";
 import {
   AnimationID,
   CategoryID,
+  GameValType,
   HSL,
   ModelID,
   NPCID,
@@ -22,6 +23,7 @@ export class NPC extends PerFileLoadable {
 
   public static readonly index = 2;
   public static readonly archive = 9;
+  public static readonly gameval = GameValType.Npcs;
 
   public models: ModelID[] = <ModelID[]>[];
   public name = "null";

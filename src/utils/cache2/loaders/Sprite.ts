@@ -77,6 +77,7 @@ export class Sprites extends NamedPerArchiveLoadable {
   }
 
   static readonly index = 8;
+  static readonly gameval = types.GameValType.Sprites;
 
   width!: number;
   height!: number;
