@@ -76,6 +76,7 @@ export class Obj extends PerFileLoadable {
   public blockingMask: undefined | number = undefined;
   public deferAnimChange = false;
   public params = new Params();
+  public gameVal?: string;
 
   public static decode(r: Reader, id: ObjID): Obj {
     const v = new Obj(id);

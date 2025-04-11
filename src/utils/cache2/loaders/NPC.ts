@@ -76,6 +76,7 @@ export class NPC extends PerFileLoadable {
   public magic?: number = undefined;
   public height?: number = undefined;
   public params = new Params();
+  public gameVal?: string;
 
   public static decode(r: Reader, id: NPCID): NPC {
     const v = new NPC(id);

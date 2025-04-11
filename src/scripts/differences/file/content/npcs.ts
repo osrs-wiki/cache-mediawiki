@@ -1,5 +1,5 @@
 import Context from "../../../../context";
-import { NPC, NPCID, Reader } from "../../../../utils/cache2";
+import { GameVal, NPC, NPCID, Reader } from "../../../../utils/cache2";
 import {
   buildMonsterInfobox,
   buildNpcInfobox,
@@ -8,7 +8,7 @@ import { renderNpcs } from "../../../renders/npcs";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
+const compareNpcs: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? NPC.decode(
         new Reader(oldFile.file.data, {
@@ -18,6 +18,7 @@ const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
         <NPCID>oldFile.file.id
       )
     : undefined;
+  oldEntry.gameVal = await GameVal.nameFor(Context.oldCacheProvider, oldEntry);
 
   const newEntry = newFile
     ? NPC.decode(
@@ -28,6 +29,7 @@ const compareNpcs: CompareFn = ({ oldFile, newFile }) => {
         <NPCID>newFile.file.id
       )
     : undefined;
+  newEntry.gameVal = await GameVal.nameFor(Context.newCacheProvider, newEntry);
 
   if (
     Context.infoboxes &&

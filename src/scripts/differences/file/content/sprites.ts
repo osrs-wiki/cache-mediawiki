@@ -1,8 +1,9 @@
-import { Reader, SpriteID, Sprites } from "../../../../utils/cache2";
+import Context from "../../../../context";
+import { GameVal, Reader, SpriteID, Sprites } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareSprites: CompareFn = ({ oldFile, newFile }) => {
+const compareSprites: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? Sprites.decode(
         new Reader(oldFile.file.data, {
@@ -12,6 +13,12 @@ const compareSprites: CompareFn = ({ oldFile, newFile }) => {
         <SpriteID>oldFile.archive.archive
       )
     : undefined;
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? Sprites.decode(
@@ -22,6 +29,7 @@ const compareSprites: CompareFn = ({ oldFile, newFile }) => {
         <SpriteID>newFile.archive.archive
       )
     : undefined;
+  newEntry.gameVal = await GameVal.nameFor(Context.newCacheProvider, newEntry);
 
   return getFileDifferences(oldEntry, newEntry);
 };

@@ -25,6 +25,7 @@ export class SpotAnim extends PerFileLoadable {
   public ambient = 0;
   public contrast = 0;
   public debugName?: string;
+  public gameVal?: string;
 
   public static decode(r: Reader, id: SpotAnimID): SpotAnim {
     const v = new SpotAnim(id);

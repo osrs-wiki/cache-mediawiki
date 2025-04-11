@@ -10,6 +10,7 @@ import {
 } from "./differences.types";
 import { isEqualBytes } from "./differences.utils";
 import differencesFile from "./file/file";
+import Context from "../../context";
 import {
   getCacheProviderGithub,
   getCacheProviderLocal,
@@ -28,12 +29,12 @@ const differencesCache = async ({
   method = "github",
   type = "disk",
 }: DifferencesParams) => {
-  const oldCache = await new LazyPromise(() =>
+  Context.oldCacheProvider = await new LazyPromise(() =>
     method === "github"
       ? getCacheProviderGithub(oldVersion)
       : getCacheProviderLocal(oldVersion, type)
   ).asPromise();
-  const newCache = await new LazyPromise(() =>
+  Context.newCacheProvider = await new LazyPromise(() =>
     method === "github"
       ? getCacheProviderGithub(newVersion)
       : getCacheProviderLocal(newVersion, type)
@@ -44,13 +45,13 @@ const differencesCache = async ({
     Object.keys(indexNameMap).map(async (indexString) => {
       const index = parseInt(indexString);
       console.log(`Checking index ${index} differences`);
-      const oldIndex = await oldCache.getIndex(index);
-      const newIndex = await newCache.getIndex(index);
+      const oldIndex = await Context.oldCacheProvider.getIndex(index);
+      const newIndex = await Context.newCacheProvider.getIndex(index);
       if (oldIndex.crc !== newIndex.crc) {
         console.log(
           `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
         );
-        cacheDifferences[index] = differencesIndex(oldIndex, newIndex);
+        cacheDifferences[index] = await differencesIndex(oldIndex, newIndex);
       } else {
         console.log(`No changes in index ${index}.`);
       }
@@ -73,67 +74,73 @@ const differencesCache = async ({
  * @param newIndex The new index
  * @returns {IndexDifferences}
  */
-const differencesIndex = (
+const differencesIndex = async (
   oldIndex: FlatIndexData | DiskIndexData,
   newIndex: FlatIndexData | DiskIndexData
-): IndexDifferences => {
+): Promise<IndexDifferences> => {
   const newKeys = Array.from(newIndex.archives.keys());
   const oldKeys = Array.from(oldIndex.archives.keys());
   const indexDifferences: IndexDifferences = {};
 
   const sharedKeys = newKeys.filter((key) => oldIndex.archives.has(key));
-  sharedKeys.forEach((archiveKey) => {
-    const newArchive = newIndex.archives.get(archiveKey);
-    const oldArchive = oldIndex.archives.get(archiveKey);
+  await Promise.all(
+    sharedKeys.map(async (archiveKey) => {
+      const newArchive = newIndex.archives.get(archiveKey);
+      const oldArchive = oldIndex.archives.get(archiveKey);
 
-    if (newArchive.crc !== oldArchive.crc) {
+      if (newArchive.crc !== oldArchive.crc) {
+        console.log(
+          `[Index=${newIndex.id}] Changed archive: ${newArchive.archive} - (${oldArchive.files.size} -> ${newArchive.files.size})`
+        );
+        indexDifferences[archiveKey] = await differencesArchive({
+          oldIndex,
+          oldArchive,
+          newIndex,
+          newArchive,
+        });
+      }
+    })
+  );
+
+  const addedKeys = newKeys.filter((key) => !oldIndex.archives.has(key));
+  await Promise.all(
+    addedKeys.map(async (archiveKey) => {
+      const newArchive = newIndex.archives.get(archiveKey);
       console.log(
-        `[Index=${newIndex.id}] Changed archive: ${newArchive.archive} - (${oldArchive.files.size} -> ${newArchive.files.size})`
+        `[Index=${newIndex.id}] Added archive: ${newArchive.archive} (${newArchive.files.size} files)`
       );
-      indexDifferences[archiveKey] = differencesArchive({
-        oldIndex,
-        oldArchive,
+      const results = await differencesArchive({
         newIndex,
         newArchive,
       });
-    }
-  });
-
-  const addedKeys = newKeys.filter((key) => !oldIndex.archives.has(key));
-  addedKeys.forEach((archiveKey) => {
-    const newArchive = newIndex.archives.get(archiveKey);
-    console.log(
-      `[Index=${newIndex.id}] Added archive: ${newArchive.archive} (${newArchive.files.size} files)`
-    );
-    const results = differencesArchive({
-      newIndex,
-      newArchive,
-    });
-    indexDifferences[archiveKey] = indexDifferences[archiveKey]
-      ? {
-          ...indexDifferences[archiveKey],
-          ...results,
-        }
-      : results;
-  });
+      indexDifferences[archiveKey] = indexDifferences[archiveKey]
+        ? {
+            ...indexDifferences[archiveKey],
+            ...results,
+          }
+        : results;
+    })
+  );
 
   const removedKeys = oldKeys.filter((key) => !newIndex.archives.has(key));
-  removedKeys.forEach((archiveKey) => {
-    const oldArchive = oldIndex.archives.get(archiveKey);
-    console.log(
-      `[Index=${newIndex.id}] Removed archive: ${oldArchive.archive} (${oldArchive.files.size} files)`
-    );
-    const results = differencesArchive({
-      oldIndex,
-      oldArchive,
-    });
-    indexDifferences[archiveKey] = indexDifferences[archiveKey]
-      ? {
-          ...indexDifferences[archiveKey],
-          ...results,
-        }
-      : results;
-  });
+  await Promise.all(
+    removedKeys.map(async (archiveKey) => {
+      const oldArchive = oldIndex.archives.get(archiveKey);
+      console.log(
+        `[Index=${newIndex.id}] Removed archive: ${oldArchive.archive} (${oldArchive.files.size} files)`
+      );
+      const results = await differencesArchive({
+        oldIndex,
+        oldArchive,
+      });
+      indexDifferences[archiveKey] = indexDifferences[archiveKey]
+        ? {
+            ...indexDifferences[archiveKey],
+            ...results,
+          }
+        : results;
+    })
+  );
 
   return indexDifferences;
 };
@@ -142,7 +149,7 @@ const differencesIndex = (
  * Retrieve the differences between two archives and their files
  * @returns {ArchiveDifferences}
  */
-const differencesArchive = ({
+const differencesArchive = async ({
   oldIndex,
   oldArchive,
   newIndex,
@@ -152,68 +159,78 @@ const differencesArchive = ({
   oldArchive?: ArchiveData;
   newIndex?: FlatIndexData | DiskIndexData;
   newArchive?: ArchiveData;
-}): ArchiveDifferences => {
+}): Promise<ArchiveDifferences> => {
   const newKeys = newArchive ? Array.from(newArchive.files.keys()) : [];
   const oldKeys = oldArchive ? Array.from(oldArchive.files.keys()) : [];
   const archiveDifferences: ArchiveDifferences = {};
 
   if (newArchive && oldArchive) {
     const sharedKeys = newKeys.filter((key) => oldArchive.files.has(key));
-    sharedKeys.forEach((fileKey) => {
-      try {
-        const newFile = newArchive.getFile(fileKey);
-        const oldFile = oldArchive.getFile(fileKey);
-        if (!isEqualBytes(oldFile.data, newFile.data)) {
-          console.log(
-            `[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`
+    await Promise.all(
+      sharedKeys.map(async (fileKey) => {
+        try {
+          const newFile = newArchive.getFile(fileKey);
+          const oldFile = oldArchive.getFile(fileKey);
+          if (!isEqualBytes(oldFile.data, newFile.data)) {
+            console.log(
+              `[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`
+            );
+            const results = await differencesFile({
+              newFile: { index: newIndex, archive: newArchive, file: newFile },
+              oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
+            });
+            archiveDifferences[fileKey] = results;
+          }
+        } catch (error) {
+          console.error(
+            `Error checking diffs for ${oldIndex.id}/${oldArchive.archive}/${fileKey}`
           );
-          const results = differencesFile({
-            newFile: { index: newIndex, archive: newArchive, file: newFile },
-            oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
-          });
-          archiveDifferences[fileKey] = results;
         }
-      } catch (error) {
-        console.error(
-          `Error checking diffs for ${oldIndex.id}/${oldArchive.archive}/${fileKey}`
-        );
-      }
-    });
+      })
+    );
   }
 
   const addedKeys = oldArchive
     ? newKeys.filter((key) => !oldArchive.files.has(key))
     : newKeys;
-  addedKeys?.forEach((fileKey) => {
-    const newFile = newArchive.getFile(fileKey);
-    console.log(
-      `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
+  if (addedKeys) {
+    await Promise.all(
+      addedKeys.map(async (fileKey) => {
+        const newFile = newArchive.getFile(fileKey);
+        console.log(
+          `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
+        );
+        const results = await differencesFile({
+          newFile: { index: newIndex, archive: newArchive, file: newFile },
+        });
+        archiveDifferences[fileKey] = archiveDifferences[fileKey]
+          ? { ...archiveDifferences[fileKey], ...results }
+          : results;
+      })
     );
-    const results = differencesFile({
-      newFile: { index: newIndex, archive: newArchive, file: newFile },
-    });
-    archiveDifferences[fileKey] = archiveDifferences[fileKey]
-      ? { ...archiveDifferences[fileKey], ...results }
-      : results;
-  });
+  }
 
   const removedKeys = newArchive
     ? oldKeys.filter((key) => !newArchive.files.has(key))
     : oldKeys;
-  removedKeys?.forEach((fileKey) => {
-    const oldFile = oldArchive.getFile(fileKey);
-    console.log(
-      `[Index=${oldArchive.index}][Archive=${
-        oldArchive.archive
-      }] Removed file: ${fileKey.toString()}`
+  if (removedKeys) {
+    await Promise.all(
+      removedKeys.map(async (fileKey) => {
+        const oldFile = oldArchive.getFile(fileKey);
+        console.log(
+          `[Index=${oldArchive.index}][Archive=${
+            oldArchive.archive
+          }] Removed file: ${fileKey.toString()}`
+        );
+        const results = await differencesFile({
+          oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
+        });
+        archiveDifferences[fileKey] = archiveDifferences[fileKey]
+          ? { ...archiveDifferences[fileKey], ...results }
+          : results;
+      })
     );
-    const results = differencesFile({
-      oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
-    });
-    archiveDifferences[fileKey] = archiveDifferences[fileKey]
-      ? { ...archiveDifferences[fileKey], ...results }
-      : results;
-  });
+  }
 
   return archiveDifferences;
 };

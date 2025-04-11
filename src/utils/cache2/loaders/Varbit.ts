@@ -16,6 +16,7 @@ export class Varbit extends PerFileLoadable {
   public index: number;
   public leastSignificantBit: number;
   public mostSignificantBit: number;
+  public gameVal?: string;
 
   public static decode(r: Reader, id: VarbitID): Varbit {
     const v = new Varbit(id);
