@@ -13,7 +13,12 @@ const compareDBRows: CompareFn = async ({ oldFile, newFile }) => {
         <DBRowID>oldFile.file.id
       )
     : undefined;
-  oldEntry.gameVal = await GameVal.nameFor(Context.oldCacheProvider, oldEntry);
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? DBRow.decode(
@@ -24,7 +29,12 @@ const compareDBRows: CompareFn = async ({ oldFile, newFile }) => {
         <DBRowID>newFile.file.id
       )
     : undefined;
-  newEntry.gameVal = await GameVal.nameFor(Context.newCacheProvider, newEntry);
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

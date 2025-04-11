@@ -13,7 +13,12 @@ const compareVarbit: CompareFn = async ({ oldFile, newFile }) => {
         <VarbitID>oldFile.file.id
       )
     : undefined;
-  oldEntry.gameVal = await GameVal.nameFor(Context.oldCacheProvider, oldEntry);
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? Varbit.decode(
@@ -24,7 +29,12 @@ const compareVarbit: CompareFn = async ({ oldFile, newFile }) => {
         <VarbitID>newFile.file.id
       )
     : undefined;
-  newEntry.gameVal = await GameVal.nameFor(Context.newCacheProvider, newEntry);
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

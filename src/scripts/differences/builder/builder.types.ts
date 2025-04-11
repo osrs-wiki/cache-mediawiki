@@ -60,7 +60,7 @@ export const indexNameMap: {
     [ConfigType.Object]: {
       name: "Objects",
       identifiers: ["name", "id"],
-      fields: ["actions"],
+      fields: ["gameVal", "actions"],
       urls: {
         chisel: "https://chisel.weirdgloop.org/moid/object_id.html#",
         abex: "https://abextm.github.io/cache2/#/viewer/obj/",
@@ -79,7 +79,7 @@ export const indexNameMap: {
     [ConfigType.Npc]: {
       name: "Npcs",
       identifiers: ["name", "id"],
-      fields: ["combatLevel", "actions"],
+      fields: ["gameVal", "combatLevel", "actions"],
       urls: {
         chisel: "https://chisel.weirdgloop.org/moid/npc_id.html#",
         abex: "https://abextm.github.io/cache2/#/viewer/npc/",
@@ -89,6 +89,7 @@ export const indexNameMap: {
       name: "Items",
       identifiers: ["name", "id"],
       fields: [
+        "gameVal",
         "examine",
         "isMembers",
         "isGrandExchangable",
@@ -127,7 +128,7 @@ export const indexNameMap: {
     [ConfigType.DbRow]: {
       name: "Database Rows",
       identifiers: ["id"],
-      fields: ["table", "values"],
+      fields: ["gameVal", "table", "values"],
       urls: {
         abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
       },
@@ -135,13 +136,13 @@ export const indexNameMap: {
     [ConfigType.SpotAnim]: {
       name: "Spot Anims",
       identifiers: ["id"],
-      fields: ["modelId", "animationId"],
+      fields: ["gameVal", "modelId", "animationId"],
       urls: {},
     },
     [ConfigType.VarBit]: {
       name: "Varbits",
       identifiers: ["id"],
-      fields: ["index", "leastSignificantBit", "mostSignificantBit"],
+      fields: ["gameVal", "index", "leastSignificantBit", "mostSignificantBit"],
       urls: {
         chisel: "https://chisel.weirdgloop.org/varbs/display?varbit=",
       },
@@ -150,7 +151,7 @@ export const indexNameMap: {
   [IndexType.Sprites]: {
     name: "Sprites",
     identifiers: ["id"],
-    fields: ["width", "height"],
+    fields: ["gameVal", "width", "height"],
     urls: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",

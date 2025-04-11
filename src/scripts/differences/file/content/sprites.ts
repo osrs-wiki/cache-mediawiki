@@ -29,7 +29,12 @@ const compareSprites: CompareFn = async ({ oldFile, newFile }) => {
         <SpriteID>newFile.archive.archive
       )
     : undefined;
-  newEntry.gameVal = await GameVal.nameFor(Context.newCacheProvider, newEntry);
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

@@ -18,7 +18,12 @@ const compareSpotAnim: CompareFn = async ({ oldFile, newFile }) => {
         <SpotAnimID>oldFile.file.id
       )
     : undefined;
-  oldEntry.gameVal = await GameVal.nameFor(Context.oldCacheProvider, oldEntry);
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? SpotAnim.decode(
@@ -29,7 +34,12 @@ const compareSpotAnim: CompareFn = async ({ oldFile, newFile }) => {
         <SpotAnimID>newFile.file.id
       )
     : undefined;
-  newEntry.gameVal = await GameVal.nameFor(Context.newCacheProvider, newEntry);
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

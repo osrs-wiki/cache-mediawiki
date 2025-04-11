@@ -15,7 +15,12 @@ const compareItems: CompareFn = async ({ oldFile, newFile }) => {
         <ItemID>oldFile.file.id
       )
     : undefined;
-  oldEntry.gameVal = await GameVal.nameFor(Context.oldCacheProvider, oldEntry);
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? Item.decode(
@@ -26,7 +31,12 @@ const compareItems: CompareFn = async ({ oldFile, newFile }) => {
         <ItemID>newFile.file.id
       )
     : undefined;
-  newEntry.gameVal = await GameVal.nameFor(Context.newCacheProvider, newEntry);
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   if (
     Context.infoboxes &&
