@@ -12,18 +12,20 @@ export const renderNpcs = async (npc: NPC) => {
   try {
     if (
       Context.renders &&
-      existsSync("./data/renders/npc/" + npc.id + ".png")
+      existsSync(`./data/${Context.renders}/npc/${npc.id}.png`)
     ) {
-      await mkdir("./out/renders/npc", { recursive: true });
+      await mkdir(`./out/${Context.renders}/npc`, { recursive: true });
       await copyFile(
-        "./data/renders/npc/" + npc.id + ".png",
-        formatFileName("./out/renders/npc/" + npc.name + ".png")
+        `./data/${Context.renders}/npc/${npc.id}.png`,
+        formatFileName(`./out/${Context.renders}/npc/${npc.name}.png`)
       );
-      if (existsSync("./data/renders/chathead/" + npc.id + ".png")) {
-        await mkdir("./out/renders/chathead", { recursive: true });
+      if (existsSync(`./data/${Context.renders}/chathead/${npc.id}.png`)) {
+        await mkdir(`./out/${Context.renders}/chathead`, { recursive: true });
         await copyFile(
-          "./data/renders/chathead/" + npc.id + ".png",
-          formatFileName("./out/renders/chathead/" + npc.name + " chathead.png")
+          `./data/${Context.renders}/chathead/${npc.id}.png`,
+          formatFileName(
+            `./out/${Context.renders}/chathead/${npc.name} chathead.png`
+          )
         );
       }
     }
