@@ -78,4 +78,4 @@ export type FileDifferences = {
 export type CompareFn = (params: {
   oldFile?: FileContext;
   newFile?: FileContext;
-}) => FileDifferences;
+}) => Promise<FileDifferences>;

@@ -1,11 +1,11 @@
 import Context from "../../../../context";
-import { Obj, ObjID, Reader } from "../../../../utils/cache2";
+import { GameVal, Obj, ObjID, Reader } from "../../../../utils/cache2";
 import { buildsceneryInfobox } from "../../../infoboxGenernator/infoboxes/scenery";
 import { renderScenery } from "../../../renders/scenery";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareObjects: CompareFn = ({ oldFile, newFile }) => {
+const compareObjects: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? Obj.decode(
         new Reader(oldFile.file.data, {
@@ -15,6 +15,12 @@ const compareObjects: CompareFn = ({ oldFile, newFile }) => {
         <ObjID>oldFile.file.id
       )
     : undefined;
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? Obj.decode(
@@ -25,6 +31,12 @@ const compareObjects: CompareFn = ({ oldFile, newFile }) => {
         <ObjID>newFile.file.id
       )
     : undefined;
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   if (
     Context.infoboxes &&

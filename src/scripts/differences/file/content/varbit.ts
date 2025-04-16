@@ -1,8 +1,9 @@
-import { Reader, Varbit, VarbitID } from "../../../../utils/cache2";
+import Context from "../../../../context";
+import { GameVal, Reader, Varbit, VarbitID } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareVarbit: CompareFn = ({ oldFile, newFile }) => {
+const compareVarbit: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? Varbit.decode(
         new Reader(oldFile.file.data, {
@@ -12,6 +13,12 @@ const compareVarbit: CompareFn = ({ oldFile, newFile }) => {
         <VarbitID>oldFile.file.id
       )
     : undefined;
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? Varbit.decode(
@@ -22,6 +29,12 @@ const compareVarbit: CompareFn = ({ oldFile, newFile }) => {
         <VarbitID>newFile.file.id
       )
     : undefined;
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

@@ -85,6 +85,7 @@ export class Sprites extends NamedPerArchiveLoadable {
   sprites: Sprite[];
 
   palette!: types.PrimitiveArray<types.RGB, Uint32Array>;
+  public gameVal?: string;
 
   public static decode(r: Reader, id: types.SpriteID): Sprites {
     let chunkOffset = r.length - 2;

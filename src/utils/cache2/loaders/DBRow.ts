@@ -67,6 +67,7 @@ export class DBRow extends PerFileLoadable {
   public table = <DBTableID>-1;
   public values: (string | number | bigint | undefined)[][] = [];
   public types: (ScriptVarID | undefined)[][] = [];
+  public gameVal?: string;
 
   public static decode(r: Reader, id: DBRowID): DBRow {
     const v = new DBRow(id);
@@ -111,6 +112,7 @@ export class DBTable extends PerFileLoadable {
 
   public types: (ScriptVarID | undefined)[][] = [];
   public defaultValues: (string | number | bigint | undefined)[][] = [];
+  public gameVal?: string;
 
   public static decode(r: Reader, id: DBTableID): DBTable {
     const v = new DBTable(id);

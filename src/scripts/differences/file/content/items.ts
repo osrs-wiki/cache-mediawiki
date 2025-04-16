@@ -1,11 +1,11 @@
 import Context from "../../../../context";
-import { Item, ItemID, Reader } from "../../../../utils/cache2";
+import { GameVal, Item, ItemID, Reader } from "../../../../utils/cache2";
 import { buildItemInfobox } from "../../../infoboxGenernator/infoboxes/item/item";
 import { renderItems } from "../../../renders";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareItems: CompareFn = ({ oldFile, newFile }) => {
+const compareItems: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? Item.decode(
         new Reader(oldFile.file.data, {
@@ -15,6 +15,12 @@ const compareItems: CompareFn = ({ oldFile, newFile }) => {
         <ItemID>oldFile.file.id
       )
     : undefined;
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? Item.decode(
@@ -25,6 +31,12 @@ const compareItems: CompareFn = ({ oldFile, newFile }) => {
         <ItemID>newFile.file.id
       )
     : undefined;
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   if (
     Context.infoboxes &&

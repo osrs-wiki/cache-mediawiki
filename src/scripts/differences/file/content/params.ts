@@ -2,7 +2,7 @@ import { Param, ParamID, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareParams: CompareFn = ({ oldFile, newFile }) => {
+const compareParams: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? Param.decode(
         new Reader(oldFile.file.data, {

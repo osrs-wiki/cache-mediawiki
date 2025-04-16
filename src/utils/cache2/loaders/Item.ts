@@ -75,6 +75,7 @@ export class Item extends PerFileLoadable {
   public placeholderLinkedItem = <ItemID>-1;
   public placeholderTemplate = <ItemID>-1;
   public params = new Params();
+  public gameVal?: string;
 
   public static decode(r: Reader, id: ItemID): Item {
     const v = new Item(id);

@@ -1,8 +1,9 @@
-import { DBRow, DBRowID, Reader } from "../../../../utils/cache2";
+import Context from "../../../../context";
+import { DBRow, DBRowID, GameVal, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareDBRows: CompareFn = ({ oldFile, newFile }) => {
+const compareDBRows: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? DBRow.decode(
         new Reader(oldFile.file.data, {
@@ -12,6 +13,12 @@ const compareDBRows: CompareFn = ({ oldFile, newFile }) => {
         <DBRowID>oldFile.file.id
       )
     : undefined;
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? DBRow.decode(
@@ -22,6 +29,12 @@ const compareDBRows: CompareFn = ({ oldFile, newFile }) => {
         <DBRowID>newFile.file.id
       )
     : undefined;
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };
