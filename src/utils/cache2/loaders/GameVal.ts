@@ -35,7 +35,7 @@ export class GameVal extends Loadable {
   ): Promise<string | undefined> {
     const clazz = obj?.constructor;
     if (clazz && "gameval" in clazz) {
-      const gv = await this.load(cache, clazz.gameval, obj.id);
+      const gv = await this.load(cache, clazz.gameval, obj.id - 1);
       return gv?.name;
     }
     return undefined;
