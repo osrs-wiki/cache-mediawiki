@@ -28,7 +28,6 @@ export interface IndexData {
   compression: number;
   crc: number;
   named: boolean;
-  sized: boolean;
 }
 
 export class ArchiveFile {
@@ -50,8 +49,8 @@ export class ArchiveData {
   public namehash!: number;
   public revision!: number;
   public crc!: number;
-  public compressedSize!: number;
-  public decompressedSize!: number;
+  public decompressedSize?: number;
+  public compressedSize?: number;
 
   /**@internal*/ files: Map<number, ArchiveFile> = new Map();
 
@@ -188,6 +187,7 @@ export interface CacheVersion {
   era: "osrs";
   indexRevision: number;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CacheVersion {
   export function isAfter(

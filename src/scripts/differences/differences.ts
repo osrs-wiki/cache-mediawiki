@@ -41,22 +41,19 @@ const differencesCache = async ({
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};
-  await Promise.all(
-    Object.keys(indexNameMap).map(async (indexString) => {
-      const index = parseInt(indexString);
-      console.log(`Checking index ${index} differences`);
-      const oldIndex = await Context.oldCacheProvider.getIndex(index);
-      const newIndex = await Context.newCacheProvider.getIndex(index);
-      if (oldIndex.crc !== newIndex.crc) {
-        console.log(
-          `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
-        );
-        cacheDifferences[index] = await differencesIndex(oldIndex, newIndex);
-      } else {
-        console.log(`No changes in index ${index}.`);
-      }
-    })
-  );
+  for (let index = 0; index < 23; index++) {
+    console.log(`Checking index ${index} differences`);
+    const oldIndex = await Context.oldCacheProvider.getIndex(index);
+    const newIndex = await Context.newCacheProvider.getIndex(index);
+    if (oldIndex.crc !== newIndex.crc) {
+      console.log(
+        `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
+      );
+      cacheDifferences[index] = await differencesIndex(oldIndex, newIndex);
+    } else {
+      console.log(`No changes in index ${index}.`);
+    }
+  }
 
   const builder = differencesBuilder(cacheDifferences);
   const dir = `./out/differences`;
