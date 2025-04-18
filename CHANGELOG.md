@@ -1,5 +1,20 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.19.0
+
+### Minor Changes
+
+- bf2eb95: Add support for rev230 SpotAnim opcode 9
+- fac8d43: Update GameVal to match abextm/cache2
+- bf2eb95: Add support for loading GameVal
+- 72472d2: Add gameval support to diffs
+
+### Patch Changes
+
+- e52f5f9: Add --renders arg to schedule.yml
+- 7cfc539: Fix incorrect gameval id loading
+- 32b12d5: Fix scenery and npc renders
+
 ## 0.18.0
 
 ### Minor Changes
