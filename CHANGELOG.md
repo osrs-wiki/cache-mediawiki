@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.19.1
+
+### Patch Changes
+
+- 729a249: Allow head wearpos for Infobox Bonuses in item pages
+
 ## 0.19.0
 
 ### Minor Changes
