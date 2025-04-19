@@ -136,8 +136,12 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
             ? item.params.get(ATTACK_RANGE_PARAM) ?? "0"
             : undefined,
         combatstyle: getWeaponCategory(item),
-        image: new MediaWikiFile(`${item.name} equipped male.png`),
-        altimage: new MediaWikiFile(`${item.name} equipped female.png`),
+        ...(item.wearpos1 !== WearPos.Ammo && item.wearpos1 !== WearPos.Ring
+          ? {
+              image: new MediaWikiFile(`${item.name} equipped male.png`),
+              altimage: new MediaWikiFile(`${item.name} equipped female.png`),
+            }
+          : {}),
       });
 
       if (item.wearpos1 === WearPos.Weapon && item.category > -1) {
