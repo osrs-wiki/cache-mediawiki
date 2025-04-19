@@ -167,4 +167,22 @@ describe("Item Infobox", () => {
     });
     expect(itemInfobox.build()).toMatchSnapshot();
   });
+
+  test("Item infobox should not set image and altimage for Ammo wearpos", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      wearpos1: WearPos.Ammo,
+    });
+    const builtInfobox = itemInfobox.build();
+    expect(builtInfobox).toMatchSnapshot();
+  });
+
+  test("Item infobox should not set image and altimage for Ring wearpos", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      wearpos1: WearPos.Ring,
+    });
+    const builtInfobox = itemInfobox.build();
+    expect(builtInfobox).toMatchSnapshot();
+  });
 });
