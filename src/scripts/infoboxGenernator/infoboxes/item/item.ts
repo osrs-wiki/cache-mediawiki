@@ -78,7 +78,7 @@ export const buildItemInfobox = async (item: Item, writeFiles = true) => {
 
     let infoboxBonuses = undefined;
     let combatStyles = undefined;
-    if (item.wearpos1 > 0) {
+    if (item.wearpos1 >= 0) {
       infoboxBonuses = new InfoboxTemplate("bonuses", {
         astab: item.params.has(STAB_ATTACK_PARAM)
           ? formatBonus(item.params.get(STAB_ATTACK_PARAM))
