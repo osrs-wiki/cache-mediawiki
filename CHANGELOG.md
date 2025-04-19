@@ -1,5 +1,12 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.19.1
+
+### Patch Changes
+
+- 83165b4: Do not include Infobox Bonus images for ring and ammo slot in item pages
+- 729a249: Allow head wearpos for Infobox Bonuses in item pages
+
 ## 0.19.0
 
 ### Minor Changes
