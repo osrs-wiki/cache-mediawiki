@@ -2,7 +2,7 @@ import { Reader, Struct, StructID } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareStructs: CompareFn = ({ oldFile, newFile }) => {
+const compareStructs: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? Struct.decode(
         new Reader(oldFile.file.data, {

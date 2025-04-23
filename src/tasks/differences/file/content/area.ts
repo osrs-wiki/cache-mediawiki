@@ -2,7 +2,7 @@ import { Area, AreaID, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareAreas: CompareFn = ({ oldFile, newFile }) => {
+const compareAreas: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? Area.decode(
         new Reader(oldFile.file.data, {

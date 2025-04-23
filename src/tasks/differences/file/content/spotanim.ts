@@ -1,8 +1,14 @@
-import { Reader, SpotAnim, SpotAnimID } from "../../../../utils/cache2";
+import Context from "../../../../context";
+import {
+  GameVal,
+  Reader,
+  SpotAnim,
+  SpotAnimID,
+} from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
-const compareSpotAnim: CompareFn = ({ oldFile, newFile }) => {
+const compareSpotAnim: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile
     ? SpotAnim.decode(
         new Reader(oldFile.file.data, {
@@ -12,6 +18,12 @@ const compareSpotAnim: CompareFn = ({ oldFile, newFile }) => {
         <SpotAnimID>oldFile.file.id
       )
     : undefined;
+  if (oldEntry) {
+    oldEntry.gameVal = await GameVal.nameFor(
+      Context.oldCacheProvider,
+      oldEntry
+    );
+  }
 
   const newEntry = newFile
     ? SpotAnim.decode(
@@ -22,6 +34,12 @@ const compareSpotAnim: CompareFn = ({ oldFile, newFile }) => {
         <SpotAnimID>newFile.file.id
       )
     : undefined;
+  if (newEntry) {
+    newEntry.gameVal = await GameVal.nameFor(
+      Context.newCacheProvider,
+      newEntry
+    );
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

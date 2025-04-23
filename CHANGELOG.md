@@ -1,5 +1,33 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.20.0
+
+### Minor Changes
+
+- fa09be4: Add collapsible sections for diff sections
+
+### Patch Changes
+
+- 83165b4: Do not include Infobox Bonus images for ring and ammo slot in item pages
+- 34c5d34: Replace collapsible section with mw-collapsible for diff results table generation.
+- 729a249: Allow head wearpos for Infobox Bonuses in item pages
+- 34c5d34: Do not include sections with empty diff tables on diff results
+
+## 0.19.0
+
+### Minor Changes
+
+- bf2eb95: Add support for rev230 SpotAnim opcode 9
+- fac8d43: Update GameVal to match abextm/cache2
+- bf2eb95: Add support for loading GameVal
+- 72472d2: Add gameval support to diffs
+
+### Patch Changes
+
+- e52f5f9: Add --renders arg to schedule.yml
+- 7cfc539: Fix incorrect gameval id loading
+- 32b12d5: Fix scenery and npc renders
+
 ## 0.18.0
 
 ### Minor Changes

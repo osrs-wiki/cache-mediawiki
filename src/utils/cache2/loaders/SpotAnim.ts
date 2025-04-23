@@ -1,7 +1,7 @@
 import { PerFileLoadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
-import { ConfigType, IndexType, SpotAnimID } from "../types";
+import { ConfigType, GameValType, IndexType, SpotAnimID } from "../types";
 
 @Typed
 export class SpotAnim extends PerFileLoadable {
@@ -11,6 +11,7 @@ export class SpotAnim extends PerFileLoadable {
 
   public static readonly index = IndexType.Configs;
   public static readonly archive = ConfigType.SpotAnim;
+  public static readonly gameval = GameValType.SpotAnims;
 
   public rotaton = 0;
   public textureToReplace: number[];
@@ -23,6 +24,8 @@ export class SpotAnim extends PerFileLoadable {
   public modelId: number;
   public ambient = 0;
   public contrast = 0;
+  public debugName?: string;
+  public gameVal?: string;
 
   public static decode(r: Reader, id: SpotAnimID): SpotAnim {
     const v = new SpotAnim(id);
@@ -48,6 +51,9 @@ export class SpotAnim extends PerFileLoadable {
           break;
         case 8:
           v.contrast = r.u8();
+          break;
+        case 9:
+          v.debugName = r.string();
           break;
         case 40:
           const length = r.u8();

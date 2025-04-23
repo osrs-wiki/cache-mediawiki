@@ -153,4 +153,36 @@ describe("Item Infobox", () => {
     });
     expect(itemInfobox.build()).toMatchSnapshot();
   });
+
+  test("Item infobox should be generated with head wearpos", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      wearpos1: WearPos.Head,
+      params: new Params()
+        .set(SLASH_DEFENCE_PARAM, 1)
+        .set(CRUSH_DEFENCE_PARAM, 1)
+        .set(STAB_DEFENCE_PARAM, 1)
+        .set(MAGIC_DEFENCE_PARAM, 1)
+        .set(RANGED_DEFENCE_PARAM, 1),
+    });
+    expect(itemInfobox.build()).toMatchSnapshot();
+  });
+
+  test("Item infobox should not set image and altimage for Ammo wearpos", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      wearpos1: WearPos.Ammo,
+    });
+    const builtInfobox = itemInfobox.build();
+    expect(builtInfobox).toMatchSnapshot();
+  });
+
+  test("Item infobox should not set image and altimage for Ring wearpos", async () => {
+    const itemInfobox = await buildItemInfobox({
+      ...BASE_ITEM,
+      wearpos1: WearPos.Ring,
+    });
+    const builtInfobox = itemInfobox.build();
+    expect(builtInfobox).toMatchSnapshot();
+  });
 });

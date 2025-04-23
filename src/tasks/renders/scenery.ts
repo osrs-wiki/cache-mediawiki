@@ -12,11 +12,11 @@ export const renderScenery = async (scenery: Obj) => {
   try {
     if (
       Context.renders &&
-      existsSync(`./data/${Context.renders}/scenery/${scenery.id}.png`)
+      existsSync(`./data/${Context.renders}/object/${scenery.id}_orient0.png`)
     ) {
       await mkdir(`./out/${Context.renders}/scenery`, { recursive: true });
       await copyFile(
-        `./data/${Context.renders}/scenery/${scenery.id}.png`,
+        `./data/${Context.renders}/object/${scenery.id}_orient0.png`,
         formatFileName(`./out/${Context.renders}/scenery/${scenery.name}.png`)
       );
     }
