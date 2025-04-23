@@ -5,6 +5,7 @@ import {
   MediaWikiHeader,
   MediaWikiTOC,
   MediaWikiTable,
+  MediaWikiTemplate,
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 import type {
@@ -216,9 +217,16 @@ const buildChangedResultTable = (
           .filter((value) => value !== undefined)
       : [];
 
+  const collapsedSectionTemplate = new MediaWikiTemplate("Collapsed section", {
+    collapsed: true,
+  });
+  collapsedSectionTemplate.add("", "14");
+  collapsedSectionTemplate.add("", "Click here to show");
+
   content.push(
     new MediaWikiHeader(`${differenceName} ${indexFeatures.name}`, 3),
     new MediaWikiBreak(),
+    collapsedSectionTemplate,
     new MediaWikiTable({
       rows: [
         {
@@ -256,6 +264,8 @@ const buildChangedResultTable = (
         class: "wikitable sortable sticky-header",
       },
     }),
+    new MediaWikiBreak(),
+    new MediaWikiTemplate("Collapsed section end"),
     new MediaWikiBreak()
   );
   return content;
@@ -305,9 +315,16 @@ const buildResultTable = (
         })
       : [];
 
+  const collapsedSectionTemplate = new MediaWikiTemplate("Collapsed section", {
+    collapsed: true,
+  });
+  collapsedSectionTemplate.add("", "14");
+  collapsedSectionTemplate.add("", "Click here to show");
+
   content.push(
     new MediaWikiHeader(`${differenceName} ${indexFeatures.name}`, 3),
     new MediaWikiBreak(),
+    collapsedSectionTemplate,
     new MediaWikiTable({
       rows: [
         {
@@ -338,6 +355,8 @@ const buildResultTable = (
         class: "wikitable sortable",
       },
     }),
+    new MediaWikiBreak(),
+    new MediaWikiTemplate("Collapsed section end"),
     new MediaWikiBreak()
   );
   return content;
