@@ -284,7 +284,7 @@ const buildChangedResultTable = (
       ],
       options: {
         class: `wikitable sortable sticky-header mw-collapsible${
-          rows.length > 50 ? " mw-collaped" : ""
+          rows.length > 50 ? " mw-collapsed" : ""
         }`,
       },
     }),
