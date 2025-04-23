@@ -1,5 +1,18 @@
 # @osrs-wiki/cache-mediawiki
 
+## 0.20.0
+
+### Minor Changes
+
+- fa09be4: Add collapsible sections for diff sections
+
+### Patch Changes
+
+- 83165b4: Do not include Infobox Bonus images for ring and ammo slot in item pages
+- 34c5d34: Replace collapsible section with mw-collapsible for diff results table generation.
+- 729a249: Allow head wearpos for Infobox Bonuses in item pages
+- 34c5d34: Do not include sections with empty diff tables on diff results
+
 ## 0.19.0
 
 ### Minor Changes
