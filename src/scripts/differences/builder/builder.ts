@@ -5,7 +5,6 @@ import {
   MediaWikiHeader,
   MediaWikiTOC,
   MediaWikiTable,
-  MediaWikiTemplate,
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 import type {
@@ -66,15 +65,17 @@ const differencesBuilder = (
       const indexDifferences = differences[index as unknown as number];
       if ("name" in indexFeatureMap) {
         const indexFeature = indexFeatureMap as IndexFeatures;
-        builder.addContents(
-          buildIndexDifferences(indexDifferences, indexFeature)
-        );
+        if (Object.keys(indexDifferences).length > 0) {
+          builder.addContents(
+            buildIndexDifferences(indexDifferences, indexFeature)
+          );
+        }
       } else {
         Object.keys(indexDifferences).forEach((archive) => {
           const archiveNumber = archive as unknown as number;
           const archiveDifferences = indexDifferences[archiveNumber];
           const indexFeature = indexFeatureMap[archiveNumber];
-          if (indexFeature) {
+          if (indexFeature && Object.keys(archiveDifferences).length > 0) {
             builder.addContents(
               buildArchiveDifferences(archiveDifferences, indexFeature)
             );
@@ -115,15 +116,12 @@ const buildIndexDifferences = (
       entry !== null && entry !== undefined && Object.keys(entry).length > 0
   );
 
-  const content: MediaWikiContent[] = [
-    new MediaWikiHeader(indexFeatures.name, 2),
-    new MediaWikiBreak(),
-    ...buildResultTable(addedResults, indexFeatures, "added"),
-    ...buildResultTable(removedResults, indexFeatures, "removed"),
-    ...buildChangedResultTable(changedResults, indexFeatures),
-  ];
-
-  return content;
+  return buildDiffSection(
+    addedResults,
+    removedResults,
+    changedResults,
+    indexFeatures
+  );
 };
 
 /**
@@ -154,14 +152,45 @@ const buildArchiveDifferences = (
       entry !== null && entry !== undefined && Object.keys(entry).length > 0
   );
 
+  return buildDiffSection(
+    addedResults,
+    removedResults,
+    changedResults,
+    indexFeatures
+  );
+};
+
+/**
+ * Builds a section of media wiki content for the differences between two cache files.
+ *  This includes the added, removed, and changed results.
+ * @param addedResults The added results from the differences
+ * @param removedResults The removed results from the differences
+ * @param changedResults The changed results from the differences
+ * @param indexFeatures Meta data for indexes
+ * @returns {MediaWikiContent[]}
+ */
+const buildDiffSection = (
+  addedResults: Result[],
+  removedResults: Result[],
+  changedResults: ChangedResult[],
+  indexFeatures: IndexFeatures
+): MediaWikiContent[] => {
   const content: MediaWikiContent[] = [
     new MediaWikiHeader(indexFeatures.name, 2),
     new MediaWikiBreak(),
-    ...buildResultTable(addedResults, indexFeatures, "added"),
-    ...buildResultTable(removedResults, indexFeatures, "removed"),
-    ...buildChangedResultTable(changedResults, indexFeatures),
   ];
 
+  if (addedResults.length > 0) {
+    content.push(...buildResultTable(addedResults, indexFeatures, "added"));
+  }
+
+  if (removedResults.length > 0) {
+    content.push(...buildResultTable(removedResults, indexFeatures, "removed"));
+  }
+
+  if (changedResults.length > 0) {
+    content.push(...buildChangedResultTable(changedResults, indexFeatures));
+  }
   return content;
 };
 
@@ -217,16 +246,9 @@ const buildChangedResultTable = (
           .filter((value) => value !== undefined)
       : [];
 
-  const collapsedSectionTemplate = new MediaWikiTemplate("Collapsed section", {
-    collapsed: true,
-  });
-  collapsedSectionTemplate.add("", "14");
-  collapsedSectionTemplate.add("", "Click here to show");
-
   content.push(
     new MediaWikiHeader(`${differenceName} ${indexFeatures.name}`, 3),
     new MediaWikiBreak(),
-    collapsedSectionTemplate,
     new MediaWikiTable({
       rows: [
         {
@@ -261,11 +283,11 @@ const buildChangedResultTable = (
         ...rows,
       ],
       options: {
-        class: "wikitable sortable sticky-header",
+        class: `wikitable sortable sticky-header mw-collapsible${
+          rows.length > 50 ? " mw-collapsed" : ""
+        }`,
       },
     }),
-    new MediaWikiBreak(),
-    new MediaWikiTemplate("Collapsed section end"),
     new MediaWikiBreak()
   );
   return content;
@@ -315,16 +337,9 @@ const buildResultTable = (
         })
       : [];
 
-  const collapsedSectionTemplate = new MediaWikiTemplate("Collapsed section", {
-    collapsed: true,
-  });
-  collapsedSectionTemplate.add("", "14");
-  collapsedSectionTemplate.add("", "Click here to show");
-
   content.push(
     new MediaWikiHeader(`${differenceName} ${indexFeatures.name}`, 3),
     new MediaWikiBreak(),
-    collapsedSectionTemplate,
     new MediaWikiTable({
       rows: [
         {
@@ -352,11 +367,11 @@ const buildResultTable = (
         ...rows,
       ],
       options: {
-        class: "wikitable sortable",
+        class: `wikitable sortable sticky-header mw-collapsible${
+          rows.length > 50 ? " mw-collapsed" : ""
+        }`,
       },
     }),
-    new MediaWikiBreak(),
-    new MediaWikiTemplate("Collapsed section end"),
     new MediaWikiBreak()
   );
   return content;
