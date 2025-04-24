@@ -1,3 +1,3 @@
-export { default as cas } from "./cas";
+export { default as combatAchievements } from "./combatAchievements";
 export { default as clues } from "./clues";
 export { default as differences } from "./differences";

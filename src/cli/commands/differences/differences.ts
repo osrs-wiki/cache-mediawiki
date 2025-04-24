@@ -3,6 +3,7 @@ import { Command } from "commander";
 import differencesCache from "../../../tasks/differences/differences";
 
 const differences = new Command("differences")
+  .alias("diffs")
   .description(
     "Generate a page outlining differences between two cache version."
   )

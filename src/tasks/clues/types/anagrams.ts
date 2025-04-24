@@ -1,3 +1,4 @@
+import { cluePageBuilder } from "../../../mediawiki/pages/clue";
 import {
   DBTable,
   DiskCacheProvider,
@@ -5,7 +6,6 @@ import {
   Item,
   ParamID,
 } from "../../../utils/cache2";
-import cluePageBuilder from "../builder";
 import {
   ITEM_PARAM_ID,
   getAnswer,
@@ -58,6 +58,8 @@ const generateAnagramPages = async (
       writeClueFile("anagrams", itemName, clue, builder);
     }
   });
+
+  console.log(`Generated ${rows.length} anagram clue pages.`);
 };
 
 export default generateAnagramPages;

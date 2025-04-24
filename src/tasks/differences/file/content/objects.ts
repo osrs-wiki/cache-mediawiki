@@ -1,6 +1,6 @@
 import Context from "../../../../context";
 import { GameVal, Obj, ObjID, Reader } from "../../../../utils/cache2";
-import { buildsceneryInfobox } from "../../../infoboxGenernator/infoboxes/scenery";
+import { writeSceneryPage } from "../../../pages/types";
 import { renderScenery } from "../../../renders/scenery";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
@@ -39,11 +39,11 @@ const compareObjects: CompareFn = async ({ oldFile, newFile }) => {
   }
 
   if (
-    Context.infoboxes &&
+    Context.pages &&
     !oldEntry &&
     newEntry.name.toLocaleLowerCase() !== "null"
   ) {
-    buildsceneryInfobox(newEntry);
+    writeSceneryPage(newEntry);
   }
 
   if (Context.renders && newEntry) {

@@ -5,7 +5,7 @@ type CacheMediaWikiContext = {
     npcs?: { [key: string]: string };
     scenery?: { [key: string]: string };
   };
-  infoboxes?: boolean;
+  pages?: boolean;
   newCache?: string;
   oldCache?: string;
   oldCacheProvider?: FlatCacheProvider | DiskCacheProvider;

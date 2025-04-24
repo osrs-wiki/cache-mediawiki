@@ -1,3 +1,4 @@
+import { cluePageBuilder } from "../../../mediawiki/pages/clue";
 import {
   DBTable,
   DiskCacheProvider,
@@ -5,7 +6,6 @@ import {
   Item,
   ParamID,
 } from "../../../utils/cache2";
-import cluePageBuilder from "../builder";
 import { ITEM_PARAM_ID, getAnswer, getTier, writeClueFile } from "../utils";
 
 const generateMusicPages = async (
@@ -60,6 +60,8 @@ const generateMusicPages = async (
       console.error(`Error creating clue ${row.id}: ${e}`);
     }
   });
+
+  console.log(`Generated ${rows.length} music clue pages.`);
 };
 
 export default generateMusicPages;

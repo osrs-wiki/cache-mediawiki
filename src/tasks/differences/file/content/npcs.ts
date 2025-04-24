@@ -1,9 +1,6 @@
 import Context from "../../../../context";
 import { GameVal, NPC, NPCID, Reader } from "../../../../utils/cache2";
-import {
-  buildMonsterInfobox,
-  buildNpcInfobox,
-} from "../../../infoboxGenernator/infoboxes/npc/npc";
+import { writeNpcPage } from "../../../pages/types";
 import { renderNpcs } from "../../../renders/npcs";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
@@ -42,15 +39,11 @@ const compareNpcs: CompareFn = async ({ oldFile, newFile }) => {
   }
 
   if (
-    Context.infoboxes &&
+    Context.pages &&
     !oldEntry &&
     newEntry.name.toLocaleLowerCase() !== "null"
   ) {
-    if (newEntry.combatLevel > 0) {
-      buildMonsterInfobox(newEntry);
-    } else {
-      buildNpcInfobox(newEntry);
-    }
+    writeNpcPage(newEntry);
   }
 
   if (Context.renders && newEntry) {

@@ -1,13 +1,13 @@
 import { program } from "commander";
 
-import { cas, clues, differences } from "./commands";
+import { combatAchievements, clues, differences } from "./commands";
 import options from "./options";
 import packageJson from "../../package.json";
 import Context from "../context";
 import { getExamines } from "../utils/examines";
 import { getLatestNewsTitle } from "../utils/news";
 
-const commands = [cas, clues, differences];
+const commands = [combatAchievements, clues, differences];
 
 program
   .name("Cache to MediaWiki tools")
@@ -16,7 +16,7 @@ program
   )
   .version(packageJson.version)
   .hook("preAction", async (command) => {
-    Context.infoboxes = command.opts().infoboxes;
+    Context.pages = command.opts().pages;
     Context.update = command.opts().update;
     Context.updateDate = command.opts().updateDate;
 

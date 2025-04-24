@@ -5,7 +5,7 @@ import {
   TYPE_ENUM_ID,
   getCombatAchievement,
   writeCombatAchievement,
-} from "./utils";
+} from "./combatAchievements.utils";
 import {
   CacheSource,
   CacheFileType,

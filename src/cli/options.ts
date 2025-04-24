@@ -16,8 +16,8 @@ const options = [
     false
   ),
   new Option(
-    "--infoboxes <infoboxes>",
-    "Include pages with infoboxes in the output."
+    "--pages <pages>",
+    "Include pages for cache content in the output."
   ).default(false),
   new Option("--update <update>", "The news post update title."),
   new Option("--updateDate <updateDate>", "The news post update date."),

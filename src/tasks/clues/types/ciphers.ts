@@ -1,3 +1,4 @@
+import { cluePageBuilder } from "../../../mediawiki/pages/clue";
 import {
   DBTable,
   DiskCacheProvider,
@@ -5,7 +6,6 @@ import {
   Item,
   ParamID,
 } from "../../../utils/cache2";
-import cluePageBuilder from "../builder";
 import {
   ITEM_PARAM_ID,
   getAnswer,
@@ -56,6 +56,8 @@ const generateCipherPages = async (
       writeClueFile("ciphers", itemName, clue, builder);
     }
   });
+
+  console.log(`Generated ${rows.length} cipher clue pages.`);
 };
 
 export default generateCipherPages;

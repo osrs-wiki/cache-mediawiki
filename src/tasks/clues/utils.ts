@@ -1,9 +1,13 @@
 import { MediaWikiBuilder } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
-import { Answer, Challenge, WieldedItems } from "./builder";
+import {
+  ClueAnswer,
+  ClueChallenge,
+  ClueWieldedItems,
+} from "../../mediawiki/pages/clue";
 import { CacheProvider, DBRow, Item, NPC, Obj } from "../../utils/cache2";
-import { lowerCaseFirst, vowel } from "../../utils/string";
+import { vowel } from "../../utils/string";
 
 export const ITEM_PARAM_ID = 623;
 
@@ -65,7 +69,7 @@ export const getAnswer = async (
   cache: Promise<CacheProvider>,
   answerIds: (string | number | bigint)[],
   typeOverride?: string
-): Promise<Answer[]> => {
+): Promise<ClueAnswer[]> => {
   if (answerIds) {
     const answersPromises = answerIds.map(async (value) => {
       const answerRow = await DBRow.load(cache, value as number);
@@ -117,53 +121,10 @@ export const getAnswer = async (
   return [];
 };
 
-export const formatAnswers = (answers: Answer[], emotes?: number[]): string => {
-  const answer = answers.reduce<string>((total, answer) => {
-    const answerString = answer.answer as string;
-    let formattedAnswer;
-    if (answer.type == "npc" && !answerString.startsWith("Speak")) {
-      formattedAnswer = `Speak to [[${answer.entityName}]] ${lowerCaseFirst(
-        answerString
-      )}`;
-    } else if (answer.type == "object" && !answerString.startsWith("Search")) {
-      formattedAnswer = `Search the ${answer.entityName.toLowerCase()} near ${lowerCaseFirst(
-        answerString
-      )}`;
-    } else if (answer.type == "map") {
-      formattedAnswer = `Dig ${formatMapAnswer(answerString)}`;
-    } else if (answer.type == "emote") {
-      formattedAnswer = `Perform the ${
-        emotes?.length > 0
-          ? emotes.map((emote) => `[[${getEmotePage(emote)}]]`).join(" and ") +
-            `${emotes.length > 1 ? " emotes" : " emote"}`
-          : "emote"
-      } near ${lowerCaseFirst(answerString)}`;
-    } else {
-      formattedAnswer = answer.answer;
-    }
-    return total + formattedAnswer;
-  }, "");
-  return answer;
-};
-
-export const formatMapAnswer = (answer: string) => {
-  let result = answer.replaceAll("fairy ring", "[[fairy ring]]");
-
-  const fairyCode = answer.match(/\([A-Z]+\)/g)?.[0];
-  if (fairyCode) {
-    result = result.replaceAll(
-      fairyCode,
-      `{{Fairycode|${fairyCode.replace(/[\(\)]+/g, "")}}}`
-    );
-  }
-
-  return lowerCaseFirst(result);
-};
-
 export const getChallenge = async (
   cache: Promise<CacheProvider>,
   challengeId?: string | number | bigint
-): Promise<Challenge> => {
+): Promise<ClueChallenge> => {
   let challenge;
   let challengeAnswer;
   if (challengeId) {
@@ -234,21 +195,6 @@ export const getRequirements = async (
   }
 };
 
-export const getDirections = (
-  type: string,
-  answerType: string,
-  answer: string
-) =>
-  `The clue reveals ${
-    answerType === "npc"
-      ? "who to speak to:"
-      : answerType === "object"
-      ? "where to search:"
-      : answerType === "map"
-      ? "where to dig:"
-      : ""
-  }<br><br>${answer}`;
-
 export const getNpc = async (cache: Promise<CacheProvider>, id: number) => {
   let npc = await NPC.load(cache, id);
   if (npc.name === "null" && npc.multiChildren.length > 0) {
@@ -263,50 +209,21 @@ export const getNpc = async (cache: Promise<CacheProvider>, id: number) => {
 export const getWieldedItems = async (
   cache: Promise<CacheProvider>,
   ids: (string | number | bigint)[]
-): Promise<WieldedItems[]> => {
+): Promise<ClueWieldedItems[]> => {
   if (ids) {
-    const wieldedItemsPromises = ids.map<Promise<WieldedItems>>(async (id) => {
-      const wieldedItemsRow = await DBRow.load(cache, id as number);
-      const values = wieldedItemsRow.values;
-      return { answer: values[0].join(", ") };
-    });
+    const wieldedItemsPromises = ids.map<Promise<ClueWieldedItems>>(
+      async (id) => {
+        const wieldedItemsRow = await DBRow.load(cache, id as number);
+        const values = wieldedItemsRow.values;
+        return { answer: values[0].join(", ") };
+      }
+    );
     return await Promise.all(wieldedItemsPromises);
   }
 };
 
 export const getTblRegions = (values: (string | number | bigint)[]) =>
   values?.map((region) => getTblRegion(region)).join(",");
-
-const emotes: { [key: number]: string } = {
-  1: "no",
-  2: "bow",
-  3: "angry",
-  4: "think",
-  5: "wave",
-  6: "shrug",
-  8: "beckon",
-  7: "cheer",
-  9: "laugh",
-  10: "jump for joy",
-  11: "yawn",
-  12: "dance",
-  13: "jig",
-  14: "spin",
-  15: "headbang",
-  16: "cry",
-  17: "blow kiss",
-  18: "panic",
-  19: "raspberry",
-  20: "clap",
-  21: "salute",
-  23: "goblin salute",
-  30: "flap",
-  31: "slap head",
-};
-
-export const getEmotePage = (emote: number): string => {
-  return emotes[emote];
-};
 
 export const writeClueFile = async (
   type: string,
