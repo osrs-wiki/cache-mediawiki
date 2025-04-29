@@ -1,5 +1,5 @@
-import { WeaponSlot, WeaponType } from "./item.types";
-import { Item, ParamID, WearPos } from "../../../utils/cache2";
+import { WeaponSlot, WeaponType } from "./item";
+import { Item, ParamID, WearPos } from "../../utils/cache2";
 
 export const STAB_ATTACK_PARAM: ParamID = 0 as ParamID;
 export const SLASH_ATTACK_PARAM: ParamID = 1 as ParamID;
@@ -19,11 +19,6 @@ export const ATTACK_SPEED_PARAM: ParamID = 14 as ParamID;
 export const RANGED_EQUIPMENT_STRENGTH_PARAM: ParamID = 189 as ParamID;
 export const MAGIC_DAMAGE_PARAM: ParamID = 299 as ParamID;
 
-export const formatBonus = (bonus: string | number) => {
-  const numberBonus = typeof bonus === "string" ? parseInt(bonus) : bonus;
-  return numberBonus > 0 ? `+${bonus}` : numberBonus < 0 ? `-${bonus}` : "0";
-};
-
 const weaponSlotMap: { [key: WearPos]: WeaponSlot } = {
   [WearPos.Weapon]: "weapon",
   [WearPos.Head]: "head",
@@ -36,13 +31,6 @@ const weaponSlotMap: { [key: WearPos]: WeaponSlot } = {
   [WearPos.Boots]: "feet",
   [WearPos.Amulet]: "neck",
   [WearPos.Ring]: "ring",
-};
-
-export const getEquipmentSlot = (item: Item): WeaponSlot => {
-  if (item.wearpos1 === WearPos.Weapon && item.wearpos2 === WearPos.Shield) {
-    return "2h";
-  }
-  return weaponSlotMap[item.wearpos1];
 };
 
 const weaponCategoryMap: { [key: number]: WeaponType } = {
@@ -77,13 +65,23 @@ const weaponCategoryMap: { [key: number]: WeaponType } = {
   1588: "Partisan",
 };
 
-export const getWeaponCategory = (item: Item): WeaponType | undefined => {
-  return weaponCategoryMap[item.category];
+/**
+ * Get the equipment slot name for a given item.
+ * @param item The item to get the equipment slot for.
+ * @returns The equipment slot name for the item.
+ */
+export const getEquipmentSlot = (item: Item): WeaponSlot => {
+  if (item.wearpos1 === WearPos.Weapon && item.wearpos2 === WearPos.Shield) {
+    return "2h";
+  }
+  return weaponSlotMap[item.wearpos1];
 };
 
-export const getInventoryActions = (item: Item) => {
-  return item.inventoryActions.map((action, index) => {
-    const subops = item.subops[index];
-    return subops?.length > 0 ? `${action} (${subops.join(", ")})` : action;
-  });
+/**
+ * Get the weapon category for a given item.
+ * @param item The item to get the weapon category for.
+ * @returns The weapon category for the item.
+ */
+export const getWeaponCategory = (item: Item): WeaponType | undefined => {
+  return weaponCategoryMap[item.category];
 };

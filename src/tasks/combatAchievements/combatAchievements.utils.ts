@@ -1,11 +1,11 @@
 import { mkdir, writeFile } from "fs/promises";
 
+import { combatAchievementPageBuilder } from "../../mediawiki/pages/combatAchievement";
 import {
   CombatAchievement,
   CombatAchievementTier,
   CombatAchievementType,
-  combatAchievementPageBuilder,
-} from "../../mediawiki/pages/combatAchievement";
+} from "../../types/combatAchievements";
 import { ParamID, Struct } from "../../utils/cache2";
 import { formatFileName } from "../../utils/files";
 

@@ -9,8 +9,8 @@ import {
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
-import { CombatAchievement } from "./combatAchievement.types";
 import Context from "../../../context";
+import { CombatAchievement } from "../../../types/combatAchievements";
 import { lowerCaseFirst, vowel } from "../../../utils/string";
 
 /**
