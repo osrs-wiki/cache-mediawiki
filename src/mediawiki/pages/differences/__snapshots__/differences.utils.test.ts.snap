@@ -14,7 +14,7 @@ Object {
     Object {
       "content": Array [
         MediaWikiText {
-          "children": "test <span style=\\"color: #ee4231\\">removed</span> <span style=\\"color: #ee4231\\">first</span>",
+          "children": "test <span style=\\"color: #ee4231\\">removed first</span>",
           "styling": undefined,
         },
       ],
@@ -22,7 +22,7 @@ Object {
     Object {
       "content": Array [
         MediaWikiText {
-          "children": "test <span style=\\"color: #6bc71f\\">added</span> <span style=\\"color: #6bc71f\\">second</span>",
+          "children": "test <span style=\\"color: #6bc71f\\">added second</span>",
           "styling": undefined,
         },
       ],
