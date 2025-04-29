@@ -1,5 +1,6 @@
 import { getEquipmentSlot, getWeaponCategory } from "./item.utils";
-import { CategoryID, WearPos } from "../../utils/cache2";
+
+import { CategoryID, WearPos } from "@/utils/cache2";
 
 describe("item utils", () => {
   test("getWeaponCategory", () => {

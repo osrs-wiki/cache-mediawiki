@@ -1,6 +1,7 @@
 import { writePageToFile } from "../pages.utils";
-import { npcPageBuilder } from "../../../mediawiki/pages/npc";
-import { CacheProvider, NPC } from "../../../utils/cache2";
+
+import { npcPageBuilder } from "@/mediawiki/pages/npc";
+import { CacheProvider, NPC } from "@/utils/cache2";
 
 export const writeNpcPageFromCache = async (
   cache: Promise<CacheProvider>,

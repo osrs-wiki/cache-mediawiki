@@ -6,8 +6,9 @@ import {
   buildArchiveDifferences,
   buildIndexDifferences,
 } from "./differences.utils";
-import { CacheDifferences } from "../../../tasks/differences/differences.types";
-import { IndexType } from "../../../utils/cache2";
+
+import { CacheDifferences } from "@/tasks/differences/differences.types";
+import { IndexType } from "@/utils/cache2/types";
 
 /**
  * Retrieve a MediaWikiBuilder filled with content from two cache differences.

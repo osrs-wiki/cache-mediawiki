@@ -3,9 +3,10 @@ import { program } from "commander";
 import { combatAchievements, clues, differences } from "./commands";
 import options from "./options";
 import packageJson from "../../package.json";
-import Context from "../context";
-import { getExamines } from "../utils/examines";
-import { getLatestNewsTitle } from "../utils/news";
+
+import Context from "@/context";
+import { getExamines } from "@/utils/examines";
+import { getLatestNewsTitle } from "@/utils/news";
 
 const commands = [combatAchievements, clues, differences];
 

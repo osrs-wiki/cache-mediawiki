@@ -1,4 +1,5 @@
 import { Difference } from "../../../tasks/differences/differences.types";
+
 import {
   Area,
   ConfigType,
@@ -13,8 +14,8 @@ import {
   Sprites,
   Struct,
   Varbit,
-} from "../../../utils/cache2";
-import { Loadable } from "../../../utils/cache2/Loadable";
+} from "@/utils/cache2";
+import { Loadable } from "@/utils/cache2/Loadable";
 
 export type IndexFeature<T extends Loadable, Name> = {
   name: Name;

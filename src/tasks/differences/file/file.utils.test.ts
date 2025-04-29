@@ -1,5 +1,5 @@
 import { getChangedResult } from "./file.utils";
-import { NPC } from "../../../utils/cache2";
+import { NPC } from "@/utils/cache2";
 
 describe("file utils", () => {
   describe("getChangedResult", () => {

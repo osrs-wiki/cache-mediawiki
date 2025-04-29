@@ -1,5 +1,6 @@
 import npcPageBuilder from "./npc";
-import { NPCID } from "../../../utils/cache2";
+
+import { NPCID } from "@/utils/cache2";
 
 describe("npcPageBuilder", () => {
   beforeEach(() => {

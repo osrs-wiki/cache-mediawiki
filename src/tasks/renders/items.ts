@@ -1,9 +1,9 @@
 import { existsSync } from "fs";
 import { copyFile, mkdir } from "fs/promises";
 
-import Context from "../../context";
-import { Item } from "../../utils/cache2";
-import { formatFileName } from "../../utils/files";
+import Context from "@/context";
+import { Item } from "@/utils/cache2";
+import { formatFileName } from "@/utils/files";
 
 export const renderItems = async (item: Item) => {
   if (item.name.toLocaleLowerCase() === "null") {

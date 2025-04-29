@@ -1,5 +1,3 @@
-import { Item, ParamID, WearPos } from "../../utils/cache2";
-
 export type WeaponSlot =
   | "head"
   | "weapon"

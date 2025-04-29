@@ -1,5 +1,5 @@
-import { ClueAnswer } from "../../../types/clue";
-import { lowerCaseFirst } from "../../../utils/string";
+import { ClueAnswer } from "@/types/clue";
+import { lowerCaseFirst } from "@/utils/string";
 
 export const getDirections = (
   type: string,

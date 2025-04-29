@@ -1,7 +1,8 @@
-import Context from "../../../../context";
-import { DBRow, DBRowID, GameVal, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
+
+import Context from "@/context";
+import { DBRow, DBRowID, GameVal, Reader } from "@/utils/cache2";
 
 const compareDBRows: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile

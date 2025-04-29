@@ -2,16 +2,14 @@ import { mkdir, writeFile } from "fs/promises";
 
 import { CacheDifferences, DifferencesParams } from "./differences.types";
 import { differencesIndex } from "./index";
-import Context from "../../context";
+
+import Context from "@/context";
 import {
   differencesPageBuilder,
   indexNameMap,
-} from "../../mediawiki/pages/differences";
-import {
-  getCacheProviderGithub,
-  getCacheProviderLocal,
-} from "../../utils/cache";
-import { LazyPromise } from "../../utils/cache2/LazyPromise";
+} from "@/mediawiki/pages/differences";
+import { getCacheProviderGithub, getCacheProviderLocal } from "@/utils/cache";
+import { LazyPromise } from "@/utils/cache2/LazyPromise";
 
 /**
  * Write cache differences to output files.

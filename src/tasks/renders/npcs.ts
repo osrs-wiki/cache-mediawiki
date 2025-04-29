@@ -1,9 +1,9 @@
 import { existsSync } from "fs";
 import { copyFile, mkdir } from "fs/promises";
 
-import Context from "../../context";
-import { NPC } from "../../utils/cache2";
-import { formatFileName } from "../../utils/files";
+import Context from "@/context";
+import { NPC } from "@/utils/cache2";
+import { formatFileName } from "@/utils/files";
 
 export const renderNpcs = async (npc: NPC) => {
   if (npc.name.toLocaleLowerCase() === "null") {

@@ -9,8 +9,9 @@ import {
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxScenery } from "./scenery.types";
-import Context from "../../../context";
-import { Obj } from "../../../utils/cache2";
+
+import Context from "@/context";
+import { Obj } from "@/utils/cache2";
 
 export const sceneryPageBuilder = (scenery: Obj) => {
   const infoboxscenery = new InfoboxTemplate<InfoboxScenery>("Scenery", {

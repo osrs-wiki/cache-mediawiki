@@ -1,7 +1,8 @@
-import Context from "../../../../context";
-import { GameVal, Reader, Varbit, VarbitID } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
+
+import Context from "@/context";
+import { GameVal, Reader, Varbit, VarbitID } from "@/utils/cache2";
 
 const compareVarbit: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile

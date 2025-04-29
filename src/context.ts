@@ -1,4 +1,4 @@
-import { FlatCacheProvider, DiskCacheProvider } from "./utils/cache2";
+import { FlatCacheProvider, DiskCacheProvider } from "@/utils/cache2";
 
 type CacheMediaWikiContext = {
   examines?: {

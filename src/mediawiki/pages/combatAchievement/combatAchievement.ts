@@ -9,9 +9,9 @@ import {
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
-import Context from "../../../context";
-import { CombatAchievement } from "../../../types/combatAchievements";
-import { lowerCaseFirst, vowel } from "../../../utils/string";
+import Context from "@/context";
+import { CombatAchievement } from "@/types/combatAchievements";
+import { lowerCaseFirst, vowel } from "@/utils/string";
 
 /**
  * Generate a MediaWikiBuillder from a CombatAchievement object.

@@ -1,7 +1,7 @@
 import { MediaWikiBuilder } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
-import { formatFileName } from "../../utils/files";
+import { formatFileName } from "@/utils/files";
 
 export const writePageToFile = async (
   builder: MediaWikiBuilder,

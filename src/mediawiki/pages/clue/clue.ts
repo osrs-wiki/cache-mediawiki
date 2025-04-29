@@ -13,8 +13,9 @@ import _ from "underscore";
 
 import { CluePageBuilderProps } from "./clue.types";
 import { formatAnswers, getDirections } from "./clue.utils";
-import Context from "../../../context";
-import { vowel } from "../../../utils/string";
+
+import Context from "@/context";
+import { vowel } from "@/utils/string";
 
 const cluePageBuilder = ({
   answers,

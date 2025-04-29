@@ -11,8 +11,6 @@ import compareSpotAnim from "./content/spotanim";
 import compareSprites from "./content/sprites";
 import compareStructs from "./content/struct";
 import compareVarbit from "./content/varbit";
-import { IndexType, ConfigType } from "../../../utils/cache2";
-import { PerFileLoadable } from "../../../utils/cache2/Loadable";
 import {
   ChangedResult,
   ResultValue,
@@ -20,6 +18,9 @@ import {
   FileDifferences,
   CompareFn,
 } from "../differences.types";
+
+import { IndexType, ConfigType } from "@/utils/cache2";
+import { PerFileLoadable } from "@/utils/cache2/Loadable";
 
 /**
  * A map of index and archive types to decoding functions.

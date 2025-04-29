@@ -1,13 +1,13 @@
 import { mkdir, writeFile } from "fs/promises";
 
-import { combatAchievementPageBuilder } from "../../mediawiki/pages/combatAchievement";
+import { combatAchievementPageBuilder } from "@/mediawiki/pages/combatAchievement";
 import {
   CombatAchievement,
   CombatAchievementTier,
   CombatAchievementType,
-} from "../../types/combatAchievements";
-import { ParamID, Struct } from "../../utils/cache2";
-import { formatFileName } from "../../utils/files";
+} from "@/types/combatAchievements";
+import { ParamID, Struct } from "@/utils/cache2";
+import { formatFileName } from "@/utils/files";
 
 /**
  * Enums

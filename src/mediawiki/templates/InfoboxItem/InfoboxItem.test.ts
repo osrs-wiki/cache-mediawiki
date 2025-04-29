@@ -1,5 +1,6 @@
 import InfoboxItem from "./InfoboxItem";
-import { Item, ItemID, Params } from "../../../utils/cache2";
+
+import { Item, ItemID, Params } from "@/utils/cache2";
 
 const BASE_ITEM: Item = {
   name: "Test Item",

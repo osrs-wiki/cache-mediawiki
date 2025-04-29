@@ -1,6 +1,6 @@
 import { MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
 
-import { WeaponSlot } from "../../../types/item/item";
+import { WeaponSlot } from "@/types/item";
 
 export type InfoboxBonuses = {
   astab: string;

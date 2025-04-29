@@ -1,9 +1,10 @@
-import Context from "../../../../context";
-import { GameVal, NPC, NPCID, Reader } from "../../../../utils/cache2";
 import { writeNpcPage } from "../../../pages/types";
 import { renderNpcs } from "../../../renders/npcs";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
+
+import Context from "@/context";
+import { GameVal, NPC, NPCID, Reader } from "@/utils/cache2";
 
 const compareNpcs: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile

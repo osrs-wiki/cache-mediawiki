@@ -7,8 +7,9 @@ import {
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
-import { Item, WearPos } from "../../../utils/cache2";
 import { CombatStyles, InfoboxBonuses, InfoboxItem } from "../../templates";
+
+import { Item, WearPos } from "@/utils/cache2";
 
 export const itemPageBuilder = (item: Item) => {
   const infoboxItem = InfoboxItem(item);

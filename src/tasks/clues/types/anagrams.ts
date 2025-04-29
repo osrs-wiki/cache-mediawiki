@@ -1,11 +1,3 @@
-import { cluePageBuilder } from "../../../mediawiki/pages/clue";
-import {
-  DBTable,
-  DiskCacheProvider,
-  FlatCacheProvider,
-  Item,
-  ParamID,
-} from "../../../utils/cache2";
 import {
   ITEM_PARAM_ID,
   getAnswer,
@@ -14,7 +6,16 @@ import {
   getTblRegions,
   getTier,
   writeClueFile,
-} from "../utils";
+} from "../clues.utils";
+
+import { cluePageBuilder } from "@/mediawiki/pages/clue";
+import {
+  DBTable,
+  DiskCacheProvider,
+  FlatCacheProvider,
+  Item,
+  ParamID,
+} from "@/utils/cache2";
 
 const generateAnagramPages = async (
   cache: Promise<FlatCacheProvider | DiskCacheProvider>

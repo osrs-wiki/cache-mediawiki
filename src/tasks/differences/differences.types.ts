@@ -1,4 +1,4 @@
-import { CacheFileType, CacheSource } from "../../utils/cache";
+import { CacheFileType, CacheSource } from "@/utils/cache";
 import {
   ArchiveData,
   ArchiveFile,
@@ -11,7 +11,7 @@ import {
   Params,
   TextureID,
   WearPos,
-} from "../../utils/cache2";
+} from "@/utils/cache2";
 
 export type DifferencesParams = {
   newVersion: string;

@@ -10,8 +10,9 @@ import {
 import type { InfoboxNpc } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxMonster } from "./npc.types";
-import Context from "../../../context";
-import { NPC } from "../../../utils/cache2";
+
+import Context from "@/context";
+import { NPC } from "@/utils/cache2";
 
 export const npcPageBuilder = (npc: NPC) => {
   const infoboxNpc =

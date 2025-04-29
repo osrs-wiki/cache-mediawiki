@@ -1,6 +1,7 @@
 import sceneryPageBuilder from "./scenery";
-import Context from "../../../context";
-import { ObjID } from "../../../utils/cache2";
+
+import Context from "@/context";
+import { ObjID } from "@/utils/cache2";
 
 describe("sceneryPageBuilder", () => {
   it("build scenery page", async () => {

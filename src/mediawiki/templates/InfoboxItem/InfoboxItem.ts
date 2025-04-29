@@ -6,8 +6,9 @@ import {
 import type { InfoboxItem as InfoboxItemTemplate } from "@osrs-wiki/mediawiki-builder";
 
 import { getInventoryActions } from "./InfoboxItem.utils";
-import Context from "../../../context";
-import { Item } from "../../../utils/cache2";
+
+import Context from "@/context";
+import { Item } from "@/utils/cache2";
 
 const InfoboxItem = (item: Item) => {
   return new InfoboxTemplate<InfoboxItemTemplate>("item", {

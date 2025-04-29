@@ -3,8 +3,9 @@ import {
   writeNpcPageFromCache,
   writeSceneryPageFromCache,
 } from "./types";
-import { getCacheProviderGithub } from "../../utils/cache";
-import { LazyPromise } from "../../utils/cache2/LazyPromise";
+
+import { getCacheProviderGithub } from "@/utils/cache";
+import { LazyPromise } from "@/utils/cache2/LazyPromise";
 
 const pageGenerator = async (type: string, id: number) => {
   const cache = new LazyPromise(() => getCacheProviderGithub()).asPromise();

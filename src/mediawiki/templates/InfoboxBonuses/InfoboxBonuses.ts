@@ -1,6 +1,7 @@
 import { InfoboxTemplate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
 
 import { formatBonus } from "./InfoboxBonuses.utils";
+
 import {
   ATTACK_RANGE_PARAM,
   ATTACK_SPEED_PARAM,
@@ -21,8 +22,8 @@ import {
   STAB_DEFENCE_PARAM,
   getEquipmentSlot,
   getWeaponCategory,
-} from "../../../types/item";
-import { Item, WearPos } from "../../../utils/cache2";
+} from "@/types/item";
+import { Item, WearPos } from "@/utils/cache2";
 
 const InfoboxBonuses = (item: Item) => {
   return new InfoboxTemplate("bonuses", {

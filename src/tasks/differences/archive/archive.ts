@@ -1,11 +1,8 @@
-import {
-  ArchiveData,
-  DiskIndexData,
-  FlatIndexData,
-} from "../../../utils/cache2";
 import { ArchiveDifferences } from "../differences.types";
 import { isEqualBytes } from "../differences.utils";
 import { differencesFile } from "../file";
+
+import { ArchiveData, DiskIndexData, FlatIndexData } from "@/utils/cache2";
 
 /**
  * Retrieve the differences between two archives and their files

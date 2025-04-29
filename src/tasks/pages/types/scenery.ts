@@ -1,6 +1,7 @@
-import { sceneryPageBuilder } from "../../../mediawiki/pages/scenery";
-import { CacheProvider, Obj } from "../../../utils/cache2";
 import { writePageToFile } from "../pages.utils";
+
+import { sceneryPageBuilder } from "@/mediawiki/pages/scenery";
+import { CacheProvider, Obj } from "@/utils/cache2";
 
 export const writeSceneryPageFromCache = async (
   cache: Promise<CacheProvider>,

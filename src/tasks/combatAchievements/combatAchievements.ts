@@ -6,15 +6,16 @@ import {
   getCombatAchievement,
   writeCombatAchievement,
 } from "./combatAchievements.utils";
+
 import {
   CacheSource,
   CacheFileType,
   getCacheProviderGithub,
   getCacheProviderLocal,
   getEnumMap,
-} from "../../utils/cache";
-import { Enum, Struct } from "../../utils/cache2";
-import { LazyPromise } from "../../utils/cache2/LazyPromise";
+} from "@/utils/cache";
+import { Enum, Struct } from "@/utils/cache2";
+import { LazyPromise } from "@/utils/cache2/LazyPromise";
 
 /**
  * Generate Combat Achievement pages from the cache.

@@ -1,6 +1,7 @@
 import { indexMap } from "./file.utils";
-import { IndexType } from "../../../utils/cache2";
 import { CompareFn, FileDifferences } from "../differences.types";
+
+import { IndexType } from "@/utils/cache2";
 
 /**
  * Retrieve the file differences between two given files.

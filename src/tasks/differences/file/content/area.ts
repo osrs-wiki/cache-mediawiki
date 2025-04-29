@@ -1,6 +1,7 @@
-import { Area, AreaID, Reader } from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
+
+import { Area, AreaID, Reader } from "@/utils/cache2";
 
 const compareAreas: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile

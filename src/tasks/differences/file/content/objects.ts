@@ -1,9 +1,10 @@
-import Context from "../../../../context";
-import { GameVal, Obj, ObjID, Reader } from "../../../../utils/cache2";
 import { writeSceneryPage } from "../../../pages/types";
 import { renderScenery } from "../../../renders/scenery";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
+
+import Context from "@/context";
+import { GameVal, Obj, ObjID, Reader } from "@/utils/cache2";
 
 const compareObjects: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile

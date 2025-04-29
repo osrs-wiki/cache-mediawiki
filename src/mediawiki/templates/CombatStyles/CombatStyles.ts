@@ -4,8 +4,8 @@ import {
   ATTACK_SPEED_PARAM,
   ATTACK_RANGE_PARAM,
   getWeaponCategory,
-} from "../../../types/item";
-import { Item } from "../../../utils/cache2";
+} from "@/types/item";
+import { Item } from "@/utils/cache2";
 
 export const CombatStyles = (item: Item) => {
   const combatStyles = new MediaWikiTemplate("CombatStyles");

@@ -1,4 +1,5 @@
 import itemPageBuilder from "./item";
+
 import {
   STAB_ATTACK_PARAM,
   SLASH_ATTACK_PARAM,
@@ -14,14 +15,8 @@ import {
   RANGED_DEFENCE_PARAM,
   RANGED_AMMO_STRENGTH_PARAM,
   RANGED_EQUIPMENT_STRENGTH_PARAM,
-} from "../../../types/item";
-import {
-  CategoryID,
-  Item,
-  ItemID,
-  Params,
-  WearPos,
-} from "../../../utils/cache2";
+} from "@/types/item";
+import { CategoryID, Item, ItemID, Params, WearPos } from "@/utils/cache2";
 
 const BASE_ITEM: Item = {
   name: "Test Item",

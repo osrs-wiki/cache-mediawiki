@@ -1,8 +1,9 @@
 import { getFieldDifferencesRow, formatEntryValue } from "./differences.utils";
-import { jagexHSLtoHex } from "../../../utils/colors";
+
+import { jagexHSLtoHex } from "@/utils/colors";
 
 // Mock the jagexHSLtoHex function
-jest.mock("../../../utils/colors", () => ({
+jest.mock("@/utils/colors", () => ({
   jagexHSLtoHex: jest.fn((color) => `#mock-${color}`),
 }));
 

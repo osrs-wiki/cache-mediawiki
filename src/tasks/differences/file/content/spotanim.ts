@@ -1,12 +1,8 @@
-import Context from "../../../../context";
-import {
-  GameVal,
-  Reader,
-  SpotAnim,
-  SpotAnimID,
-} from "../../../../utils/cache2";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
+
+import Context from "@/context";
+import { GameVal, Reader, SpotAnim, SpotAnimID } from "@/utils/cache2";
 
 const compareSpotAnim: CompareFn = async ({ oldFile, newFile }) => {
   const oldEntry = oldFile

@@ -8,13 +8,14 @@ import {
   generateMapPages,
   generateMusicPages,
 } from "./types";
+
 import {
   CacheFileType,
   CacheSource,
   getCacheProviderGithub,
   getCacheProviderLocal,
-} from "../../utils/cache";
-import { LazyPromise } from "../../utils/cache2/LazyPromise";
+} from "@/utils/cache";
+import { LazyPromise } from "@/utils/cache2/LazyPromise";
 
 const generateCluePages = async (
   method: CacheSource,

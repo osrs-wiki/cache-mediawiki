@@ -1,6 +1,7 @@
-import { itemPageBuilder } from "../../../mediawiki/pages/item";
-import { CacheProvider, Item } from "../../../utils/cache2";
 import { writePageToFile } from "../pages.utils";
+
+import { itemPageBuilder } from "@/mediawiki/pages/item";
+import { CacheProvider, Item } from "@/utils/cache2";
 
 export const writeItemPageFromCache = async (
   cache: Promise<CacheProvider>,

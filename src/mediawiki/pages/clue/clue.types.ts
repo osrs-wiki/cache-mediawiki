@@ -1,9 +1,5 @@
-import {
-  ClueAnswer,
-  ClueChallenge,
-  ClueWieldedItems,
-} from "../../../types/clue";
-import { Item } from "../../../utils/cache2";
+import { ClueAnswer, ClueChallenge, ClueWieldedItems } from "@/types/clue";
+import { Item } from "@/utils/cache2";
 
 export type CluePageBuilderProps = {
   answers?: ClueAnswer[];

@@ -1,5 +1,6 @@
 import { WeaponSlot, WeaponType } from "./item";
-import { Item, ParamID, WearPos } from "../../utils/cache2";
+
+import { Item, ParamID, WearPos } from "@/utils/cache2";
 
 export const STAB_ATTACK_PARAM: ParamID = 0 as ParamID;
 export const SLASH_ATTACK_PARAM: ParamID = 1 as ParamID;

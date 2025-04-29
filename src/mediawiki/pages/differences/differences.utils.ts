@@ -26,8 +26,9 @@ import {
   Result,
   ResultValue,
 } from "../../../tasks/differences/differences.types";
-import { jagexHSLtoHex } from "../../../utils/colors";
-import { capitalize } from "../../../utils/string";
+
+import { jagexHSLtoHex } from "@/utils/colors";
+import { capitalize } from "@/utils/string";
 
 /**
  * Format the value a field.
