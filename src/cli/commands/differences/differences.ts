@@ -5,7 +5,7 @@ import differencesCache from "../../../tasks/differences/differences";
 const differences = new Command("differences")
   .alias("diffs")
   .description(
-    "Generate a page outlining differences between two cache version."
+    "Generate a page outlining differences between two cache versions."
   )
   .action((options) => {
     differencesCache({
