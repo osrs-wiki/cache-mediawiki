@@ -1,11 +1,7 @@
 import { MediaWikiBuilder } from "@osrs-wiki/mediawiki-builder";
 import { mkdir, writeFile } from "fs/promises";
 
-import {
-  ClueAnswer,
-  ClueChallenge,
-  ClueWieldedItems,
-} from "../../mediawiki/pages/clue";
+import { ClueAnswer, ClueChallenge, ClueWieldedItems } from "../../types/clue";
 import { CacheProvider, DBRow, Item, NPC, Obj } from "../../utils/cache2";
 import { vowel } from "../../utils/string";
 

@@ -29,21 +29,21 @@
     "@osrs-wiki/mediawiki-builder": "^1.6.1",
     "base64-arraybuffer-es6": "^3.0.1",
     "commander": "^13.1.0",
-    "diff": "^5.2.0",
-    "dotenv": "^16.4.1",
-    "fflate": "^0.8.1",
+    "diff": "^7.0.0",
+    "dotenv": "^16.5.0",
+    "fflate": "^0.8.2",
     "rss-parser": "^3.13.0",
     "tsconfig-paths": "^4.2.0",
-    "typescript-transform-paths": "^3.4.6",
-    "underscore": "^1.13.6"
+    "typescript-transform-paths": "^3.5.5",
+    "underscore": "^1.13.7"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.9",
-    "@changesets/cli": "^2.27.1",
-    "@types/diff": "^5.2.0",
+    "@changesets/cli": "^2.29.2",
+    "@types/diff": "^7.0.2",
     "@types/jest": "^28.1.7",
-    "@types/node": "^18.15.3",
-    "@types/underscore": "^1.11.14",
+    "@types/node": "^22.15.3",
+    "@types/underscore": "^1.13.0",
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
@@ -59,21 +59,14 @@
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "ts-jest": "^28.0.8",
-    "ts-node": "^10.9.1",
-    "ts-patch": "^3.1.2",
-    "tsx": "^4.19.2",
-    "typescript": "^5.3.2"
+    "ts-patch": "^3.3.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
   },
   "lint-staged": {
     "src/**/*.{js,ts}": [
       "npm run lint:fix",
       "npm run prettier:fix"
-    ]
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "data/*",
-      "out/*"
     ]
   }
 }
