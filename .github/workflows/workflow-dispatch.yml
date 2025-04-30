@@ -6,6 +6,12 @@ on:
       task:
         description: "Task type"
         required: true
+        default: "differences"
+        type: choice
+        options:
+          - differences
+          - combatAchievements
+          - clues
 
       pages:
         description: "Include pages (optional)"
@@ -97,7 +103,7 @@ jobs:
           run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
 
       - name: Run task
-        run: npm run start -- -t ${{ github.event.inputs.task }} --pages ${{ github.event.inputs.pages }} --examines ${{ github.event.inputs.examines }} --renders ${{ steps.download_render_artifacts.outputs.download-path != null && format('renders-{0}-1', github.event.inputs.newCache) || github.event.inputs.renders }} --oldCache ${{ steps.get_releases.outputs.releases != null && fromJson(steps.get_releases.outputs.releases)[1] || github.event.inputs.oldCache }} --newCache ${{ steps.get_releases.outputs.releases != null && fromJson(steps.get_releases.outputs.releases)[0] || github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
+        run: npm run start ${{ github.event.inputs.task }} -- --pages ${{ github.event.inputs.pages }} --examines ${{ github.event.inputs.examines }} --renders ${{ steps.download_render_artifacts.outputs.download-path != null && format('renders-{0}-1', github.event.inputs.newCache) || github.event.inputs.renders }} --oldCache ${{ steps.get_releases.outputs.releases != null && fromJson(steps.get_releases.outputs.releases)[1] || github.event.inputs.oldCache }} --newCache ${{ steps.get_releases.outputs.releases != null && fromJson(steps.get_releases.outputs.releases)[0] || github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v4
