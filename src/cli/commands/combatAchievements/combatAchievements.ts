@@ -1,6 +1,6 @@
 import { Command } from "commander";
 
-import generateCombatAchievements from "../../../tasks/combatAchievements";
+import generateCombatAchievements from "@/tasks/combatAchievements";
 
 const combatAchievements = new Command("combatAchievements")
   .alias("cas")

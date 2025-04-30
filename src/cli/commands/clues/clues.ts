@@ -1,6 +1,6 @@
 import { Command } from "commander";
 
-import generateCluePages from "../../../tasks/clues";
+import generateCluePages from "@/tasks/clues";
 
 const clues = new Command("clues")
   .description("Generate clue scroll pages.")

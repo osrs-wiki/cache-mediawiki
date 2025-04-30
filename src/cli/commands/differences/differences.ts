@@ -1,6 +1,6 @@
 import { Command } from "commander";
 
-import differencesCache from "../../../tasks/differences/differences";
+import differencesCache from "@/tasks/differences/differences";
 
 const differences = new Command("differences")
   .alias("diffs")
