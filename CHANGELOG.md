@@ -1,5 +1,28 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.0.0
+
+### Major Changes
+
+- 95f2865: - Project refactor and restructure
+  - Add commander for cli
+  - Migrate scripts to tasks
+  - Decouple mediawiki generation from tasks
+  - Replace yarn with npm
+  - Upgrade dependencies
+  - Add support for pulling latest abex caches
+  - Update README
+  - Improve cache content types
+
+### Minor Changes
+
+- 95f2865: Change scripts to tasks
+- 95f2865: Migrate all MediaWikiBuilder's to a mediawiki folder
+- 95f2865: Split mediawiki into pages and templates
+- 95f2865: Replace yarn with npm
+- 95f2865: Add commander for cli
+- 95f2865: Create shared types for cache content
+
 ## 0.20.0
 
 ### Minor Changes
