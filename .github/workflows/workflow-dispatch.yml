@@ -6,9 +6,15 @@ on:
       task:
         description: "Task type"
         required: true
+        default: "differences"
+        type: choice
+        options:
+          - differences
+          - combatAchievements
+          - clues
 
-      infobox:
-        description: "Include infoboxes (optional)"
+      pages:
+        description: "Include pages (optional)"
         default: "false"
         required: false
 
@@ -50,14 +56,21 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
-          cache: yarn
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
-      - name: Build
-        run: yarn build
+      - name: Get abex releases
+        id: get_releases
+        if: github.event.inputs.newCache == ''
+        uses: yakubique/github-releases@v1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repository: abextm/osrs-cache
+          sort: "desc"
 
       - name: Get renderer workflow runs
         id: get_render_runs
@@ -90,7 +103,7 @@ jobs:
           run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
 
       - name: Run task
-        run: yarn start:node -t ${{ github.event.inputs.task }} --infobox ${{ github.event.inputs.infobox }} --examines ${{ github.event.inputs.examines }} --renders ${{ steps.download_render_artifacts.outputs.download-path != null && format('renders-{0}-1', github.event.inputs.newCache) || github.event.inputs.renders }} --oldCache ${{ github.event.inputs.oldCache }} --newCache ${{ github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
+        run: npm run start ${{ github.event.inputs.task }} -- --pages ${{ github.event.inputs.pages }} --examines ${{ github.event.inputs.examines }} --renders ${{ steps.download_render_artifacts.outputs.download-path != null && format('renders-{0}-1', github.event.inputs.newCache) || github.event.inputs.renders }} --oldCache ${{ steps.get_releases.outputs.releases != null && fromJson(steps.get_releases.outputs.releases)[1] || github.event.inputs.oldCache }} --newCache ${{ steps.get_releases.outputs.releases != null && fromJson(steps.get_releases.outputs.releases)[0] || github.event.inputs.newCache }} --update ${{ github.event.inputs.update }} --updateDate ${{ github.event.inputs.updateDate }}
 
       - name: Upload Output
         uses: actions/upload-artifact@v4

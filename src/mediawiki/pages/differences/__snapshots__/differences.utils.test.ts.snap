@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`differences builder utils getFieldDifferencesRow multiple difference 1`] = `
+Object {
+  "cells": Array [
+    Object {
+      "content": Array [
+        MediaWikiText {
+          "children": "test",
+          "styling": undefined,
+        },
+      ],
+    },
+    Object {
+      "content": Array [
+        MediaWikiText {
+          "children": "test <span style=\\"color: #ee4231\\">removed first</span>",
+          "styling": undefined,
+        },
+      ],
+    },
+    Object {
+      "content": Array [
+        MediaWikiText {
+          "children": "test <span style=\\"color: #6bc71f\\">added second</span>",
+          "styling": undefined,
+        },
+      ],
+    },
+  ],
+  "minimal": true,
+}
+`;
+
+exports[`differences builder utils getFieldDifferencesRow one difference 1`] = `
+Object {
+  "cells": Array [
+    Object {
+      "content": Array [
+        MediaWikiText {
+          "children": "test",
+          "styling": undefined,
+        },
+      ],
+    },
+    Object {
+      "content": Array [
+        MediaWikiText {
+          "children": "test <span style=\\"color: #ee4231\\">removed</span>",
+          "styling": undefined,
+        },
+      ],
+    },
+    Object {
+      "content": Array [
+        MediaWikiText {
+          "children": "test <span style=\\"color: #6bc71f\\">added</span>",
+          "styling": undefined,
+        },
+      ],
+    },
+  ],
+  "minimal": true,
+}
+`;

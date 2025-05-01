@@ -6,11 +6,13 @@
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
+    "resolveJsonModule": true,
     "outDir": "dist",
     "baseUrl": "./",
     "experimentalDecorators": true,
     "paths": {
-      "@config": ["./src/config/dotenv.ts"]
+      "@config": ["./src/config/dotenv.ts"],
+      "@/*": ["./src/*"]
     },
     "plugins": [{ "transform": "typescript-transform-paths" }]
   },

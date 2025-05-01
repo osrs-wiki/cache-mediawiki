@@ -2,7 +2,7 @@ name: Scheduled update-day diff tool
 
 on:
   schedule:
-    - cron: "35 11 * * 3"
+    - cron: "37 10 * * 3"
 
 jobs:
   run-diff-task:
@@ -14,14 +14,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
-          cache: yarn
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build
-        run: yarn build
+        run: npm ci
 
       - name: Get abex releases
         id: get_releases
@@ -63,7 +60,7 @@ jobs:
           run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
 
       - name: Run task
-        run: yarn start:node -t diffs --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }} ${{ steps.download_render_artifacts.outputs.download-path != null && format('--renders renders-{0}-1', fromJson(steps.get_releases.outputs.releases)[0]) || '' }}
+        run: npm run start differences -- --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }} ${{ steps.download_render_artifacts.outputs.download-path != null && format('--renders renders-{0}-1', fromJson(steps.get_releases.outputs.releases)[0]) || '' }} --update "auto" --updateDate "auto" --pages "true" --examines "true"
 
       - name: Upload Output
         uses: actions/upload-artifact@v4

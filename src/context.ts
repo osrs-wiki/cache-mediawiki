@@ -1,11 +1,11 @@
-import { FlatCacheProvider, DiskCacheProvider } from "./utils/cache2";
+import { FlatCacheProvider, DiskCacheProvider } from "@/utils/cache2";
 
 type CacheMediaWikiContext = {
   examines?: {
     npcs?: { [key: string]: string };
     scenery?: { [key: string]: string };
   };
-  infoboxes?: boolean;
+  pages?: boolean;
   newCache?: string;
   oldCache?: string;
   oldCacheProvider?: FlatCacheProvider | DiskCacheProvider;
