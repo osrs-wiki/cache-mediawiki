@@ -11,6 +11,7 @@ import compareSpotAnim from "./content/spotanim";
 import compareSprites from "./content/sprites";
 import compareStructs from "./content/struct";
 import compareVarbit from "./content/varbit";
+import compareVarplayer from "./content/varplayer";
 import {
   ChangedResult,
   ResultValue,
@@ -39,6 +40,7 @@ export const indexMap: {
     [ConfigType.SpotAnim]: compareSpotAnim,
     [ConfigType.Struct]: compareStructs,
     [ConfigType.VarBit]: compareVarbit,
+    [ConfigType.VarPlayer]: compareVarplayer,
   },
   [IndexType.Sprites]: compareSprites,
 };

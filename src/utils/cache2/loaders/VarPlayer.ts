@@ -12,6 +12,7 @@ export class VarPlayer extends PerFileLoadable {
   public static readonly index = IndexType.Configs;
   public static readonly archive = ConfigType.VarPlayer;
   public static readonly gameval = GameValType.Varps;
+  public gameVal?: string;
 
   public static decode(r: Reader, id: VarPID): VarPlayer {
     const v = new VarPlayer(id);
