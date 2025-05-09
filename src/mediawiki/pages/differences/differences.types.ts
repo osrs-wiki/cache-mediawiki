@@ -13,6 +13,7 @@ import {
   SpotAnim,
   Sprites,
   Struct,
+  VarPlayer,
   Varbit,
 } from "@/utils/cache2";
 import { Loadable } from "@/utils/cache2/Loadable";
@@ -39,7 +40,8 @@ export type IndexFeatures =
   | IndexFeature<SpotAnim, "Spot Anims">
   | IndexFeature<Sprites, "Sprites">
   | IndexFeature<Struct, "Structs">
-  | IndexFeature<Varbit, "Varbits">;
+  | IndexFeature<Varbit, "Varbits">
+  | IndexFeature<VarPlayer, "VarPlayers">;
 
 export const resultNameMap: { [key in Difference]: string } = {
   added: "New",
@@ -145,6 +147,14 @@ export const indexNameMap: {
       fields: ["gameVal", "index", "leastSignificantBit", "mostSignificantBit"],
       urls: {
         chisel: "https://chisel.weirdgloop.org/varbs/display?varbit=",
+      },
+    },
+    [ConfigType.VarPlayer]: {
+      name: "VarPlayers",
+      identifiers: ["id"],
+      fields: ["gameVal"],
+      urls: {
+        chisel: "https://chisel.weirdgloop.org/varbs/display?varplayer=",
       },
     },
   },
