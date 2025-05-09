@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.1.0
+
+### Minor Changes
+
+- 0f30c2d: Add support for varp diffs
+
 ## 1.0.0
 
 ### Major Changes
