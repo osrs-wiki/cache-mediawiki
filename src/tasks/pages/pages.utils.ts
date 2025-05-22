@@ -9,8 +9,8 @@ export const writePageToFile = async (
   name: string,
   id: string
 ) => {
-  await mkdir("./out/pages/${type}", { recursive: true });
-  writeFile(`./out/pages/item/${id}.txt`, builder.build());
+  await mkdir(`./out/pages/${type}`, { recursive: true });
+  writeFile(`./out/pages/${type}/${id}.txt`, builder.build());
 
   await mkdir(`./out/pages/${type}/named`, { recursive: true });
   writeFile(
