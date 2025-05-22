@@ -31,3 +31,35 @@ InfoboxTemplate {
   },
 }
 `;
+
+exports[`IfnoboxItem InfoboxItem - with wearpos1 >= 0 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Item",
+  "params": Object {
+    "bankable": false,
+    "equipable": true,
+    "examine": "Examine text.",
+    "exchange": true,
+    "id": "1234",
+    "image": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Test Item.png",
+      "options": undefined,
+    },
+    "members": true,
+    "name": "Test Item",
+    "noteable": false,
+    "options": Array [
+      "Test Action",
+    ],
+    "placeholder": undefined,
+    "quest": "No",
+    "release": undefined,
+    "stackable": false,
+    "tradeable": true,
+    "update": undefined,
+    "value": 0,
+    "weight": "0.000",
+  },
+}
+`;
