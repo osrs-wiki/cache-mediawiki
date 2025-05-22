@@ -28,7 +28,7 @@ const options = [
   new Option(
     "--examinesVersion <examinesVersion>",
     "The version of the examines."
-  ).default("latest"),
+  ).default("master"),
 ];
 
 export default options;

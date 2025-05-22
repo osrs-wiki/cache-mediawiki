@@ -16,12 +16,13 @@ program
     "A set of scripts for fetching content from the OSRS cache and transforming it into MediaWiki format."
   )
   .version(packageJson.version)
-  .hook("preAction", async (command) => {
-    Context.pages = command.opts().pages;
-    Context.update = command.opts().update;
-    Context.updateDate = command.opts().updateDate;
+  .hook("preAction", async (_program, command) => {
+    const options = command.optsWithGlobals();
+    Context.pages = options.pages;
+    Context.update = options.update;
+    Context.updateDate = options.updateDate;
 
-    const renders = command.opts().renders;
+    const renders = options.renders;
     Context.renders =
       renders === "true"
         ? "renders"
@@ -37,8 +38,8 @@ program
       }
     }
 
-    if (command.opts().examines) {
-      const version = command.opts().examinesVersion;
+    if (options.examines) {
+      const version = options.examinesVersion;
       Context.examines = {
         npcs: {},
         scenery: {},
