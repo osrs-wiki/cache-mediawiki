@@ -1,6 +1,7 @@
 import { Difference } from "../../../tasks/differences/differences.types";
 
 import {
+  Animation,
   Area,
   ConfigType,
   DBRow,
@@ -30,6 +31,7 @@ export type IndexURLType = "abex" | "chisel";
 export type IndexURLs = { [key in IndexURLType]?: string };
 
 export type IndexFeatures =
+  | IndexFeature<Animation, "Animations">
   | IndexFeature<Area, "Areas">
   | IndexFeature<DBRow, "Database Rows">
   | IndexFeature<Enum, "Enums">
@@ -166,5 +168,11 @@ export const indexNameMap: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
     },
+  },
+  [IndexType.Animations]: {
+    name: "Animations",
+    identifiers: ["id"],
+    fields: ["gameVal", "debugName", "leftHandItem", "rightHandItem"],
+    urls: {},
   },
 };

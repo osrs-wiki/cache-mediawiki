@@ -10,7 +10,7 @@ import {
   type MediaWikiTableCell,
 } from "@osrs-wiki/mediawiki-builder";
 import { diffWords } from "diff";
-import _ from "underscore";
+import _, { flatten } from "underscore";
 
 import {
   IndexFeatures,
@@ -167,8 +167,10 @@ export const buildIndexDifferences = (
   indexDifferences: IndexDifferences,
   indexFeatures: IndexFeatures
 ): MediaWikiContent[] => {
-  const fileDifferences = Object.values(indexDifferences).map(
-    (archive) => archive[0]
+  const fileDifferences = flatten(
+    Object.values(indexDifferences).map((archive) =>
+      Object.values(archive).flat()
+    )
   );
   const addedResults: Result[] = _.pluck(fileDifferences, "added").filter(
     (entry) => entry !== null && entry !== undefined

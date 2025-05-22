@@ -16,19 +16,26 @@ const differencesFile: CompareFn = async ({
   const indexId = oldFile?.index?.id ?? newFile?.index?.id;
   let comparisonFn = indexMap[indexId as IndexType];
   let results: FileDifferences = {};
-  if (typeof comparisonFn === "function") {
-    results = await comparisonFn({ oldFile, newFile });
-  } else {
-    const archiveId = oldFile?.archive?.archive ?? newFile?.archive?.archive;
-    comparisonFn = comparisonFn?.[archiveId];
-    try {
-      results = (await comparisonFn?.({ oldFile, newFile })) ?? {};
-    } catch (error) {
-      console.error(
-        `Error decoding [index=${indexId}][archive=${archiveId}][file=${newFile.file.id}]`,
-        error
-      );
+  try {
+    if (typeof comparisonFn === "function") {
+      results = await comparisonFn({ oldFile, newFile });
+    } else {
+      const archiveId = oldFile?.archive?.archive ?? newFile?.archive?.archive;
+      comparisonFn = comparisonFn?.[archiveId];
+      try {
+        results = (await comparisonFn?.({ oldFile, newFile })) ?? {};
+      } catch (error) {
+        console.error(
+          `Error decoding [index=${indexId}][archive=${archiveId}][file=${newFile.file.id}]`,
+          error
+        );
+      }
     }
+  } catch (error) {
+    console.error(
+      `Error decoding [index=${indexId}][archive=${oldFile?.archive?.archive}][file=${newFile?.file.id}]`,
+      error
+    );
   }
   return results;
 };

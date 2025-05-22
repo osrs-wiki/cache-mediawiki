@@ -1,5 +1,6 @@
 import _ from "underscore";
 
+import compareAnimations from "./content/animations";
 import compareAreas from "./content/area";
 import compareDBRows from "./content/dbrows";
 import compareEnums from "./content/enums";
@@ -43,6 +44,7 @@ export const indexMap: {
     [ConfigType.VarPlayer]: compareVarplayer,
   },
   [IndexType.Sprites]: compareSprites,
+  [IndexType.Animations]: compareAnimations,
 };
 
 /**
