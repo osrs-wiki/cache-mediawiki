@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.1.1
+
+### Patch Changes
+
+- ab412d1: Use get_releases output for renders arg if newCache is null
+
 ## 1.1.0
 
 ### Minor Changes
