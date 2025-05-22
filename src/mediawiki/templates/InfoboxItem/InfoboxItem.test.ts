@@ -1,6 +1,6 @@
 import InfoboxItem from "./InfoboxItem";
 
-import { Item, ItemID, Params } from "@/utils/cache2";
+import { Item, ItemID, Params, WearPos } from "@/utils/cache2";
 
 const BASE_ITEM: Item = {
   name: "Test Item",
@@ -62,6 +62,11 @@ const BASE_ITEM: Item = {
 describe("IfnoboxItem", () => {
   test("InfoboxItem - base", () => {
     const item = InfoboxItem(BASE_ITEM);
+    expect(item).toMatchSnapshot();
+  });
+
+  test("InfoboxItem - with wearpos1 >= 0", () => {
+    const item = InfoboxItem({ ...BASE_ITEM, wearpos1: WearPos.Head });
     expect(item).toMatchSnapshot();
   });
 });

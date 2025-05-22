@@ -24,7 +24,7 @@ const InfoboxItem = (item: Item) => {
     tradeable: item.isGrandExchangable,
     bankable: item.placeholderLinkedItem > 0,
     placeholder: item.placeholderLinkedItem > 1 ? true : undefined,
-    equipable: item.wearpos1 > 0,
+    equipable: item.wearpos1 >= 0,
     stackable: item.isStackable,
     noteable: item.noteLinkedItem > 0,
     options: getInventoryActions(item),
