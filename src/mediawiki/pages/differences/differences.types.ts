@@ -1,6 +1,7 @@
 import { Difference } from "../../../tasks/differences/differences.types";
 
 import {
+  Animation,
   Area,
   ConfigType,
   DBRow,
@@ -30,6 +31,7 @@ export type IndexURLType = "abex" | "chisel";
 export type IndexURLs = { [key in IndexURLType]?: string };
 
 export type IndexFeatures =
+  | IndexFeature<Animation, "Animations">
   | IndexFeature<Area, "Areas">
   | IndexFeature<DBRow, "Database Rows">
   | IndexFeature<Enum, "Enums">
@@ -53,6 +55,12 @@ export const indexNameMap: {
   [key in IndexType]?: { [key: number]: IndexFeatures } | IndexFeatures;
 } = {
   [IndexType.Configs]: {
+    [ConfigType.Sequence]: {
+      name: "Animations",
+      identifiers: ["id"],
+      fields: ["gameVal", "debugName", "leftHandItem", "rightHandItem"],
+      urls: {},
+    },
     [ConfigType.Area]: {
       name: "Areas",
       identifiers: ["name", "id"],

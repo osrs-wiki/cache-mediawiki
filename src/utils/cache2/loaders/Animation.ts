@@ -35,7 +35,6 @@ export class Animation extends PerFileLoadable {
   constructor(public id: AnimationID) {
     super();
   }
-  public declare [Typed.type]: Typed.Any;
 
   public static readonly index = 2;
   public static readonly archive = 12;
@@ -59,7 +58,9 @@ export class Animation extends PerFileLoadable {
   public preAnimMove!: PreAnimMoveMode;
   public postAnimMove!: PostAnimMoveMode;
   public restartMode = AnimRestartMode.ResetLoops;
+  public gameVal?: string;
   public sounds: Map<number, FrameSound[]> = new Map();
+
   public static decode(r: Reader, id: AnimationID): Animation {
     const v = new Animation(id);
     const [legacyFrameSounds, animMayaID, frameSounds, animMayaBounds] =
@@ -168,15 +169,19 @@ export class Animation extends PerFileLoadable {
           throw new Error(`unknown animation opcode ${opcode}`);
       }
     }
+
     const defaultAnimMode =
       v.interleaveLeave === undefined && v.masks == undefined
         ? PreAnimMoveMode.DelayMove
         : PreAnimMoveMode.Merge;
+
     v.preAnimMove ??= defaultAnimMode;
     v.postAnimMove ??= defaultAnimMode as any as PostAnimMoveMode;
+
     return v;
   }
 }
+
 function readFrameSound(v: Animation, r: Reader, frame: number): void {
   let sound: FrameSound;
   if (r.isAfter({ era: "osrs", indexRevision: 4106 })) {
@@ -204,6 +209,7 @@ function readFrameSound(v: Animation, r: Reader, frame: number): void {
       0
     );
   }
+
   if (sound.id >= 1 && sound.loops >= 1) {
     let list = v.sounds.get(frame);
     if (!list) {

@@ -1,5 +1,6 @@
 import _ from "underscore";
 
+import compareAnimations from "./content/animations";
 import compareAreas from "./content/area";
 import compareDBRows from "./content/dbrows";
 import compareEnums from "./content/enums";
@@ -30,6 +31,7 @@ export const indexMap: {
   [key in IndexType]?: { [key: number]: CompareFn } | CompareFn;
 } = {
   [IndexType.Configs]: {
+    [ConfigType.Sequence]: compareAnimations,
     [ConfigType.Area]: compareAreas,
     [ConfigType.DbRow]: compareDBRows,
     [ConfigType.Enum]: compareEnums,
