@@ -55,6 +55,12 @@ export const indexNameMap: {
   [key in IndexType]?: { [key: number]: IndexFeatures } | IndexFeatures;
 } = {
   [IndexType.Configs]: {
+    [ConfigType.Sequence]: {
+      name: "Animations",
+      identifiers: ["id"],
+      fields: ["gameVal", "debugName", "leftHandItem", "rightHandItem"],
+      urls: {},
+    },
     [ConfigType.Area]: {
       name: "Areas",
       identifiers: ["name", "id"],
@@ -168,11 +174,5 @@ export const indexNameMap: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
     },
-  },
-  [IndexType.Animations]: {
-    name: "Animations",
-    identifiers: ["id"],
-    fields: ["gameVal", "debugName", "leftHandItem", "rightHandItem"],
-    urls: {},
   },
 };

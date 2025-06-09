@@ -31,6 +31,7 @@ export const indexMap: {
   [key in IndexType]?: { [key: number]: CompareFn } | CompareFn;
 } = {
   [IndexType.Configs]: {
+    [ConfigType.Sequence]: compareAnimations,
     [ConfigType.Area]: compareAreas,
     [ConfigType.DbRow]: compareDBRows,
     [ConfigType.Enum]: compareEnums,
@@ -44,7 +45,6 @@ export const indexMap: {
     [ConfigType.VarPlayer]: compareVarplayer,
   },
   [IndexType.Sprites]: compareSprites,
-  [IndexType.Animations]: compareAnimations,
 };
 
 /**
