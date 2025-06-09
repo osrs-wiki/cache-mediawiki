@@ -1,5 +1,23 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.1.1
+
+### Patch Changes
+
+- ab412d1: Use get_releases output for renders arg if newCache is null
+
+## 1.1.0
+
+### Minor Changes
+
+- 0f30c2d: Add support for varp diffs
+
+### Patch Changes
+
+- 6ab9b0c: Fix page generation output directories
+- 6fa86a8: Fix option parsing in the commander preAction
+- d9574f8: Fix item infobox equipable param for Head WearPos
+
 ## 1.0.0
 
 ### Major Changes
