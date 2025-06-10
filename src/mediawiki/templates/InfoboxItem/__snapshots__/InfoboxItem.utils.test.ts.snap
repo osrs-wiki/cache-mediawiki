@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxItem utils getItemInfoboxImage inserts MediaWikiBreak correctly for odd number of variants 1`] = `
+Array [
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Odd Item 5.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Odd Item 15.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Odd Item 25.png",
+    "options": undefined,
+  },
+  MediaWikiHTML {
+    "attributes": undefined,
+    "children": undefined,
+    "options": undefined,
+    "tag": "br",
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Odd Item 35.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Odd Item 45.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Odd Item 55.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Odd Item 65.png",
+    "options": undefined,
+  },
+]
+`;
+
+exports[`InfoboxItem utils getItemInfoboxImage returns MediaWikiFile when no stack variants 1`] = `
+MediaWikiFile {
+  "children": undefined,
+  "fileName": "Test Item.png",
+  "options": undefined,
+}
+`;
+
+exports[`InfoboxItem utils getItemInfoboxImage returns array with MediaWikiBreak inserted halfway 1`] = `
+Array [
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 10.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 20.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 30.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 40.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 50.png",
+    "options": undefined,
+  },
+  MediaWikiHTML {
+    "attributes": undefined,
+    "children": undefined,
+    "options": undefined,
+    "tag": "br",
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 60.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 70.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 80.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 90.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 100.png",
+    "options": undefined,
+  },
+]
+`;
+
+exports[`InfoboxItem utils getItemInfoboxImage returns no break when less than 5 stack variants 1`] = `
+Array [
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 10.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 20.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 30.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 40.png",
+    "options": undefined,
+  },
+]
+`;
