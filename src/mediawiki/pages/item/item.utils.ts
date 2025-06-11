@@ -15,7 +15,11 @@ import { Item } from "../../../utils/cache2";
  * @returns An array of MediaWiki content for the gallery.
  */
 export const generateItemStackGallery = (item: Item): MediaWikiContent[] => {
-  if (item.stackVariantItems.length === 0) {
+  const filteredStackVariants = item.stackVariantItems.filter((id) => id !== 0);
+  const filteredStackQuantities = item.stackVariantQuantities.filter(
+    (quantity) => quantity !== 0
+  );
+  if (filteredStackVariants.length === 0) {
     return [];
   }
   return [
@@ -30,18 +34,17 @@ export const generateItemStackGallery = (item: Item): MediaWikiContent[] => {
         new MediaWikiText(`|1 ${item.name}`),
         new MediaWikiBreak(),
       ].concat(
-        item.stackVariantItems
-          .filter((id) => id !== 0)
+        filteredStackVariants
           .map((_id, index) =>
             [
               new MediaWikiFile(
-                `${item.name} ${item.stackVariantQuantities[index]} detail.png`
+                `${item.name} ${filteredStackQuantities[index]} detail.png`
               ),
               new MediaWikiText(
-                `|${item.stackVariantQuantities[index]} ${item.name}`
+                `|${filteredStackQuantities[index]} ${item.name}`
               ),
             ].concat(
-              index < item.stackVariantItems.length - 2
+              index < filteredStackVariants.length - 1
                 ? [new MediaWikiBreak()]
                 : []
             )

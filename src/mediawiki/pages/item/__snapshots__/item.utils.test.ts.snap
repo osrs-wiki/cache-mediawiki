@@ -21,7 +21,6 @@ exports[`generateItemStackGallery skips stackVariantItems with id 0 1`] = `
 <gallery captionalign=\\"center\\", widths=\\"120\\">
 [[File:Test Item 1 detail.png]]|1 Test Item
 [[File:Test Item 2 detail.png]]|2 Test Item
-
 </gallery>
 "
 `;
