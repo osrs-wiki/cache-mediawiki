@@ -48,6 +48,12 @@ export const renderItems = async (item: Item) => {
 
     // Stacked variants rendering
     if (hasStackVariants) {
+      if (item.stackVariantItems.length !== item.stackVariantQuantities.length) {
+        console.error(
+          `Mismatch in stack variant lengths for item ${item.name} (ID: ${item.id}). Skipping stack variants rendering.`
+        );
+        return;
+      }
       for (let i = 0; i < item.stackVariantItems.length; i++) {
         const stackItemId = item.stackVariantItems[i];
         const quantity = item.stackVariantQuantities[i];
