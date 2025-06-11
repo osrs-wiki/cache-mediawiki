@@ -1,3 +1,5 @@
+import Context from "../../../context";
+import { renderScenery } from "../../renders";
 import { writePageToFile } from "../pages.utils";
 
 import { sceneryPageBuilder } from "@/mediawiki/pages/scenery";
@@ -21,4 +23,8 @@ export const writeSceneryPageFromCache = async (
 export const writeSceneryPage = async (scenery: Obj) => {
   const builder = sceneryPageBuilder(scenery);
   writePageToFile(builder, "scenery", scenery.name, scenery.id.toString());
+
+  if (Context.renders) {
+    renderScenery(scenery);
+  }
 };

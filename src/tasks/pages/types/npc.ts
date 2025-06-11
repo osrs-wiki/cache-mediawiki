@@ -1,3 +1,5 @@
+import Context from "../../../context";
+import { renderNpcs } from "../../renders";
 import { writePageToFile } from "../pages.utils";
 
 import { npcPageBuilder } from "@/mediawiki/pages/npc";
@@ -21,4 +23,8 @@ export const writeNpcPageFromCache = async (
 export const writeNpcPage = async (npc: NPC) => {
   const builder = npcPageBuilder(npc);
   writePageToFile(builder, "npc", npc.name, npc.id.toString());
+
+  if (Context.renders) {
+    renderNpcs(npc);
+  }
 };

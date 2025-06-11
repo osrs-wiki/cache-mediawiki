@@ -1,11 +1,7 @@
-import {
-  InfoboxTemplate,
-  MediaWikiDate,
-  MediaWikiFile,
-} from "@osrs-wiki/mediawiki-builder";
+import { InfoboxTemplate, MediaWikiDate } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxItem as InfoboxItemTemplate } from "@osrs-wiki/mediawiki-builder";
 
-import { getInventoryActions } from "./InfoboxItem.utils";
+import { getInventoryActions, getItemInfoboxImage } from "./InfoboxItem.utils";
 
 import Context from "@/context";
 import { Item } from "@/utils/cache2";
@@ -13,7 +9,7 @@ import { Item } from "@/utils/cache2";
 const InfoboxItem = (item: Item) => {
   return new InfoboxTemplate<InfoboxItemTemplate>("item", {
     name: item.name as string,
-    image: new MediaWikiFile(`${item.name}.png`),
+    image: getItemInfoboxImage(item),
     release: Context.updateDate
       ? new MediaWikiDate(new Date(Context.updateDate))
       : undefined,
