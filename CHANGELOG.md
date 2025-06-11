@@ -1,5 +1,15 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.2.0
+
+### Minor Changes
+
+- 3d3db17: Add render support to pages command
+- 536765e: Add support for item stack variants in mediawiki and render outputs
+- 60551e3: Add support for sequence diffs
+- 60551e3: Add animation gameval diffs
+- 3d3db17: Add pages command to generate individual entity pages
+
 ## 1.1.1
 
 ### Patch Changes
