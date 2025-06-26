@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.2.1
+
+### Patch Changes
+
+- 433d35a: Fix item image building when stackVariantItems has all 0's
+
 ## 1.2.0
 
 ### Minor Changes
