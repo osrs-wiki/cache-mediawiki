@@ -59,7 +59,7 @@ const BASE_ITEM: Item = {
   params: new Params(),
 };
 
-describe("IfnoboxItem", () => {
+describe("InfoboxItem", () => {
   test("InfoboxItem - base", () => {
     const item = InfoboxItem(BASE_ITEM);
     expect(item).toMatchSnapshot();

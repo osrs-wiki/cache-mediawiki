@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IfnoboxItem InfoboxItem - base 1`] = `
+exports[`InfoboxItem InfoboxItem - base 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
@@ -32,7 +32,7 @@ InfoboxTemplate {
 }
 `;
 
-exports[`IfnoboxItem InfoboxItem - with stack variants 1`] = `
+exports[`InfoboxItem InfoboxItem - with stack variants 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
@@ -92,7 +92,7 @@ InfoboxTemplate {
 }
 `;
 
-exports[`IfnoboxItem InfoboxItem - with stack variants that are all 0 1`] = `
+exports[`InfoboxItem InfoboxItem - with stack variants that are all 0 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
@@ -124,7 +124,7 @@ InfoboxTemplate {
 }
 `;
 
-exports[`IfnoboxItem InfoboxItem - with wearpos1 >= 0 1`] = `
+exports[`InfoboxItem InfoboxItem - with wearpos1 >= 0 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
