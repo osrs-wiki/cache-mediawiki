@@ -32,6 +32,98 @@ InfoboxTemplate {
 }
 `;
 
+exports[`IfnoboxItem InfoboxItem - with stack variants 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Item",
+  "params": Object {
+    "bankable": false,
+    "equipable": false,
+    "examine": "Examine text.",
+    "exchange": true,
+    "id": "1234",
+    "image": Array [
+      MediaWikiFile {
+        "children": undefined,
+        "fileName": "Test Item 10.png",
+        "options": undefined,
+      },
+      MediaWikiFile {
+        "children": undefined,
+        "fileName": "Test Item 20.png",
+        "options": undefined,
+      },
+      MediaWikiHTML {
+        "attributes": undefined,
+        "children": undefined,
+        "options": undefined,
+        "tag": "br",
+      },
+      MediaWikiFile {
+        "children": undefined,
+        "fileName": "Test Item 30.png",
+        "options": undefined,
+      },
+      MediaWikiFile {
+        "children": undefined,
+        "fileName": "Test Item 40.png",
+        "options": undefined,
+      },
+      MediaWikiFile {
+        "children": undefined,
+        "fileName": "Test Item 50.png",
+        "options": undefined,
+      },
+    ],
+    "members": true,
+    "name": "Test Item",
+    "noteable": false,
+    "options": Array [
+      "Test Action",
+    ],
+    "placeholder": undefined,
+    "quest": "No",
+    "release": undefined,
+    "stackable": false,
+    "tradeable": true,
+    "update": undefined,
+    "value": 0,
+    "weight": "0.000",
+  },
+}
+`;
+
+exports[`IfnoboxItem InfoboxItem - with stack variants that are all 0 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Item",
+  "params": Object {
+    "bankable": false,
+    "equipable": false,
+    "examine": "Examine text.",
+    "exchange": true,
+    "id": "1234",
+    "image": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Test Item.png",
+      "options": undefined,
+    },
+    "members": true,
+    "name": "Test Item",
+    "noteable": false,
+    "options": Array [
+      "Test Action",
+    ],
+    "placeholder": undefined,
+    "quest": "No",
+    "release": undefined,
+    "stackable": false,
+    "tradeable": true,
+    "update": undefined,
+    "value": 0,
+    "weight": "0.000",
+  },
+}
+`;
+
 exports[`IfnoboxItem InfoboxItem - with wearpos1 >= 0 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",

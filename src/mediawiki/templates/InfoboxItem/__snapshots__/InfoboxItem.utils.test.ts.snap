@@ -46,6 +46,14 @@ Array [
 ]
 `;
 
+exports[`InfoboxItem utils getItemInfoboxImage returns MediaWikiFile when all stack variants are 0 1`] = `
+MediaWikiFile {
+  "children": undefined,
+  "fileName": "Test Item.png",
+  "options": undefined,
+}
+`;
+
 exports[`InfoboxItem utils getItemInfoboxImage returns MediaWikiFile when no stack variants 1`] = `
 MediaWikiFile {
   "children": undefined,

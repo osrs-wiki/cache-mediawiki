@@ -23,17 +23,16 @@ export const getInventoryActions = (item: Item) => {
  * @returns The infobox image for the item.
  */
 export const getItemInfoboxImage = (item: Item) => {
-  if (item.stackVariantItems.length === 0) {
+  const filteredVariants = item.stackVariantItems.filter((id) => id !== 0);
+  if (filteredVariants.length === 0) {
     return new MediaWikiFile(`${item.name}.png`);
   } else {
-    const variantFiles = item.stackVariantItems
-      .filter((id) => id != 0)
-      .map(
-        (_variantId, index) =>
-          new MediaWikiFile(
-            `${item.name} ${item.stackVariantQuantities[index]}.png`
-          )
-      );
+    const variantFiles = filteredVariants.map(
+      (_variantId, index) =>
+        new MediaWikiFile(
+          `${item.name} ${item.stackVariantQuantities[index]}.png`
+        )
+    );
     if (variantFiles.length >= 5) {
       const half = Math.floor(variantFiles.length / 2);
       return [

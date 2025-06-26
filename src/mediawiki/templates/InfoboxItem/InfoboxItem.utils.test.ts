@@ -36,6 +36,17 @@ describe("InfoboxItem utils", () => {
       expect(result).toMatchSnapshot();
     });
 
+    test("returns MediaWikiFile when all stack variants are 0", () => {
+      const item = {
+        name: "Test Item",
+        stackVariantItems: [0, 0, 0],
+        stackVariantQuantities: [0, 0, 0],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
+      const result = getItemInfoboxImage(item);
+      expect(result).toMatchSnapshot();
+    });
+
     test("returns no break when less than 5 stack variants", () => {
       const item = {
         name: "Test Item",
