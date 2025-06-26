@@ -59,7 +59,7 @@ const BASE_ITEM: Item = {
   params: new Params(),
 };
 
-describe("IfnoboxItem", () => {
+describe("InfoboxItem", () => {
   test("InfoboxItem - base", () => {
     const item = InfoboxItem(BASE_ITEM);
     expect(item).toMatchSnapshot();
@@ -67,6 +67,30 @@ describe("IfnoboxItem", () => {
 
   test("InfoboxItem - with wearpos1 >= 0", () => {
     const item = InfoboxItem({ ...BASE_ITEM, wearpos1: WearPos.Head });
+    expect(item).toMatchSnapshot();
+  });
+
+  test("InfoboxItem - with stack variants", () => {
+    const item = InfoboxItem({
+      ...BASE_ITEM,
+      stackVariantItems: [
+        1 as ItemID,
+        2 as ItemID,
+        3 as ItemID,
+        4 as ItemID,
+        5 as ItemID,
+      ],
+      stackVariantQuantities: [10, 20, 30, 40, 50],
+    });
+    expect(item).toMatchSnapshot();
+  });
+
+  test("InfoboxItem - with stack variants that are all 0", () => {
+    const item = InfoboxItem({
+      ...BASE_ITEM,
+      stackVariantItems: [0 as ItemID, 0 as ItemID, 0 as ItemID],
+      stackVariantQuantities: [0, 0, 0],
+    });
     expect(item).toMatchSnapshot();
   });
 });
