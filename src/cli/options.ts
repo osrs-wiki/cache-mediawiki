@@ -29,6 +29,10 @@ const options = [
     "--examinesVersion <examinesVersion>",
     "The version of the examines."
   ).default("master"),
+  new Option(
+    "--beta <beta>",
+    "Whether the cache is from a beta server."
+  ).default(false),
 ];
 
 export default options;

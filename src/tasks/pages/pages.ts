@@ -1,4 +1,5 @@
 import {
+  writeAreaPageFromCache,
   writeItemPageFromCache,
   writeNpcPageFromCache,
   writeSceneryPageFromCache,
@@ -11,6 +12,9 @@ const pageGenerator = async (type: string, id: number) => {
   const cache = new LazyPromise(() => getCacheProviderGithub()).asPromise();
 
   switch (type) {
+    case "area":
+      writeAreaPageFromCache(cache, id);
+      break;
     case "item":
       writeItemPageFromCache(cache, id);
       break;

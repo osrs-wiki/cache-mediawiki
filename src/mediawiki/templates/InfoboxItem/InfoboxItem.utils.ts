@@ -8,10 +8,14 @@ import { Item } from "@/utils/cache2";
  * @returns An array of inventory actions, possibly with sub-operations included.
  */
 export const getInventoryActions = (item: Item) => {
-  return item.inventoryActions?.map((action, index) => {
-    const subops = item.subops?.[index];
-    return subops?.length > 0 ? `${action} (${subops.join(", ")})` : action;
-  });
+  return item.inventoryActions
+    .map((action, index) => {
+      const subops = item.subops?.[index];
+      return subops?.length > 0
+        ? `${action} (${subops.join(", ")})`
+        : action?.trim();
+    })
+    .filter((action) => action && action.trim() !== "");
 };
 
 /**
@@ -27,13 +31,16 @@ export const getItemInfoboxImage = (item: Item) => {
   if (filteredVariants.length === 0) {
     return new MediaWikiFile(`${item.name}.png`);
   } else {
-    const variantFiles = filteredVariants.map(
-      (_variantId, index) =>
-        new MediaWikiFile(
-          `${item.name} ${item.stackVariantQuantities[index]}.png`
-        )
-    );
-    if (variantFiles.length >= 5) {
+    const variantFiles = [
+      new MediaWikiFile(`${item.name} 1.png`),
+      ...filteredVariants.map(
+        (_variantId, index) =>
+          new MediaWikiFile(
+            `${item.name} ${item.stackVariantQuantities[index]}.png`
+          )
+      ),
+    ];
+    if (variantFiles.length > 5) {
       const half = Math.floor(variantFiles.length / 2);
       return [
         ...variantFiles.slice(0, half),

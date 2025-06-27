@@ -5,9 +5,9 @@ exports[`generateItemStackGallery generates gallery with stack variants 1`] = `
 
 ==Gallery==
 <gallery captionalign=\\"center\\", widths=\\"120\\">
-[[File:Test Item 1 detail.png]]|1 Test Item
-[[File:Test Item 3 detail.png]]|3 Test Item
-[[File:Test Item 5 detail.png]]|5 Test Item
+File:Test Item 1 detail.png|1 Test Item
+File:Test Item 3 detail.png|3 Test Item
+File:Test Item 5 detail.png|5 Test Item
 </gallery>
 "
 `;
@@ -19,8 +19,8 @@ exports[`generateItemStackGallery skips stackVariantItems with id 0 1`] = `
 
 ==Gallery==
 <gallery captionalign=\\"center\\", widths=\\"120\\">
-[[File:Test Item 1 detail.png]]|1 Test Item
-[[File:Test Item 2 detail.png]]|2 Test Item
+File:Test Item 1 detail.png|1 Test Item
+File:Test Item 2 detail.png|2 Test Item
 </gallery>
 "
 `;

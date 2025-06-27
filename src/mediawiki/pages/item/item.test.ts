@@ -1,4 +1,5 @@
 import itemPageBuilder from "./item";
+import Context from "../../../context";
 
 import {
   STAB_ATTACK_PARAM,
@@ -179,5 +180,18 @@ describe("Item Infobox", () => {
     });
     const builtInfobox = itemInfobox.build();
     expect(builtInfobox).toMatchSnapshot();
+  });
+
+  test("Item infbox should use beta ID when Context.beta is true", async () => {
+    const originalBeta = Context.beta;
+    Context.beta = true;
+
+    const itemInfobox = await itemPageBuilder({
+      ...BASE_ITEM,
+      id: 1 as ItemID,
+    });
+    expect(itemInfobox.build()).toMatchSnapshot();
+
+    Context.beta = originalBeta;
   });
 });

@@ -5,7 +5,6 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 {{Infobox Scenery
 |name = name
 |image = [[File:name.png]]
-|release = [[1 January]] [[1999]]
 |update = update
 |members = Yes
 |quest = No
@@ -13,6 +12,23 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 |examine = 
 |map = No
 |id = 1
+}}
+[[File:name detail.png|130px|left]]
+'''name'''"
+`;
+
+exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = name
+|image = [[File:name.png]]
+|update = update
+|members = Yes
+|quest = No
+|options = action1, action2
+|examine = 
+|map = No
+|id = beta1
 }}
 [[File:name detail.png|130px|left]]
 '''name'''"

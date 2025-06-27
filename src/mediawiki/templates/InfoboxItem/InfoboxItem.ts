@@ -16,7 +16,7 @@ const InfoboxItem = (item: Item) => {
     update: Context.update,
     members: item.isMembers as boolean,
     quest: "No",
-    exchange: item.isGrandExchangable,
+    exchange: Context.beta ? false : item.isGrandExchangable,
     tradeable: item.isGrandExchangable,
     bankable: item.placeholderLinkedItem > 0,
     placeholder: item.placeholderLinkedItem > 1 ? true : undefined,
@@ -27,7 +27,7 @@ const InfoboxItem = (item: Item) => {
     examine: item.examine,
     value: item.price,
     weight: (item.weight / 1000).toFixed(3),
-    id: item.id.toString(),
+    id: `${Context.beta ? "beta" : ""}${item.id.toString()}`,
   });
 };
 

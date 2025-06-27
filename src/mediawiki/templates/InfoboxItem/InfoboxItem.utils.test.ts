@@ -11,6 +11,16 @@ describe("InfoboxItem utils", () => {
     ).toEqual(["Test Action"]);
   });
 
+  test("getInventoryActions - multiple actions", () => {
+    expect(
+      getInventoryActions({
+        inventoryActions: ["Test Action", null, undefined, " Test Action 2"],
+        subops: [],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any)
+    ).toEqual(["Test Action", "Test Action 2"]);
+  });
+
   test("getInventoryActions - with sub ops", () => {
     expect(
       getInventoryActions({
