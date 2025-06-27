@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Item Infobox Item infbox should use beta ID when Context.beta is true 1`] = `
+"{{New Content}}
+{{Infobox Item
+|name = Test Item
+|image = [[File:Test Item.png]]
+|members = Yes
+|quest = No
+|exchange = No
+|tradeable = Yes
+|bankable = No
+|equipable = No
+|stackable = No
+|noteable = No
+|options = Test Action
+|examine = Examine text.
+|value = 0
+|weight = 0.000
+|id = beta1
+}}
+[[File:Test Item detail.png|130px|left]]
+'''Test Item'''"
+`;
+
 exports[`Item Infobox Item infobox should be generated 1`] = `
 "{{New Content}}
 {{Infobox Item

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`areaPageBuilder should build area page 1`] = `
+"{{New Content}}
+{{Infobox Location
+|name = Test Area
+|image = [[File:Test Area.png|300px]]
+|members = yes
+|location = 
+|wilderness = 
+|teleport = 
+|music = 
+|map = 
+|type = 
+}}
+[[File:Test Area.png|300px|left]]
+'''Test Area'''"
+`;
+
+exports[`areaPageBuilder should build area page with context 1`] = `
+"{{New Content}}
+{{Infobox Location
+|name = Test Area
+|image = [[File:Test Area.png|300px]]
+|release = [[31 December]] [[2024]]
+|update = Test Update
+|members = yes
+|location = 
+|wilderness = 
+|teleport = 
+|music = 
+|map = 
+|type = 
+}}
+[[File:Test Area.png|300px|left]]
+'''Test Area'''"
+`;

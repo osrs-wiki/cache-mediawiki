@@ -35,7 +35,7 @@ export const npcPageBuilder = (npc: NPC) => {
           mage: npc.magic,
           range: npc.ranged,
           examine: Context.examines?.npcs ? Context.examines.npcs[npc.id] : "",
-          id: `beta${npc.id.toString()}`,
+          id: `${Context.beta ? "beta" : ""}${npc.id.toString()}`,
         })
       : new InfoboxTemplate<InfoboxNpc>("NPC", {
           name: npc.name as string,
