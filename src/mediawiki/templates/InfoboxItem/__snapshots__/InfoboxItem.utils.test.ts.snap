@@ -4,6 +4,11 @@ exports[`InfoboxItem utils getItemInfoboxImage inserts MediaWikiBreak correctly 
 Array [
   MediaWikiFile {
     "children": undefined,
+    "fileName": "Odd Item 1.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
     "fileName": "Odd Item 5.png",
     "options": undefined,
   },
@@ -66,6 +71,11 @@ exports[`InfoboxItem utils getItemInfoboxImage returns array with MediaWikiBreak
 Array [
   MediaWikiFile {
     "children": undefined,
+    "fileName": "Test Item 1.png",
+    "options": undefined,
+  },
+  MediaWikiFile {
+    "children": undefined,
     "fileName": "Test Item 10.png",
     "options": undefined,
   },
@@ -84,16 +94,16 @@ Array [
     "fileName": "Test Item 40.png",
     "options": undefined,
   },
-  MediaWikiFile {
-    "children": undefined,
-    "fileName": "Test Item 50.png",
-    "options": undefined,
-  },
   MediaWikiHTML {
     "attributes": undefined,
     "children": undefined,
     "options": undefined,
     "tag": "br",
+  },
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 50.png",
+    "options": undefined,
   },
   MediaWikiFile {
     "children": undefined,
@@ -125,6 +135,11 @@ Array [
 
 exports[`InfoboxItem utils getItemInfoboxImage returns no break when less than 5 stack variants 1`] = `
 Array [
+  MediaWikiFile {
+    "children": undefined,
+    "fileName": "Test Item 1.png",
+    "options": undefined,
+  },
   MediaWikiFile {
     "children": undefined,
     "fileName": "Test Item 10.png",

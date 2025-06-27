@@ -51,10 +51,10 @@ export const npcPageBuilder = (npc: NPC) => {
           race: "[[Human]]",
           location: "",
           gender: "Male",
-          options: npc.actions,
+          options: npc.actions.filter((action) => action && action !== "null"),
           map: "No",
           examine: Context.examines?.npcs ? Context.examines.npcs[npc.id] : "",
-          id: npc.id.toString(),
+          id: `${Context.beta ? "beta" : ""}${npc.id.toString()}`,
         });
 
   const builder = new MediaWikiBuilder();

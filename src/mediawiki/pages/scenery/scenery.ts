@@ -28,7 +28,7 @@ export const sceneryPageBuilder = (scenery: Obj) => {
       ? Context.examines.scenery[scenery.id]
       : "",
     map: "No",
-    id: scenery.id.toString(),
+    id: `${Context.beta ? "beta" : ""}${scenery.id.toString()}`,
   });
 
   const builder = new MediaWikiBuilder();

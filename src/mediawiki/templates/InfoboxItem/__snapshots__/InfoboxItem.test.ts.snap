@@ -44,6 +44,11 @@ InfoboxTemplate {
     "image": Array [
       MediaWikiFile {
         "children": undefined,
+        "fileName": "Test Item 1.png",
+        "options": undefined,
+      },
+      MediaWikiFile {
+        "children": undefined,
         "fileName": "Test Item 10.png",
         "options": undefined,
       },

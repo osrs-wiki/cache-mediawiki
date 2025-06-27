@@ -18,6 +18,7 @@ program
   .version(packageJson.version)
   .hook("preAction", async (_program, command) => {
     const options = command.optsWithGlobals();
+    Context.beta = options.beta;
     Context.pages = options.pages;
     Context.update = options.update;
     Context.updateDate = options.updateDate;
