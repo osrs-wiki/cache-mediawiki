@@ -1,3 +1,5 @@
+import Context from "../../../../context";
+import { writeAreaPage } from "../../../pages/types";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
@@ -23,6 +25,14 @@ const compareAreas: CompareFn = async ({ oldFile, newFile }) => {
         <AreaID>newFile.file.id
       )
     : undefined;
+
+  if (
+    Context.pages &&
+    !oldEntry &&
+    newEntry.name.toLocaleLowerCase() !== "null"
+  ) {
+    writeAreaPage(newEntry);
+  }
 
   return getFileDifferences(oldEntry, newEntry);
 };

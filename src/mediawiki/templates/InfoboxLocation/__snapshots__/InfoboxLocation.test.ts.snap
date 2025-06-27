@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxLocation InfoboxLocation - base 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Location",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "The White Cliffs of Lova",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:The White Cliffs of Lova.png|300px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "yes",
+    },
+    Object {
+      "key": "location",
+      "value": "",
+    },
+    Object {
+      "key": "wilderness",
+      "value": "",
+    },
+    Object {
+      "key": "teleport",
+      "value": "",
+    },
+    Object {
+      "key": "music",
+      "value": "",
+    },
+    Object {
+      "key": "map",
+      "value": "",
+    },
+    Object {
+      "key": "type",
+      "value": "",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxLocation InfoboxLocation - with context 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Location",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "The White Cliffs of Lova",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:The White Cliffs of Lova.png|300px]]",
+    },
+    Object {
+      "key": "release",
+      "value": "[[19 March]] [[2025]]",
+    },
+    Object {
+      "key": "update",
+      "value": "Test Update",
+    },
+    Object {
+      "key": "members",
+      "value": "yes",
+    },
+    Object {
+      "key": "location",
+      "value": "",
+    },
+    Object {
+      "key": "wilderness",
+      "value": "",
+    },
+    Object {
+      "key": "teleport",
+      "value": "",
+    },
+    Object {
+      "key": "music",
+      "value": "",
+    },
+    Object {
+      "key": "map",
+      "value": "",
+    },
+    Object {
+      "key": "type",
+      "value": "",
+    },
+  ],
+}
+`;
