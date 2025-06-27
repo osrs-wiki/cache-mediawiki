@@ -61,10 +61,6 @@ MediaWikiTemplate {
       "value": "[[File:The White Cliffs of Lova.png|300px]]",
     },
     Object {
-      "key": "release",
-      "value": "[[19 March]] [[2025]]",
-    },
-    Object {
       "key": "update",
       "value": "Test Update",
     },

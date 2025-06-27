@@ -25,7 +25,6 @@ describe("InfoboxLocation", () => {
   });
 
   test("InfoboxLocation - with context", () => {
-    Context.updateDate = "2025-03-20";
     Context.update = "Test Update";
 
     const location = InfoboxLocation(BASE_LOCATION);
