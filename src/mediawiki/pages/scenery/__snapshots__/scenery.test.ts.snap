@@ -5,7 +5,6 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 {{Infobox Scenery
 |name = name
 |image = [[File:name.png]]
-|release = [[1 January]] [[1999]]
 |update = update
 |members = Yes
 |quest = No
@@ -23,7 +22,6 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 {{Infobox Scenery
 |name = name
 |image = [[File:name.png]]
-|release = [[1 January]] [[1999]]
 |update = update
 |members = Yes
 |quest = No
