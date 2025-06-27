@@ -22,7 +22,6 @@ exports[`areaPageBuilder should build area page with context 1`] = `
 {{Infobox Location
 |name = Test Area
 |image = [[File:Test Area.png|300px]]
-|release = [[31 December]] [[2024]]
 |update = Test Update
 |members = yes
 |location = 

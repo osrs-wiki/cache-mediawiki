@@ -30,7 +30,6 @@ describe("areaPageBuilder", () => {
 
   it("should build area page with context", async () => {
     Context.update = "Test Update";
-    Context.updateDate = "2025-01-01";
 
     const builder = await areaPageBuilder(BASE_AREA);
     expect(builder?.build()).toMatchSnapshot();
