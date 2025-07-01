@@ -39,6 +39,7 @@ Global options:
   --updateDate <updateDate>            The news post update date.
   --examines <examines>                Include examines in the output. (default: false)
   --examinesVersion <examinesVersion>  The version of the examines. (default: "latest")
+  --beta <beta>                        Whether the cache is from a beta server. (default: false)
   -h, --help                           display help for command
 
 pages options:
