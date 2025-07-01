@@ -1,4 +1,5 @@
 import npcPageBuilder from "./npc";
+import Context from "../../../context";
 
 import { NPCID } from "@/utils/cache2";
 
@@ -33,5 +34,21 @@ describe("npcPageBuilder", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
+  });
+
+  it("should use beta id when Context.beta is true", async () => {
+    const originalBeta = Context.beta;
+    Context.beta = true;
+
+    const builder = await npcPageBuilder({
+      name: "name",
+      combatLevel: 1,
+      actions: ["action1", "action2"],
+      id: 1 as NPCID,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+
+    Context.beta = originalBeta;
   });
 });

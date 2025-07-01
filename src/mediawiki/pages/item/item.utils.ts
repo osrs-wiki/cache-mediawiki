@@ -1,7 +1,6 @@
 import {
   MediaWikiBreak,
   MediaWikiContent,
-  MediaWikiFile,
   MediaWikiHeader,
   MediaWikiHTML,
   MediaWikiText,
@@ -30,15 +29,19 @@ export const generateItemStackGallery = (item: Item): MediaWikiContent[] => {
     new MediaWikiHTML(
       "gallery",
       [
-        new MediaWikiFile(`${item.name} 1 detail.png`),
+        new MediaWikiText(`File:${item.name} 1 detail.png`),
         new MediaWikiText(`|1 ${item.name}`),
         new MediaWikiBreak(),
       ].concat(
         filteredStackVariants
           .map((_id, index) =>
             [
-              new MediaWikiFile(
-                `${item.name} ${filteredStackQuantities[index]} detail.png`
+              new MediaWikiText(
+                `File:${item.name}${
+                  index < filteredStackQuantities.length - 1
+                    ? ` ${filteredStackQuantities[index]}`
+                    : ""
+                } detail.png`
               ),
               new MediaWikiText(
                 `|${filteredStackQuantities[index]} ${item.name}`

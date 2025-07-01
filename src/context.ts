@@ -1,6 +1,7 @@
 import { FlatCacheProvider, DiskCacheProvider } from "@/utils/cache2";
 
 type CacheMediaWikiContext = {
+  beta?: boolean;
   examines?: {
     npcs?: { [key: string]: string };
     scenery?: { [key: string]: string };

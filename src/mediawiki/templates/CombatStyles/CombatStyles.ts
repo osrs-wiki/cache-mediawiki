@@ -9,6 +9,7 @@ import { Item } from "@/utils/cache2";
 
 export const CombatStyles = (item: Item) => {
   const combatStyles = new MediaWikiTemplate("CombatStyles");
+  combatStyles.add("", getWeaponCategory(item));
   combatStyles.add(
     "speed",
     item.params.get(ATTACK_SPEED_PARAM)?.toString() ?? "0"
@@ -17,7 +18,6 @@ export const CombatStyles = (item: Item) => {
     "attackrange",
     item.params.get(ATTACK_RANGE_PARAM)?.toString() ?? "0"
   );
-  combatStyles.add("combatstyle", getWeaponCategory(item));
   return combatStyles;
 };
 

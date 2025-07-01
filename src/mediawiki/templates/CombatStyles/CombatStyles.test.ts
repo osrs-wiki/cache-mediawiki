@@ -20,9 +20,9 @@ describe("CombatStyles", () => {
 
     expect(template.name).toBe("CombatStyles");
     expect(template.params).toEqual([
+      { key: "", value: "melee" },
       { key: "speed", value: "4" },
       { key: "attackrange", value: "6" },
-      { key: "combatstyle", value: "melee" },
     ]);
   });
 
@@ -34,9 +34,9 @@ describe("CombatStyles", () => {
     const template = CombatStyles(mockItem);
 
     expect(template.params).toEqual([
+      { key: "", value: "melee" },
       { key: "speed", value: "0" },
       { key: "attackrange", value: "0" },
-      { key: "combatstyle", value: "melee" }, // Mocked value
     ]);
   });
 });

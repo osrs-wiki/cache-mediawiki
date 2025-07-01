@@ -48,15 +48,23 @@ export const renderItems = async (item: Item) => {
 
     // Stacked variants rendering
     if (hasStackVariants) {
-      if (item.stackVariantItems.length !== item.stackVariantQuantities.length) {
+      if (
+        item.stackVariantItems.length !== item.stackVariantQuantities.length
+      ) {
         console.error(
           `Mismatch in stack variant lengths for item ${item.name} (ID: ${item.id}). Skipping stack variants rendering.`
         );
         return;
       }
-      for (let i = 0; i < item.stackVariantItems.length; i++) {
-        const stackItemId = item.stackVariantItems[i];
-        const quantity = item.stackVariantQuantities[i];
+      const filteredStackVariants = item.stackVariantItems.filter(
+        (id) => id !== 0
+      );
+      const filteredStackQuantities = item.stackVariantQuantities.filter(
+        (quantity) => quantity !== 0
+      );
+      for (let i = 0; i < filteredStackVariants.length; i++) {
+        const stackItemId = filteredStackVariants[i];
+        const quantity = filteredStackQuantities[i];
 
         if (stackItemId === 0 || quantity === 0) {
           continue;
@@ -64,7 +72,9 @@ export const renderItems = async (item: Item) => {
 
         // Destination names use the original item's name and the specific quantity for this variant
         const stackItemDestDetailPath = formatFileName(
-          `${itemBaseOutDir}/${item.name} ${quantity} detail.png`
+          `${itemBaseOutDir}/${item.name} ${
+            i < filteredStackQuantities.length - 1 ? quantity : ""
+          } detail.png`
         );
         const stackItemDestMiniPath = formatFileName(
           `${miniItemBaseOutDir}/${item.name} ${quantity}.png`
