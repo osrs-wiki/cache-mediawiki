@@ -1,5 +1,23 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.3.0
+
+### Minor Changes
+
+- 18fdde6: Add InfoboxLocation template
+- 18fdde6: Add area page generation to area diffs
+- 18fdde6: Add a global beta option to indicate a beta cache
+- 18fdde6: Add support for building area/location pages
+
+### Patch Changes
+
+- 18fdde6: Fix combat styles weapon category param
+- 18fdde6: Fix item and npc actions
+- 18fdde6: Fix stack variant rendering for last item quantity
+- 433d35a: Fix item image building when stackVariantItems has all 0's
+- 18fdde6: Use beta id's when beta option is provided
+- 8d84e41: Change Infobox Location members to "Yes"
+
 ## 1.2.0
 
 ### Minor Changes
