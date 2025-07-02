@@ -19,7 +19,7 @@ const InfoboxLocation = (location: Area) => {
       ? new MediaWikiDate(new Date(Context.updateDate))
       : undefined,
     update: Context.update,
-    members: "yes",
+    members: "Yes",
     location: "",
     wilderness: "",
     teleport: "",

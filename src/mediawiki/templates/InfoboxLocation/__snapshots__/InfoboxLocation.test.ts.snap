@@ -16,7 +16,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "members",
-      "value": "yes",
+      "value": "Yes",
     },
     Object {
       "key": "location",
@@ -66,7 +66,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "members",
-      "value": "yes",
+      "value": "Yes",
     },
     Object {
       "key": "location",
