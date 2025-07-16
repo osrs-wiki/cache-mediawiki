@@ -1,6 +1,6 @@
 import CombatStyles from "./CombatStyles";
 
-import { ATTACK_RANGE_PARAM, ATTACK_SPEED_PARAM } from "@/types/item";
+import { ATTACK_RANGE_PARAM, ATTACK_SPEED_PARAM } from "@/types/params";
 import { Item } from "@/utils/cache2";
 
 jest.mock("@/types/item", () => ({

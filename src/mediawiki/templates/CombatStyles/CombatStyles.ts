@@ -1,10 +1,10 @@
 import { MediaWikiTemplate } from "@osrs-wiki/mediawiki-builder";
 
 import {
-  ATTACK_SPEED_PARAM,
   ATTACK_RANGE_PARAM,
-  getWeaponCategory,
-} from "@/types/item";
+  ATTACK_SPEED_PARAM,
+} from "@/types/params";
+import { getWeaponCategory } from "@/types/item";
 import { Item } from "@/utils/cache2";
 
 export const CombatStyles = (item: Item) => {

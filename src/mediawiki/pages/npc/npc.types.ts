@@ -3,7 +3,7 @@ import { MediaWikiDate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
 export type InfoboxMonster = {
   name: string;
   image: MediaWikiFile;
-  release: MediaWikiDate | "";
+  release: MediaWikiDate | undefined;
   update: string;
   removal?: MediaWikiDate;
   removalupdate?: MediaWikiDate;

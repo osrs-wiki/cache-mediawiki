@@ -16,7 +16,7 @@ import {
   RANGED_DEFENCE_PARAM,
   RANGED_AMMO_STRENGTH_PARAM,
   RANGED_EQUIPMENT_STRENGTH_PARAM,
-} from "@/types/item";
+} from "@/types/params";
 import { CategoryID, Item, ItemID, Params, WearPos } from "@/utils/cache2";
 
 const BASE_ITEM: Item = {
