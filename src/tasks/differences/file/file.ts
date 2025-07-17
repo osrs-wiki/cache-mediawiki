@@ -1,6 +1,5 @@
 import { indexMap } from "./file.utils";
 import { CompareFn, FileDifferences } from "../differences.types";
-import { cacheListeners } from "../listeners";
 import { executeListeners } from "../listeners/listeners";
 
 import { IndexType } from "@/utils/cache2";
