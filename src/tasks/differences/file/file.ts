@@ -1,5 +1,7 @@
 import { indexMap } from "./file.utils";
 import { CompareFn, FileDifferences } from "../differences.types";
+import { cacheListeners } from "../listeners";
+import { executeListeners } from "../listeners/listeners";
 
 import { IndexType } from "@/utils/cache2";
 
@@ -37,6 +39,14 @@ const differencesFile: CompareFn = async ({
       error
     );
   }
+
+  // Check for and execute cache change listeners
+  try {
+    executeListeners(oldFile, newFile);
+  } catch (error) {
+    console.error("Error executing cache change listeners:", error);
+  }
+
   return results;
 };
 

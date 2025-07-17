@@ -1,5 +1,3 @@
-import { writeItemPage } from "../../../pages/types";
-import { renderItems } from "../../../renders";
 import { CompareFn } from "../../differences.types";
 import { getFileDifferences } from "../file.utils";
 
@@ -37,18 +35,6 @@ const compareItems: CompareFn = async ({ oldFile, newFile }) => {
       Context.newCacheProvider,
       newEntry
     );
-  }
-
-  if (
-    Context.pages &&
-    !oldEntry &&
-    newEntry.name.toLocaleLowerCase() !== "null"
-  ) {
-    writeItemPage(newEntry);
-  }
-
-  if (Context.renders && newEntry) {
-    renderItems(newEntry);
   }
 
   return getFileDifferences(oldEntry, newEntry);
