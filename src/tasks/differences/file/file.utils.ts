@@ -1,18 +1,6 @@
 import _ from "underscore";
 
-import compareAnimations from "./content/animations";
-import compareAreas from "./content/area";
-import compareDBRows from "./content/dbrows";
-import compareEnums from "./content/enums";
-import compareItems from "./content/items";
-import compareNpcs from "./content/npcs";
-import compareObjects from "./content/objects";
-import compareParams from "./content/params";
-import compareSpotAnim from "./content/spotanim";
-import compareSprites from "./content/sprites";
-import compareStructs from "./content/struct";
-import compareVarbit from "./content/varbit";
-import compareVarplayer from "./content/varplayer";
+import { DecodableWithGameVal, Decoder } from "./file.types";
 import {
   ChangedResult,
   ResultValue,
@@ -21,7 +9,39 @@ import {
   CompareFn,
 } from "../differences.types";
 
-import { IndexType, ConfigType } from "@/utils/cache2";
+import Context from "@/context";
+import {
+  IndexType,
+  ConfigType,
+  Reader,
+  GameVal,
+  Animation,
+  AnimationID,
+  Area,
+  AreaID,
+  DBRow,
+  DBRowID,
+  Enum,
+  EnumID,
+  Item,
+  ItemID,
+  NPC,
+  NPCID,
+  Obj,
+  ObjID,
+  Param,
+  ParamID,
+  SpotAnim,
+  SpotAnimID,
+  Sprites,
+  SpriteID,
+  Struct,
+  StructID,
+  Varbit,
+  VarbitID,
+  VarPlayer,
+  VarPID,
+} from "@/utils/cache2";
 import { PerFileLoadable } from "@/utils/cache2/Loadable";
 
 /**
@@ -31,21 +51,155 @@ export const indexMap: {
   [key in IndexType]?: { [key: number]: CompareFn } | CompareFn;
 } = {
   [IndexType.Configs]: {
-    [ConfigType.Sequence]: compareAnimations,
-    [ConfigType.Area]: compareAreas,
-    [ConfigType.DbRow]: compareDBRows,
-    [ConfigType.Enum]: compareEnums,
-    [ConfigType.Item]: compareItems,
-    [ConfigType.Npc]: compareNpcs,
-    [ConfigType.Object]: compareObjects,
-    [ConfigType.Params]: compareParams,
-    [ConfigType.SpotAnim]: compareSpotAnim,
-    [ConfigType.Struct]: compareStructs,
-    [ConfigType.VarBit]: compareVarbit,
-    [ConfigType.VarPlayer]: compareVarplayer,
+    [ConfigType.Sequence]: createCompareFunction<Animation, AnimationID>(
+      Animation
+    ),
+    [ConfigType.Area]: createSimpleCompareFunction<Area, AreaID>(Area),
+    [ConfigType.DbRow]: createSimpleCompareFunction<DBRow, DBRowID>(DBRow),
+    [ConfigType.Enum]: createCompareFunction<Enum, EnumID>(Enum),
+    [ConfigType.Item]: createCompareFunction<Item, ItemID>(Item),
+    [ConfigType.Npc]: createCompareFunction<NPC, NPCID>(NPC),
+    [ConfigType.Object]: createCompareFunction<Obj, ObjID>(Obj),
+    [ConfigType.Params]: createSimpleCompareFunction<Param, ParamID>(Param),
+    [ConfigType.SpotAnim]: createCompareFunction<SpotAnim, SpotAnimID>(
+      SpotAnim
+    ),
+    [ConfigType.Struct]: createSimpleCompareFunction<Struct, StructID>(Struct),
+    [ConfigType.VarBit]: createSimpleCompareFunction<Varbit, VarbitID>(Varbit),
+    [ConfigType.VarPlayer]: createSimpleCompareFunction<VarPlayer, VarPID>(
+      VarPlayer
+    ),
   },
-  [IndexType.Sprites]: compareSprites,
+  [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
 };
+
+/**
+ * Creates a generic compare function for cache entries that need GameVal lookup
+ * @param decoder The decoder class with a static decode method
+ * @returns A CompareFn that can be used in the indexMap
+ */
+export function createCompareFunction<T extends DecodableWithGameVal, ID>(
+  decoder: Decoder<T, ID>
+): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const oldEntry = oldFile
+      ? decoder.decode(
+          new Reader(oldFile.file.data, {
+            era: "osrs",
+            indexRevision: oldFile.index.revision,
+          }),
+          oldFile.file.id as ID
+        )
+      : undefined;
+
+    if (oldEntry) {
+      oldEntry.gameVal = await GameVal.nameFor(
+        Context.oldCacheProvider,
+        oldEntry
+      );
+    }
+
+    const newEntry = newFile
+      ? decoder.decode(
+          new Reader(newFile.file.data, {
+            era: "osrs",
+            indexRevision: newFile.index.revision,
+          }),
+          newFile.file.id as ID
+        )
+      : undefined;
+
+    if (newEntry) {
+      newEntry.gameVal = await GameVal.nameFor(
+        Context.newCacheProvider,
+        newEntry
+      );
+    }
+
+    return getFileDifferences(oldEntry, newEntry);
+  };
+}
+
+/**
+ * Creates a simple compare function for cache entries that don't need GameVal lookup
+ * @param decoder The decoder class with a static decode method
+ * @returns A CompareFn that can be used in the indexMap
+ */
+export function createSimpleCompareFunction<T, ID>(decoder: {
+  decode(reader: Reader, id: ID): T;
+}): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const oldEntry = oldFile
+      ? decoder.decode(
+          new Reader(oldFile.file.data, {
+            era: "osrs",
+            indexRevision: oldFile.index.revision,
+          }),
+          oldFile.file.id as ID
+        )
+      : undefined;
+
+    const newEntry = newFile
+      ? decoder.decode(
+          new Reader(newFile.file.data, {
+            era: "osrs",
+            indexRevision: newFile.index.revision,
+          }),
+          newFile.file.id as ID
+        )
+      : undefined;
+
+    return getFileDifferences(oldEntry, newEntry);
+  };
+}
+
+/**
+ * Creates a compare function for cache entries that use archive.archive instead of file.id
+ * @param decoder The decoder class with a static decode method
+ * @returns A CompareFn that can be used for archive-based comparisons (like sprites)
+ */
+export function createArchiveCompareFunction<
+  T extends DecodableWithGameVal,
+  ID
+>(decoder: Decoder<T, ID>): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const oldEntry = oldFile
+      ? decoder.decode(
+          new Reader(oldFile.file.data, {
+            era: "osrs",
+            indexRevision: oldFile.index.revision,
+          }),
+          oldFile.archive.archive as ID
+        )
+      : undefined;
+
+    if (oldEntry) {
+      oldEntry.gameVal = await GameVal.nameFor(
+        Context.oldCacheProvider,
+        oldEntry
+      );
+    }
+
+    const newEntry = newFile
+      ? decoder.decode(
+          new Reader(newFile.file.data, {
+            era: "osrs",
+            indexRevision: newFile.index.revision,
+          }),
+          newFile.archive.archive as ID
+        )
+      : undefined;
+
+    if (newEntry) {
+      newEntry.gameVal = await GameVal.nameFor(
+        Context.newCacheProvider,
+        newEntry
+      );
+    }
+
+    return getFileDifferences(oldEntry, newEntry);
+  };
+}
 
 /**
  * Retrieve the ChangedResult from two file entries
@@ -71,8 +225,8 @@ export const getChangedResult = <T extends PerFileLoadable>(
         oldEntryValue !== newEntryValue) ||
       (isOldArray &&
         isNewArray &&
-        (_.difference<any>(oldEntryValue, newEntryValue).length > 0 ||
-          _.difference<any>(newEntryValue, oldEntryValue).length > 0)) ||
+        (_.difference<unknown>(oldEntryValue, newEntryValue).length > 0 ||
+          _.difference<unknown>(newEntryValue, oldEntryValue).length > 0)) ||
       (isOldArray && !isNewArray) ||
       (isNewArray && !isOldArray)
     ) {
