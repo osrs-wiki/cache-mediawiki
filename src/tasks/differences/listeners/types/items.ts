@@ -1,6 +1,5 @@
 import { writeItemPage } from "../../../pages/types";
 import { renderItems } from "../../../renders";
-import { cacheListeners } from "../listeners";
 import { CacheChangeListener } from "../listeners.types";
 
 import Context from "@/context";
@@ -13,7 +12,7 @@ import {
   Reader,
 } from "@/utils/cache2";
 
-const itemListener: CacheChangeListener = {
+export const itemListener: CacheChangeListener = {
   index: IndexType.Configs,
   archive: ConfigType.Item,
   handler: async ({ oldFile, newFile }) => {
@@ -63,5 +62,3 @@ const itemListener: CacheChangeListener = {
     }
   },
 };
-
-cacheListeners.push(itemListener);

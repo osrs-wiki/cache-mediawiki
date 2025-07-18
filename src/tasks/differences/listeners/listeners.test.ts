@@ -1,5 +1,6 @@
-import { executeListeners, cacheListeners } from "./listeners";
+import { executeListeners } from "./listeners";
 import { CacheChangeListener } from "./listeners.types";
+import { cacheListeners } from "./types";
 import { FileContext } from "../differences.types";
 
 import { IndexType } from "@/utils/cache2";

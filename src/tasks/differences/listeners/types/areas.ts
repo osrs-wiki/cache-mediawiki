@@ -1,11 +1,10 @@
 import { writeAreaPage } from "../../../pages/types";
-import { cacheListeners } from "../listeners";
 import { CacheChangeListener } from "../listeners.types";
 
 import Context from "@/context";
 import { IndexType, ConfigType, Area, AreaID, Reader } from "@/utils/cache2";
 
-const areaListener: CacheChangeListener = {
+export const areaListener: CacheChangeListener = {
   index: IndexType.Configs,
   archive: ConfigType.Area,
   handler: async ({ oldFile, newFile }) => {
@@ -39,5 +38,3 @@ const areaListener: CacheChangeListener = {
     }
   },
 };
-
-cacheListeners.push(areaListener);

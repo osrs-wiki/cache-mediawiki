@@ -1,6 +1,5 @@
 import { writeNpcPage } from "../../../pages/types";
 import { renderNpcs } from "../../../renders/npcs";
-import { cacheListeners } from "../listeners";
 import { CacheChangeListener } from "../listeners.types";
 
 import Context from "@/context";
@@ -13,7 +12,7 @@ import {
   Reader,
 } from "@/utils/cache2";
 
-const npcListener: CacheChangeListener = {
+export const npcListener: CacheChangeListener = {
   index: IndexType.Configs,
   archive: ConfigType.Npc,
   handler: async ({ oldFile, newFile }) => {
@@ -63,5 +62,3 @@ const npcListener: CacheChangeListener = {
     }
   },
 };
-
-cacheListeners.push(npcListener);

@@ -1,7 +1,5 @@
-import { CacheChangeListener } from "./listeners.types";
+import { cacheListeners } from "./types";
 import { FileContext } from "../differences.types";
-
-export const cacheListeners: CacheChangeListener[] = [];
 
 export const executeListeners = async (
   oldFile: FileContext,
