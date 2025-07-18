@@ -32,7 +32,7 @@ export const areaListener: CacheChangeListener = {
       Context.pages &&
       !oldEntry &&
       newEntry &&
-      newEntry.name.toLocaleLowerCase() !== "null"
+      newEntry.name.toLowerCase() !== "null"
     ) {
       writeAreaPage(newEntry);
     }

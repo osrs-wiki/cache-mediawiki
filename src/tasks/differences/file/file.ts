@@ -41,7 +41,7 @@ const differencesFile: CompareFn = async ({
 
   // Check for and execute cache change listeners
   try {
-    executeListeners(oldFile, newFile);
+    await executeListeners(oldFile, newFile);
   } catch (error) {
     console.error("Error executing cache change listeners:", error);
   }

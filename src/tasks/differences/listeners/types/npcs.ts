@@ -52,7 +52,7 @@ export const npcListener: CacheChangeListener = {
       Context.pages &&
       !oldEntry &&
       newEntry &&
-      newEntry.name.toLocaleLowerCase() !== "null"
+      newEntry.name.toLowerCase() !== "null"
     ) {
       writeNpcPage(newEntry);
     }

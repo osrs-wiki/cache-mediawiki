@@ -2,8 +2,8 @@ import { cacheListeners } from "./types";
 import { FileContext } from "../differences.types";
 
 export const executeListeners = async (
-  oldFile: FileContext,
-  newFile: FileContext
+  oldFile?: FileContext,
+  newFile?: FileContext
 ) => {
   const indexId = oldFile?.index?.id ?? newFile?.index?.id;
 
