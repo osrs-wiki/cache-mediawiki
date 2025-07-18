@@ -53,8 +53,8 @@ const InfoboxMonsterTemplate = (npc: NPC) => {
     "amagic": npc.params.has(MAGIC_ATTACK_PARAM)
       ? parseInt(npc.params.get(MAGIC_ATTACK_PARAM)?.toString() || "0")
       : undefined,
-    "mbns": npc.params.has(MAGIC_DAMANGE_NPC_PARAM)
-      ? parseInt(npc.params.get(MAGIC_DAMANGE_NPC_PARAM)?.toString() || "0")
+    "mbns": npc.params.has(MAGIC_DAMAGE_NPC_PARAM)
+      ? parseInt(npc.params.get(MAGIC_DAMAGE_NPC_PARAM)?.toString() || "0")
       : undefined,
     "arange": npc.params.has(RANGED_ATTACK_PARAM)
       ? parseInt(npc.params.get(RANGED_ATTACK_PARAM)?.toString() || "0")
