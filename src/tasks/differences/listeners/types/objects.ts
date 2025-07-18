@@ -52,7 +52,7 @@ export const objectListener: CacheChangeListener = {
       Context.pages &&
       !oldEntry &&
       newEntry &&
-      newEntry.name.toLocaleLowerCase() !== "null"
+      newEntry.name.toLowerCase() !== "null"
     ) {
       writeSceneryPage(newEntry);
     }
