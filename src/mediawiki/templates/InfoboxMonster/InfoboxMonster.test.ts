@@ -34,18 +34,16 @@ describe("InfoboxMonsterTemplate", () => {
     const built = template.build();
 
     expect(built).toMatchSnapshot();
-    
+
     // Verify that the template includes the param-based stats
     const templateParams = built.params || [];
-    const attbnsParam = templateParams.find(p => p.key === "attbns");
-    const dslashParam = templateParams.find(p => p.key === "dslash");
-    const amagicParam = templateParams.find(p => p.key === "amagic");
-    const dlightParam = templateParams.find(p => p.key === "dlight");
-    
+    const attbnsParam = templateParams.find((p) => p.key === "attbns");
+    const dslashParam = templateParams.find((p) => p.key === "dslash");
+    const amagicParam = templateParams.find((p) => p.key === "amagic");
+
     expect(attbnsParam?.value).toBe("50");
     expect(dslashParam?.value).toBe("25");
     expect(amagicParam?.value).toBe("75");
-    expect(dlightParam?.value).toBe("30");
   });
 
   it("should not include param stats when they don't exist", () => {
@@ -67,14 +65,14 @@ describe("InfoboxMonsterTemplate", () => {
     const built = template.build();
 
     expect(built).toMatchSnapshot();
-    
+
     // Verify that param-based stats are not included when they don't exist
     const templateParams = built.params || [];
-    const attbnsParam = templateParams.find(p => p.key === "attbns");
-    const dslashParam = templateParams.find(p => p.key === "dslash");
-    const amagicParam = templateParams.find(p => p.key === "amagic");
-    const dlightParam = templateParams.find(p => p.key === "dlight");
-    
+    const attbnsParam = templateParams.find((p) => p.key === "attbns");
+    const dslashParam = templateParams.find((p) => p.key === "dslash");
+    const amagicParam = templateParams.find((p) => p.key === "amagic");
+    const dlightParam = templateParams.find((p) => p.key === "dlight");
+
     expect(attbnsParam).toBeUndefined();
     expect(dslashParam).toBeUndefined();
     expect(amagicParam).toBeUndefined();

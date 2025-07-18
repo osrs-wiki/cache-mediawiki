@@ -16,5 +16,6 @@ export const PRAYER_BONUS_PARAM: ParamID = 11 as ParamID;
 export const RANGED_AMMO_STRENGTH_PARAM: ParamID = 12 as ParamID;
 export const ATTACK_RANGE_PARAM: ParamID = 13 as ParamID;
 export const ATTACK_SPEED_PARAM: ParamID = 14 as ParamID;
+export const MAGIC_DAMANGE_NPC_PARAM: ParamID = 65 as ParamID;
 export const RANGED_EQUIPMENT_STRENGTH_PARAM: ParamID = 189 as ParamID;
 export const MAGIC_DAMAGE_PARAM: ParamID = 299 as ParamID;

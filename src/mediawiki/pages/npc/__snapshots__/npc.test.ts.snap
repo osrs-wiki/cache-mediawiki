@@ -8,12 +8,12 @@ exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
 |members = Yes
 |combat = 100
 |size = 2
+|examine = 
 |hitpoints = 100
 |att = 200
 |def = 300
 |mage = 400
 |range = 500
-|examine = 
 |id = 1
 }}
 [[File:name chathead.png|left]]

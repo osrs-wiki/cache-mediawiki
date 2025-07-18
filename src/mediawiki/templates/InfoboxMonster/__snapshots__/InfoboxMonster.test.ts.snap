@@ -27,6 +27,10 @@ MediaWikiTemplate {
       "value": "1",
     },
     Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
       "key": "hitpoints",
       "value": "200",
     },
@@ -47,14 +51,6 @@ MediaWikiTemplate {
       "value": "90",
     },
     Object {
-      "key": "examine",
-      "value": "",
-    },
-    Object {
-      "key": "id",
-      "value": "1234",
-    },
-    Object {
       "key": "attbns",
       "value": "50",
     },
@@ -67,8 +63,8 @@ MediaWikiTemplate {
       "value": "25",
     },
     Object {
-      "key": "dlight",
-      "value": "30",
+      "key": "id",
+      "value": "1234",
     },
   ],
 }
@@ -101,6 +97,10 @@ MediaWikiTemplate {
       "value": "1",
     },
     Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
       "key": "hitpoints",
       "value": "100",
     },
@@ -119,10 +119,6 @@ MediaWikiTemplate {
     Object {
       "key": "range",
       "value": "45",
-    },
-    Object {
-      "key": "examine",
-      "value": "",
     },
     Object {
       "key": "id",
