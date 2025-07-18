@@ -1,6 +1,11 @@
-import { getChangedResult } from "./file.utils";
+import {
+  getChangedResult,
+  createCompareFunction,
+  createSimpleCompareFunction,
+  createArchiveCompareFunction,
+} from "./file.utils";
 
-import { NPC } from "@/utils/cache2";
+import { NPC, Reader, GameVal } from "@/utils/cache2";
 
 describe("file utils", () => {
   describe("getChangedResult", () => {
@@ -162,6 +167,404 @@ describe("file utils", () => {
           newValue: null,
         },
       });
+    });
+  });
+
+  describe("createCompareFunction", () => {
+    // Mock decoder for testing
+    const mockDecoder = {
+      decode: jest.fn(),
+    };
+
+    // Mock GameVal.nameFor
+    let mockGameValNameFor: jest.SpyInstance;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      // Setup mock implementations
+      mockGameValNameFor = jest
+        .spyOn(GameVal, "nameFor")
+        .mockResolvedValue("Mock Name");
+    });
+
+    afterEach(() => {
+      if (mockGameValNameFor) {
+        mockGameValNameFor.mockRestore();
+      }
+    });
+
+    const createMockFileContext = (
+      fileId: number,
+      archiveId: number = fileId
+    ) => ({
+      file: {
+        data: Buffer.from([1, 2, 3]),
+        id: fileId,
+        namehash: 0,
+      },
+      archive: {
+        archive: archiveId,
+        index: 0,
+        compressedData: Buffer.from([]),
+        namehash: 0,
+        revision: 100,
+        crc: 0,
+        version: 0,
+        entryIds: [],
+        fileCount: 1,
+        diskSize: 0,
+        uncompressedData: Buffer.from([]),
+      } as any,
+      index: { revision: 100 } as any,
+    });
+
+    test("should handle both old and new files with GameVal lookup", async () => {
+      const mockOldEntry = {
+        id: 1,
+        name: "Old Name",
+        gameVal: undefined as any,
+      };
+      const mockNewEntry = {
+        id: 1,
+        name: "New Name",
+        gameVal: undefined as any,
+      };
+
+      mockDecoder.decode
+        .mockReturnValueOnce(mockOldEntry)
+        .mockReturnValueOnce(mockNewEntry);
+
+      const compareFn = createCompareFunction(mockDecoder);
+
+      const oldFile = createMockFileContext(1);
+      const newFile = createMockFileContext(1);
+
+      const result = await compareFn({ oldFile, newFile });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(2);
+      expect(mockGameValNameFor).toHaveBeenCalledTimes(2);
+      expect(mockOldEntry.gameVal).toBe("Mock Name");
+      expect(mockNewEntry.gameVal).toBe("Mock Name");
+      expect(result).toHaveProperty("changed");
+    });
+
+    test("should handle only old file", async () => {
+      const mockOldEntry = {
+        id: 1,
+        name: "Old Name",
+        gameVal: undefined as any,
+      };
+
+      mockDecoder.decode.mockReturnValueOnce(mockOldEntry);
+
+      const compareFn = createCompareFunction(mockDecoder);
+
+      const oldFile = createMockFileContext(1);
+
+      const result = await compareFn({ oldFile, newFile: undefined });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(1);
+      expect(mockGameValNameFor).toHaveBeenCalledTimes(1);
+      expect(mockOldEntry.gameVal).toBe("Mock Name");
+      expect(result).toHaveProperty("removed");
+    });
+
+    test("should handle only new file", async () => {
+      const mockNewEntry = {
+        id: 1,
+        name: "New Name",
+        gameVal: undefined as any,
+      };
+
+      mockDecoder.decode.mockReturnValueOnce(mockNewEntry);
+
+      const compareFn = createCompareFunction(mockDecoder);
+
+      const newFile = createMockFileContext(1);
+
+      const result = await compareFn({ oldFile: undefined, newFile });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(1);
+      expect(mockGameValNameFor).toHaveBeenCalledTimes(1);
+      expect(mockNewEntry.gameVal).toBe("Mock Name");
+      expect(result).toHaveProperty("added");
+    });
+
+    test("should handle undefined files", async () => {
+      const compareFn = createCompareFunction(mockDecoder);
+
+      const result = await compareFn({
+        oldFile: undefined,
+        newFile: undefined,
+      });
+
+      expect(mockDecoder.decode).not.toHaveBeenCalled();
+      expect(mockGameValNameFor).not.toHaveBeenCalled();
+      expect(result).toEqual({});
+    });
+  });
+
+  describe("createSimpleCompareFunction", () => {
+    const mockDecoder = {
+      decode: jest.fn(),
+    };
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    const createMockFileContext = (fileId: number) => ({
+      file: {
+        data: Buffer.from([1, 2, 3]),
+        id: fileId,
+        namehash: 0,
+      },
+      archive: {
+        archive: fileId,
+        index: 0,
+        compressedData: Buffer.from([]),
+        namehash: 0,
+        revision: 100,
+        crc: 0,
+        version: 0,
+        entryIds: [],
+        fileCount: 1,
+        diskSize: 0,
+        uncompressedData: Buffer.from([]),
+      } as any,
+      index: { revision: 100 } as any,
+    });
+
+    test("should handle both old and new files without GameVal lookup", async () => {
+      const mockOldEntry = { id: 1, name: "Old Area" };
+      const mockNewEntry = { id: 1, name: "New Area" };
+
+      mockDecoder.decode
+        .mockReturnValueOnce(mockOldEntry)
+        .mockReturnValueOnce(mockNewEntry);
+
+      const compareFn = createSimpleCompareFunction(mockDecoder);
+
+      const oldFile = createMockFileContext(1);
+      const newFile = createMockFileContext(1);
+
+      const result = await compareFn({ oldFile, newFile });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(2);
+      expect(result).toHaveProperty("changed");
+    });
+
+    test("should handle only old file", async () => {
+      const mockOldEntry = { id: 1, name: "Old Area" };
+
+      mockDecoder.decode.mockReturnValueOnce(mockOldEntry);
+
+      const compareFn = createSimpleCompareFunction(mockDecoder);
+
+      const oldFile = createMockFileContext(1);
+
+      const result = await compareFn({ oldFile, newFile: undefined });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(1);
+      expect(result).toHaveProperty("removed");
+    });
+
+    test("should handle only new file", async () => {
+      const mockNewEntry = { id: 1, name: "New Area" };
+
+      mockDecoder.decode.mockReturnValueOnce(mockNewEntry);
+
+      const compareFn = createSimpleCompareFunction(mockDecoder);
+
+      const newFile = createMockFileContext(1);
+
+      const result = await compareFn({ oldFile: undefined, newFile });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(1);
+      expect(result).toHaveProperty("added");
+    });
+  });
+
+  describe("createArchiveCompareFunction", () => {
+    const mockDecoder = {
+      decode: jest.fn(),
+    };
+
+    let mockGameValNameFor: jest.SpyInstance;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockGameValNameFor = jest
+        .spyOn(GameVal, "nameFor")
+        .mockResolvedValue("Mock Sprite Name");
+    });
+
+    afterEach(() => {
+      if (mockGameValNameFor) {
+        mockGameValNameFor.mockRestore();
+      }
+    });
+
+    const createMockFileContext = (fileId: number, archiveId: number) => ({
+      file: {
+        data: Buffer.from([1, 2, 3]),
+        id: fileId,
+        namehash: 0,
+      },
+      archive: {
+        archive: archiveId,
+        index: 0,
+        compressedData: Buffer.from([]),
+        namehash: 0,
+        revision: 100,
+        crc: 0,
+        version: 0,
+        entryIds: [],
+        fileCount: 1,
+        diskSize: 0,
+        uncompressedData: Buffer.from([]),
+      } as any,
+      index: { revision: 100 } as any,
+    });
+
+    test("should handle both old and new files using archive.archive for ID", async () => {
+      const mockOldEntry = {
+        id: 100,
+        name: "Old Sprite",
+        gameVal: undefined as any,
+      };
+      const mockNewEntry = {
+        id: 100,
+        name: "New Sprite",
+        gameVal: undefined as any,
+      };
+
+      mockDecoder.decode
+        .mockReturnValueOnce(mockOldEntry)
+        .mockReturnValueOnce(mockNewEntry);
+
+      const compareFn = createArchiveCompareFunction(mockDecoder);
+
+      const oldFile = createMockFileContext(1, 100);
+      const newFile = createMockFileContext(1, 100);
+
+      const result = await compareFn({ oldFile, newFile });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(2);
+      // Verify that archive.archive (100) was used as ID, not file.id (1)
+      expect(mockDecoder.decode).toHaveBeenCalledWith(expect.any(Reader), 100);
+      expect(mockGameValNameFor).toHaveBeenCalledTimes(2);
+      expect(mockOldEntry.gameVal).toBe("Mock Sprite Name");
+      expect(mockNewEntry.gameVal).toBe("Mock Sprite Name");
+      expect(result).toHaveProperty("changed");
+    });
+
+    test("should handle only old file using archive.archive", async () => {
+      const mockOldEntry = {
+        id: 100,
+        name: "Old Sprite",
+        gameVal: undefined as any,
+      };
+
+      mockDecoder.decode.mockReturnValueOnce(mockOldEntry);
+
+      const compareFn = createArchiveCompareFunction(mockDecoder);
+
+      const oldFile = createMockFileContext(1, 100);
+
+      const result = await compareFn({ oldFile, newFile: undefined });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(1);
+      expect(mockDecoder.decode).toHaveBeenCalledWith(
+        expect.any(Reader),
+        100 // archive.archive, not file.id
+      );
+      expect(mockGameValNameFor).toHaveBeenCalledTimes(1);
+      expect(result).toHaveProperty("removed");
+    });
+
+    test("should handle only new file using archive.archive", async () => {
+      const mockNewEntry = {
+        id: 100,
+        name: "New Sprite",
+        gameVal: undefined as any,
+      };
+
+      mockDecoder.decode.mockReturnValueOnce(mockNewEntry);
+
+      const compareFn = createArchiveCompareFunction(mockDecoder);
+
+      const newFile = createMockFileContext(1, 100);
+
+      const result = await compareFn({ oldFile: undefined, newFile });
+
+      expect(mockDecoder.decode).toHaveBeenCalledTimes(1);
+      expect(mockDecoder.decode).toHaveBeenCalledWith(
+        expect.any(Reader),
+        100 // archive.archive, not file.id
+      );
+      expect(mockGameValNameFor).toHaveBeenCalledTimes(1);
+      expect(result).toHaveProperty("added");
+    });
+  });
+
+  describe("Generic Compare Functions", () => {
+    // Simple tests focusing on core functionality
+    test("createCompareFunction should exist and be callable", () => {
+      const mockDecoder = { decode: jest.fn() };
+      const compareFn = createCompareFunction(mockDecoder);
+      expect(typeof compareFn).toBe("function");
+    });
+
+    test("createSimpleCompareFunction should exist and be callable", () => {
+      const mockDecoder = { decode: jest.fn() };
+      const compareFn = createSimpleCompareFunction(mockDecoder);
+      expect(typeof compareFn).toBe("function");
+    });
+
+    test("createArchiveCompareFunction should exist and be callable", () => {
+      const mockDecoder = { decode: jest.fn() };
+      const compareFn = createArchiveCompareFunction(mockDecoder);
+      expect(typeof compareFn).toBe("function");
+    });
+
+    test("createCompareFunction should handle undefined files", async () => {
+      const mockDecoder = { decode: jest.fn() };
+      const compareFn = createCompareFunction(mockDecoder);
+
+      const result = await compareFn({
+        oldFile: undefined,
+        newFile: undefined,
+      });
+
+      expect(mockDecoder.decode).not.toHaveBeenCalled();
+      expect(result).toEqual({});
+    });
+
+    test("createSimpleCompareFunction should handle undefined files", async () => {
+      const mockDecoder = { decode: jest.fn() };
+      const compareFn = createSimpleCompareFunction(mockDecoder);
+
+      const result = await compareFn({
+        oldFile: undefined,
+        newFile: undefined,
+      });
+
+      expect(mockDecoder.decode).not.toHaveBeenCalled();
+      expect(result).toEqual({});
+    });
+
+    test("createArchiveCompareFunction should handle undefined files", async () => {
+      const mockDecoder = { decode: jest.fn() };
+      const compareFn = createArchiveCompareFunction(mockDecoder);
+
+      const result = await compareFn({
+        oldFile: undefined,
+        newFile: undefined,
+      });
+
+      expect(mockDecoder.decode).not.toHaveBeenCalled();
+      expect(result).toEqual({});
     });
   });
 });
