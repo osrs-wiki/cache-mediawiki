@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxMonsterTemplate should include NPC params in the infobox when they exist 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Test Monster",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Test Monster.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "combat",
+      "value": "100",
+    },
+    Object {
+      "key": "size",
+      "value": "1",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "hitpoints",
+      "value": "200",
+    },
+    Object {
+      "key": "att",
+      "value": "80",
+    },
+    Object {
+      "key": "def",
+      "value": "70",
+    },
+    Object {
+      "key": "mage",
+      "value": "60",
+    },
+    Object {
+      "key": "range",
+      "value": "90",
+    },
+    Object {
+      "key": "attbns",
+      "value": "50",
+    },
+    Object {
+      "key": "amagic",
+      "value": "75",
+    },
+    Object {
+      "key": "dslash",
+      "value": "25",
+    },
+    Object {
+      "key": "id",
+      "value": "1234",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxMonsterTemplate should not include param stats when they don't exist 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Test Monster",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Test Monster.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "combat",
+      "value": "50",
+    },
+    Object {
+      "key": "size",
+      "value": "1",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "hitpoints",
+      "value": "100",
+    },
+    Object {
+      "key": "att",
+      "value": "40",
+    },
+    Object {
+      "key": "def",
+      "value": "35",
+    },
+    Object {
+      "key": "mage",
+      "value": "30",
+    },
+    Object {
+      "key": "range",
+      "value": "45",
+    },
+    Object {
+      "key": "id",
+      "value": "5678",
+    },
+  ],
+}
+`;

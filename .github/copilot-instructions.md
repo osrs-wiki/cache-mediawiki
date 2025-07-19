@@ -138,5 +138,6 @@ const command = new Command()
 - Use conventional commit messages
 - Update changelog for user-facing changes
 - Test locally before pushing
+- Always include a changeset in pull requests. Keep changesets focused on a single feature or fix with a single sentence summary.
 
 Remember: This is a specialized tool for OSRS Wiki editors, so prioritize accuracy of game data and MediaWiki compatibility over general-purpose features.

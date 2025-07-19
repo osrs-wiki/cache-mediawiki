@@ -1,7 +1,7 @@
 import npcPageBuilder from "./npc";
 import Context from "../../../context";
 
-import { NPCID } from "@/utils/cache2";
+import { NPCID, Params } from "@/utils/cache2";
 
 describe("npcPageBuilder", () => {
   beforeEach(() => {
@@ -14,6 +14,7 @@ describe("npcPageBuilder", () => {
       combatLevel: 1,
       actions: ["action1", "action2"],
       id: 1 as NPCID,
+      params: new Params(),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
@@ -31,6 +32,7 @@ describe("npcPageBuilder", () => {
       defence: 300,
       magic: 400,
       ranged: 500,
+      params: new Params(),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
@@ -45,6 +47,7 @@ describe("npcPageBuilder", () => {
       combatLevel: 1,
       actions: ["action1", "action2"],
       id: 1 as NPCID,
+      params: new Params(),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();

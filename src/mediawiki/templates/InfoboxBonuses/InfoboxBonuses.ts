@@ -20,9 +20,8 @@ import {
   SLASH_DEFENCE_PARAM,
   STAB_ATTACK_PARAM,
   STAB_DEFENCE_PARAM,
-  getEquipmentSlot,
-  getWeaponCategory,
-} from "@/types/item";
+} from "@/types/params";
+import { getEquipmentSlot, getWeaponCategory } from "@/types/item";
 import { Item, WearPos } from "@/utils/cache2";
 
 const InfoboxBonuses = (item: Item) => {
