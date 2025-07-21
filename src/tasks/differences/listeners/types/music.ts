@@ -14,16 +14,6 @@ export const musicListener: CacheChangeListener = {
   index: IndexType.Configs,
   archive: ConfigType.DbRow,
   handler: async ({ oldFile, newFile }) => {
-    const oldEntry = oldFile
-      ? DBRow.decode(
-          new Reader(oldFile.file.data, {
-            era: "osrs",
-            indexRevision: oldFile.index.revision,
-          }),
-          <DBRowID>oldFile.file.id
-        )
-      : undefined;
-
     const newEntry = newFile
       ? DBRow.decode(
           new Reader(newFile.file.data, {
@@ -37,7 +27,7 @@ export const musicListener: CacheChangeListener = {
     // Only process entries from table 44 (music tracks)
     if (
       Context.pages &&
-      !oldEntry &&
+      !oldFile &&
       newEntry &&
       newEntry.table === 44
     ) {

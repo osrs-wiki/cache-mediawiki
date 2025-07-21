@@ -1,6 +1,6 @@
-import { DBRow, DBRowID, DBTableID } from "@/utils/cache2";
-
 import InfoboxMusicTemplate from "./InfoboxMusic";
+
+import { MusicTrack } from "@/types/music";
 
 // Mock Context module
 jest.mock("@/context", () => ({
@@ -11,87 +11,79 @@ jest.mock("@/context", () => ({
 }));
 
 describe("InfoboxMusicTemplate", () => {
-  const createMockDBRow = (
-    sortname: string,
-    displayname: string,
-    unlockhint: string,
-    duration: number
-  ): DBRow => {
-    const mockDBRow = new DBRow(123 as DBRowID);
-    mockDBRow.table = 44 as DBTableID;
-    mockDBRow.values = [
-      [sortname],      // sortname
-      [displayname],   // displayname  
-      [unlockhint],    // unlockhint
-      [duration],      // duration
-      [280],           // midi
-      [25, 12],        // variable
-      undefined,       // area
-      undefined,       // area_default
-      undefined,       // hidden
-      undefined,       // holiday
-      undefined,       // secondary_track
-    ];
-    return mockDBRow;
+  const createMockMusicTrack = (
+    sortName: string,
+    displayName: string,
+    unlockHint: string,
+    duration: number,
+    id = 123
+  ): MusicTrack => {
+    return {
+      sortName,
+      displayName,
+      unlockHint,
+      duration,
+      id,
+    };
   };
 
   it("should create InfoboxMusic template with basic info", () => {
-    const mockDBRow = createMockDBRow(
+    const mockMusicTrack = createMockMusicTrack(
       "Test Track",
       "Test Track",
       "Test hint",
       234 // 3:54
     );
 
-    const template = InfoboxMusicTemplate(mockDBRow);
+    const template = InfoboxMusicTemplate(mockMusicTrack);
     expect(template).toMatchSnapshot();
   });
 
   it("should detect quest tracks properly", () => {
-    const questTrackRow = createMockDBRow(
+    const questTrackData = createMockMusicTrack(
       "Quest Track",
       "Quest Track",
       "This track unlocks during a quest.",
       180
     );
 
-    const template = InfoboxMusicTemplate(questTrackRow);
+    const template = InfoboxMusicTemplate(questTrackData);
     expect(template).toMatchSnapshot();
   });
 
   it("should handle missing duration gracefully", () => {
-    const mockDBRow = createMockDBRow(
+    const mockMusicTrack = createMockMusicTrack(
       "Test Track",
       "Test Track", 
       "Test hint",
       0
     );
 
-    const template = InfoboxMusicTemplate(mockDBRow);
+    const template = InfoboxMusicTemplate(mockMusicTrack);
     expect(template).toMatchSnapshot();
   });
 
   it("should use display name over sort name", () => {
-    const mockDBRow = createMockDBRow(
+    const mockMusicTrack = createMockMusicTrack(
       "sort_name",
       "Display Name",
       "Test hint",
       150
     );
 
-    const template = InfoboxMusicTemplate(mockDBRow);
+    const template = InfoboxMusicTemplate(mockMusicTrack);
     expect(template).toMatchSnapshot();
   });
 
   it("should fallback to sort name when display name is missing", () => {
-    const mockDBRow = createMockDBRow(
+    const mockMusicTrack = createMockMusicTrack(
       "Sort Name",
       "",
       "Test hint",
       150
     );
 
-    const template = InfoboxMusicTemplate(mockDBRow);
+    const template = InfoboxMusicTemplate(mockMusicTrack);
     expect(template).toMatchSnapshot();
   });
 });

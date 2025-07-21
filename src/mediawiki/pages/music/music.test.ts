@@ -1,6 +1,6 @@
-import { DBRow, DBRowID, DBTableID } from "@/utils/cache2";
-
 import { musicPageBuilder } from "./music";
+
+import { MusicTrack } from "@/types/music";
 
 // Mock Context module
 jest.mock("@/context", () => ({
@@ -11,39 +11,31 @@ jest.mock("@/context", () => ({
 }));
 
 describe("musicPageBuilder", () => {
-  const createMockDBRow = (
-    sortname: string,
-    displayname: string,
-    unlockhint: string,
-    duration: number
-  ): DBRow => {
-    const mockDBRow = new DBRow(123 as DBRowID);
-    mockDBRow.table = 44 as DBTableID;
-    mockDBRow.values = [
-      [sortname],      // sortname
-      [displayname],   // displayname  
-      [unlockhint],    // unlockhint
-      [duration],      // duration
-      [280],           // midi
-      [25, 12],        // variable
-      undefined,       // area
-      undefined,       // area_default
-      undefined,       // hidden
-      undefined,       // holiday
-      undefined,       // secondary_track
-    ];
-    return mockDBRow;
+  const createMockMusicTrack = (
+    sortName: string,
+    displayName: string,
+    unlockHint: string,
+    duration: number,
+    id = 123
+  ): MusicTrack => {
+    return {
+      sortName,
+      displayName,
+      unlockHint,
+      duration,
+      id,
+    };
   };
 
   it("should create a music page with proper structure", () => {
-    const mockDBRow = createMockDBRow(
+    const mockMusicTrack = createMockMusicTrack(
       "Stones of Old",
       "Stones of Old",
       "This track unlocks in Quetzacalli Gorge.",
       234
     );
 
-    const builder = musicPageBuilder(mockDBRow);
+    const builder = musicPageBuilder(mockMusicTrack);
     const result = builder.build();
 
     expect(result).toContain("{{New Content}}");
@@ -56,14 +48,14 @@ describe("musicPageBuilder", () => {
   });
 
   it("should handle quest detection properly", () => {
-    const questTrack = createMockDBRow(
+    const questTrack = createMockMusicTrack(
       "Quest Track",
       "Quest Track", 
       "This track unlocks during a quest.",
       180
     );
 
-    const nonQuestTrack = createMockDBRow(
+    const nonQuestTrack = createMockMusicTrack(
       "Regular Track",
       "Regular Track",
       "This track unlocks in an area.",
@@ -83,14 +75,14 @@ describe("musicPageBuilder", () => {
   });
 
   it("should use display name over sort name", () => {
-    const mockDBRow = createMockDBRow(
+    const mockMusicTrack = createMockMusicTrack(
       "sort_name",
       "Display Name",
       "Test hint",
       150
     );
 
-    const builder = musicPageBuilder(mockDBRow);
+    const builder = musicPageBuilder(mockMusicTrack);
     const result = builder.build();
 
     expect(result).toContain("'''Display Name'''");
@@ -98,14 +90,14 @@ describe("musicPageBuilder", () => {
   });
 
   it("should fallback to sort name when display name is missing", () => {
-    const mockDBRow = createMockDBRow(
+    const mockMusicTrack = createMockMusicTrack(
       "Sort Name",
       "",
       "Test hint",
       150
     );
 
-    const builder = musicPageBuilder(mockDBRow);
+    const builder = musicPageBuilder(mockMusicTrack);
     const result = builder.build();
 
     expect(result).toContain("'''Sort Name'''");

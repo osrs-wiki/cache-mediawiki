@@ -1,6 +1,7 @@
 import {
   writeAreaPageFromCache,
   writeItemPageFromCache,
+  writeMusicPageFromCache,
   writeNpcPageFromCache,
   writeSceneryPageFromCache,
 } from "./types";
@@ -17,6 +18,9 @@ const pageGenerator = async (type: string, id: number) => {
       break;
     case "item":
       writeItemPageFromCache(cache, id);
+      break;
+    case "music":
+      writeMusicPageFromCache(cache, id);
       break;
     case "npc":
       writeNpcPageFromCache(cache, id);

@@ -5,17 +5,12 @@ import {
 } from "@osrs-wiki/mediawiki-builder";
 
 import InfoboxMusicTemplate from "@/mediawiki/templates/InfoboxMusic";
-import { DBRow } from "@/utils/cache2";
+import { MusicTrack } from "@/types/music";
 
-export const musicPageBuilder = (dbRow: DBRow) => {
-  const infoboxMusic = InfoboxMusicTemplate(dbRow);
+export const musicPageBuilder = (musicTrack: MusicTrack) => {
+  const infoboxMusic = InfoboxMusicTemplate(musicTrack);
   
-  // Parse DBRow values to get track name and unlock hint
-  const values = dbRow.values;
-  const displayName = values[1]?.[0] as string;
-  const sortName = values[0]?.[0] as string;
-  const unlockHint = values[2]?.[0] as string;
-  const trackName = displayName || sortName || `Track ${dbRow.id}`;
+  const trackName = musicTrack.displayName || musicTrack.sortName || `Track ${musicTrack.id}`;
 
   const builder = new MediaWikiBuilder();
   builder.addContents([
@@ -28,10 +23,10 @@ export const musicPageBuilder = (dbRow: DBRow) => {
   ]);
   
   // Add unlock location information if available in the hint
-  if (unlockHint) {
+  if (musicTrack.unlockHint) {
     builder.addContents([
       new MediaWikiText(" that is unlocked "),
-      new MediaWikiText(unlockHint.toLowerCase()),
+      new MediaWikiText(musicTrack.unlockHint.toLowerCase()),
     ]);
   }
   

@@ -1,6 +1,7 @@
 import { writePageToFile } from "../pages.utils";
 
 import { musicPageBuilder } from "@/mediawiki/pages/music";
+import { dbRowToMusicTrack } from "@/mediawiki/templates/InfoboxMusic/InfoboxMusic.utils";
 import { CacheProvider, DBRow } from "@/utils/cache2";
 
 export const writeMusicPageFromCache = async (
@@ -19,12 +20,9 @@ export const writeMusicPageFromCache = async (
 };
 
 export const writeMusicPage = async (dbRow: DBRow) => {
-  // Parse DBRow values to get track name
-  const values = dbRow.values;
-  const displayName = values[1]?.[0] as string;
-  const sortName = values[0]?.[0] as string;
-  const trackName = displayName || sortName || `Track ${dbRow.id}`;
+  const musicTrack = dbRowToMusicTrack(dbRow);
+  const trackName = musicTrack.displayName || musicTrack.sortName || `Track ${musicTrack.id}`;
 
-  const builder = musicPageBuilder(dbRow);
-  writePageToFile(builder, "music", trackName, dbRow.id.toString());
+  const builder = musicPageBuilder(musicTrack);
+  writePageToFile(builder, "music", trackName, musicTrack.id.toString());
 };
