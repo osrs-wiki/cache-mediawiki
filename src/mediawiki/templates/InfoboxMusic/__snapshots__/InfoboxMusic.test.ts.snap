@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxMusicTemplate should create InfoboxMusic template with basic info 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Music",
+  "params": Object {
+    "composer": undefined,
+    "duration": "3:54",
+    "file": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Test Track.ogg",
+      "options": undefined,
+    },
+    "hint": "Test hint",
+    "location": undefined,
+    "map": undefined,
+    "members": true,
+    "name": "Test Track",
+    "number": undefined,
+    "quest": "No",
+    "release": undefined,
+    "update": undefined,
+  },
+}
+`;
+
+exports[`InfoboxMusicTemplate should detect quest tracks properly 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Music",
+  "params": Object {
+    "composer": undefined,
+    "duration": "3:00",
+    "file": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Quest Track.ogg",
+      "options": undefined,
+    },
+    "hint": "This track unlocks during a quest.",
+    "location": undefined,
+    "map": undefined,
+    "members": true,
+    "name": "Quest Track",
+    "number": undefined,
+    "quest": "Yes",
+    "release": undefined,
+    "update": undefined,
+  },
+}
+`;
+
+exports[`InfoboxMusicTemplate should fallback to sort name when display name is missing 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Music",
+  "params": Object {
+    "composer": undefined,
+    "duration": "2:30",
+    "file": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Sort Name.ogg",
+      "options": undefined,
+    },
+    "hint": "Test hint",
+    "location": undefined,
+    "map": undefined,
+    "members": true,
+    "name": "Sort Name",
+    "number": undefined,
+    "quest": "No",
+    "release": undefined,
+    "update": undefined,
+  },
+}
+`;
+
+exports[`InfoboxMusicTemplate should handle missing duration gracefully 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Music",
+  "params": Object {
+    "composer": undefined,
+    "duration": undefined,
+    "file": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Test Track.ogg",
+      "options": undefined,
+    },
+    "hint": "Test hint",
+    "location": undefined,
+    "map": undefined,
+    "members": true,
+    "name": "Test Track",
+    "number": undefined,
+    "quest": "No",
+    "release": undefined,
+    "update": undefined,
+  },
+}
+`;
+
+exports[`InfoboxMusicTemplate should use display name over sort name 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Music",
+  "params": Object {
+    "composer": undefined,
+    "duration": "2:30",
+    "file": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Display Name.ogg",
+      "options": undefined,
+    },
+    "hint": "Test hint",
+    "location": undefined,
+    "map": undefined,
+    "members": true,
+    "name": "Display Name",
+    "number": undefined,
+    "quest": "No",
+    "release": undefined,
+    "update": undefined,
+  },
+}
+`;
