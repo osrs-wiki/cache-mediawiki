@@ -43,7 +43,7 @@ describe("InfoboxMusicTemplate", () => {
     const questTrackData = createMockMusicTrack(
       "Quest Track",
       "Quest Track",
-      "This track unlocks during a quest.",
+      "during a quest.",
       180
     );
 
@@ -54,7 +54,7 @@ describe("InfoboxMusicTemplate", () => {
   it("should handle missing duration gracefully", () => {
     const mockMusicTrack = createMockMusicTrack(
       "Test Track",
-      "Test Track", 
+      "Test Track",
       "Test hint",
       0
     );

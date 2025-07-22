@@ -31,7 +31,7 @@ describe("musicPageBuilder", () => {
     const mockMusicTrack = createMockMusicTrack(
       "Stones of Old",
       "Stones of Old",
-      "This track unlocks in Quetzacalli Gorge.",
+      "in Quetzacalli Gorge.",
       234
     );
 
@@ -44,15 +44,15 @@ describe("musicPageBuilder", () => {
   it("should handle quest detection properly", () => {
     const questTrack = createMockMusicTrack(
       "Quest Track",
-      "Quest Track", 
-      "This track unlocks during a quest.",
+      "Quest Track",
+      "during a quest.",
       180
     );
 
     const nonQuestTrack = createMockMusicTrack(
       "Regular Track",
       "Regular Track",
-      "This track unlocks in an area.",
+      "in an area.",
       120
     );
 

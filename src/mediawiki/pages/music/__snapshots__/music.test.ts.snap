@@ -10,6 +10,8 @@ exports[`musicPageBuilder should create a music page with proper structure 1`] =
 |quest = No
 |duration = 3:54
 }}
-'''Stones of Old''' is a [[music]] track that is unlocked this track unlocks in quetzacalli gorge..{{Music}}
+'''Stones of Old''' is a [[music]] track that is unlocked in Quetzacalli Gorge.
+
+{{Music}}
 [[Category:Old School-exclusive music]]"
 `;

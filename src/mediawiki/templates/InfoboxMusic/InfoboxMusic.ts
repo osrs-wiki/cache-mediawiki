@@ -11,8 +11,9 @@ import Context from "@/context";
 import { MusicTrack } from "@/types/music";
 
 const InfoboxMusicTemplate = (musicTrack: MusicTrack) => {
-  const trackName = musicTrack.displayName || musicTrack.sortName || `Track ${musicTrack.id}`;
-  
+  const trackName =
+    musicTrack.displayName || musicTrack.sortName || `Track ${musicTrack.id}`;
+
   const infoboxData: InfoboxMusic = {
     name: trackName,
     number: undefined,
@@ -23,7 +24,9 @@ const InfoboxMusicTemplate = (musicTrack: MusicTrack) => {
     update: Context.update,
     members: true,
     location: undefined,
-    hint: musicTrack.unlockHint || undefined,
+    hint: musicTrack.unlockHint
+      ? `This track unlocks ${musicTrack.unlockHint}`
+      : undefined,
     quest: isQuestTrack(musicTrack.unlockHint) ? "Yes" : "No",
     duration: formatDuration(musicTrack.duration),
     composer: undefined,
