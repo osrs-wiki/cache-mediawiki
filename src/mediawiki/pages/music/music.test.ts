@@ -38,13 +38,7 @@ describe("musicPageBuilder", () => {
     const builder = musicPageBuilder(mockMusicTrack);
     const result = builder.build();
 
-    expect(result).toContain("{{New Content}}");
-    expect(result).toContain("{{Infobox Music");
-    expect(result).toContain("'''Stones of Old'''");
-    expect(result).toContain(" is a [[music]] track");
-    expect(result).toContain("that is unlocked");
-    expect(result).toContain("{{Music}}");
-    expect(result).toContain("[[Category:Old School-exclusive music]]");
+    expect(result).toMatchSnapshot();
   });
 
   it("should handle quest detection properly", () => {
@@ -69,9 +63,8 @@ describe("musicPageBuilder", () => {
     const nonQuestResult = nonQuestBuilder.build();
 
     // The quest detection happens in the InfoboxMusic template
-    // We can't easily test the infobox content without more complex mocking
-    expect(questResult).toContain("Quest Track");
-    expect(nonQuestResult).toContain("Regular Track");
+    expect(questResult).toContain("quest = Yes");
+    expect(nonQuestResult).toContain("quest = No");
   });
 
   it("should use display name over sort name", () => {

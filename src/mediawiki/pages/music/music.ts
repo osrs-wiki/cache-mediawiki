@@ -17,9 +17,7 @@ export const musicPageBuilder = (musicTrack: MusicTrack) => {
     new MediaWikiTemplate("New Content"),
     infoboxMusic.build(),
     new MediaWikiText(trackName, { bold: true }),
-    new MediaWikiText(" is a "),
-    new MediaWikiText("[[music]]"),
-    new MediaWikiText(" track"),
+    new MediaWikiText(" is a [[music]] track"),
   ]);
   
   // Add unlock location information if available in the hint

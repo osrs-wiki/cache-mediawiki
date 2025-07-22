@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`musicPageBuilder should create a music page with proper structure 1`] = `
+"{{New Content}}
+{{Infobox Music
+|name = Stones of Old
+|file = [[File:Stones of Old.ogg]]
+|members = Yes
+|hint = This track unlocks in Quetzacalli Gorge.
+|quest = No
+|duration = 3:54
+}}
+'''Stones of Old''' is a [[music]] track that is unlocked this track unlocks in quetzacalli gorge..{{Music}}
+[[Category:Old School-exclusive music]]"
+`;
