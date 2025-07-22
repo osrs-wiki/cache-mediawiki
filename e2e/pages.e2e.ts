@@ -1,5 +1,6 @@
-import { runCLICommand, cleanupOutput } from "./utils/cli";
 import { existsSync } from "fs";
+
+import { runCLICommand, cleanupOutput } from "./utils/cli";
 
 describe("Pages Command E2E Tests", () => {
   afterEach(async () => {
@@ -10,7 +11,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate item page with expected output file structure", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "item"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "item",
+        ],
         expectedOutputFile: "./out/pages/item/1.txt",
       });
 
@@ -22,7 +32,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate item page content that matches snapshot", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "item"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "item",
+        ],
         expectedOutputFile: "./out/pages/item/1.txt",
       });
 
@@ -33,7 +52,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate different item page for different ID", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "2", "--type", "item"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "2",
+          "--type",
+          "item",
+        ],
         expectedOutputFile: "./out/pages/item/2.txt",
       });
 
@@ -46,7 +74,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate npc page with expected output file structure", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "npc"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "npc",
+        ],
         expectedOutputFile: "./out/pages/npc/1.txt",
       });
 
@@ -57,7 +94,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate npc page content that matches snapshot", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "npc"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "npc",
+        ],
         expectedOutputFile: "./out/pages/npc/1.txt",
       });
 
@@ -70,7 +116,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate area page with expected output file structure", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "area"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "area",
+        ],
         expectedOutputFile: "./out/pages/area/1.txt",
       });
 
@@ -81,7 +136,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate area page content that matches snapshot", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "area"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "area",
+        ],
         expectedOutputFile: "./out/pages/area/1.txt",
       });
 
@@ -94,7 +158,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate scenery page with expected output file structure", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "scenery"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "scenery",
+        ],
         expectedOutputFile: "./out/pages/scenery/1.txt",
       });
 
@@ -105,7 +178,16 @@ describe("Pages Command E2E Tests", () => {
     it("should generate scenery page content that matches snapshot", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "1", "--type", "scenery"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "1",
+          "--type",
+          "scenery",
+        ],
         expectedOutputFile: "./out/pages/scenery/1.txt",
       });
 

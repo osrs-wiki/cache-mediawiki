@@ -5,17 +5,21 @@ This directory contains end-to-end (e2e) tests for the cache-mediawiki CLI appli
 ## Running E2E Tests
 
 ### Run all e2e tests
+
 ```bash
 npm run test:e2e
 ```
 
 ### Update snapshots
+
 When the CLI output changes intentionally, update the snapshots:
+
 ```bash
 npm run test:e2e -- -u
 ```
 
 ### Run specific test files
+
 ```bash
 npm run test:e2e -- cli.e2e.ts
 npm run test:e2e -- pages.e2e.ts
@@ -24,20 +28,25 @@ npm run test:e2e -- pages.e2e.ts
 ## Test Structure
 
 ### CLI Tests (`cli.e2e.ts`)
+
 Tests basic CLI functionality:
+
 - Help text display
 - Version information
 - Parameter validation
 - Error handling
 
 ### Pages Tests (`pages.e2e.ts`)
+
 Tests the `pages` command for all supported types:
+
 - **Item pages**: Tests item page generation and output file structure
 - **NPC pages**: Tests NPC page generation
 - **Area pages**: Tests area page generation
 - **Scenery pages**: Tests scenery page generation
 
 Each test validates:
+
 1. Command exits successfully (exit code 0)
 2. Expected output files are created in `./out/pages/<type>/`
 3. Generated content matches snapshot tests
@@ -49,6 +58,7 @@ The e2e tests use Jest snapshot testing to ensure output consistency. Snapshots 
 ### When to Update Snapshots
 
 Update snapshots when:
+
 - You intentionally change the MediaWiki output format
 - You add new features that change the generated content
 - You fix bugs that affect the output
@@ -77,11 +87,13 @@ e2e/
 
 When tests run successfully, they validate:
 
-1. **File creation**: 
+1. **File creation**:
+
    - `./out/pages/item/1.txt`
    - `./out/pages/item/named/Toolkit.txt`
 
 2. **Content validation**:
+
    ```
    {{New Content}}
    {{Infobox Item
@@ -104,11 +116,21 @@ To add new e2e tests:
 5. Review and commit the snapshots
 
 Example:
+
 ```typescript
 it("should generate music page", async () => {
   const result = await runCLICommand({
     command: "npm run start",
-    args: ["pages", "--", "--newCache", "test-cache", "--id", "5154", "--type", "music"],
+    args: [
+      "pages",
+      "--",
+      "--newCache",
+      "test-cache",
+      "--id",
+      "5154",
+      "--type",
+      "music",
+    ],
     expectedOutputFile: "./out/pages/music/5154.txt",
   });
 
@@ -116,5 +138,3 @@ it("should generate music page", async () => {
   expect(result.outputContent).toMatchSnapshot("music-5154-output.txt");
 });
 ```
-
-**Note**: The example in issue #157 mentions `--type music`, but the pages command currently only supports `["area", "item", "npc", "scenery"]`. If music support is needed, it would need to be added to the pages command first.

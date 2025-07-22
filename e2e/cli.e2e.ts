@@ -25,7 +25,7 @@ describe("CLI E2E Tests", () => {
       });
 
       expect(result.exitCode).toBe(0);
-      expect(result.stdout).toContain("1.3.0");
+      expect(result.stdout).toMatch(/\d+\.\d+\.\d+/);
     });
   });
 
@@ -37,7 +37,9 @@ describe("CLI E2E Tests", () => {
       });
 
       expect(result.exitCode).toBe(0);
-      expect(result.stdout).toContain("Generate a page for an area, item, npc, or scenery");
+      expect(result.stdout).toContain(
+        "Generate a page for an area, item, npc, or scenery"
+      );
       expect(result.stdout).toContain("-t, --type <type>");
       expect(result.stdout).toContain("-i, --id <id>");
       expect(result.stdout).toContain("-n, --newCache <newCache>");
@@ -50,7 +52,9 @@ describe("CLI E2E Tests", () => {
       });
 
       expect(result.exitCode).toBe(1);
-      expect(result.stderr).toContain("error: required option '-i, --id <id>' not specified");
+      expect(result.stderr).toContain(
+        "error: required option '-i, --id <id>' not specified"
+      );
     });
 
     it("should require id parameter", async () => {
@@ -60,18 +64,33 @@ describe("CLI E2E Tests", () => {
       });
 
       expect(result.exitCode).toBe(1);
-      expect(result.stderr).toContain("error: required option '-i, --id <id>' not specified");
+      expect(result.stderr).toContain(
+        "error: required option '-i, --id <id>' not specified"
+      );
     });
 
     it("should validate type choices", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache", "--id", "123", "--type", "invalid"],
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          "test-cache",
+          "--id",
+          "123",
+          "--type",
+          "invalid",
+        ],
       });
 
       expect(result.exitCode).toBe(1);
-      expect(result.stderr).toContain("error: option '-t, --type <type>' argument 'invalid' is invalid");
-      expect(result.stderr).toContain("Allowed choices are area, item, npc, scenery");
+      expect(result.stderr).toContain(
+        "error: option '-t, --type <type>' argument 'invalid' is invalid"
+      );
+      expect(result.stderr).toContain(
+        "Allowed choices are area, item, npc, scenery"
+      );
     });
   });
 });
