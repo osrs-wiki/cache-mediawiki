@@ -38,5 +38,12 @@ export const dbRowToMusicTrack = (dbRow: DBRow): MusicTrack => {
     unlockHint: values[2]?.[0] as string || "",
     duration: values[3]?.[0] as number || 0,
     id: dbRow.id,
+    // Optional fields - these may exist in the DB structure but aren't currently used
+    midi: values[4]?.[0] as string | number | bigint | undefined,
+    variables: values[5] as (string | number | bigint)[] | undefined,
+    areas: values[6] as (string | number | bigint)[] | undefined,
+    metadata: values[7] as (string | number | bigint)[] | undefined,
+    // Store any additional columns that may exist
+    extraData: values.slice(8).filter(column => column && column.length > 0),
   };
 };

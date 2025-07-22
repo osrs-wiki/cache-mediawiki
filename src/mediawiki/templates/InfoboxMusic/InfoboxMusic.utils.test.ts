@@ -77,6 +77,11 @@ describe("InfoboxMusic utils", () => {
         unlockHint: "Test hint",
         duration: 234,
         id: 123,
+        midi: 280,
+        variables: [25, 12],
+        areas: undefined,
+        metadata: undefined,
+        extraData: [],
       });
     });
 
@@ -93,6 +98,11 @@ describe("InfoboxMusic utils", () => {
         unlockHint: "",
         duration: 0,
         id: 456,
+        midi: undefined,
+        variables: undefined,
+        areas: undefined,
+        metadata: undefined,
+        extraData: [],
       });
     });
   });
