@@ -2,6 +2,7 @@ import {
   writeAreaPageFromCache,
   writeItemPageFromCache,
   writeNpcPageFromCache,
+  writeQuestPageFromCache,
   writeSceneryPageFromCache,
 } from "./types";
 
@@ -20,6 +21,9 @@ const pageGenerator = async (type: string, id: number) => {
       break;
     case "npc":
       writeNpcPageFromCache(cache, id);
+      break;
+    case "quest":
+      writeQuestPageFromCache(cache, id);
       break;
     case "scenery":
       writeSceneryPageFromCache(cache, id);

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestDetails should render complete quest details 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Quest details",
+  "options": Object {
+    "description": "A master quest in Uzer Oasis.",
+    "difficulty": "Master",
+    "length": "Medium",
+    "recommended": "* {{SCP|Combat|85|link=yes}}",
+    "requirements": "* {{SCP|Mining|64|link=yes}}{{Boostable|no}}",
+    "start": "Speak to NPC 123 at the [[Uzer Oasis]].",
+    "startmap": "3505,3038",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`QuestDetails should render quest details without coordinates 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Quest details",
+  "options": Object {
+    "description": "A master quest in Uzer Oasis.",
+    "difficulty": "Master",
+    "length": "Medium",
+    "recommended": "* {{SCP|Combat|85|link=yes}}",
+    "requirements": "* {{SCP|Mining|64|link=yes}}{{Boostable|no}}",
+    "start": "Speak to NPC 123 at the [[Uzer Oasis]].",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`QuestDetails should render quest details without requirements 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Quest details",
+  "options": Object {
+    "description": "A master quest in Uzer Oasis.",
+    "difficulty": "Master",
+    "length": "Medium",
+    "start": "Speak to NPC 123 at the [[Uzer Oasis]].",
+    "startmap": "3505,3038",
+  },
+  "params": Array [],
+}
+`;

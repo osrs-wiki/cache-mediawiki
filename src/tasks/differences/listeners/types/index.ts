@@ -2,6 +2,7 @@ import { areaListener } from "./areas";
 import { itemListener } from "./items";
 import { npcListener } from "./npcs";
 import { objectListener } from "./objects";
+import { questListener } from "./quest";
 import { CacheChangeListener } from "../listeners.types";
 
 export const cacheListeners: CacheChangeListener[] = [
@@ -9,4 +10,5 @@ export const cacheListeners: CacheChangeListener[] = [
   itemListener,
   npcListener,
   objectListener,
+  questListener,
 ];

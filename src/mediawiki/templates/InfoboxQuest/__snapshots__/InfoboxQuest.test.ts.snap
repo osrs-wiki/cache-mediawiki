@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxQuest should render a complete quest infobox 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Quest",
+  "options": Object {
+    "difficulty": "Master",
+    "image": "[[File:The Curse of Arrav.png|300px]]",
+    "length": "Medium",
+    "location": "Uzer Oasis",
+    "members": "Yes",
+    "name": "The Curse of Arrav",
+    "number": 170,
+    "qp": 2,
+    "release": "[[5 November]] [[2024]]",
+    "series": "Mahjarrat, #10",
+    "type": "Quests",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`InfoboxQuest should render infobox for F2P quest 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Quest",
+  "options": Object {
+    "difficulty": "Master",
+    "image": "[[File:The Curse of Arrav.png|300px]]",
+    "length": "Medium",
+    "location": "Uzer Oasis",
+    "members": "No",
+    "name": "The Curse of Arrav",
+    "number": 170,
+    "qp": 2,
+    "release": "[[5 November]] [[2024]]",
+    "series": "Mahjarrat, #10",
+    "type": "Quests",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`InfoboxQuest should render infobox without series 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Quest",
+  "options": Object {
+    "difficulty": "Master",
+    "image": "[[File:The Curse of Arrav.png|300px]]",
+    "length": "Medium",
+    "location": "Uzer Oasis",
+    "members": "Yes",
+    "name": "The Curse of Arrav",
+    "number": 170,
+    "qp": 2,
+    "release": "[[5 November]] [[2024]]",
+    "type": "Quests",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`InfoboxQuest should render miniquest infobox 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Quest",
+  "options": Object {
+    "difficulty": "Master",
+    "image": "[[File:The Curse of Arrav.png|300px]]",
+    "length": "Medium",
+    "location": "Uzer Oasis",
+    "members": "Yes",
+    "name": "The Curse of Arrav",
+    "number": 170,
+    "release": "[[5 November]] [[2024]]",
+    "series": "Mahjarrat, #10",
+    "type": "Miniquests",
+  },
+  "params": Array [],
+}
+`;

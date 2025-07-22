@@ -15,6 +15,8 @@ import {
   VarPID,
 } from "../types";
 
+import Context from "@/context";
+
 @Typed
 export class NPC extends PerFileLoadable {
   constructor(public id: NPCID) {
@@ -280,5 +282,48 @@ export class NPC extends PerFileLoadable {
       }
     }
     return v;
+  }
+
+  /**
+   * Retrieves the NPC's name. If the current NPC has a valid name, returns it.
+   * Otherwise, if it has multiChildren, loads each child NPC and returns the first valid name found.
+   * @returns The NPC's name, or "null" if no valid name is found
+   */
+  public async getName(): Promise<string> {
+    // Check if current NPC has a valid name
+    if (
+      this.name &&
+      this.name !== "null" &&
+      this.name !== "" &&
+      this.name.trim() !== ""
+    ) {
+      return this.name;
+    }
+
+    // If no valid name and has multiChildren, search through them
+    if (this.multiChildren.length > 0 && Context.newCacheProvider) {
+      for (const childId of this.multiChildren) {
+        if (childId > 0) {
+          try {
+            const childNPC = await NPC.load(Context.newCacheProvider, childId);
+            if (
+              childNPC &&
+              childNPC.name &&
+              childNPC.name !== "null" &&
+              childNPC.name !== "" &&
+              childNPC.name.trim() !== ""
+            ) {
+              return childNPC.name;
+            }
+          } catch (error) {
+            // Continue to next child if this one fails to load
+            continue;
+          }
+        }
+      }
+    }
+
+    // Return "null" if no valid name found
+    return "null";
   }
 }

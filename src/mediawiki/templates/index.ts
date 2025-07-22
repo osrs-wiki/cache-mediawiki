@@ -4,3 +4,7 @@ export * from "./InfoboxItem";
 export * from "./InfoboxLocation";
 export * from "./InfoboxMonster";
 export * from "./InfoboxNpc";
+export * from "./InfoboxQuest";
+export * from "./QuestDetails";
+export * from "./QuestRewards";
+export * from "./SCP";

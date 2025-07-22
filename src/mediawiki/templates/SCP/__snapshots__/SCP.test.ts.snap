@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SCP Template should handle optional parameters 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "SCP",
+  "options": Object {
+    "1": "Thieving",
+    "2": 62,
+    "link": "no",
+    "name": "Custom Name",
+    "txt": "Custom Text",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`SCP Template should render SCP with experience instead of level 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "SCP",
+  "options": Object {
+    "1": "Mining",
+    "2": 40000,
+    "link": "yes",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`SCP Template should render SCP with non-skill clickpic 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "SCP",
+  "options": Object {
+    "1": "Combat",
+    "2": 85,
+    "link": "yes",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`SCP Template should render basic SCP with skill and level 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "SCP",
+  "options": Object {
+    "1": "Agility",
+    "2": 61,
+    "link": "yes",
+  },
+  "params": Array [],
+}
+`;
+
+exports[`SCP Template should work without optional parameters 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "SCP",
+  "options": Object {
+    "1": "Strength",
+    "2": 58,
+  },
+  "params": Array [],
+}
+`;
