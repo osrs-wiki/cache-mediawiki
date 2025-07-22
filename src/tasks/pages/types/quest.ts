@@ -2,7 +2,7 @@ import { writePageToFile } from "../pages.utils";
 
 import { questPageBuilder } from "@/mediawiki/pages/quest";
 import { Quest, QuestDifficulty, QuestLength, QuestType } from "@/types/quest";
-import { CacheProvider, DBTable, DBTableID } from "@/utils/cache2";
+import { CacheProvider, DBTable, DBTableID, NPC } from "@/utils/cache2";
 
 export const writeQuestPageFromCache = async (
   cache: Promise<CacheProvider>,
@@ -14,9 +14,9 @@ export const writeQuestPageFromCache = async (
     const questRow = questRows.find((row) => row && row.values[0][0] === id);
 
     if (questRow) {
-      const quest = questRowToQuest(questRow);
+      const quest = await questRowToQuest(questRow, cache);
       if (quest) {
-        writeQuestPage(quest);
+        await writeQuestPage(quest);
       }
     }
   } catch (e) {
@@ -32,15 +32,23 @@ export const writeQuestPage = async (quest: Quest) => {
 /**
  * Converts a DBRow from the quest table to a Quest object
  */
-export function questRowToQuest(row: {
-  values: (string | number | bigint | undefined)[][];
-}): Quest | null {
+export async function questRowToQuest(
+  row: {
+    values: (string | number | bigint | undefined)[][];
+  },
+  cache: Promise<CacheProvider>
+): Promise<Quest | null> {
   try {
     const values = row.values;
 
     // Extract values from the row
     const getValue = (index: number) => values[index] && values[index][0];
     const getBooleanValue = (index: number) => Boolean(getValue(index));
+
+    // Load start NPC if valid ID exists
+    const startnpcId = getValue(14) as number;
+    const startnpc =
+      startnpcId && startnpcId > 0 ? await NPC.load(cache, startnpcId) : null;
 
     return {
       id: getValue(0) as number,
@@ -60,7 +68,7 @@ export function questRowToQuest(row: {
       seriesno: (getValue(11) as number) || 0,
       seriesnoOverride: (getValue(12) as number) || 0,
       startcoord: (getValue(13) as string) || "",
-      startnpc: (getValue(14) as number) || 0,
+      startnpc: startnpc,
       startloc: (getValue(15) as string) || "",
       mapelement: (getValue(16) as string) || "",
       questpoints: (getValue(17) as number) || 0,

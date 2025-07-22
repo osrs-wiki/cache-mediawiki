@@ -1,8 +1,11 @@
 import InfoboxQuestTemplate from "./InfoboxQuest";
 
 import { Quest, QuestDifficulty, QuestLength, QuestType } from "@/types/quest";
+import { NPC } from "@/utils/cache2";
 
 describe("InfoboxQuest", () => {
+  const mockNPC = { id: 123, name: "Test NPC" } as NPC;
+
   const baseQuest: Quest = {
     id: 170,
     sortname: "The Curse of Arrav",
@@ -18,7 +21,7 @@ describe("InfoboxQuest", () => {
     seriesno: 10,
     seriesnoOverride: 0,
     startcoord: "3505,3038",
-    startnpc: 123,
+    startnpc: mockNPC,
     startloc: "Uzer Oasis",
     mapelement: "",
     questpoints: 2,

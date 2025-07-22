@@ -1,6 +1,7 @@
 import { writeQuestPage, questRowToQuest } from "../../../pages/types";
 import { CacheChangeListener } from "../listeners.types";
 
+import Context from "@/context";
 import {
   IndexType,
   ConfigType,
@@ -27,9 +28,17 @@ export const questListener: CacheChangeListener = {
     // Check if this is a quest from table 0
     if (newEntry && newEntry.table === (0 as DBTableID)) {
       try {
-        const quest = questRowToQuest(newEntry);
+        if (!Context.newCacheProvider) {
+          console.error("Cache provider not available in Context");
+          return;
+        }
+
+        const quest = await questRowToQuest(
+          newEntry,
+          Promise.resolve(Context.newCacheProvider)
+        );
         if (quest) {
-          writeQuestPage(quest);
+          await writeQuestPage(quest);
         }
       } catch (error) {
         console.error(`Error processing quest ${newFile.file.id}:`, error);

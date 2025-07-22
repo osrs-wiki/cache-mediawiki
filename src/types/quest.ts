@@ -1,3 +1,5 @@
+import { NPC } from "@/utils/cache2";
+
 export type QuestDifficulty =
   | "Novice"
   | "Intermediate"
@@ -30,7 +32,7 @@ export interface Quest {
   seriesno: number;
   seriesnoOverride: number;
   startcoord: string;
-  startnpc: number;
+  startnpc: NPC | null;
   startloc: string;
   mapelement: string;
   questpoints: number;
