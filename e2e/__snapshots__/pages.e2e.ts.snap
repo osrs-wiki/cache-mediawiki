@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pages Command E2E Tests Area Pages should generate area page content that matches snapshot: area-1-output.txt 1`] = `
+"{{New Content}}
+{{Infobox Location
+|image = [[File:undefined.png|300px]]
+|members = Yes
+|location = 
+|wilderness = 
+|teleport = 
+|music = 
+|map = 
+|type = 
+}}
+[[File:undefined.png|300px|left]]
+"
+`;
+
+exports[`Pages Command E2E Tests Item Pages should generate different item page for different ID: item-2-output.txt 1`] = `
+"{{New Content}}
+{{Infobox Item
+|name = Cannonball
+|image = [[File:Cannonball.png]]
+|members = Yes
+|quest = No
+|exchange = Yes
+|tradeable = Yes
+|bankable = Yes
+|placeholder = Yes
+|equipable = No
+|stackable = Yes
+|noteable = No
+|options = Drop
+|examine = Ammo for the Dwarf Cannon.
+|value = 5
+|weight = 3.628
+|id = 2
+}}
+[[File:Cannonball detail.png|130px|left]]
+'''Cannonball'''"
+`;
+
+exports[`Pages Command E2E Tests Item Pages should generate item page content that matches snapshot: item-1-output.txt 1`] = `
+"{{New Content}}
+{{Infobox Item
+|name = Toolkit
+|image = [[File:Toolkit.png]]
+|members = Yes
+|quest = No
+|exchange = No
+|tradeable = No
+|bankable = Yes
+|placeholder = Yes
+|equipable = No
+|stackable = No
+|noteable = No
+|options = Destroy
+|examine = Good for repairing broken cannons.
+|value = 1
+|weight = 0.453
+|id = 1
+}}
+[[File:Toolkit detail.png|130px|left]]
+'''Toolkit'''"
+`;
+
+exports[`Pages Command E2E Tests NPC Pages should generate npc page content that matches snapshot: npc-1-output.txt 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|name = Molanisk
+|image = [[File:Molanisk.png|120px]]
+|members = Yes
+|combat = 51
+|size = 1
+|examine = 
+|hitpoints = 52
+|att = 40
+|def = 50
+|mage = 0
+|dstab = 45
+|dslash = 45
+|dcrush = 35
+|dmagic = 30
+|id = 1
+}}
+[[File:Molanisk chathead.png|left]]
+'''Molanisk'''"
+`;
+
+exports[`Pages Command E2E Tests Scenery Pages should generate scenery page content that matches snapshot: scenery-1-output.txt 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Crate
+|image = [[File:Crate.png]]
+|members = Yes
+|quest = No
+|options = Search
+|examine = 
+|map = No
+|id = 1
+}}
+[[File:Crate detail.png|130px|left]]
+'''Crate'''"
+`;
