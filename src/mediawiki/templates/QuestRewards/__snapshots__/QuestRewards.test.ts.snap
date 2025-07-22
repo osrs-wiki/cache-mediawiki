@@ -7,6 +7,7 @@ MediaWikiTemplate {
   "options": Object {
     "image": "[[File:The Curse of Arrav rewards scroll.png]]",
     "name": "The Curse of Arrav",
+    "qp": undefined,
     "rewards": "Total XP awarded: 120,000",
   },
   "params": Array [],
@@ -35,6 +36,7 @@ MediaWikiTemplate {
     "image": "[[File:The Curse of Arrav rewards scroll.png]]",
     "name": "The Curse of Arrav",
     "qp": 2,
+    "rewards": undefined,
   },
   "params": Array [],
 }

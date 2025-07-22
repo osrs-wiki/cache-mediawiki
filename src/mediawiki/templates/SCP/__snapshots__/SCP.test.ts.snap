@@ -23,6 +23,8 @@ MediaWikiTemplate {
     "1": "Mining",
     "2": 40000,
     "link": "yes",
+    "name": undefined,
+    "txt": undefined,
   },
   "params": Array [],
 }
@@ -33,9 +35,11 @@ MediaWikiTemplate {
   "children": undefined,
   "name": "SCP",
   "options": Object {
-    "1": "Combat",
+    "1": "combat",
     "2": 85,
     "link": "yes",
+    "name": undefined,
+    "txt": undefined,
   },
   "params": Array [],
 }
@@ -49,6 +53,8 @@ MediaWikiTemplate {
     "1": "Agility",
     "2": 61,
     "link": "yes",
+    "name": undefined,
+    "txt": undefined,
   },
   "params": Array [],
 }
@@ -61,6 +67,9 @@ MediaWikiTemplate {
   "options": Object {
     "1": "Strength",
     "2": 58,
+    "link": undefined,
+    "name": undefined,
+    "txt": undefined,
   },
   "params": Array [],
 }

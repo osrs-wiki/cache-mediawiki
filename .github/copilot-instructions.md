@@ -8,7 +8,7 @@ This is a TypeScript Node.js CLI application that processes OSRS (Old School Run
 
 ### General Guidelines
 
-- Use TypeScript with strict typing
+- Use TypeScript with strict typing and prefer `type` over `interface` where appropriate
 - Follow ESLint and Prettier configurations
 - Use absolute imports with `@/` prefix for src directory
 - Prefer `async/await` over Promises for asynchronous operations
