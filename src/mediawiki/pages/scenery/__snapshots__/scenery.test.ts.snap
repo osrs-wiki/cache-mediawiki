@@ -13,7 +13,7 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 |map = No
 |id = 1
 }}
-[[File:name detail.png|130px|left]]
+
 '''name'''"
 `;
 
@@ -30,6 +30,6 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 |map = No
 |id = beta1
 }}
-[[File:name detail.png|130px|left]]
+
 '''name'''"
 `;

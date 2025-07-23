@@ -15,6 +15,7 @@ describe("npcPageBuilder", () => {
       actions: ["action1", "action2"],
       id: 1 as NPCID,
       params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
@@ -33,6 +34,7 @@ describe("npcPageBuilder", () => {
       magic: 400,
       ranged: 500,
       params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
@@ -48,6 +50,7 @@ describe("npcPageBuilder", () => {
       actions: ["action1", "action2"],
       id: 1 as NPCID,
       params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
@@ -62,6 +65,33 @@ describe("npcPageBuilder", () => {
       actions: ["Talk-to"],
       id: 1 as NPCID,
       params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+  });
+
+  it("should build npc page without chathead when no chatheadModels", async () => {
+    const builder = await npcPageBuilder({
+      name: "name",
+      combatLevel: 1,
+      actions: ["action1", "action2"],
+      id: 1 as NPCID,
+      params: new Params(),
+      chatheadModels: [], // NPC without chathead models
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+  });
+
+  it("should build npc page with chathead when has chatheadModels", async () => {
+    const builder = await npcPageBuilder({
+      name: "name",
+      combatLevel: 1,
+      actions: ["action1", "action2"],
+      id: 1 as NPCID,
+      params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();

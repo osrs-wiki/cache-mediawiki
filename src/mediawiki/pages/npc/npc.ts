@@ -19,9 +19,18 @@ export const npcPageBuilder = (npc: NPC) => {
   builder.addContents([
     new MediaWikiTemplate("New Content"),
     infoboxNpc.build(),
-    new MediaWikiFile(`${npc.name} chathead.png`, {
-      horizontalAlignment: "left",
-    }),
+  ]);
+
+  // Only add chathead image if NPC has chathead models
+  if (npc.chatheadModels.length > 0) {
+    builder.addContent(
+      new MediaWikiFile(`${npc.name} chathead.png`, {
+        horizontalAlignment: "left",
+      })
+    );
+  }
+
+  builder.addContents([
     new MediaWikiBreak(),
     new MediaWikiText(npc.name, { bold: true }),
   ]);
