@@ -5,10 +5,11 @@ exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
 |members = Yes
 |combat = 100
 |size = 2
-|examine = 
 |hitpoints = 100
 |att = 200
 |def = 300
@@ -25,9 +26,10 @@ exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
 |members = Yes
 |combat = 1
-|examine = 
 |id = 1
 }}
 [[File:name chathead.png|left]]
@@ -39,9 +41,10 @@ exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
 |members = Yes
 |combat = 1
-|examine = 
 |id = beta1
 }}
 [[File:name chathead.png|left]]

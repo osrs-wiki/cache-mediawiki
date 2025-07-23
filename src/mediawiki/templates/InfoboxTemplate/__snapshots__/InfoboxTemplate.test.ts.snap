@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxTemplate multiple params should build template with numbered parameters when values differ 1`] = `
+"{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name = Guard
+|level = 21
+|examine1 = He tries to keep order.
+|examine2 = She tries to keep order.
+}}
+"
+`;
+
+exports[`InfoboxTemplate multiple params should build template with shared parameters when values are the same 1`] = `
+"{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name = Guard
+|level = 21
+|location = Varrock
+}}
+"
+`;
+
+exports[`InfoboxTemplate multiple params should handle mixed shared and numbered parameters 1`] = `
+"{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name = Guard
+|level1 = 21
+|level2 = 22
+|examine1 = He tries to keep order.
+|examine2 = She tries to keep order.
+|id1 = 1001
+|id2 = 1002
+}}
+"
+`;
+
+exports[`InfoboxTemplate multiple params should handle undefined values properly 1`] = `
+"{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name = Guard
+|level = 21
+|examine1 = He tries to keep order.
+}}
+"
+`;
+
+exports[`InfoboxTemplate single params should build template with single params 1`] = `
+"{{Infobox Test
+|name = Test Name
+|level = 10
+|active = Yes
+|disabled = No
+}}
+"
+`;

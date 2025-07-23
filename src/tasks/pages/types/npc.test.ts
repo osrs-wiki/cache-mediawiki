@@ -63,10 +63,8 @@ describe("NPC name mapping", () => {
   });
 
   it("should only write page once per name", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { writePageToFile } = require("../pages.utils");
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { npcPageBuilder } = require("@/mediawiki/pages/npc");
+    const { writePageToFile } = await import("../pages.utils");
+    const { npcPageBuilder } = await import("@/mediawiki/pages/npc");
 
     const guard1 = createMockNpc("Guard", 1001, 21);
     const guard2 = createMockNpc("Guard", 1002, 21);

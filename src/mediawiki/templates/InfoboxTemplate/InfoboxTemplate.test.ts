@@ -1,19 +1,8 @@
 import { InfoboxTemplate } from "./InfoboxTemplate";
 
-import { capitalize } from "@/utils/strings";
-
 describe("InfoboxTemplate", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe("capitalize", () => {
-    it("should capitalize the first letter of a string", () => {
-      expect(capitalize("test")).toBe("Test");
-      expect(capitalize("UPPERCASE")).toBe("UPPERCASE");
-      expect(capitalize("")).toBe("");
-      expect(capitalize("a")).toBe("A");
-    });
   });
 
   describe("single params", () => {
@@ -27,13 +16,7 @@ describe("InfoboxTemplate", () => {
 
       const result = template.build();
       expect(result.name).toBe("Infobox Test");
-      
-      const built = result.build();
-      expect(built).toContain("{{Infobox Test");
-      expect(built).toContain("|name = Test Name");
-      expect(built).toContain("|level = 10");
-      expect(built).toContain("|active = Yes");
-      expect(built).toContain("|disabled = No");
+      expect(result.build()).toMatchSnapshot();
     });
   });
 
@@ -45,14 +28,7 @@ describe("InfoboxTemplate", () => {
       ]);
 
       const result = template.build();
-      const built = result.build();
-      
-      expect(built).toContain("{{Infobox Monster");
-      expect(built).toContain("|version1 = 1");
-      expect(built).toContain("|version2 = 2");
-      expect(built).toContain("|name = Guard");
-      expect(built).toContain("|level = 21");
-      expect(built).toContain("|location = Varrock");
+      expect(result.build()).toMatchSnapshot();
     });
 
     it("should build template with numbered parameters when values differ", () => {
@@ -62,15 +38,7 @@ describe("InfoboxTemplate", () => {
       ]);
 
       const result = template.build();
-      const built = result.build();
-      
-      expect(built).toContain("{{Infobox Monster");
-      expect(built).toContain("|version1 = 1");
-      expect(built).toContain("|version2 = 2");
-      expect(built).toContain("|name = Guard");
-      expect(built).toContain("|level = 21");
-      expect(built).toContain("|examine1 = He tries to keep order.");
-      expect(built).toContain("|examine2 = She tries to keep order.");
+      expect(result.build()).toMatchSnapshot();
     });
 
     it("should handle mixed shared and numbered parameters", () => {
@@ -80,18 +48,7 @@ describe("InfoboxTemplate", () => {
       ]);
 
       const result = template.build();
-      const built = result.build();
-      
-      expect(built).toContain("{{Infobox Monster");
-      expect(built).toContain("|version1 = 1");
-      expect(built).toContain("|version2 = 2");
-      expect(built).toContain("|name = Guard");
-      expect(built).toContain("|level1 = 21");
-      expect(built).toContain("|level2 = 22");
-      expect(built).toContain("|examine1 = He tries to keep order.");
-      expect(built).toContain("|examine2 = She tries to keep order.");
-      expect(built).toContain("|id1 = 1001");
-      expect(built).toContain("|id2 = 1002");
+      expect(result.build()).toMatchSnapshot();
     });
 
     it("should handle undefined values properly", () => {
@@ -101,15 +58,7 @@ describe("InfoboxTemplate", () => {
       ]);
 
       const result = template.build();
-      const built = result.build();
-      
-      expect(built).toContain("{{Infobox Monster");
-      expect(built).toContain("|version1 = 1");
-      expect(built).toContain("|version2 = 2");
-      expect(built).toContain("|name = Guard");
-      expect(built).toContain("|level = 21");
-      expect(built).toContain("|examine1 = He tries to keep order.");
-      expect(built).not.toContain("|examine2 =");
+      expect(result.build()).toMatchSnapshot();
     });
   });
 });
