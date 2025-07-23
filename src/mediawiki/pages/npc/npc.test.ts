@@ -54,4 +54,16 @@ describe("npcPageBuilder", () => {
 
     Context.beta = originalBeta;
   });
+
+  it("should build npc page with transcript", async () => {
+    const builder = await npcPageBuilder({
+      name: "name",
+      combatLevel: 1,
+      actions: ["Talk-to"],
+      id: 1 as NPCID,
+      params: new Params(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+  });
 });

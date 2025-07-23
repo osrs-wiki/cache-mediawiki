@@ -34,6 +34,24 @@ exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
 '''name'''"
 `;
 
+exports[`npcPageBuilder should build npc page with transcript 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|name = name
+|image = [[File:name.png|120px]]
+|members = Yes
+|combat = 1
+|examine = 
+|id = 1
+}}
+[[File:name chathead.png|left]]
+'''name'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
 exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
 "{{New Content}}
 {{Infobox Monster

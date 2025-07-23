@@ -2,6 +2,7 @@ import {
   MediaWikiBreak,
   MediaWikiBuilder,
   MediaWikiFile,
+  MediaWikiHeader,
   MediaWikiTemplate,
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
@@ -24,6 +25,18 @@ export const npcPageBuilder = (npc: NPC) => {
     new MediaWikiBreak(),
     new MediaWikiText(npc.name, { bold: true }),
   ]);
+
+  if (npc.actions.includes("Talk-to")) {
+    const transcriptTemplate = new MediaWikiTemplate("Hastranscript");
+    transcriptTemplate.add("", "npc");
+    builder.addContents([
+      new MediaWikiBreak(),
+      new MediaWikiBreak(),
+      new MediaWikiHeader("Dialogue", 2),
+      new MediaWikiBreak(),
+      transcriptTemplate,
+    ]);
+  }
 
   return builder;
 };
