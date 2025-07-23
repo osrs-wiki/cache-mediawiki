@@ -35,7 +35,6 @@ export const sceneryPageBuilder = (scenery: Obj) => {
   builder.addContents([
     new MediaWikiTemplate("New Content"),
     infoboxscenery.build(),
-    new MediaWikiBreak(),
     new MediaWikiText(scenery.name, { bold: true }),
   ]);
 

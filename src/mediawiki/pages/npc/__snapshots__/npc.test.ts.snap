@@ -76,7 +76,6 @@ exports[`npcPageBuilder should build npc page without chathead when no chatheadM
 |examine = 
 |id = 1
 }}
-
 '''name'''"
 `;
 

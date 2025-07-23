@@ -23,17 +23,15 @@ export const npcPageBuilder = (npc: NPC) => {
 
   // Only add chathead image if NPC has chathead models
   if (npc.chatheadModels.length > 0) {
-    builder.addContent(
+    builder.addContents([
       new MediaWikiFile(`${npc.name} chathead.png`, {
         horizontalAlignment: "left",
-      })
-    );
+      }),
+      new MediaWikiBreak(),
+    ]);
   }
 
-  builder.addContents([
-    new MediaWikiBreak(),
-    new MediaWikiText(npc.name, { bold: true }),
-  ]);
+  builder.addContent(new MediaWikiText(npc.name, { bold: true }));
 
   if (npc.actions.includes("Talk-to")) {
     const transcriptTemplate = new MediaWikiTemplate("Hastranscript");
