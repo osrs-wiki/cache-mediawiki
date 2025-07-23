@@ -55,9 +55,7 @@ export const itemListener: CacheChangeListener = {
       newEntry.name.toLowerCase() !== "null"
     ) {
       writeItemPage(newEntry);
-    }
-
-    if (Context.renders && newEntry) {
+    } else if (Context.renders && newEntry) {
       renderItems(newEntry);
     }
   },
