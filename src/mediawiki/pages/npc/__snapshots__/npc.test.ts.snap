@@ -1,5 +1,136 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`npcPageBuilder multi-version functionality should generate numbered image file names 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|version3 = 3
+|name = Guard
+|image1 = [[File:Guard.png|120px]]
+|image2 = [[File:Guard (2).png|120px]]
+|image3 = [[File:Guard (3).png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 21
+|size = 1
+|examine1 = He tries to keep order around here.
+|examine2 = She tries to keep order around here.
+|examine3 = He guards this area.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 1001
+|id2 = 1002
+|id3 = 1003
+}}
+[[File:Guard chathead.png|left]]
+'''Guard'''"
+`;
+
+exports[`npcPageBuilder multi-version functionality should handle mixed combat and non-combat NPCs by choosing Monster template 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name = Guard
+|image1 = [[File:Guard.png|120px]]
+|image2 = [[File:Guard (2).png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat1 = 0
+|combat2 = 21
+|size = 1
+|examine1 = He tries to keep order around here.
+|examine2 = She tries to keep order around here.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 1001
+|id2 = 1002
+}}
+[[File:Guard chathead.png|left]]
+'''Guard'''"
+`;
+
+exports[`npcPageBuilder multi-version functionality should handle multiple NPCs with shared parameters 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name = Guard
+|image1 = [[File:Guard.png|120px]]
+|image2 = [[File:Guard (2).png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 21
+|size = 1
+|examine1 = He tries to keep order around here.
+|examine2 = She tries to keep order around here.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 1001
+|id2 = 1002
+}}
+[[File:Guard chathead.png|left]]
+'''Guard'''"
+`;
+
+exports[`npcPageBuilder multi-version functionality should handle single NPC correctly (backward compatibility) 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|name = Guard
+|image = [[File:Guard.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 21
+|size = 1
+|examine = He tries to keep order around here.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id = 1001
+}}
+[[File:Guard chathead.png|left]]
+'''Guard'''"
+`;
+
+exports[`npcPageBuilder multi-version functionality should use NPC template when all NPCs have no combat level 1`] = `
+"{{New Content}}
+{{Infobox NPC
+|version1 = 1
+|version2 = 2
+|name = Banker
+|image1 = [[File:Banker.png|120px]]
+|image2 = [[File:Banker (2).png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|id1 = 2001
+|id2 = 2002
+}}
+[[File:Banker chathead.png|left]]
+'''Banker'''"
+`;
+
 exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
 "{{New Content}}
 {{Infobox Monster

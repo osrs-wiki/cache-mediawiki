@@ -88,13 +88,7 @@ describe("npcPageBuilder", () => {
       const builder = npcPageBuilder(guard);
       const built = builder.build();
 
-      expect(built).toContain("{{Infobox Monster");
-      expect(built).toContain("|name = Guard");
-      expect(built).toContain("|combat = 21");
-      expect(built).toContain("|id = 1001");
-      
-      // Should not have version parameters for single NPC
-      expect(built).not.toContain("|version1 =");
+      expect(built).toMatchSnapshot();
     });
 
     it("should handle multiple NPCs with shared parameters", () => {
@@ -106,21 +100,7 @@ describe("npcPageBuilder", () => {
       const builder = npcPageBuilder(guards);
       const built = builder.build();
 
-      expect(built).toContain("{{Infobox Monster");
-      
-      // Should have version parameters
-      expect(built).toContain("|version1 = 1");
-      expect(built).toContain("|version2 = 2");
-      
-      // Shared parameters (same values)
-      expect(built).toContain("|name = Guard");
-      expect(built).toContain("|combat = 21");
-      
-      // Different parameters (different IDs and examines)
-      expect(built).toContain("|id1 = 1001");
-      expect(built).toContain("|id2 = 1002");
-      expect(built).toContain("|examine1 = He tries to keep order around here.");
-      expect(built).toContain("|examine2 = She tries to keep order around here.");
+      expect(built).toMatchSnapshot();
     });
 
     it("should handle mixed combat and non-combat NPCs by choosing Monster template", () => {
@@ -132,10 +112,7 @@ describe("npcPageBuilder", () => {
       const builder = npcPageBuilder(npcs);
       const built = builder.build();
 
-      // Should use Monster template because one has combat level
-      expect(built).toContain("{{Infobox Monster");
-      expect(built).toContain("|combat1 = 0");
-      expect(built).toContain("|combat2 = 21");
+      expect(built).toMatchSnapshot();
     });
 
     it("should use NPC template when all NPCs have no combat level", () => {
@@ -147,11 +124,7 @@ describe("npcPageBuilder", () => {
       const builder = npcPageBuilder(npcs);
       const built = builder.build();
 
-      // Should use NPC template because none have combat level
-      expect(built).toContain("{{Infobox NPC");
-      expect(built).toContain("|version1 = 1");
-      expect(built).toContain("|version2 = 2");
-      expect(built).toContain("|name = Banker");
+      expect(built).toMatchSnapshot();
     });
 
     it("should generate numbered image file names", () => {
@@ -164,10 +137,7 @@ describe("npcPageBuilder", () => {
       const builder = npcPageBuilder(guards);
       const built = builder.build();
 
-      // Check image parameters use numbered naming
-      expect(built).toContain("Guard.png"); // First one no number
-      expect(built).toContain("Guard (2).png"); // Second one has (2)
-      expect(built).toContain("Guard (3).png"); // Third one has (3)
+      expect(built).toMatchSnapshot();
     });
   });
 });
