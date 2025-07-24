@@ -40,11 +40,6 @@ describe("sceneryPageBuilder", () => {
       actions: ["Open", "Search"],
       id: 123 as ObjID,
     });
-    const pageContent = builder?.build();
-    expect(pageContent).toContain("|name = Red Chest");
-    expect(pageContent).toContain("[[File:Red Chest.png]]");
-    expect(pageContent).toContain("'''Red Chest'''");
-    expect(pageContent).not.toContain("<col=ff0000>");
-    expect(pageContent).not.toContain("</col>");
+    expect(builder?.build()).toMatchSnapshot();
   });
 });

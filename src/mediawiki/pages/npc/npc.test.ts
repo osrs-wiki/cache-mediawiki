@@ -107,12 +107,6 @@ describe("npcPageBuilder", () => {
       chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
-    const pageContent = builder?.build();
-    expect(pageContent).toContain("|name = Tornado");
-    expect(pageContent).toContain("[[File:Tornado.png|120px]]");
-    expect(pageContent).toContain("[[File:Tornado chathead.png|left]]");
-    expect(pageContent).toContain("'''Tornado'''");
-    expect(pageContent).not.toContain("<col=00ffff>");
-    expect(pageContent).not.toContain("</col>");
+    expect(builder?.build()).toMatchSnapshot();
   });
 });
