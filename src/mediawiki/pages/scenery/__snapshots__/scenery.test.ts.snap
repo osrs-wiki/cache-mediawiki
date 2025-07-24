@@ -31,3 +31,19 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 }}
 '''name'''"
 `;
+
+exports[`sceneryPageBuilder should strip HTML tags from scenery name in page content 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Red Chest
+|image = [[File:Red Chest.png]]
+|update = update
+|members = Yes
+|quest = No
+|options = Open, Search
+|examine = 
+|map = No
+|id = 123
+}}
+'''Red Chest'''"
+`;

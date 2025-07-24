@@ -96,4 +96,17 @@ describe("npcPageBuilder", () => {
     } as any);
     expect(builder?.build()).toMatchSnapshot();
   });
+
+  it("should strip HTML tags from NPC name in page content", async () => {
+    const builder = await npcPageBuilder({
+      name: "<col=00ffff>Tornado</col>",
+      combatLevel: 1,
+      actions: ["action1", "action2"],
+      id: 1 as NPCID,
+      params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+  });
 });

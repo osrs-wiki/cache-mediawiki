@@ -10,8 +10,10 @@ import {
 import InfoboxMonsterTemplate from "@/mediawiki/templates/InfoboxMonster";
 import InfoboxNpcTemplate from "@/mediawiki/templates/InfoboxNpc";
 import { NPC } from "@/utils/cache2";
+import { stripHtmlTags } from "@/utils/string";
 
 export const npcPageBuilder = (npc: NPC) => {
+  const cleanName = stripHtmlTags(npc.name);
   const infoboxNpc =
     npc.combatLevel > 0 ? InfoboxMonsterTemplate(npc) : InfoboxNpcTemplate(npc);
 
@@ -24,14 +26,14 @@ export const npcPageBuilder = (npc: NPC) => {
   // Only add chathead image if NPC has chathead models
   if (npc.chatheadModels.length > 0) {
     builder.addContents([
-      new MediaWikiFile(`${npc.name} chathead.png`, {
+      new MediaWikiFile(`${cleanName} chathead.png`, {
         horizontalAlignment: "left",
       }),
       new MediaWikiBreak(),
     ]);
   }
 
-  builder.addContent(new MediaWikiText(npc.name, { bold: true }));
+  builder.addContent(new MediaWikiText(cleanName, { bold: true }));
 
   if (npc.actions.includes("Talk-to")) {
     const transcriptTemplate = new MediaWikiTemplate("Hastranscript");

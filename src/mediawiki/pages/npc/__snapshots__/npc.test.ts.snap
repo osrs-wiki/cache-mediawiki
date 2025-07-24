@@ -79,6 +79,20 @@ exports[`npcPageBuilder should build npc page without chathead when no chatheadM
 '''name'''"
 `;
 
+exports[`npcPageBuilder should strip HTML tags from NPC name in page content 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|name = Tornado
+|image = [[File:Tornado.png|120px]]
+|members = Yes
+|combat = 1
+|examine = 
+|id = 1
+}}
+[[File:Tornado chathead.png|left]]
+'''Tornado'''"
+`;
+
 exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
 "{{New Content}}
 {{Infobox Monster
