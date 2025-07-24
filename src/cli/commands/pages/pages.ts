@@ -13,7 +13,7 @@ const pages = new Command("pages")
       "-t, --type <type>",
       "The type of page to generate (area, item, npc, scenery)"
     )
-      .choices(["area", "item", "npc", "scenery"])
+      .choices(["area", "item", "music", "npc", "scenery"])
       .default("item")
   )
   .requiredOption(

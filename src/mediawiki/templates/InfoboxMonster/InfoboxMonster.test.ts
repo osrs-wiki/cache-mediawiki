@@ -78,4 +78,62 @@ describe("InfoboxMonsterTemplate", () => {
     expect(amagicParam).toBeUndefined();
     expect(dlightParam).toBeUndefined();
   });
+
+  it("should strip HTML tags from monster name", () => {
+    const npc = {
+      name: "<col=ff0000>Red Dragon</col>",
+      combatLevel: 152,
+      size: 2,
+      hitpoints: 300,
+      attack: 90,
+      defence: 80,
+      magic: 85,
+      ranged: 95,
+      id: 9999 as NPCID,
+      params: new Params(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+
+    const template = InfoboxMonsterTemplate(npc);
+    const built = template.build();
+
+    expect(built).toMatchSnapshot();
+
+    // Verify that the name parameter is stripped of HTML tags
+    const templateParams = built.params || [];
+    const nameParam = templateParams.find((p) => p.key === "name");
+    expect(nameParam?.value).toBe("Red Dragon");
+
+    // Verify that the image filename is also stripped of HTML tags
+    const imageParam = templateParams.find((p) => p.key === "image");
+    expect(imageParam?.value).toContain("Red Dragon.png");
+    expect(imageParam?.value).not.toContain("<col=");
+    expect(imageParam?.value).not.toContain("</col>");
+  });
+
+  it("should handle monster names without HTML tags", () => {
+    const npc = {
+      name: "Normal Monster",
+      combatLevel: 75,
+      size: 1,
+      hitpoints: 150,
+      attack: 60,
+      defence: 55,
+      magic: 50,
+      ranged: 65,
+      id: 8888 as NPCID,
+      params: new Params(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+
+    const template = InfoboxMonsterTemplate(npc);
+    const built = template.build();
+
+    expect(built).toMatchSnapshot();
+
+    // Verify that normal names are preserved
+    const templateParams = built.params || [];
+    const nameParam = templateParams.find((p) => p.key === "name");
+    expect(nameParam?.value).toBe("Normal Monster");
+  });
 });

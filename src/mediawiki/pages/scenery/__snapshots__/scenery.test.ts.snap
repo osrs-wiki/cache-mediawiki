@@ -13,7 +13,6 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 |map = No
 |id = 1
 }}
-[[File:name detail.png|130px|left]]
 '''name'''"
 `;
 
@@ -30,6 +29,21 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 |map = No
 |id = beta1
 }}
-[[File:name detail.png|130px|left]]
 '''name'''"
+`;
+
+exports[`sceneryPageBuilder should strip HTML tags from scenery name in page content 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Red Chest
+|image = [[File:Red Chest.png]]
+|update = update
+|members = Yes
+|quest = No
+|options = Open, Search
+|examine = 
+|map = No
+|id = 123
+}}
+'''Red Chest'''"
 `;

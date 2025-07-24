@@ -1,4 +1,4 @@
-import { getFieldDifferencesRow, formatEntryValue } from "./differences.utils";
+import { getFieldDifferencesRow, formatEntryValue, formatEntryIdentifier } from "./differences.utils";
 
 import { jagexHSLtoHex } from "@/utils/colors";
 
@@ -102,6 +102,30 @@ describe("differences builder utils", () => {
       expect(formatEntryValue("complex", complexObject)).toBe(
         "{'a': {'b': 1}, 'c': [2, 3]}"
       );
+    });
+  });
+
+  describe("formatEntryIdentifier", () => {
+    test("should strip HTML tags from name identifiers", () => {
+      const result = formatEntryIdentifier("name", "<col=00ffff>Tornado</col>", {});
+      expect(result).toHaveLength(1);
+      // The function should create a MediaWikiLink - let's check it by calling build()
+      const built = result[0].build ? result[0].build() : String(result[0]);
+      expect(built).toContain("Tornado");
+      expect(built).not.toContain("<col=");
+      expect(built).not.toContain("</col>");
+    });
+
+    test("should handle empty name values", () => {
+      const result = formatEntryIdentifier("name", "", {});
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBeInstanceOf(Object);
+    });
+
+    test("should handle null name values", () => {
+      const result = formatEntryIdentifier("name", null, {});
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBeInstanceOf(Object);
     });
   });
 });

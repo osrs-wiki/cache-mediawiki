@@ -55,9 +55,7 @@ export const objectListener: CacheChangeListener = {
       newEntry.name.toLowerCase() !== "null"
     ) {
       writeSceneryPage(newEntry);
-    }
-
-    if (Context.renders && newEntry) {
+    } else if (Context.renders && newEntry) {
       renderScenery(newEntry);
     }
   },

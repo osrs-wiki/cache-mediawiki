@@ -21,11 +21,13 @@ import {
   STAB_DEFENCE_PARAM,
 } from "@/types/params";
 import { NPC } from "@/utils/cache2";
+import { stripHtmlTags } from "@/utils/string";
 
 const InfoboxMonsterTemplate = (npc: NPC) => {
+  const cleanName = stripHtmlTags(npc.name);
   const infoboxData: InfoboxMonster = {
-    "name": npc.name as string,
-    "image": new MediaWikiFile(`${npc.name}.png`, {
+    "name": cleanName,
+    "image": new MediaWikiFile(`${cleanName}.png`, {
       resizing: { width: 120 },
     }),
     "release": Context.updateDate
