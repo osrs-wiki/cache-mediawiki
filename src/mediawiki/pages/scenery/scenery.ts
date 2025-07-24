@@ -1,6 +1,5 @@
 import {
   InfoboxTemplate,
-  MediaWikiBreak,
   MediaWikiBuilder,
   MediaWikiDate,
   MediaWikiFile,
@@ -12,11 +11,13 @@ import { InfoboxScenery } from "./scenery.types";
 
 import Context from "@/context";
 import { Obj } from "@/utils/cache2";
+import { stripHtmlTags } from "@/utils/string";
 
 export const sceneryPageBuilder = (scenery: Obj) => {
+  const cleanName = stripHtmlTags(scenery.name);
   const infoboxscenery = new InfoboxTemplate<InfoboxScenery>("Scenery", {
-    name: scenery.name as string,
-    image: new MediaWikiFile(`${scenery.name}.png`),
+    name: cleanName,
+    image: new MediaWikiFile(`${cleanName}.png`),
     release: Context.updateDate
       ? new MediaWikiDate(new Date(Context.updateDate))
       : undefined,
@@ -35,7 +36,7 @@ export const sceneryPageBuilder = (scenery: Obj) => {
   builder.addContents([
     new MediaWikiTemplate("New Content"),
     infoboxscenery.build(),
-    new MediaWikiText(scenery.name, { bold: true }),
+    new MediaWikiText(cleanName, { bold: true }),
   ]);
 
   return builder;

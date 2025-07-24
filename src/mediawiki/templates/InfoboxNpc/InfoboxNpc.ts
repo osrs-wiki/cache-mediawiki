@@ -8,11 +8,13 @@ import { InfoboxNpc } from "./InfoboxNpc.types";
 
 import Context from "@/context";
 import { NPC } from "@/utils/cache2";
+import { stripHtmlTags } from "@/utils/string";
 
 const InfoboxNpcTemplate = (npc: NPC) => {
+  const cleanName = stripHtmlTags(npc.name);
   const infoboxData: InfoboxNpc = {
-    name: npc.name as string,
-    image: new MediaWikiFile(`${npc.name}.png`, {
+    name: cleanName,
+    image: new MediaWikiFile(`${cleanName}.png`, {
       resizing: { width: 120 },
     }),
     release: Context.updateDate
