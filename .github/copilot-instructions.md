@@ -138,6 +138,16 @@ const command = new Command()
 - Use conventional commit messages
 - Update changelog for user-facing changes
 - Test locally before pushing
-- Always include a changeset in pull requests. Keep changesets focused on a single feature or fix with a single sentence summary.
+- **Always include a changeset in pull requests** - This is required for all PRs
+  - Keep changesets focused on a single feature or fix with a single sentence summary
+  - Use `patch` for bug fixes, `minor` for new features, `major` for breaking changes
+  - Create changeset files in `.changeset/` directory with format:
+    ```
+    ---
+    "@osrs-wiki/cache-mediawiki": patch
+    ---
+    
+    Brief description of the change
+    ```
 
 Remember: This is a specialized tool for OSRS Wiki editors, so prioritize accuracy of game data and MediaWiki compatibility over general-purpose features.

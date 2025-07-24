@@ -14,3 +14,12 @@ export const vowel = (noun: string) => {
   );
   return startsWith.length > 0 ? "an" : "a";
 };
+
+/**
+ * Strip HTML tags from a string for display purposes.
+ * @param text The text that may contain HTML tags
+ * @returns The text with HTML tags removed
+ */
+export const stripHtmlTags = (text: string): string => {
+  return text.replaceAll(/<[^>]*>/g, "");
+};

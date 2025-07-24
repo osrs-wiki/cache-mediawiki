@@ -31,4 +31,15 @@ describe("sceneryPageBuilder", () => {
 
     Context.beta = originalBeta;
   });
+
+  it("should strip HTML tags from scenery name in page content", async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore Do not require all fields
+    const builder = await sceneryPageBuilder({
+      name: "<col=ff0000>Red Chest</col>",
+      actions: ["Open", "Search"],
+      id: 123 as ObjID,
+    });
+    expect(builder?.build()).toMatchSnapshot();
+  });
 });

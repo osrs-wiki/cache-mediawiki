@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxNpcTemplate should handle NPC names without HTML tags 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox NPC",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Normal NPC",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Normal NPC.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "level",
+      "value": "50",
+    },
+    Object {
+      "key": "race",
+      "value": "[[Human]]",
+    },
+    Object {
+      "key": "location",
+      "value": "",
+    },
+    Object {
+      "key": "gender",
+      "value": "Male",
+    },
+    Object {
+      "key": "options",
+      "value": "Talk-to, Examine",
+    },
+    Object {
+      "key": "map",
+      "value": "No",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "5678",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxNpcTemplate should strip HTML tags from NPC name 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox NPC",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Tornado",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Tornado.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "level",
+      "value": "1",
+    },
+    Object {
+      "key": "race",
+      "value": "[[Human]]",
+    },
+    Object {
+      "key": "location",
+      "value": "",
+    },
+    Object {
+      "key": "gender",
+      "value": "Male",
+    },
+    Object {
+      "key": "options",
+      "value": "Talk-to, Examine",
+    },
+    Object {
+      "key": "map",
+      "value": "No",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "1234",
+    },
+  ],
+}
+`;

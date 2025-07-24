@@ -28,7 +28,7 @@ import {
 } from "../../../tasks/differences/differences.types";
 
 import { jagexHSLtoHex } from "@/utils/colors";
-import { capitalize } from "@/utils/string";
+import { capitalize, stripHtmlTags } from "@/utils/string";
 
 /**
  * Format the value a field.
@@ -105,7 +105,7 @@ export const formatEntryIdentifier = (
         : [new MediaWikiText(formatEntryValue(identifier, value))];
     case "name":
       return [
-        value ? new MediaWikiLink(value as string) : new MediaWikiText(""),
+        value ? new MediaWikiLink(stripHtmlTags(value as string)) : new MediaWikiText(""),
       ];
     default:
       return [new MediaWikiText(formatEntryValue(identifier, value))];

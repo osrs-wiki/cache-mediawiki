@@ -1,5 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`InfoboxMonsterTemplate should handle monster names without HTML tags 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Normal Monster",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Normal Monster.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "combat",
+      "value": "75",
+    },
+    Object {
+      "key": "size",
+      "value": "1",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "hitpoints",
+      "value": "150",
+    },
+    Object {
+      "key": "att",
+      "value": "60",
+    },
+    Object {
+      "key": "def",
+      "value": "55",
+    },
+    Object {
+      "key": "mage",
+      "value": "50",
+    },
+    Object {
+      "key": "range",
+      "value": "65",
+    },
+    Object {
+      "key": "id",
+      "value": "8888",
+    },
+  ],
+}
+`;
+
 exports[`InfoboxMonsterTemplate should include NPC params in the infobox when they exist 1`] = `
 MediaWikiTemplate {
   "children": undefined,
@@ -123,6 +181,64 @@ MediaWikiTemplate {
     Object {
       "key": "id",
       "value": "5678",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxMonsterTemplate should strip HTML tags from monster name 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Red Dragon",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Red Dragon.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "combat",
+      "value": "152",
+    },
+    Object {
+      "key": "size",
+      "value": "2",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "hitpoints",
+      "value": "300",
+    },
+    Object {
+      "key": "att",
+      "value": "90",
+    },
+    Object {
+      "key": "def",
+      "value": "80",
+    },
+    Object {
+      "key": "mage",
+      "value": "85",
+    },
+    Object {
+      "key": "range",
+      "value": "95",
+    },
+    Object {
+      "key": "id",
+      "value": "9999",
     },
   ],
 }

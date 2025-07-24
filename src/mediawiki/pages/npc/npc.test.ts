@@ -15,25 +15,31 @@ describe("npcPageBuilder", () => {
         "1001": "He tries to keep order around here.",
         "1002": "She tries to keep order around here.",
         "1003": "He guards this area.",
-      }
+      },
     };
   });
 
-  const createMockNpc = (name: string, id: number, combatLevel = 0, options: Partial<NPC> = {}): NPC => ({
-    name,
-    id: id as NPCID,
-    combatLevel,
-    actions: ["Talk-to", "Trade"],
-    params: new Params(),
-    size: 1,
-    hitpoints: 1,
-    attack: 1,
-    defence: 1,
-    magic: 1,
-    ranged: 1,
-    ...options,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any);
+  const createMockNpc = (
+    name: string,
+    id: number,
+    combatLevel = 0,
+    options: Partial<NPC> = {}
+  ): NPC =>
+    ({
+      name,
+      id: id as NPCID,
+      combatLevel,
+      actions: ["Talk-to", "Trade"],
+      params: new Params(),
+      size: 1,
+      hitpoints: 1,
+      attack: 1,
+      defence: 1,
+      magic: 1,
+      ranged: 1,
+      ...options,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
 
   it("should build npc infobox without combat level", async () => {
     const builder = await npcPageBuilder({
@@ -42,6 +48,7 @@ describe("npcPageBuilder", () => {
       actions: ["action1", "action2"],
       id: 1 as NPCID,
       params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
@@ -60,6 +67,7 @@ describe("npcPageBuilder", () => {
       magic: 400,
       ranged: 500,
       params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
@@ -75,11 +83,64 @@ describe("npcPageBuilder", () => {
       actions: ["action1", "action2"],
       id: 1 as NPCID,
       params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     expect(builder?.build()).toMatchSnapshot();
 
     Context.beta = originalBeta;
+  });
+
+  it("should build npc page with transcript", async () => {
+    const builder = await npcPageBuilder({
+      name: "name",
+      combatLevel: 1,
+      actions: ["Talk-to"],
+      id: 1 as NPCID,
+      params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+  });
+
+  it("should build npc page without chathead when no chatheadModels", async () => {
+    const builder = await npcPageBuilder({
+      name: "name",
+      combatLevel: 1,
+      actions: ["action1", "action2"],
+      id: 1 as NPCID,
+      params: new Params(),
+      chatheadModels: [], // NPC without chathead models
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+  });
+
+  it("should build npc page with chathead when has chatheadModels", async () => {
+    const builder = await npcPageBuilder({
+      name: "name",
+      combatLevel: 1,
+      actions: ["action1", "action2"],
+      id: 1 as NPCID,
+      params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
+  });
+
+  it("should strip HTML tags from NPC name in page content", async () => {
+    const builder = await npcPageBuilder({
+      name: "<col=00ffff>Tornado</col>",
+      combatLevel: 1,
+      actions: ["action1", "action2"],
+      id: 1 as NPCID,
+      params: new Params(),
+      chatheadModels: [1, 2], // NPC with chathead models
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+    expect(builder?.build()).toMatchSnapshot();
   });
 
   describe("multi-version functionality", () => {
@@ -96,7 +157,7 @@ describe("npcPageBuilder", () => {
         createMockNpc("Guard", 1001, 21),
         createMockNpc("Guard", 1002, 21),
       ];
-      
+
       const builder = npcPageBuilder(guards);
       const built = builder.build();
 
@@ -108,7 +169,7 @@ describe("npcPageBuilder", () => {
         createMockNpc("Guard", 1001, 0), // No combat level
         createMockNpc("Guard", 1002, 21), // Has combat level
       ];
-      
+
       const builder = npcPageBuilder(npcs);
       const built = builder.build();
 
@@ -120,7 +181,7 @@ describe("npcPageBuilder", () => {
         createMockNpc("Banker", 2001, 0),
         createMockNpc("Banker", 2002, 0),
       ];
-      
+
       const builder = npcPageBuilder(npcs);
       const built = builder.build();
 
@@ -133,7 +194,7 @@ describe("npcPageBuilder", () => {
         createMockNpc("Guard", 1002, 21),
         createMockNpc("Guard", 1003, 21),
       ];
-      
+
       const builder = npcPageBuilder(guards);
       const built = builder.build();
 
