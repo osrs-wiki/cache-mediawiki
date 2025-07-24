@@ -19,12 +19,19 @@ export const npcPageBuilder = (npc: NPC) => {
   builder.addContents([
     new MediaWikiTemplate("New Content"),
     infoboxNpc.build(),
-    new MediaWikiFile(`${npc.name} chathead.png`, {
-      horizontalAlignment: "left",
-    }),
-    new MediaWikiBreak(),
-    new MediaWikiText(npc.name, { bold: true }),
   ]);
+
+  // Only add chathead image if NPC has chathead models
+  if (npc.chatheadModels.length > 0) {
+    builder.addContents([
+      new MediaWikiFile(`${npc.name} chathead.png`, {
+        horizontalAlignment: "left",
+      }),
+      new MediaWikiBreak(),
+    ]);
+  }
+
+  builder.addContent(new MediaWikiText(npc.name, { bold: true }));
 
   if (npc.actions.includes("Talk-to")) {
     const transcriptTemplate = new MediaWikiTemplate("Hastranscript");

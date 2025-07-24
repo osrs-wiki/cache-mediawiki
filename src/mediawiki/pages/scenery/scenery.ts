@@ -35,11 +35,6 @@ export const sceneryPageBuilder = (scenery: Obj) => {
   builder.addContents([
     new MediaWikiTemplate("New Content"),
     infoboxscenery.build(),
-    new MediaWikiFile(`${scenery.name} detail.png`, {
-      horizontalAlignment: "left",
-      resizing: { width: 130 },
-    }),
-    new MediaWikiBreak(),
     new MediaWikiText(scenery.name, { bold: true }),
   ]);
 
