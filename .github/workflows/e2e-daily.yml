@@ -1,0 +1,61 @@
+name: Daily E2E Tests
+
+on:
+  schedule:
+    # Run daily at 8:00 AM UTC
+    - cron: "0 8 * * *"
+
+jobs:
+  check-and-test:
+    name: "Check for changes and run E2E tests"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch the last 2 days of commits to ensure we can check the last 24 hours
+          fetch-depth: 50
+
+      - name: Check for changes in last 24 hours
+        id: check_changes
+        run: |
+          # Get the timestamp from 24 hours ago
+          YESTERDAY=$(date -d '24 hours ago' --iso-8601=seconds)
+          echo "Checking for commits since: $YESTERDAY"
+          
+          # Count commits in the last 24 hours
+          RECENT_COMMITS=$(git log --since="$YESTERDAY" --oneline | wc -l)
+          echo "Found $RECENT_COMMITS commits in the last 24 hours"
+          
+          if [ "$RECENT_COMMITS" -gt 0 ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Recent commits found, will run E2E tests"
+            git log --since="$YESTERDAY" --oneline
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No recent commits found, skipping E2E tests"
+          fi
+
+      - name: Set up Node.js
+        if: steps.check_changes.outputs.has_changes == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: npm ci
+
+      - name: Run E2E tests
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: npm run test:e2e
+
+      - name: Upload test results
+        if: steps.check_changes.outputs.has_changes == 'true' && (success() || failure())
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results-${{ github.run_id }}
+          path: |
+            e2e/__snapshots__/
+            out/
