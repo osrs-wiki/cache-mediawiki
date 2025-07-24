@@ -1,9 +1,11 @@
 import * as fs from "fs";
+import { copyFile } from "fs/promises";
 
 import { renderNpcs, clearNpcNameCounts, getNpcNameCounts } from "./npcs";
 
 import Context from "@/context";
 import { NPC, NPCID, Params } from "@/utils/cache2";
+import { formatFileName } from "@/utils/files";
 
 // Mock the fs functions
 jest.mock("fs", () => ({
@@ -38,7 +40,6 @@ describe("renderNpcs multi-version functionality", () => {
     } as any);
 
   it("should skip NPCs with null names", async () => {
-    const { copyFile } = require("fs/promises");
     const nullNpc = createMockNpc("null", 1001);
 
     await renderNpcs(nullNpc);
@@ -47,9 +48,6 @@ describe("renderNpcs multi-version functionality", () => {
   });
 
   it("should name first occurrence without number", async () => {
-    const { copyFile } = require("fs/promises");
-    const formatFileName = require("@/utils/files").formatFileName;
-
     const guard = createMockNpc("Guard", 1001);
     await renderNpcs(guard);
 
@@ -62,9 +60,6 @@ describe("renderNpcs multi-version functionality", () => {
   });
 
   it("should name subsequent occurrences with numbers", async () => {
-    const { copyFile } = require("fs/promises");
-    const formatFileName = require("@/utils/files").formatFileName;
-
     const guard1 = createMockNpc("Guard", 1001);
     const guard2 = createMockNpc("Guard", 1002);
     const guard3 = createMockNpc("Guard", 1003);
