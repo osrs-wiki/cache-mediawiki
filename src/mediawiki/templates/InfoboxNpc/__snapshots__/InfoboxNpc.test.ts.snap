@@ -1,5 +1,232 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`InfoboxNpcTemplate multi-version functionality should generate versioned template for multiple NPCs with same name 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox NPC",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
+    Object {
+      "key": "version3",
+      "value": "3",
+    },
+    Object {
+      "key": "name",
+      "value": "Guard",
+    },
+    Object {
+      "key": "image1",
+      "value": "[[File:Guard.png|120px]]",
+    },
+    Object {
+      "key": "image2",
+      "value": "[[File:Guard (2).png|120px]]",
+    },
+    Object {
+      "key": "image3",
+      "value": "[[File:Guard (3).png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "level1",
+      "value": "21",
+    },
+    Object {
+      "key": "level2",
+      "value": "21",
+    },
+    Object {
+      "key": "level3",
+      "value": "25",
+    },
+    Object {
+      "key": "race",
+      "value": "[[Human]]",
+    },
+    Object {
+      "key": "location",
+      "value": "",
+    },
+    Object {
+      "key": "gender",
+      "value": "Male",
+    },
+    Object {
+      "key": "options",
+      "value": "Talk-to, Examine",
+    },
+    Object {
+      "key": "map",
+      "value": "No",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id1",
+      "value": "1001",
+    },
+    Object {
+      "key": "id2",
+      "value": "1002",
+    },
+    Object {
+      "key": "id3",
+      "value": "1003",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxNpcTemplate multi-version functionality should handle array with single NPC 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox NPC",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Single Guard",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Single Guard.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "level",
+      "value": "30",
+    },
+    Object {
+      "key": "race",
+      "value": "[[Human]]",
+    },
+    Object {
+      "key": "location",
+      "value": "",
+    },
+    Object {
+      "key": "gender",
+      "value": "Male",
+    },
+    Object {
+      "key": "options",
+      "value": "Talk-to, Examine",
+    },
+    Object {
+      "key": "map",
+      "value": "No",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "2001",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxNpcTemplate multi-version functionality should handle empty array 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox NPC",
+  "options": undefined,
+  "params": Array [],
+}
+`;
+
+exports[`InfoboxNpcTemplate multi-version functionality should handle multiple NPCs with HTML tags in names 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox NPC",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
+    Object {
+      "key": "name1",
+      "value": "Red Guard",
+    },
+    Object {
+      "key": "name2",
+      "value": "Blue Guard",
+    },
+    Object {
+      "key": "image1",
+      "value": "[[File:Red Guard.png|120px]]",
+    },
+    Object {
+      "key": "image2",
+      "value": "[[File:Blue Guard (2).png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "level",
+      "value": "40",
+    },
+    Object {
+      "key": "race",
+      "value": "[[Human]]",
+    },
+    Object {
+      "key": "location",
+      "value": "",
+    },
+    Object {
+      "key": "gender",
+      "value": "Male",
+    },
+    Object {
+      "key": "options",
+      "value": "Talk-to, Examine",
+    },
+    Object {
+      "key": "map",
+      "value": "No",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id1",
+      "value": "3001",
+    },
+    Object {
+      "key": "id2",
+      "value": "3002",
+    },
+  ],
+}
+`;
+
 exports[`InfoboxNpcTemplate should handle NPC names without HTML tags 1`] = `
 MediaWikiTemplate {
   "children": undefined,
