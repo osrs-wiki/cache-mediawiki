@@ -1,5 +1,304 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`InfoboxMonsterTemplate multi-version functionality should generate versioned template for multiple monsters with same name 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
+    Object {
+      "key": "version3",
+      "value": "3",
+    },
+    Object {
+      "key": "name",
+      "value": "Dragon",
+    },
+    Object {
+      "key": "image1",
+      "value": "[[File:Dragon.png|120px]]",
+    },
+    Object {
+      "key": "image2",
+      "value": "[[File:Dragon (2).png|120px]]",
+    },
+    Object {
+      "key": "image3",
+      "value": "[[File:Dragon (3).png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "combat1",
+      "value": "120",
+    },
+    Object {
+      "key": "combat2",
+      "value": "150",
+    },
+    Object {
+      "key": "combat3",
+      "value": "120",
+    },
+    Object {
+      "key": "size",
+      "value": "1",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "hitpoints1",
+      "value": "240",
+    },
+    Object {
+      "key": "hitpoints2",
+      "value": "300",
+    },
+    Object {
+      "key": "hitpoints3",
+      "value": "240",
+    },
+    Object {
+      "key": "att1",
+      "value": "96",
+    },
+    Object {
+      "key": "att2",
+      "value": "120",
+    },
+    Object {
+      "key": "att3",
+      "value": "96",
+    },
+    Object {
+      "key": "def1",
+      "value": "84",
+    },
+    Object {
+      "key": "def2",
+      "value": "105",
+    },
+    Object {
+      "key": "def3",
+      "value": "84",
+    },
+    Object {
+      "key": "mage1",
+      "value": "72",
+    },
+    Object {
+      "key": "mage2",
+      "value": "90",
+    },
+    Object {
+      "key": "mage3",
+      "value": "72",
+    },
+    Object {
+      "key": "range1",
+      "value": "108",
+    },
+    Object {
+      "key": "range2",
+      "value": "135",
+    },
+    Object {
+      "key": "range3",
+      "value": "108",
+    },
+    Object {
+      "key": "attbns1",
+      "value": "50",
+    },
+    Object {
+      "key": "attbns2",
+      "value": "60",
+    },
+    Object {
+      "key": "strbns1",
+      "value": "45",
+    },
+    Object {
+      "key": "dcrush2",
+      "value": "35",
+    },
+    Object {
+      "key": "id1",
+      "value": "4001",
+    },
+    Object {
+      "key": "id2",
+      "value": "4002",
+    },
+    Object {
+      "key": "id3",
+      "value": "4003",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxMonsterTemplate multi-version functionality should handle array with single monster 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Solo Dragon",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Solo Dragon.png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "combat",
+      "value": "200",
+    },
+    Object {
+      "key": "size",
+      "value": "1",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "hitpoints",
+      "value": "400",
+    },
+    Object {
+      "key": "att",
+      "value": "160",
+    },
+    Object {
+      "key": "def",
+      "value": "140",
+    },
+    Object {
+      "key": "mage",
+      "value": "120",
+    },
+    Object {
+      "key": "range",
+      "value": "180",
+    },
+    Object {
+      "key": "id",
+      "value": "5001",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxMonsterTemplate multi-version functionality should handle empty array 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [],
+}
+`;
+
+exports[`InfoboxMonsterTemplate multi-version functionality should handle multiple monsters with shared stats 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Monster",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
+    Object {
+      "key": "name",
+      "value": "Elite Guard",
+    },
+    Object {
+      "key": "image1",
+      "value": "[[File:Elite Guard.png|120px]]",
+    },
+    Object {
+      "key": "image2",
+      "value": "[[File:Elite Guard (2).png|120px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "combat",
+      "value": "180",
+    },
+    Object {
+      "key": "size",
+      "value": "1",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "hitpoints",
+      "value": "360",
+    },
+    Object {
+      "key": "att",
+      "value": "144",
+    },
+    Object {
+      "key": "def",
+      "value": "125",
+    },
+    Object {
+      "key": "mage",
+      "value": "108",
+    },
+    Object {
+      "key": "range",
+      "value": "162",
+    },
+    Object {
+      "key": "attbns",
+      "value": "100",
+    },
+    Object {
+      "key": "dslash",
+      "value": "80",
+    },
+    Object {
+      "key": "id1",
+      "value": "6001",
+    },
+    Object {
+      "key": "id2",
+      "value": "6002",
+    },
+  ],
+}
+`;
+
 exports[`InfoboxMonsterTemplate should handle monster names without HTML tags 1`] = `
 MediaWikiTemplate {
   "children": undefined,
@@ -40,15 +339,15 @@ MediaWikiTemplate {
     },
     Object {
       "key": "def",
-      "value": "55",
+      "value": "52",
     },
     Object {
       "key": "mage",
-      "value": "50",
+      "value": "45",
     },
     Object {
       "key": "range",
-      "value": "65",
+      "value": "67",
     },
     Object {
       "key": "id",
@@ -210,7 +509,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "size",
-      "value": "2",
+      "value": "1",
     },
     Object {
       "key": "examine",
@@ -218,23 +517,23 @@ MediaWikiTemplate {
     },
     Object {
       "key": "hitpoints",
-      "value": "300",
+      "value": "304",
     },
     Object {
       "key": "att",
-      "value": "90",
+      "value": "121",
     },
     Object {
       "key": "def",
-      "value": "80",
+      "value": "106",
     },
     Object {
       "key": "mage",
-      "value": "85",
+      "value": "91",
     },
     Object {
       "key": "range",
-      "value": "95",
+      "value": "136",
     },
     Object {
       "key": "id",
