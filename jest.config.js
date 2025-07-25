@@ -10,4 +10,5 @@ module.exports = {
   }),
   testEnvironment: "node",
   testMatch: ["**/src/**/*.test.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/e2e/"],
 };
