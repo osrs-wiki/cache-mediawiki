@@ -47,6 +47,32 @@ pages options:
   -i, --id <id>                        The ID of the item, NPC, or scenery.
 ```
 
+## Testing
+
+### Unit Tests
+
+Run the unit test suite:
+
+```bash
+npm test
+```
+
+### End-to-End Tests
+
+Run end-to-end tests that validate CLI commands and output files:
+
+```bash
+npm run test:e2e
+```
+
+The e2e tests use snapshot testing to ensure generated MediaWiki content remains consistent. See [`e2e/README.md`](e2e/README.md) for detailed documentation.
+
+To update snapshots when output changes intentionally:
+
+```bash
+npm run test:e2e -- -u
+```
+
 ## Releasing
 
 ### Create a changeset
