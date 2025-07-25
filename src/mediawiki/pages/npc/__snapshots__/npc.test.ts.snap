@@ -27,8 +27,11 @@ exports[`npcPageBuilder multi-version functionality should generate numbered ima
 |id2 = 1002
 |id3 = 1003
 }}
-[[File:Guard chathead.png|left]]
-'''Guard'''"
+'''Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
 `;
 
 exports[`npcPageBuilder multi-version functionality should handle mixed combat and non-combat NPCs by choosing Monster template 1`] = `
@@ -55,8 +58,11 @@ exports[`npcPageBuilder multi-version functionality should handle mixed combat a
 |id1 = 1001
 |id2 = 1002
 }}
-[[File:Guard chathead.png|left]]
-'''Guard'''"
+'''Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
 `;
 
 exports[`npcPageBuilder multi-version functionality should handle multiple NPCs with shared parameters 1`] = `
@@ -82,8 +88,11 @@ exports[`npcPageBuilder multi-version functionality should handle multiple NPCs 
 |id1 = 1001
 |id2 = 1002
 }}
-[[File:Guard chathead.png|left]]
-'''Guard'''"
+'''Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
 `;
 
 exports[`npcPageBuilder multi-version functionality should handle single NPC correctly (backward compatibility) 1`] = `
@@ -104,8 +113,11 @@ exports[`npcPageBuilder multi-version functionality should handle single NPC cor
 |range = 1
 |id = 1001
 }}
-[[File:Guard chathead.png|left]]
-'''Guard'''"
+'''Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
 `;
 
 exports[`npcPageBuilder multi-version functionality should use NPC template when all NPCs have no combat level 1`] = `
@@ -127,8 +139,11 @@ exports[`npcPageBuilder multi-version functionality should use NPC template when
 |id1 = 2001
 |id2 = 2002
 }}
-[[File:Banker chathead.png|left]]
-'''Banker'''"
+'''Banker'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
 `;
 
 exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
@@ -172,9 +187,10 @@ exports[`npcPageBuilder should build npc page with chathead when has chatheadMod
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
 |members = Yes
 |combat = 1
-|examine = 
 |id = 1
 }}
 [[File:name chathead.png|left]]
@@ -186,9 +202,10 @@ exports[`npcPageBuilder should build npc page with transcript 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
 |members = Yes
 |combat = 1
-|examine = 
 |id = 1
 }}
 [[File:name chathead.png|left]]
@@ -204,9 +221,10 @@ exports[`npcPageBuilder should build npc page without chathead when no chatheadM
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
 |members = Yes
 |combat = 1
-|examine = 
 |id = 1
 }}
 '''name'''"
@@ -217,9 +235,10 @@ exports[`npcPageBuilder should strip HTML tags from NPC name in page content 1`]
 {{Infobox Monster
 |name = Tornado
 |image = [[File:Tornado.png|120px]]
+|release = [[20 March]] [[2024]]
+|update = Varlamore: Part One
 |members = Yes
 |combat = 1
-|examine = 
 |id = 1
 }}
 [[File:Tornado chathead.png|left]]

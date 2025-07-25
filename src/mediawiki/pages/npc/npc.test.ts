@@ -37,6 +37,7 @@ describe("npcPageBuilder", () => {
       defence: 1,
       magic: 1,
       ranged: 1,
+      chatheadModels: [],
       ...options,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
