@@ -17,7 +17,7 @@ export const npcPageBuilder = (npcs: NPC | NPC[]) => {
   const npcArray = Array.isArray(npcs) ? npcs : [npcs];
 
   // Use the first NPC for the primary display
-  const primaryNpc = npcArray[0];
+  const primaryNpc = npcArray.filter((npc) => npc.name)[0] || npcArray[0];
   const cleanPrimaryName = stripHtmlTags(primaryNpc.name);
 
   // Determine if we should use Monster or NPC infobox based on any having combat level
@@ -34,7 +34,7 @@ export const npcPageBuilder = (npcs: NPC | NPC[]) => {
   ]);
 
   // Only add chathead image if NPC has chathead models
-  if (primaryNpc.chatheadModels.length > 0) {
+  if (primaryNpc.chatheadModels?.length > 0) {
     builder.addContents([
       new MediaWikiFile(`${cleanPrimaryName} chathead.png`, {
         horizontalAlignment: "left",
