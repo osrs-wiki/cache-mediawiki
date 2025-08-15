@@ -8,6 +8,7 @@ import {
 } from "@osrs-wiki/mediawiki-builder";
 
 import { generateItemStackGallery } from "./item.utils";
+import Context from "../../../context";
 import { CombatStyles, InfoboxBonuses, InfoboxItem } from "../../templates";
 
 import { Item, WearPos } from "@/utils/cache2";
@@ -26,8 +27,12 @@ export const itemPageBuilder = (item: Item) => {
   }
 
   const builder = new MediaWikiBuilder();
+
+  if (Context.newContentTemplate) {
+    builder.addContent(new MediaWikiTemplate(Context.newContentTemplate));
+  }
+
   builder.addContents([
-    new MediaWikiTemplate("New Content"),
     infoboxItem.build(),
     new MediaWikiFile(`${item.name} detail.png`, {
       horizontalAlignment: "left",
@@ -35,6 +40,7 @@ export const itemPageBuilder = (item: Item) => {
     }),
     new MediaWikiBreak(),
     new MediaWikiText(item.name, { bold: true }),
+    new MediaWikiText(" is an item."),
   ]);
 
   if (infoboxBonuses) {
