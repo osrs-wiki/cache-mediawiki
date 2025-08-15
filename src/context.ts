@@ -11,6 +11,7 @@ type CacheMediaWikiContext = {
   oldCache?: string;
   oldCacheProvider?: FlatCacheProvider | DiskCacheProvider;
   newCacheProvider?: FlatCacheProvider | DiskCacheProvider;
+  newContentTemplate?: string;
   renders?: string;
   update?: string;
   updateDate?: string;

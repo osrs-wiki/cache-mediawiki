@@ -14,7 +14,7 @@ exports[`areaPageBuilder should build area page 1`] = `
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
-'''Test Area'''"
+'''Test Area''' is an area."
 `;
 
 exports[`areaPageBuilder should build area page with context 1`] = `
@@ -32,5 +32,5 @@ exports[`areaPageBuilder should build area page with context 1`] = `
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
-'''Test Area'''"
+'''Test Area''' is an area."
 `;

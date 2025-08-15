@@ -22,6 +22,7 @@ program
     Context.pages = options.pages;
     Context.update = options.update;
     Context.updateDate = options.updateDate;
+    Context.newContentTemplate = options.newContentTemplate;
 
     const renders = options.renders;
     Context.renders =

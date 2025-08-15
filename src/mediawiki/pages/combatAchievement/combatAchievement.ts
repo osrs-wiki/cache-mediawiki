@@ -50,6 +50,10 @@ const combatAchievementPageBuilder = (combatAchievement: CombatAchievement) => {
   );
   combatAchievementsList.add("", combatAchievement.monster);
 
+  if (Context.newContentTemplate) {
+    builder.addContent(new MediaWikiTemplate(Context.newContentTemplate));
+  }
+
   builder.addContents([
     infobox,
     new MediaWikiText(combatAchievement.title, { bold: true }),

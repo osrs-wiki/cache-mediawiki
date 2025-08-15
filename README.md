@@ -40,6 +40,7 @@ Global options:
   --examines <examines>                Include examines in the output. (default: false)
   --examinesVersion <examinesVersion>  The version of the examines. (default: "latest")
   --beta <beta>                        Whether the cache is from a beta server. (default: false)
+  --newContentTemplate <newContentTemplate>  The template for new content. (default: "New Content")
   -h, --help                           display help for command
 
 pages options:

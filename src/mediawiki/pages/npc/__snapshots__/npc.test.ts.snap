@@ -17,7 +17,7 @@ exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name'''"
+'''name''' is an NPC.'''name'''"
 `;
 
 exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
@@ -31,7 +31,7 @@ exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name'''"
+'''name''' is an NPC.'''name'''"
 `;
 
 exports[`npcPageBuilder should build npc page with chathead when has chatheadModels 1`] = `
@@ -45,7 +45,7 @@ exports[`npcPageBuilder should build npc page with chathead when has chatheadMod
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name'''"
+'''name''' is an NPC.'''name'''"
 `;
 
 exports[`npcPageBuilder should build npc page with transcript 1`] = `
@@ -59,7 +59,7 @@ exports[`npcPageBuilder should build npc page with transcript 1`] = `
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name'''
+'''name''' is an NPC.'''name'''
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -90,7 +90,7 @@ exports[`npcPageBuilder should strip HTML tags from NPC name in page content 1`]
 |id = 1
 }}
 [[File:Tornado chathead.png|left]]
-'''Tornado'''"
+'''Tornado''' is an NPC.'''Tornado'''"
 `;
 
 exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
@@ -104,5 +104,5 @@ exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
 |id = beta1
 }}
 [[File:name chathead.png|left]]
-'''name'''"
+'''name''' is an NPC.'''name'''"
 `;

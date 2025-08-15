@@ -80,6 +80,9 @@ Key dependencies to be aware of:
 - Test files should be co-located with source files
 - Mock external dependencies and file system operations
 - Test both success and error scenarios
+- Use import and `jest.spyOn` for mocking functions.
+- Do not use `require` for mocking, as it is not compatible with TypeScript's module system.
+- When testing `MediaWikiBuilder` use snapshot testing for `build()` output.
 
 ### Code Examples
 
@@ -97,7 +100,7 @@ const cacheData = await readFlatCache(version, cacheIndex);
 import { MediaWikiBuilder } from "@osrs-wiki/mediawiki-builder";
 
 const builder = new MediaWikiBuilder();
-builder.addTemplate("template-name", { param: "value" });
+builder.addContents([new MediaWikiText("test content")]);
 const wikitext = builder.build();
 ```
 
