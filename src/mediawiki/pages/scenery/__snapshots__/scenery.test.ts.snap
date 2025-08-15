@@ -13,7 +13,7 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 |map = No
 |id = 1
 }}
-'''name'''"
+'''name''' is a scenery object."
 `;
 
 exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
@@ -29,7 +29,7 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 |map = No
 |id = beta1
 }}
-'''name'''"
+'''name''' is a scenery object."
 `;
 
 exports[`sceneryPageBuilder should strip HTML tags from scenery name in page content 1`] = `
@@ -45,5 +45,5 @@ exports[`sceneryPageBuilder should strip HTML tags from scenery name in page con
 |map = No
 |id = 123
 }}
-'''Red Chest'''"
+'''Red Chest''' is a scenery object."
 `;

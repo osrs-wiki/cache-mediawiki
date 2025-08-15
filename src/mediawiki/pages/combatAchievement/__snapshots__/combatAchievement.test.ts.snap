@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`combatAchievementPageBuilder it should build with all fields 1`] = `
-"{{Infobox Combat Achievement
+"{{New Content}}
+{{Infobox Combat Achievement
 |name = Testing
 |image = [[File:Big Monster.png|150px]]
 |members = Yes
