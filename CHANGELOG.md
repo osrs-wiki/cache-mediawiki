@@ -1,5 +1,16 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.5.0
+
+### Minor Changes
+
+- 59b12cb: Add support for revision 232.
+- 59b12cb: Add support for a newContentTemplate option to override the "New Content" template.
+
+### Patch Changes
+
+- 59b12cb: Update copilot instructions
+
 ## 1.4.0
 
 ### Minor Changes
