@@ -5,6 +5,8 @@ import {
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
+import Context from "../../../context";
+
 import InfoboxMusicTemplate from "@/mediawiki/templates/InfoboxMusic";
 import { MusicTrack } from "@/types/music";
 
@@ -15,8 +17,12 @@ export const musicPageBuilder = (musicTrack: MusicTrack) => {
     musicTrack.displayName || musicTrack.sortName || `Track ${musicTrack.id}`;
 
   const builder = new MediaWikiBuilder();
+
+  if (Context.newContentTemplate) {
+    builder.addContent(new MediaWikiTemplate(Context.newContentTemplate));
+  }
+
   builder.addContents([
-    new MediaWikiTemplate("New Content"),
     infoboxMusic.build(),
     new MediaWikiText(trackName, { bold: true }),
     new MediaWikiText(" is a [[music]] track"),

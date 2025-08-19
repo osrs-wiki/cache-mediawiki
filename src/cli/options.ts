@@ -33,6 +33,10 @@ const options = [
     "--beta <beta>",
     "Whether the cache is from a beta server."
   ).default(false),
+  new Option(
+    "--newContentTemplate <newContentTemplate>",
+    "The template for new content."
+  ).default("New Content"),
 ];
 
 export default options;

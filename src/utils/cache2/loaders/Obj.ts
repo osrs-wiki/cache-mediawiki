@@ -2,6 +2,7 @@ import { PerFileLoadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
 import {
+  AmbientSoundCurve,
   AnimationID,
   CategoryID,
   GameValType,
@@ -70,6 +71,12 @@ export class Obj extends PerFileLoadable {
   public multiAmbientSoundIDs = <SoundEffectID[]>[];
   public ambientSoundDistance = 0;
   public ambientSoundRetain = 0;
+  public ambientSoundDistanceFadeCurve: AmbientSoundCurve =
+    AmbientSoundCurve.Linear;
+  public ambientSoundFadeInDuration = 300;
+  public ambientSoundFadeOutDuration = 300;
+  public ambientSoundFadeInCurve: AmbientSoundCurve = AmbientSoundCurve.Linear;
+  public ambientSoundFadeOutCurve: AmbientSoundCurve = AmbientSoundCurve.Linear;
   public ambientSoundChangeTicksMin = 0;
   public ambientSoundChangeTicksMax = 0;
   public randomizeAnimationStart = true;
@@ -260,6 +267,12 @@ export class Obj extends PerFileLoadable {
           }
           break;
         }
+        case 93:
+          v.ambientSoundFadeInCurve = r.u8() as AmbientSoundCurve;
+          v.ambientSoundFadeInDuration = r.u16();
+          v.ambientSoundFadeOutCurve = r.u8() as AmbientSoundCurve;
+          v.ambientSoundFadeOutDuration = r.u16();
+          break;
         case 249:
           v.params = r.params();
           break;

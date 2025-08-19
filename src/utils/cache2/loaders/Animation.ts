@@ -59,14 +59,20 @@ export class Animation extends PerFileLoadable {
   public postAnimMove!: PostAnimMoveMode;
   public restartMode = AnimRestartMode.ResetLoops;
   public gameVal?: string;
+  public verticalOffset = 0;
   public sounds: Map<number, FrameSound[]> = new Map();
 
   public static decode(r: Reader, id: AnimationID): Animation {
     const v = new Animation(id);
-    const [legacyFrameSounds, animMayaID, frameSounds, animMayaBounds] =
-      r.isAfter({ era: "osrs", indexRevision: 4470 })
-        ? [-1, 13, 14, 15]
-        : [13, 14, 15, 16];
+    const [
+      legacyFrameSounds,
+      animMayaID,
+      frameSounds,
+      animMayaBounds,
+      verticalOffset,
+    ] = r.isAfter({ era: "osrs", indexRevision: 4470 })
+      ? [-1, 13, 14, 15, 16]
+      : [13, 14, 15, 16, -1];
     for (let opcode: number; (opcode = r.u8()) != 0; ) {
       switch (opcode) {
         case 1: {
@@ -152,6 +158,9 @@ export class Animation extends PerFileLoadable {
         case animMayaBounds:
           v.animMayaStart = r.u16();
           v.animMayaEnd = r.u16();
+          break;
+        case verticalOffset:
+          v.verticalOffset = r.i8();
           break;
         case 17: {
           v.masks = new Array(256);

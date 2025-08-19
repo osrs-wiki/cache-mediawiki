@@ -5,6 +5,7 @@ const { compilerOptions } = require("./tsconfig");
 module.exports = {
   preset: "ts-jest",
   setupFiles: ["dotenv/config"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),

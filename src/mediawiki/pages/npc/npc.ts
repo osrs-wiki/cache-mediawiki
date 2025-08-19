@@ -7,6 +7,8 @@ import {
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
+import Context from "../../../context";
+
 import InfoboxMonsterTemplate from "@/mediawiki/templates/InfoboxMonster";
 import InfoboxNpcTemplate from "@/mediawiki/templates/InfoboxNpc";
 import { NPC } from "@/utils/cache2";
@@ -28,10 +30,12 @@ export const npcPageBuilder = (npcs: NPC | NPC[]) => {
     : InfoboxNpcTemplate(npcArray);
 
   const builder = new MediaWikiBuilder();
-  builder.addContents([
-    new MediaWikiTemplate("New Content"),
-    infoboxNpc.build(),
-  ]);
+
+  if (Context.newContentTemplate) {
+    builder.addContent(new MediaWikiTemplate(Context.newContentTemplate));
+  }
+
+  builder.addContents([infoboxNpc.build()]);
 
   // Only add chathead image if NPC has chathead models
   if (primaryNpc.chatheadModels?.length > 0) {
@@ -40,6 +44,8 @@ export const npcPageBuilder = (npcs: NPC | NPC[]) => {
         horizontalAlignment: "left",
       }),
       new MediaWikiBreak(),
+      new MediaWikiText(`${cleanName}`, { bold: true }),
+      new MediaWikiText(" is an NPC."),
     ]);
   }
 

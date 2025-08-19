@@ -1,5 +1,36 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.5.0
+
+### Minor Changes
+
+- 59b12cb: Add support for revision 232.
+- 59b12cb: Add support for a newContentTemplate option to override the "New Content" template.
+
+### Patch Changes
+
+- 59b12cb: Update copilot instructions
+
+## 1.4.0
+
+### Minor Changes
+
+- fff2169: Add comprehensive e2e testing infrastructure with snapshot testing for CLI commands and MediaWiki output validation.
+- 4c2c5de: Add cache change listener system for automated actions on cache differences.
+- e7369d1: Add Dialogue section to npc's with Talk-to action
+- 4c2c5de: Replace individual compare files with generic compare functions for cache file diffs.
+- 9eee2ba: Add support for InfoboxMonster defensive params
+- 9eee2ba: Move InfoboxTemplate for NPC into InfoboxNpc in templates
+- c5b9c97: Add automatic music page generation for OSRS music tracks from DB table 44.
+- 4c2c5de: Add listeners for npcs, objects, and areas
+- 9eee2ba: Move InfoboxMonster from bare InfoboxTemplate into the templates folder
+
+### Patch Changes
+
+- d713f79: Fix chathead and detail image bugs for scenery and NPC pages.
+- e7369d1: Remove duplicate rendering when Context.renders and Context.pages are both set
+- a77c5dc: Remove HTML tags from NPC and scenery names in MediaWiki output
+
 ## 1.3.0
 
 ### Minor Changes

@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`musicPageBuilder should create a music page with proper structure 1`] = `
-"{{New Content}}
-{{Infobox Music
+"{{Infobox Music
 |name = Stones of Old
 |file = [[File:Stones of Old.ogg]]
 |members = Yes

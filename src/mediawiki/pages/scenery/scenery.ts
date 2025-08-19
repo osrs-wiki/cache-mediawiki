@@ -33,10 +33,15 @@ export const sceneryPageBuilder = (scenery: Obj) => {
   });
 
   const builder = new MediaWikiBuilder();
+
+  if (Context.newContentTemplate) {
+    builder.addContent(new MediaWikiTemplate(Context.newContentTemplate));
+  }
+
   builder.addContents([
-    new MediaWikiTemplate("New Content"),
     infoboxscenery.build(),
     new MediaWikiText(cleanName, { bold: true }),
+    new MediaWikiText(" is a scenery object."),
   ]);
 
   return builder;

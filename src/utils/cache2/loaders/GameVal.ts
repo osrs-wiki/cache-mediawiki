@@ -25,7 +25,7 @@ export class GameVal extends Loadable {
   ): Promise<Reader | undefined> {
     const archive = await cache.getArchive(this.index, gameValID);
     const version = await cache.getVersion(this.index);
-    const data = archive?.getFile(otherID + 1)?.data;
+    const data = archive?.getFile(otherID)?.data;
     return data ? new Reader(data, version) : undefined;
   }
 
@@ -35,7 +35,7 @@ export class GameVal extends Loadable {
   ): Promise<string | undefined> {
     const clazz = obj?.constructor;
     if (clazz && "gameval" in clazz) {
-      const gv = await this.load(cache, clazz.gameval, obj.id - 1);
+      const gv = await this.load(cache, clazz.gameval, obj.id);
       return gv?.name;
     }
     return undefined;
@@ -54,15 +54,16 @@ export class GameVal extends Loadable {
     const v = new GameVal(gameValID, otherID);
 
     switch (gameValID) {
-      case GameValType.DBTables: {
-        r.u8();
+      case 10: {
+        // DBTable
+        r.u8(); // always 1, very useful
 
         v.name = r.string();
         const files = (v.files = new Map());
 
         for (let id = 0; ; id++) {
           const counter = r.u8();
-          if (counter == 0) {
+          if (counter == 0 && isEnd(r)) {
             break;
           }
 
@@ -70,13 +71,35 @@ export class GameVal extends Loadable {
         }
         break;
       }
-      case GameValType.Interfaces: {
+      case 13: {
+        // legacy widget
+        v.name = r.string();
+        const files = (v.files = new Map());
+        let msb = 0;
+        let lastId = 0;
+
+        for (;;) {
+          const id = r.u8();
+          if (id == 255 && isEnd(r)) {
+            break;
+          }
+          if (id < lastId) {
+            msb += 0x100;
+          }
+          lastId = id;
+
+          files.set(msb + id, r.string());
+        }
+        break;
+      }
+      case 14: {
+        // widget
         v.name = r.string();
         const files = (v.files = new Map());
 
         for (;;) {
-          const id = r.u8();
-          if (id == 255) {
+          const id = r.u16();
+          if (id === 0xffff) {
             break;
           }
 
@@ -132,7 +155,7 @@ export class GameVal extends Loadable {
           return [fid, this.decode(new Reader(file.data, version), id, fid)];
         } catch (e) {
           if (typeof e === "object" && e && "message" in e) {
-            const ea = e as Error;
+            const ea = e as any;
             ea.message = `${id}:${fid}: ${ea.message}`;
           }
           throw e;
@@ -140,4 +163,16 @@ export class GameVal extends Loadable {
       })
     );
   }
+}
+
+function isEnd(r: Reader) {
+  const off = r.offset;
+  for (; r.offset < r.length; ) {
+    if (r.u8() != 0) {
+      r.offset = off;
+      return false;
+    }
+  }
+
+  return true;
 }
