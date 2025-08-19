@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.5.1
+
+### Patch Changes
+
+- cf9c566: Bump brace-expansion from 1.1.11 to 1.1.12
+
 ## 1.5.0
 
 ### Minor Changes
