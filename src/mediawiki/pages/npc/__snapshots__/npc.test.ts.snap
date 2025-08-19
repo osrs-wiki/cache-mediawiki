@@ -10,7 +10,7 @@ exports[`npcPageBuilder multi-version functionality should generate numbered ima
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Guard (2).png|120px]]
 |image3 = [[File:Guard (3).png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -42,7 +42,7 @@ exports[`npcPageBuilder multi-version functionality should handle mixed combat a
 |name = Guard
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Guard (2).png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat1 = 0
@@ -65,6 +65,105 @@ exports[`npcPageBuilder multi-version functionality should handle mixed combat a
 "
 `;
 
+exports[`npcPageBuilder multi-version functionality should handle mixed null and valid names by preferring valid name 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|version3 = 3
+|name1 = null
+|name2 = Guard
+|name3 = null
+|image1 = [[File:null.png|120px]]
+|image2 = [[File:Guard (2).png|120px]]
+|image3 = [[File:null (3).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat1 = 0
+|combat2 = 21
+|combat3 = 21
+|size = 1
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 7000
+|id2 = 7001
+|id3 = 7002
+}}
+'''Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder multi-version functionality should handle multiChildren NPCs with null names 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name = Guard
+|image1 = [[File:Guard.png|120px]]
+|image2 = [[File:Guard (2).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat1 = 21
+|combat2 = 22
+|size = 1
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 5001
+|id2 = 5002
+}}
+'''Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder multi-version functionality should handle multiChildren NPCs with valid names (not null) 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|version3 = 3
+|name1 = Captain Guard
+|name2 = Guard Recruit
+|name3 = Guard Veteran
+|image1 = [[File:Captain Guard.png|120px]]
+|image2 = [[File:Guard Recruit (2).png|120px]]
+|image3 = [[File:Guard Veteran (3).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat1 = 25
+|combat2 = 15
+|combat3 = 30
+|size = 1
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 6000
+|id2 = 6001
+|id3 = 6002
+}}
+'''Captain Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
 exports[`npcPageBuilder multi-version functionality should handle multiple NPCs with shared parameters 1`] = `
 "{{New Content}}
 {{Infobox Monster
@@ -73,7 +172,7 @@ exports[`npcPageBuilder multi-version functionality should handle multiple NPCs 
 |name = Guard
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Guard (2).png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -100,7 +199,7 @@ exports[`npcPageBuilder multi-version functionality should handle single NPC cor
 {{Infobox Monster
 |name = Guard
 |image = [[File:Guard.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -128,7 +227,7 @@ exports[`npcPageBuilder multi-version functionality should use NPC template when
 |name = Banker
 |image1 = [[File:Banker.png|120px]]
 |image2 = [[File:Banker (2).png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -151,7 +250,7 @@ exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 100
@@ -172,7 +271,7 @@ exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -187,7 +286,7 @@ exports[`npcPageBuilder should build npc page with chathead when has chatheadMod
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -202,7 +301,7 @@ exports[`npcPageBuilder should build npc page with transcript 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -221,7 +320,7 @@ exports[`npcPageBuilder should build npc page without chathead when no chatheadM
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -235,7 +334,7 @@ exports[`npcPageBuilder should strip HTML tags from NPC name in page content 1`]
 {{Infobox Monster
 |name = Tornado
 |image = [[File:Tornado.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -250,7 +349,7 @@ exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[20 March]] [[2024]]
+|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1

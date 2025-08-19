@@ -9,18 +9,25 @@ import { formatFileName } from "@/utils/files";
 const npcNameCounts = new Map<string, number>();
 
 export const renderNpcs = async (npc: NPC) => {
-  if (npc.name.toLocaleLowerCase() === "null") {
+  // Skip rendering NPCs with null names unless they have multiChildren
+  if (
+    npc.name.toLocaleLowerCase() === "null" &&
+    (!npc.multiChildren || npc.multiChildren.length === 0)
+  ) {
     return;
   }
 
+  // Use fallback name for multiChildren NPCs with null names
+  const npcName =
+    npc.name.toLocaleLowerCase() === "null" ? `Unknown-${npc.id}` : npc.name;
+
   // Update count for this NPC name
-  const currentCount = npcNameCounts.get(npc.name) || 0;
-  npcNameCounts.set(npc.name, currentCount + 1);
-  
+  const currentCount = npcNameCounts.get(npcName) || 0;
+  npcNameCounts.set(npcName, currentCount + 1);
+
   // Determine the display name (first one has no number, subsequent ones get (2), (3), etc.)
-  const displayName = currentCount === 0 
-    ? npc.name 
-    : `${npc.name} (${currentCount + 1})`;
+  const displayName =
+    currentCount === 0 ? npcName : `${npcName} (${currentCount + 1})`;
 
   try {
     if (
@@ -32,7 +39,7 @@ export const renderNpcs = async (npc: NPC) => {
         `./data/${Context.renders}/npc/${npc.id}.png`,
         formatFileName(`./out/${Context.renders}/npc/${displayName}.png`)
       );
-      
+
       if (existsSync(`./data/${Context.renders}/chathead/${npc.id}.png`)) {
         await mkdir(`./out/${Context.renders}/chathead`, { recursive: true });
         await copyFile(

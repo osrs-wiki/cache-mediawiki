@@ -52,7 +52,8 @@ export const npcListener: CacheChangeListener = {
       Context.pages &&
       !oldEntry &&
       newEntry &&
-      newEntry.name.toLowerCase() !== "null"
+      (newEntry.name.toLowerCase() !== "null" ||
+        (newEntry.multiChildren && newEntry.multiChildren.length > 0))
     ) {
       writeNpcPage(newEntry);
     } else if (Context.renders && newEntry) {

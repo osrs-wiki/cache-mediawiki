@@ -11,16 +11,75 @@ import Context from "../../../context";
 
 import InfoboxMonsterTemplate from "@/mediawiki/templates/InfoboxMonster";
 import InfoboxNpcTemplate from "@/mediawiki/templates/InfoboxNpc";
-import { NPC } from "@/utils/cache2";
+import { CacheProvider, NPC } from "@/utils/cache2";
 import { stripHtmlTags } from "@/utils/string";
 
-export const npcPageBuilder = (npcs: NPC | NPC[]) => {
+export const npcPageBuilder = async (
+  npcs: NPC | NPC[],
+  cache?: Promise<CacheProvider>
+): Promise<MediaWikiBuilder> => {
+  // Handle single NPC with multiChildren - load children and render them instead of parent
+  if (
+    !Array.isArray(npcs) &&
+    npcs.multiChildren &&
+    npcs.multiChildren.length > 0
+  ) {
+    // Load all valid child NPCs
+    const childNpcs: NPC[] = [];
+
+    // If parent has a valid name (not null), include it as the first element
+    if (npcs.name && npcs.name.toLowerCase() !== "null") {
+      childNpcs.push(npcs);
+    }
+
+    if (cache) {
+      for (const childId of npcs.multiChildren) {
+        if (childId > 0) {
+          try {
+            const childNpc = await NPC.load(cache, childId);
+            if (childNpc) {
+              childNpcs.push(childNpc);
+            }
+          } catch (e) {
+            console.warn(
+              `Failed to load child NPC ${childId} for parent ${npcs.id}:`,
+              e
+            );
+          }
+        }
+      }
+    }
+
+    if (childNpcs.length > 0) {
+      // Use child NPCs for rendering instead of parent (don't render the null-named parent)
+      return npcPageBuilder(childNpcs, cache);
+    } else {
+      // If no valid children, log warning and fallback to empty builder
+      console.warn(
+        `No valid child NPCs found for parent NPC ${npcs.id} with multiChildren:`,
+        npcs.multiChildren
+      );
+      return new MediaWikiBuilder(); // Return empty builder
+    }
+  }
+
   // Normalize to array
   const npcArray = Array.isArray(npcs) ? npcs : [npcs];
 
-  // Use the first NPC for the primary display
-  const primaryNpc = npcArray.filter((npc) => npc.name)[0] || npcArray[0];
-  const cleanPrimaryName = stripHtmlTags(primaryNpc.name);
+  // Use the first NPC with a non-null name for the primary display, or fallback to first NPC
+  const primaryNpc =
+    npcArray.filter(
+      (npc) => npc.name && npc.name.toLowerCase() !== "null"
+    )[0] || npcArray[0];
+
+  // Handle naming for multiChildren NPCs with null names
+  let cleanPrimaryName: string;
+  if (primaryNpc.name && primaryNpc.name.toLowerCase() !== "null") {
+    cleanPrimaryName = stripHtmlTags(primaryNpc.name);
+  } else {
+    // Use fallback name for null-named NPCs
+    cleanPrimaryName = `Unknown NPC ${primaryNpc.id}`;
+  }
 
   // Determine if we should use Monster or NPC infobox based on any having combat level
   const hasMonster = npcArray.some((npc) => npc.combatLevel > 0);
@@ -44,7 +103,7 @@ export const npcPageBuilder = (npcs: NPC | NPC[]) => {
         horizontalAlignment: "left",
       }),
       new MediaWikiBreak(),
-      new MediaWikiText(`${cleanName}`, { bold: true }),
+      new MediaWikiText(`${cleanPrimaryName}`, { bold: true }),
       new MediaWikiText(" is an NPC."),
     ]);
   }

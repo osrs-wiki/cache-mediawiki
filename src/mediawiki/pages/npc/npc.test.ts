@@ -1,7 +1,16 @@
 import npcPageBuilder from "./npc";
 import Context from "../../../context";
 
-import { NPC, NPCID, Params } from "@/utils/cache2";
+import { NPC, NPCID, Params, CacheProvider } from "@/utils/cache2";
+
+// Mock NPC.load for multiChildren tests
+jest.mock("@/utils/cache2", () => ({
+  ...jest.requireActual("@/utils/cache2"),
+  NPC: {
+    ...jest.requireActual("@/utils/cache2").NPC,
+    load: jest.fn(),
+  },
+}));
 
 describe("npcPageBuilder", () => {
   beforeEach(() => {
@@ -145,60 +154,147 @@ describe("npcPageBuilder", () => {
   });
 
   describe("multi-version functionality", () => {
-    it("should handle single NPC correctly (backward compatibility)", () => {
+    it("should handle single NPC correctly (backward compatibility)", async () => {
       const guard = createMockNpc("Guard", 1001, 21);
-      const builder = npcPageBuilder(guard);
+      const builder = await npcPageBuilder(guard);
       const built = builder.build();
 
       expect(built).toMatchSnapshot();
     });
 
-    it("should handle multiple NPCs with shared parameters", () => {
+    it("should handle multiple NPCs with shared parameters", async () => {
       const guards = [
         createMockNpc("Guard", 1001, 21),
         createMockNpc("Guard", 1002, 21),
       ];
 
-      const builder = npcPageBuilder(guards);
+      const builder = await npcPageBuilder(guards);
       const built = builder.build();
 
       expect(built).toMatchSnapshot();
     });
 
-    it("should handle mixed combat and non-combat NPCs by choosing Monster template", () => {
+    it("should handle mixed combat and non-combat NPCs by choosing Monster template", async () => {
       const npcs = [
         createMockNpc("Guard", 1001, 0), // No combat level
         createMockNpc("Guard", 1002, 21), // Has combat level
       ];
 
-      const builder = npcPageBuilder(npcs);
+      const builder = await npcPageBuilder(npcs);
       const built = builder.build();
 
       expect(built).toMatchSnapshot();
     });
 
-    it("should use NPC template when all NPCs have no combat level", () => {
+    it("should use NPC template when all NPCs have no combat level", async () => {
       const npcs = [
         createMockNpc("Banker", 2001, 0),
         createMockNpc("Banker", 2002, 0),
       ];
 
-      const builder = npcPageBuilder(npcs);
+      const builder = await npcPageBuilder(npcs);
       const built = builder.build();
 
       expect(built).toMatchSnapshot();
     });
 
-    it("should generate numbered image file names", () => {
+    it("should generate numbered image file names", async () => {
       const guards = [
         createMockNpc("Guard", 1001, 21),
         createMockNpc("Guard", 1002, 21),
         createMockNpc("Guard", 1003, 21),
       ];
 
-      const builder = npcPageBuilder(guards);
+      const builder = await npcPageBuilder(guards);
       const built = builder.build();
 
+      expect(built).toMatchSnapshot();
+    });
+
+    it("should handle multiChildren NPCs with null names", async () => {
+      // Mock NPC.load for multiChildren functionality
+      const mockLoad = NPC.load as jest.MockedFunction<typeof NPC.load>;
+
+      // Parent NPC with null name and multiChildren
+      const parentNpc = createMockNpc("null", 5000, 0, {
+        multiChildren: [5001 as NPCID, 5002 as NPCID], // References to child NPCs
+      });
+
+      // Child NPCs that should be loaded
+      const childNpc1 = createMockNpc("Guard", 5001, 21);
+      const childNpc2 = createMockNpc("Guard", 5002, 22);
+
+      // Mock the cache and NPC.load behavior
+      const mockCache = Promise.resolve({} as CacheProvider);
+      mockLoad.mockImplementation(async (cache, id) => {
+        if (id === 5001) return childNpc1;
+        if (id === 5002) return childNpc2;
+        return null;
+      });
+
+      // Test passing single parent NPC with multiChildren
+      const builder = await npcPageBuilder(parentNpc, mockCache);
+      const built = builder.build();
+
+      expect(built).toMatchSnapshot();
+
+      // Verify NPC.load was called for each child
+      expect(mockLoad).toHaveBeenCalledWith(mockCache, 5001);
+      expect(mockLoad).toHaveBeenCalledWith(mockCache, 5002);
+
+      mockLoad.mockRestore();
+    });
+
+    it("should handle multiChildren NPCs with valid names (not null)", async () => {
+      // Mock NPC.load for multiChildren functionality
+      const mockLoad = NPC.load as jest.MockedFunction<typeof NPC.load>;
+      
+      // Named parent NPC with multiChildren should include itself as first element
+      const namedNpcWithMultiChildren = createMockNpc(
+        "Captain Guard",
+        6000,
+        25,
+        {
+          multiChildren: [6001 as NPCID, 6002 as NPCID],
+        }
+      );
+
+      // Child NPCs
+      const childNpc1 = createMockNpc("Guard Recruit", 6001, 15);
+      const childNpc2 = createMockNpc("Guard Veteran", 6002, 30);
+
+      // Mock the cache and NPC.load behavior
+      const mockCache = Promise.resolve({} as CacheProvider);
+      mockLoad.mockImplementation(async (cache, id) => {
+        if (id === 6001) return childNpc1;
+        if (id === 6002) return childNpc2;
+        return null;
+      });
+
+      // Should include parent as first element plus children
+      const builder = await npcPageBuilder(namedNpcWithMultiChildren, mockCache);
+      const built = builder.build();
+
+      expect(built).toMatchSnapshot();
+      
+      // Verify NPC.load was called for each child
+      expect(mockLoad).toHaveBeenCalledWith(mockCache, 6001);
+      expect(mockLoad).toHaveBeenCalledWith(mockCache, 6002);
+
+      mockLoad.mockRestore();
+    });
+
+    it("should handle mixed null and valid names by preferring valid name", async () => {
+      const npcs = [
+        createMockNpc("null", 7000, 0), // NPC with null name
+        createMockNpc("Guard", 7001, 21), // NPC with valid name (should be primary)
+        createMockNpc("null", 7002, 21), // Another NPC with null name
+      ];
+
+      const builder = await npcPageBuilder(npcs);
+      const built = builder.build();
+
+      // Should use "Guard" as the primary name
       expect(built).toMatchSnapshot();
     });
   });

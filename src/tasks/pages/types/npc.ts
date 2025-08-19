@@ -18,8 +18,7 @@ export const writeNpcPageFromCache = async (
     const npc = await NPC.load(cache, id);
 
     if (npc) {
-      addNpcToMap(npc);
-      writeNpcPage(npc);
+      await writeNpcPage(npc, cache);
     }
   } catch (e) {
     console.error(`Error generating page for NPC ${id}: `, e);
@@ -37,12 +36,37 @@ const addNpcToMap = (npc: NPC) => {
   }
 };
 
-export const writeNpcPage = async (npc: NPC) => {
-  // Ensure the NPC is in the map
+export const writeNpcPage = async (
+  npc: NPC,
+  cache?: Promise<CacheProvider>
+) => {
+  // For NPCs with multiChildren and null names, pass only the single NPC to npcPageBuilder
+  // The npcPageBuilder will handle loading and rendering multiChildren internally
+  if (
+    npc.multiChildren &&
+    npc.multiChildren.length > 0 &&
+    npc.name.toLowerCase() === "null"
+  ) {
+    const builder = await npcPageBuilder(npc, cache);
+
+    // Use fallback name for multiChildren NPCs with null names
+    const cleanName = `Unknown NPC ${npc.id}`;
+
+    // Write to multiChildren directory
+    writePageToFile(builder, "npc", cleanName, npc.id.toString(), true);
+
+    if (Context.renders) {
+      // Render the parent NPC (the multiChildren will be handled by npcPageBuilder)
+      renderNpcs(npc);
+    }
+    return;
+  }
+
+  // Regular name-based grouping for NPCs with valid names
   addNpcToMap(npc);
-  
+
   const pageKey = npc.name;
-  
+
   // Avoid writing the same page multiple times
   if (processedNpcs.has(pageKey)) {
     return;
@@ -50,8 +74,8 @@ export const writeNpcPage = async (npc: NPC) => {
   processedNpcs.add(pageKey);
 
   const npcsWithSameName = npcNameMap.get(npc.name) || [npc];
-  const builder = npcPageBuilder(npcsWithSameName);
-  
+  const builder = await npcPageBuilder(npcsWithSameName, cache);
+
   // Use the first NPC's ID for the file name
   writePageToFile(builder, "npc", npc.name, npcsWithSameName[0].id.toString());
 
