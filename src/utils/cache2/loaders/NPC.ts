@@ -1,3 +1,4 @@
+import type { CacheProvider } from "../Cache";
 import { PerFileLoadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
@@ -77,6 +78,57 @@ export class NPC extends PerFileLoadable {
   public height?: number = undefined;
   public params = new Params();
   public gameVal?: string;
+
+  // Cache for loaded multiChildren NPCs
+  private _multiChildrenCache?: NPC[];
+
+  /**
+   * Get the multiChildren NPCs for this NPC, loading them from cache if needed.
+   * Results are cached to avoid repeated loading.
+   * @param cache The cache provider to load children from
+   * @returns Array of unique child NPCs (deduplicated by ID)
+   */
+  public async getMultiChildren(cache: Promise<CacheProvider>): Promise<NPC[]> {
+    // Return cached result if available
+    if (this._multiChildrenCache !== undefined) {
+      return this._multiChildrenCache;
+    }
+
+    // If no multiChildren array, return empty array and cache it
+    if (!this.multiChildren || this.multiChildren.length === 0) {
+      this._multiChildrenCache = [];
+      return this._multiChildrenCache;
+    }
+
+    // Deduplicate IDs before loading to avoid loading the same NPC multiple times
+    const uniqueIds = new Set<number>();
+    for (const childId of this.multiChildren) {
+      if (childId > 0) {
+        uniqueIds.add(childId);
+      }
+    }
+
+    const childNpcs: NPC[] = [];
+
+    // Load each unique child NPC only once
+    for (const childId of uniqueIds) {
+      try {
+        const childNpc = await NPC.load(cache, childId);
+        if (childNpc) {
+          childNpcs.push(childNpc);
+        }
+      } catch (e) {
+        console.warn(
+          `Failed to load child NPC ${childId} for parent ${this.id}:`,
+          e
+        );
+      }
+    }
+    
+    // Cache and return the result (already deduplicated by loading unique IDs)
+    this._multiChildrenCache = childNpcs;
+    return this._multiChildrenCache;
+  }
 
   public static decode(r: Reader, id: NPCID): NPC {
     const v = new NPC(id);

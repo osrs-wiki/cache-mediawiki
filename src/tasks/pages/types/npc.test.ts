@@ -9,7 +9,6 @@ import { writePageToFile } from "../pages.utils";
 import { npcPageBuilder } from "@/mediawiki/pages/npc";
 import { NPC, NPCID, Params, CacheProvider } from "@/utils/cache2";
 
-
 // Mock the dependencies
 jest.mock("../../renders", () => ({
   renderNpcs: jest.fn(),
@@ -98,7 +97,10 @@ describe("NPC name mapping", () => {
     expect(jest.mocked(npcPageBuilder)).toHaveBeenCalledTimes(1);
 
     // Should be called with array of both NPCs and undefined cache
-    expect(jest.mocked(npcPageBuilder)).toHaveBeenCalledWith([guard1, guard2], undefined);
+    expect(jest.mocked(npcPageBuilder)).toHaveBeenCalledWith(
+      [guard1, guard2],
+      undefined
+    );
   });
 
   it("should clear name map and processed NPCs", () => {
@@ -136,7 +138,10 @@ describe("NPC name mapping", () => {
 
       // Should call writePageToFile with clean name for multiChildren NPCs
       expect(jest.mocked(writePageToFile)).toHaveBeenCalledTimes(1);
-      expect(jest.mocked(npcPageBuilder)).toHaveBeenCalledWith(parentNpc, mockCache);
+      expect(jest.mocked(npcPageBuilder)).toHaveBeenCalledWith(
+        parentNpc,
+        mockCache
+      );
 
       mockLoad.mockRestore();
     });
@@ -159,7 +164,10 @@ describe("NPC name mapping", () => {
 
       // Should still process with only valid children
       expect(jest.mocked(writePageToFile)).toHaveBeenCalledTimes(1);
-      expect(jest.mocked(npcPageBuilder)).toHaveBeenCalledWith(parentNpc, mockCache);
+      expect(jest.mocked(npcPageBuilder)).toHaveBeenCalledWith(
+        parentNpc,
+        mockCache
+      );
 
       mockLoad.mockRestore();
     });

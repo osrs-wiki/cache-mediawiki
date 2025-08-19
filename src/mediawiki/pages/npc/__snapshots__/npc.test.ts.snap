@@ -1,5 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`npcPageBuilder multi-version functionality should deduplicate multiChildren NPCs by ID 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name1 = Guard
+|name2 = Archer
+|image1 = [[File:Guard.png|120px]]
+|image2 = [[File:Archer (2).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat1 = 21
+|combat2 = 25
+|size = 1
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 8001
+|id2 = 8002
+}}
+'''Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
 exports[`npcPageBuilder multi-version functionality should generate numbered image file names 1`] = `
 "{{New Content}}
 {{Infobox Monster

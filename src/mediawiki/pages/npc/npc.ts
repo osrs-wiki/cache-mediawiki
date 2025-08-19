@@ -24,7 +24,7 @@ export const npcPageBuilder = async (
     npcs.multiChildren &&
     npcs.multiChildren.length > 0
   ) {
-    // Load all valid child NPCs
+    // Load all valid child NPCs using the new getMultiChildren method
     const childNpcs: NPC[] = [];
 
     // If parent has a valid name (not null), include it as the first element
@@ -33,33 +33,30 @@ export const npcPageBuilder = async (
     }
 
     if (cache) {
-      for (const childId of npcs.multiChildren) {
-        if (childId > 0) {
-          try {
-            const childNpc = await NPC.load(cache, childId);
-            if (childNpc) {
-              childNpcs.push(childNpc);
-            }
-          } catch (e) {
-            console.warn(
-              `Failed to load child NPC ${childId} for parent ${npcs.id}:`,
-              e
-            );
-          }
-        }
+      try {
+        const loadedChildren = await npcs.getMultiChildren(cache);
+        childNpcs.push(...loadedChildren);
+      } catch (e) {
+        console.warn(
+          `Failed to load child NPCs for parent ${npcs.id}:`,
+          e
+        );
       }
+    } else {
+      console.warn(
+        `No cache provided for NPC ${npcs.id} with multiChildren: ${npcs.multiChildren}. Cannot load child NPCs.`
+      );
     }
 
     if (childNpcs.length > 0) {
-      // Use child NPCs for rendering instead of parent (don't render the null-named parent)
-      return npcPageBuilder(childNpcs, cache);
+      // Use child NPCs for rendering - but don't recurse, process them directly
+      return npcPageBuilder(childNpcs);
     } else {
-      // If no valid children, log warning and fallback to empty builder
+      // If no valid children found, fallback to rendering the parent NPC itself
       console.warn(
-        `No valid child NPCs found for parent NPC ${npcs.id} with multiChildren:`,
-        npcs.multiChildren
+        `No valid child NPCs found for parent NPC ${npcs.id} with multiChildren: ${npcs.multiChildren}. Falling back to parent NPC.`
       );
-      return new MediaWikiBuilder(); // Return empty builder
+      return npcPageBuilder([npcs]);
     }
   }
 
