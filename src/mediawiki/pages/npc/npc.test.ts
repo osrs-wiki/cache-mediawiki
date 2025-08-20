@@ -16,7 +16,7 @@ describe("npcPageBuilder", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Reset context
-    Context.updateDate = "2024-03-20";
+    Context.updateDate = "2024-03-19";
     Context.update = "Varlamore: Part One";
     Context.beta = false;
     Context.examines = {
