@@ -13,24 +13,24 @@ export const renderNpcs = async (npc: NPC, cache?: Promise<CacheProvider>) => {
   if (npc.multiChildren && npc.multiChildren.length > 0 && cache) {
     try {
       const childNpcs = await npc.getMultiChildren(cache);
-      
+
       // Render parent NPC if it has a valid name
       if (npc.name && npc.name.toLowerCase() !== "null") {
         await renderSingleNpc(npc, true);
       }
-      
+
       // Render all child NPCs
       for (const childNpc of childNpcs) {
         await renderSingleNpc(childNpc, true);
       }
-      
+
       return;
     } catch (e) {
       console.warn(`Failed to render multiChildren for NPC ${npc.id}:`, e);
       // Fall through to render parent only
     }
   }
-  
+
   // Standard single NPC rendering
   await renderSingleNpc(npc, false);
 };
@@ -57,7 +57,7 @@ const renderSingleNpc = async (npc: NPC, isMultiChildren: boolean) => {
     currentCount === 0 ? npcName : `${npcName} (${currentCount + 1})`;
 
   // Determine output directories based on multiChildren status
-  const npcDir = isMultiChildren 
+  const npcDir = isMultiChildren
     ? `./out/${Context.renders}/npc/multiChildren`
     : `./out/${Context.renders}/npc`;
   const chatheadDir = isMultiChildren

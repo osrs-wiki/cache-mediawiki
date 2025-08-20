@@ -18,29 +18,26 @@ export const npcPageBuilder = async (
   npcs: NPC | NPC[],
   cache?: Promise<CacheProvider>
 ): Promise<MediaWikiBuilder> => {
-  // Handle single NPC with multiChildren - load children and render them instead of parent
+  // Handle single NPC with multiChildren - load children and render them with parent
   if (
     !Array.isArray(npcs) &&
     npcs.multiChildren &&
     npcs.multiChildren.length > 0
   ) {
     // Load all valid child NPCs using the new getMultiChildren method
-    const childNpcs: NPC[] = [];
+    const allNpcs: NPC[] = [];
 
     // If parent has a valid name (not null), include it as the first element
     if (npcs.name && npcs.name.toLowerCase() !== "null") {
-      childNpcs.push(npcs);
+      allNpcs.push(npcs);
     }
 
     if (cache) {
       try {
         const loadedChildren = await npcs.getMultiChildren(cache);
-        childNpcs.push(...loadedChildren);
+        allNpcs.push(...loadedChildren);
       } catch (e) {
-        console.warn(
-          `Failed to load child NPCs for parent ${npcs.id}:`,
-          e
-        );
+        console.warn(`Failed to load child NPCs for parent ${npcs.id}:`, e);
       }
     } else {
       console.warn(
@@ -48,11 +45,11 @@ export const npcPageBuilder = async (
       );
     }
 
-    if (childNpcs.length > 0) {
-      // Use child NPCs for rendering - but don't recurse, process them directly
-      return npcPageBuilder(childNpcs);
+    if (allNpcs.length > 0) {
+      // Use all NPCs (parent + children) for rendering - but don't recurse, process them directly
+      return npcPageBuilder(allNpcs);
     } else {
-      // If no valid children found, fallback to rendering the parent NPC itself
+      // If no valid NPCs found, fallback to rendering the parent NPC itself
       console.warn(
         `No valid child NPCs found for parent NPC ${npcs.id} with multiChildren: ${npcs.multiChildren}. Falling back to parent NPC.`
       );
@@ -69,13 +66,25 @@ export const npcPageBuilder = async (
       (npc) => npc.name && npc.name.toLowerCase() !== "null"
     )[0] || npcArray[0];
 
-  // Handle naming for multiChildren NPCs with null names
+  // Get the clean primary name using the new getName method
   let cleanPrimaryName: string;
-  if (primaryNpc.name && primaryNpc.name.toLowerCase() !== "null") {
-    cleanPrimaryName = stripHtmlTags(primaryNpc.name);
+  if (cache) {
+    try {
+      cleanPrimaryName = stripHtmlTags(await primaryNpc.getName(cache));
+    } catch (error) {
+      console.warn(
+        `Failed to get name for NPC ${primaryNpc.id}, using fallback:`,
+        error
+      );
+      cleanPrimaryName = `Unknown NPC ${primaryNpc.id}`;
+    }
   } else {
-    // Use fallback name for null-named NPCs
-    cleanPrimaryName = `Unknown NPC ${primaryNpc.id}`;
+    // Fallback when no cache is available
+    if (primaryNpc.name && primaryNpc.name.toLowerCase() !== "null") {
+      cleanPrimaryName = stripHtmlTags(primaryNpc.name);
+    } else {
+      cleanPrimaryName = `Unknown NPC ${primaryNpc.id}`;
+    }
   }
 
   // Determine if we should use Monster or NPC infobox based on any having combat level

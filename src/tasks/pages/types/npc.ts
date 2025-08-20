@@ -40,20 +40,40 @@ export const writeNpcPage = async (
   npc: NPC,
   cache?: Promise<CacheProvider>
 ) => {
-  // For NPCs with multiChildren and null names, pass only the single NPC to npcPageBuilder
+  // For NPCs with multiChildren, pass the single NPC to npcPageBuilder
   // The npcPageBuilder will handle loading and rendering multiChildren internally
-  if (
-    npc.multiChildren &&
-    npc.multiChildren.length > 0 &&
-    (!npc.name || npc.name.toLowerCase() === "null")
-  ) {
+  if (npc.multiChildren && npc.multiChildren.length > 0) {
     const builder = await npcPageBuilder(npc, cache);
 
-    // Use fallback name for multiChildren NPCs with null names
-    const cleanName = `Unknown NPC ${npc.id}`;
+    // Use getName method to get the best available name
+    let cleanName: string;
+    if (cache) {
+      try {
+        cleanName = await npc.getName(cache);
+      } catch (error) {
+        console.warn(
+          `Failed to get name for NPC ${npc.id}, using fallback:`,
+          error
+        );
+        cleanName = `Unknown NPC ${npc.id}`;
+      }
+    } else {
+      // Fallback when no cache is available
+      cleanName =
+        npc.name && npc.name.toLowerCase() !== "null"
+          ? npc.name
+          : `Unknown NPC ${npc.id}`;
+    }
 
-    // Write to multiChildren directory
-    writePageToFile(builder, "npc", cleanName, npc.id.toString(), true);
+    // Write to multiChildren directory for null names, regular directory for named NPCs
+    const isMultiChildrenDir = !npc.name || npc.name.toLowerCase() === "null";
+    writePageToFile(
+      builder,
+      "npc",
+      cleanName,
+      npc.id.toString(),
+      isMultiChildrenDir
+    );
 
     if (Context.renders) {
       // Render the parent NPC and its multiChildren with cache parameter
@@ -81,7 +101,7 @@ export const writeNpcPage = async (
 
   if (Context.renders) {
     // Render all NPCs with this name, passing cache parameter
-    npcsWithSameName.forEach(npc => renderNpcs(npc, cache));
+    npcsWithSameName.forEach((npc) => renderNpcs(npc, cache));
   }
 };
 

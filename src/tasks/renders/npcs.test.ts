@@ -29,7 +29,11 @@ describe("renderNpcs multi-version functionality", () => {
     (fs.existsSync as jest.Mock).mockReturnValue(true);
   });
 
-  const createMockNpc = (name: string, id: number, multiChildren?: NPCID[]): NPC =>
+  const createMockNpc = (
+    name: string,
+    id: number,
+    multiChildren?: NPCID[]
+  ): NPC =>
     ({
       name,
       id: id as NPCID,
@@ -121,12 +125,17 @@ describe("renderNpcs multi-version functionality", () => {
 
   describe("multiChildren functionality", () => {
     it("should render multiChildren NPCs in multiChildren directory", async () => {
-      const parentNpc = createMockNpc("null", 5000, [5001 as NPCID, 5002 as NPCID]);
+      const parentNpc = createMockNpc("null", 5000, [
+        5001 as NPCID,
+        5002 as NPCID,
+      ]);
       const childNpc1 = createMockNpc("Guard", 5001);
       const childNpc2 = createMockNpc("Archer", 5002);
 
       // Mock getMultiChildren to return child NPCs
-      parentNpc.getMultiChildren = jest.fn().mockResolvedValue([childNpc1, childNpc2]);
+      parentNpc.getMultiChildren = jest
+        .fn()
+        .mockResolvedValue([childNpc1, childNpc2]);
 
       const mockCache = Promise.resolve({} as CacheProvider);
       await renderNpcs(parentNpc, mockCache);
@@ -169,9 +178,11 @@ describe("renderNpcs multi-version functionality", () => {
 
     it("should fall back to standard rendering if multiChildren loading fails", async () => {
       const parentNpc = createMockNpc("Guard", 7000, [7001 as NPCID]);
-      
+
       // Mock getMultiChildren to throw an error
-      parentNpc.getMultiChildren = jest.fn().mockRejectedValue(new Error("Cache error"));
+      parentNpc.getMultiChildren = jest
+        .fn()
+        .mockRejectedValue(new Error("Cache error"));
 
       const mockCache = Promise.resolve({} as CacheProvider);
       await renderNpcs(parentNpc, mockCache);
@@ -184,7 +195,7 @@ describe("renderNpcs multi-version functionality", () => {
 
     it("should render standard NPCs in standard directories when no cache provided", async () => {
       const npc = createMockNpc("Guard", 8000, [8001 as NPCID]);
-      
+
       await renderNpcs(npc); // No cache parameter
 
       // Should use standard directories

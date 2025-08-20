@@ -172,4 +172,97 @@ describe("NPC name mapping", () => {
       mockLoad.mockRestore();
     });
   });
+
+  describe("getName() integration", () => {
+    const mockCache = Promise.resolve({} as CacheProvider);
+
+    it("should use getName() for multiChildren NPCs with null names", async () => {
+      const npc = createMockNpc("null", 5001, 0, [5002]);
+
+      // Mock getName to return a clean name
+      npc.getName = jest.fn().mockResolvedValue("Clean Name");
+
+      await writeNpcPage(npc, mockCache);
+
+      expect(npc.getName).toHaveBeenCalledWith(mockCache);
+      expect(writePageToFile).toHaveBeenCalledWith(
+        expect.anything(),
+        "npc",
+        "Clean Name",
+        "5001",
+        true // isMultiChildrenDir should be true for null-named NPCs
+      );
+    });
+
+    it("should use getName() for multiChildren NPCs with valid names", async () => {
+      const npc = createMockNpc("Valid Name", 6001, 0, [6002]);
+
+      // Mock getName to return the same name (since it's already valid)
+      npc.getName = jest.fn().mockResolvedValue("Valid Name");
+
+      await writeNpcPage(npc, mockCache);
+
+      expect(npc.getName).toHaveBeenCalledWith(mockCache);
+      expect(writePageToFile).toHaveBeenCalledWith(
+        expect.anything(),
+        "npc",
+        "Valid Name",
+        "6001",
+        false // isMultiChildrenDir should be false for named NPCs
+      );
+    });
+
+    it("should handle getName() failures gracefully", async () => {
+      const npc = createMockNpc("null", 7001, 0, [7002]);
+
+      // Mock getName to fail
+      npc.getName = jest.fn().mockRejectedValue(new Error("getName failed"));
+
+      const consoleSpy = jest.spyOn(console, "warn").mockImplementation();
+
+      await writeNpcPage(npc, mockCache);
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to get name for NPC 7001, using fallback:",
+        expect.any(Error)
+      );
+      expect(writePageToFile).toHaveBeenCalledWith(
+        expect.anything(),
+        "npc",
+        "Unknown NPC 7001",
+        "7001",
+        true
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("should fall back to direct name when no cache provided", async () => {
+      const npc = createMockNpc("Direct Name", 8001, 0, [8002]);
+
+      await writeNpcPage(npc); // No cache provided
+
+      expect(writePageToFile).toHaveBeenCalledWith(
+        expect.anything(),
+        "npc",
+        "Direct Name",
+        "8001",
+        false
+      );
+    });
+
+    it("should fall back to Unknown NPC when no cache and null name", async () => {
+      const npc = createMockNpc("null", 9001, 0, [9002]);
+
+      await writeNpcPage(npc); // No cache provided
+
+      expect(writePageToFile).toHaveBeenCalledWith(
+        expect.anything(),
+        "npc",
+        "Unknown NPC 9001",
+        "9001",
+        true
+      );
+    });
+  });
 });

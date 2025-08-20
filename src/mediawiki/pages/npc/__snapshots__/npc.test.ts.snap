@@ -1,5 +1,118 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`npcPageBuilder getName() integration should fall back to Unknown NPC when getName fails for null-named NPCs 1`] = `
+"{{New Content}}
+{{Infobox NPC
+|name = null
+|image = [[File:null.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|id = 3001
+}}
+'''Unknown NPC 3001'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder getName() integration should fall back to direct name when no cache is provided 1`] = `
+"{{New Content}}
+{{Infobox NPC
+|name = Direct Name NPC
+|image = [[File:Direct Name NPC.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine = She tries to keep order around here.
+|id = 1002
+}}
+'''Direct Name NPC'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder getName() integration should handle getName() error gracefully 1`] = `
+"{{New Content}}
+{{Infobox NPC
+|name = Error NPC
+|image = [[File:Error NPC.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine = He guards this area.
+|id = 1003
+}}
+'''Unknown NPC 1003'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder getName() integration should use getName() for clean primary name when cache is provided 1`] = `
+"{{New Content}}
+{{Infobox NPC
+|name = Test NPC
+|image = [[File:Test NPC.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine = He tries to keep order around here.
+|id = 1001
+}}
+'''Cleaned Test NPC'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder getName() integration should use getName() for multiChildren NPCs with null names 1`] = `
+"{{New Content}}
+{{Infobox NPC
+|name = Child Guard
+|image = [[File:Child Guard.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|id = 2002
+}}
+'''Child Guard'''
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
 exports[`npcPageBuilder multi-version functionality should deduplicate multiChildren NPCs by ID 1`] = `
 "{{New Content}}
 {{Infobox Monster

@@ -214,7 +214,7 @@ describe("npcPageBuilder", () => {
     it("should handle multiChildren NPCs with null names", async () => {
       // Mock NPC.load for multiChildren functionality
       const mockLoad = NPC.load as jest.MockedFunction<typeof NPC.load>;
-      
+
       // Parent NPC with null name and multiChildren
       const parentNpc = createMockNpc("null", 5000, 0, {
         multiChildren: [5001 as NPCID, 5002 as NPCID], // References to child NPCs
@@ -225,7 +225,9 @@ describe("npcPageBuilder", () => {
       const childNpc2 = createMockNpc("Guard", 5002, 22);
 
       // Mock the getMultiChildren method on the parent NPC
-      parentNpc.getMultiChildren = jest.fn().mockResolvedValue([childNpc1, childNpc2]);
+      parentNpc.getMultiChildren = jest
+        .fn()
+        .mockResolvedValue([childNpc1, childNpc2]);
 
       // Mock the cache and NPC.load behavior (for fallback compatibility)
       const mockCache = Promise.resolve({} as CacheProvider);
@@ -240,12 +242,14 @@ describe("npcPageBuilder", () => {
       const built = builder.build();
 
       expect(built).toMatchSnapshot();
-      
+
       // Verify getMultiChildren was called on the parent
       expect(parentNpc.getMultiChildren).toHaveBeenCalledWith(mockCache);
 
       mockLoad.mockRestore();
-    });    it("should handle multiChildren NPCs with valid names (not null)", async () => {
+    });
+
+    it("should handle multiChildren NPCs with valid names (not null)", async () => {
       // Mock NPC.load for multiChildren functionality
       const mockLoad = NPC.load as jest.MockedFunction<typeof NPC.load>;
 
@@ -264,7 +268,9 @@ describe("npcPageBuilder", () => {
       const childNpc2 = createMockNpc("Guard Veteran", 6002, 30);
 
       // Mock the getMultiChildren method on the parent NPC
-      namedNpcWithMultiChildren.getMultiChildren = jest.fn().mockResolvedValue([childNpc1, childNpc2]);
+      namedNpcWithMultiChildren.getMultiChildren = jest
+        .fn()
+        .mockResolvedValue([childNpc1, childNpc2]);
 
       // Mock the cache and NPC.load behavior
       const mockCache = Promise.resolve({} as CacheProvider);
@@ -284,7 +290,9 @@ describe("npcPageBuilder", () => {
       expect(built).toMatchSnapshot();
 
       // Verify getMultiChildren was called on the parent
-      expect(namedNpcWithMultiChildren.getMultiChildren).toHaveBeenCalledWith(mockCache);
+      expect(namedNpcWithMultiChildren.getMultiChildren).toHaveBeenCalledWith(
+        mockCache
+      );
 
       mockLoad.mockRestore();
     });
@@ -292,7 +300,7 @@ describe("npcPageBuilder", () => {
     it("should deduplicate multiChildren NPCs by ID", async () => {
       // Mock NPC.load for multiChildren functionality with duplicate IDs
       const mockLoad = NPC.load as jest.MockedFunction<typeof NPC.load>;
-      
+
       // Parent NPC with null name and multiChildren that will load duplicate IDs
       const parentNpc = createMockNpc("null", 8000, 0, {
         multiChildren: [8001 as NPCID, 8002 as NPCID, 8001 as NPCID], // 8001 appears twice
@@ -303,7 +311,9 @@ describe("npcPageBuilder", () => {
       const childNpc2 = createMockNpc("Archer", 8002, 25);
 
       // Mock the getMultiChildren method on the parent NPC (should already be deduplicated)
-      parentNpc.getMultiChildren = jest.fn().mockResolvedValue([childNpc1, childNpc2]);
+      parentNpc.getMultiChildren = jest
+        .fn()
+        .mockResolvedValue([childNpc1, childNpc2]);
 
       // Mock the cache and NPC.load behavior
       const mockCache = Promise.resolve({} as CacheProvider);
@@ -318,7 +328,7 @@ describe("npcPageBuilder", () => {
       const built = builder.build();
 
       expect(built).toMatchSnapshot();
-      
+
       // Verify getMultiChildren was called on the parent (deduplication happens inside getMultiChildren)
       expect(parentNpc.getMultiChildren).toHaveBeenCalledWith(mockCache);
 
@@ -337,6 +347,98 @@ describe("npcPageBuilder", () => {
 
       // Should use "Guard" as the primary name
       expect(built).toMatchSnapshot();
+    });
+  });
+
+  describe("getName() integration", () => {
+    const mockCache = Promise.resolve({} as CacheProvider);
+
+    it("should use getName() for clean primary name when cache is provided", async () => {
+      const npc = createMockNpc("Test NPC", 1001);
+
+      // Mock getName to return a different name than the direct name
+      npc.getName = jest.fn().mockResolvedValue("Cleaned Test NPC");
+
+      const builder = await npcPageBuilder(npc, mockCache);
+      const result = builder.build();
+
+      expect(npc.getName).toHaveBeenCalledWith(mockCache);
+      expect(result).toContain("Cleaned Test NPC"); // Should appear in text content
+      expect(result).toMatchSnapshot();
+      // Note: Infobox may still use original name, but cleaned name should appear in text
+    });
+
+    it("should fall back to direct name when no cache is provided", async () => {
+      const npc = createMockNpc("Direct Name NPC", 1002);
+
+      const builder = await npcPageBuilder(npc); // No cache provided
+      const result = builder.build();
+
+      expect(result).toContain("Direct Name NPC");
+      expect(result).toMatchSnapshot();
+    });
+
+    it("should handle getName() error gracefully", async () => {
+      const npc = createMockNpc("Error NPC", 1003);
+
+      // Mock getName to throw an error
+      npc.getName = jest.fn().mockRejectedValue(new Error("Cache error"));
+
+      const consoleSpy = jest.spyOn(console, "warn").mockImplementation();
+
+      const builder = await npcPageBuilder(npc, mockCache);
+      const result = builder.build();
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to get name for NPC 1003, using fallback:",
+        expect.any(Error)
+      );
+      expect(result).toContain("Unknown NPC 1003");
+      expect(result).toMatchSnapshot();
+
+      consoleSpy.mockRestore();
+    });
+
+    it("should use getName() for multiChildren NPCs with null names", async () => {
+      const childNpc = createMockNpc("Child Guard", 2002);
+      const parentNpc = createMockNpc("null", 2001, 0, {
+        multiChildren: [2002 as NPCID],
+      });
+
+      // Mock getMultiChildren first
+      parentNpc.getMultiChildren = jest.fn().mockResolvedValue([childNpc]);
+
+      const builder = await npcPageBuilder(parentNpc, mockCache);
+      const result = builder.build();
+
+      // The page should contain the child's name since multiChildren are loaded
+      expect(result).toContain("Child Guard");
+      expect(result).toMatchSnapshot();
+    });
+
+    it("should fall back to Unknown NPC when getName fails for null-named NPCs", async () => {
+      const parentNpc = createMockNpc("null", 3001, 0, {
+        multiChildren: [3002 as NPCID],
+      });
+
+      // Mock getMultiChildren to fail (no getName needed since getMultiChildren fails first)
+      parentNpc.getMultiChildren = jest
+        .fn()
+        .mockRejectedValue(new Error("getMultiChildren failed"));
+
+      const consoleSpy = jest.spyOn(console, "warn").mockImplementation();
+
+      const builder = await npcPageBuilder(parentNpc, mockCache);
+      const result = builder.build(); // Get result for snapshot
+
+      // Should fall back to rendering the parent NPC itself
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to load child NPCs for parent 3001:",
+        expect.any(Error)
+      );
+      expect(result).toMatchSnapshot();
+
+      consoleSpy.mockRestore();
     });
   });
 });

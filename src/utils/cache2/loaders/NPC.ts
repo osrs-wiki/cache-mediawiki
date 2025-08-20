@@ -1,5 +1,5 @@
 import type { CacheProvider } from "../Cache";
-import { PerFileLoadable } from "../Loadable";
+import { MultiChildrenEntity } from "../MultiChildrenEntity";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
 import {
@@ -17,9 +17,55 @@ import {
 } from "../types";
 
 @Typed
-export class NPC extends PerFileLoadable {
-  constructor(public id: NPCID) {
-    super();
+export class NPC extends MultiChildrenEntity<NPC, NPCID> {
+  constructor(id: NPCID) {
+    super(id);
+  }
+
+  /**
+   * Implementation of the abstract loadChild method.
+   * Loads a child NPC by ID using the static load method.
+   */
+  protected async loadChild(
+    cache: Promise<CacheProvider>,
+    childId: NPCID
+  ): Promise<NPC | null> {
+    return NPC.load(cache, childId);
+  }
+
+  /**
+   * Get the display name for this NPC.
+   * @param cache The cache provider to load children from (if needed)
+   * @returns The name following the specified criteria:
+   *   1. If name is not "null", return it
+   *   2. If name is "null" and NPC has multiChildren, return name of first child
+   *   3. Otherwise return the name (likely "null")
+   */
+  public async getName(cache: Promise<CacheProvider>): Promise<string> {
+    // If name is not "null", return it
+    if (this.name !== "null") {
+      return this.name;
+    }
+
+    // If name is "null" and NPC has multiChildren, return name of first child
+    if (this.hasMultiChildren()) {
+      try {
+        const children = await this.getMultiChildren(cache);
+        if (children.length > 0) {
+          const firstChild = children[0];
+          // Recursively call getName on the first child to handle nested cases
+          return await firstChild.getName(cache);
+        }
+      } catch (error) {
+        console.warn(
+          `Failed to get name from multiChildren for NPC ${this.id}:`,
+          error
+        );
+      }
+    }
+
+    // Otherwise return the name (likely "null")
+    return this.name;
   }
 
   public static readonly index = 2;
@@ -78,57 +124,6 @@ export class NPC extends PerFileLoadable {
   public height?: number = undefined;
   public params = new Params();
   public gameVal?: string;
-
-  // Cache for loaded multiChildren NPCs
-  private _multiChildrenCache?: NPC[];
-
-  /**
-   * Get the multiChildren NPCs for this NPC, loading them from cache if needed.
-   * Results are cached to avoid repeated loading.
-   * @param cache The cache provider to load children from
-   * @returns Array of unique child NPCs (deduplicated by ID)
-   */
-  public async getMultiChildren(cache: Promise<CacheProvider>): Promise<NPC[]> {
-    // Return cached result if available
-    if (this._multiChildrenCache !== undefined) {
-      return this._multiChildrenCache;
-    }
-
-    // If no multiChildren array, return empty array and cache it
-    if (!this.multiChildren || this.multiChildren.length === 0) {
-      this._multiChildrenCache = [];
-      return this._multiChildrenCache;
-    }
-
-    // Deduplicate IDs before loading to avoid loading the same NPC multiple times
-    const uniqueIds = new Set<number>();
-    for (const childId of this.multiChildren) {
-      if (childId > 0) {
-        uniqueIds.add(childId);
-      }
-    }
-
-    const childNpcs: NPC[] = [];
-
-    // Load each unique child NPC only once
-    for (const childId of uniqueIds) {
-      try {
-        const childNpc = await NPC.load(cache, childId);
-        if (childNpc) {
-          childNpcs.push(childNpc);
-        }
-      } catch (e) {
-        console.warn(
-          `Failed to load child NPC ${childId} for parent ${this.id}:`,
-          e
-        );
-      }
-    }
-    
-    // Cache and return the result (already deduplicated by loading unique IDs)
-    this._multiChildrenCache = childNpcs;
-    return this._multiChildrenCache;
-  }
 
   public static decode(r: Reader, id: NPCID): NPC {
     const v = new NPC(id);
