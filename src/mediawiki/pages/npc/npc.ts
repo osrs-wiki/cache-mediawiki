@@ -109,12 +109,13 @@ export const npcPageBuilder = async (
         horizontalAlignment: "left",
       }),
       new MediaWikiBreak(),
-      new MediaWikiText(`${cleanPrimaryName}`, { bold: true }),
-      new MediaWikiText(" is an NPC."),
     ]);
   }
 
-  builder.addContent(new MediaWikiText(cleanPrimaryName, { bold: true }));
+  builder.addContents([
+    new MediaWikiText(`${cleanPrimaryName}`, { bold: true }),
+    new MediaWikiText(" is an NPC."),
+  ]);
 
   if (hasDialogue) {
     const transcriptTemplate = new MediaWikiTemplate("Hastranscript");
