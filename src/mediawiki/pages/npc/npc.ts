@@ -7,10 +7,12 @@ import {
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
+import { groupNpcsByType } from "./npc.utils";
 import Context from "../../../context";
 
 import InfoboxMonsterTemplate from "@/mediawiki/templates/InfoboxMonster";
 import InfoboxNpcTemplate from "@/mediawiki/templates/InfoboxNpc";
+import { SwitchInfobox } from "@/mediawiki/templates/SwitchInfobox";
 import { CacheProvider, NPC } from "@/utils/cache2";
 import { stripHtmlTags } from "@/utils/string";
 
@@ -87,12 +89,34 @@ export const npcPageBuilder = async (
     }
   }
 
-  // Determine if we should use Monster or NPC infobox based on any having combat level
-  const hasMonster = npcArray.some((npc) => npc.combatLevel > 0);
+  // Group NPCs by type (combat vs non-combat)
+  const groups = groupNpcsByType(npcArray);
+
+  let infoboxContent;
+
+  if (groups.length === 1) {
+    // Single type - use existing logic
+    const group = groups[0];
+    infoboxContent =
+      group.type === "monster"
+        ? InfoboxMonsterTemplate(group.npcs)
+        : InfoboxNpcTemplate(group.npcs);
+  } else {
+    // Multiple types - use Switch infobox
+    const switchItems = groups.map((group) => ({
+      text: group.label,
+      item: (group.type === "monster"
+        ? InfoboxMonsterTemplate(group.npcs)
+        : InfoboxNpcTemplate(group.npcs)
+      )
+        .build()
+        .build(),
+    }));
+
+    infoboxContent = new SwitchInfobox(switchItems);
+  }
+
   const hasDialogue = npcArray.some((npc) => npc.actions.includes("Talk-to"));
-  const infoboxNpc = hasMonster
-    ? InfoboxMonsterTemplate(npcArray)
-    : InfoboxNpcTemplate(npcArray);
 
   const builder = new MediaWikiBuilder();
 
@@ -100,7 +124,7 @@ export const npcPageBuilder = async (
     builder.addContent(new MediaWikiTemplate(Context.newContentTemplate));
   }
 
-  builder.addContents([infoboxNpc.build()]);
+  builder.addContents([infoboxContent.build()]);
 
   // Only add chathead image if NPC has chathead models
   if (primaryNpc.chatheadModels?.length > 0) {

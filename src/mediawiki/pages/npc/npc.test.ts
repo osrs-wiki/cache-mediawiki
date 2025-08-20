@@ -174,7 +174,7 @@ describe("npcPageBuilder", () => {
       expect(built).toMatchSnapshot();
     });
 
-    it("should handle mixed combat and non-combat NPCs by choosing Monster template", async () => {
+    it("should handle mixed combat and non-combat NPCs using Switch infobox", async () => {
       const npcs = [
         createMockNpc("Guard", 1001, 0), // No combat level
         createMockNpc("Guard", 1002, 21), // Has combat level
@@ -183,6 +183,8 @@ describe("npcPageBuilder", () => {
       const builder = await npcPageBuilder(npcs);
       const built = builder.build();
 
+      // Should now use Switch infobox instead of Monster template
+      expect(built).toContain("{{Switch infobox");
       expect(built).toMatchSnapshot();
     });
 
@@ -345,7 +347,9 @@ describe("npcPageBuilder", () => {
       const builder = await npcPageBuilder(npcs);
       const built = builder.build();
 
-      // Should use "Guard" as the primary name
+      // Should use "Guard" as the primary name and Switch infobox for mixed types
+      expect(built).toContain("{{Switch infobox");
+      expect(built).toContain("'''Guard''' is an NPC.");
       expect(built).toMatchSnapshot();
     });
   });
@@ -439,6 +443,76 @@ describe("npcPageBuilder", () => {
       expect(result).toMatchSnapshot();
 
       consoleSpy.mockRestore();
+    });
+  });
+
+  describe("mixed type NPCs (Switch infobox)", () => {
+    it("should use Switch infobox for mixed combat/non-combat NPCs", async () => {
+      const npcs = [
+        createMockNpc("Royal Servant", 1001, 0), // Non-combat NPC
+        createMockNpc("Guard", 1002, 21), // Combat NPC
+      ];
+      const builder = await npcPageBuilder(npcs);
+      expect(builder.build()).toMatchSnapshot();
+    });
+
+    it("should use Switch infobox with proper labels for mixed types", async () => {
+      const npcs = [
+        createMockNpc("Ennius Tullus", 1001, 0), // Non-combat (Royal servant)
+        createMockNpc("Ennius Tullus", 1002, 306), // Combat version
+      ];
+      const builder = await npcPageBuilder(npcs);
+      const result = builder.build();
+
+      // Check that it contains Switch infobox markup
+      expect(result).toContain("{{Switch infobox");
+      expect(result).toContain("text1 = Ennius Tullus");
+      expect(result).toContain("text2 = In combat");
+      expect(result).toMatchSnapshot();
+    });
+
+    it("should use regular infobox for single type (all combat)", async () => {
+      const npcs = [
+        createMockNpc("Guard", 1001, 21),
+        createMockNpc("Warrior", 1002, 30),
+      ];
+      const builder = await npcPageBuilder(npcs);
+      const result = builder.build();
+
+      // Should not use Switch infobox for single type
+      expect(result).not.toContain("{{Switch infobox");
+      expect(result).toContain("{{Infobox Monster");
+      expect(result).toMatchSnapshot();
+    });
+
+    it("should use regular infobox for single type (all non-combat)", async () => {
+      const npcs = [
+        createMockNpc("Servant", 1001, 0),
+        createMockNpc("Merchant", 1002, 0),
+      ];
+      const builder = await npcPageBuilder(npcs);
+      const result = builder.build();
+
+      // Should not use Switch infobox for single type
+      expect(result).not.toContain("{{Switch infobox");
+      expect(result).toContain("{{Infobox NPC");
+      expect(result).toMatchSnapshot();
+    });
+
+    it("should handle three variants with Switch infobox", async () => {
+      const npcs = [
+        createMockNpc("Royal Servant", 1001, 0), // Non-combat
+        createMockNpc("Cultist", 1002, 0), // Non-combat (different name)
+        createMockNpc("Ennius Tullus", 1003, 306), // Combat
+      ];
+      const builder = await npcPageBuilder(npcs);
+      const result = builder.build();
+
+      expect(result).toContain("{{Switch infobox");
+      // Should have two groups: first non-combat group with Royal Servant label, second combat group
+      expect(result).toContain("text1 = Royal Servant");
+      expect(result).toContain("text2 = In combat");
+      expect(result).toMatchSnapshot();
     });
   });
 });

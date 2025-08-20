@@ -113,6 +113,208 @@ exports[`npcPageBuilder getName() integration should use getName() for multiChil
 "
 `;
 
+exports[`npcPageBuilder mixed type NPCs (Switch infobox) should handle three variants with Switch infobox 1`] = `
+"{{New Content}}
+{{Switch infobox
+|text1 = Royal Servant
+|item1 = {{Infobox NPC
+|version1 = 1
+|version2 = 2
+|name1 = Royal Servant
+|name2 = Cultist
+|image1 = [[File:Royal Servant.png|120px]]
+|image2 = [[File:Cultist (2).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine1 = He tries to keep order around here.
+|examine2 = She tries to keep order around here.
+|id1 = 1001
+|id2 = 1002
+}}
+
+|text2 = In combat
+|item2 = {{Infobox Monster
+|name = Ennius Tullus
+|image = [[File:Ennius Tullus.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 306
+|size = 1
+|examine = He guards this area.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id = 1003
+}}
+
+}}
+'''Royal Servant''' is an NPC.
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infobox for mixed combat/non-combat NPCs 1`] = `
+"{{New Content}}
+{{Switch infobox
+|text1 = Royal Servant
+|item1 = {{Infobox NPC
+|name = Royal Servant
+|image = [[File:Royal Servant.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine = He tries to keep order around here.
+|id = 1001
+}}
+
+|text2 = In combat
+|item2 = {{Infobox Monster
+|name = Guard
+|image = [[File:Guard.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 21
+|size = 1
+|examine = She tries to keep order around here.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id = 1002
+}}
+
+}}
+'''Royal Servant''' is an NPC.
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infobox with proper labels for mixed types 1`] = `
+"{{New Content}}
+{{Switch infobox
+|text1 = Ennius Tullus
+|item1 = {{Infobox NPC
+|name = Ennius Tullus
+|image = [[File:Ennius Tullus.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine = He tries to keep order around here.
+|id = 1001
+}}
+
+|text2 = In combat
+|item2 = {{Infobox Monster
+|name = Ennius Tullus
+|image = [[File:Ennius Tullus.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 306
+|size = 1
+|examine = She tries to keep order around here.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id = 1002
+}}
+
+}}
+'''Ennius Tullus''' is an NPC.
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use regular infobox for single type (all combat) 1`] = `
+"{{New Content}}
+{{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name1 = Guard
+|name2 = Warrior
+|image1 = [[File:Guard.png|120px]]
+|image2 = [[File:Warrior (2).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat1 = 21
+|combat2 = 30
+|size = 1
+|examine1 = He tries to keep order around here.
+|examine2 = She tries to keep order around here.
+|hitpoints = 1
+|att = 1
+|def = 1
+|mage = 1
+|range = 1
+|id1 = 1001
+|id2 = 1002
+}}
+'''Guard''' is an NPC.
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
+exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use regular infobox for single type (all non-combat) 1`] = `
+"{{New Content}}
+{{Infobox NPC
+|version1 = 1
+|version2 = 2
+|name1 = Servant
+|name2 = Merchant
+|image1 = [[File:Servant.png|120px]]
+|image2 = [[File:Merchant (2).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine1 = He tries to keep order around here.
+|examine2 = She tries to keep order around here.
+|id1 = 1001
+|id2 = 1002
+}}
+'''Servant''' is an NPC.
+
+==Dialogue==
+{{Hastranscript|npc}}
+"
+`;
+
 exports[`npcPageBuilder multi-version functionality should deduplicate multiChildren NPCs by ID 1`] = `
 "{{New Content}}
 {{Infobox Monster
@@ -177,29 +379,43 @@ exports[`npcPageBuilder multi-version functionality should generate numbered ima
 "
 `;
 
-exports[`npcPageBuilder multi-version functionality should handle mixed combat and non-combat NPCs by choosing Monster template 1`] = `
+exports[`npcPageBuilder multi-version functionality should handle mixed combat and non-combat NPCs using Switch infobox 1`] = `
 "{{New Content}}
-{{Infobox Monster
-|version1 = 1
-|version2 = 2
+{{Switch infobox
+|text1 = Guard
+|item1 = {{Infobox NPC
 |name = Guard
-|image1 = [[File:Guard.png|120px]]
-|image2 = [[File:Guard (2).png|120px]]
+|image = [[File:Guard.png|120px]]
 |release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
-|combat1 = 0
-|combat2 = 21
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|examine = He tries to keep order around here.
+|id = 1001
+}}
+
+|text2 = In combat
+|item2 = {{Infobox Monster
+|name = Guard
+|image = [[File:Guard.png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 21
 |size = 1
-|examine1 = He tries to keep order around here.
-|examine2 = She tries to keep order around here.
+|examine = She tries to keep order around here.
 |hitpoints = 1
 |att = 1
 |def = 1
 |mage = 1
 |range = 1
-|id1 = 1001
-|id2 = 1002
+|id = 1002
+}}
+
 }}
 '''Guard''' is an NPC.
 
@@ -210,31 +426,44 @@ exports[`npcPageBuilder multi-version functionality should handle mixed combat a
 
 exports[`npcPageBuilder multi-version functionality should handle mixed null and valid names by preferring valid name 1`] = `
 "{{New Content}}
-{{Infobox Monster
-|version1 = 1
-|version2 = 2
-|version3 = 3
-|name1 = null
-|name2 = Guard
-|name3 = null
-|image1 = [[File:null.png|120px]]
-|image2 = [[File:Guard (2).png|120px]]
-|image3 = [[File:null (3).png|120px]]
+{{Switch infobox
+|text1 = NPC
+|item1 = {{Infobox NPC
+|name = null
+|image = [[File:null.png|120px]]
 |release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
-|combat1 = 0
-|combat2 = 21
-|combat3 = 21
+|race = [[Human]]
+|location = 
+|gender = Male
+|options = Talk-to, Trade
+|map = No
+|id = 7000
+}}
+
+|text2 = In combat
+|item2 = {{Infobox Monster
+|version1 = 1
+|version2 = 2
+|name1 = Guard
+|name2 = null
+|image1 = [[File:Guard.png|120px]]
+|image2 = [[File:null (2).png|120px]]
+|release = [[19 March]] [[2024]]
+|update = Varlamore: Part One
+|members = Yes
+|combat = 21
 |size = 1
 |hitpoints = 1
 |att = 1
 |def = 1
 |mage = 1
 |range = 1
-|id1 = 7000
-|id2 = 7001
-|id3 = 7002
+|id1 = 7001
+|id2 = 7002
+}}
+
 }}
 '''Guard''' is an NPC.
 
