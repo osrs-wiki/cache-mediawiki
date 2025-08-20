@@ -1,5 +1,5 @@
 ---
-applyTo: "src/**/*.test.ts"
+applyTo: "src/**/*.test.ts,src/tasks/**/*.test.ts,src/mediawiki/**/*.test.ts"
 ---
 
 # Testing Complex Entities
