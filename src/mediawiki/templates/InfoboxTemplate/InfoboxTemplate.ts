@@ -1,4 +1,7 @@
-import { MediaWikiTemplate, MediaWikiContent } from "@osrs-wiki/mediawiki-builder";
+import {
+  MediaWikiTemplate,
+  MediaWikiContent,
+} from "@osrs-wiki/mediawiki-builder";
 
 import { Template } from "./InfoboxTemplate.types";
 
@@ -14,13 +17,13 @@ export class InfoboxTemplate<T> extends Template {
 
   build() {
     const infoboxTemplate = new MediaWikiTemplate(this.name);
-    
+
     if (Array.isArray(this.params)) {
       this.buildMultipleParams(infoboxTemplate, this.params);
     } else {
       this.buildSingleParams(infoboxTemplate, this.params);
     }
-    
+
     return infoboxTemplate;
   }
 
@@ -36,7 +39,7 @@ export class InfoboxTemplate<T> extends Template {
 
   private buildMultipleParams(template: MediaWikiTemplate, paramsArray: T[]) {
     if (paramsArray.length === 0) return;
-    
+
     // Add version parameters first
     paramsArray.forEach((_, index) => {
       template.add(`version${index + 1}`, (index + 1).toString());
@@ -44,31 +47,31 @@ export class InfoboxTemplate<T> extends Template {
 
     // Get all unique keys across all param sets
     const allKeys = new Set<string>();
-    paramsArray.forEach(params => {
-      Object.keys(params).forEach(key => allKeys.add(key));
+    paramsArray.forEach((params) => {
+      Object.keys(params).forEach((key) => allKeys.add(key));
     });
 
     // For each key, determine if values are shared or different
-    allKeys.forEach(key => {
-      const values = paramsArray.map(params => {
+    allKeys.forEach((key) => {
+      const values = paramsArray.map((params) => {
         const value = params[key as keyof T];
         return value !== undefined ? this.parseValue(value) : undefined;
       });
 
       // Filter out undefined values for comparison
-      const definedValues = values.filter(v => v !== undefined);
-      
+      const definedValues = values.filter((v) => v !== undefined);
+
       if (definedValues.length === 0) return;
 
       // Check if all defined values are the same
       const firstValue = definedValues[0];
-      const allSame = definedValues.every(v => v === firstValue);
+      const allSame = definedValues.every((v) => v === firstValue);
 
-      if (allSame && definedValues.length === paramsArray.length) {
-        // All values are the same and all params have this key - use shared parameter
+      if (allSame) {
+        // All defined values are the same - use shared parameter
         template.add(key, firstValue as string);
       } else {
-        // Values differ or not all params have this key - use numbered parameters
+        // Values differ - use numbered parameters
         values.forEach((value, index) => {
           if (value !== undefined) {
             template.add(`${key}${index + 1}`, value);

@@ -44,7 +44,7 @@ exports[`InfoboxTemplate multiple params should handle undefined values properly
 |version2 = 2
 |name = Guard
 |level = 21
-|examine1 = He tries to keep order.
+|examine = He tries to keep order.
 }}
 "
 `;
