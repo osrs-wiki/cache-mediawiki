@@ -5,3 +5,5 @@ export * from "./InfoboxLocation";
 export * from "./InfoboxMonster";
 export * from "./InfoboxMusic";
 export * from "./InfoboxNpc";
+export * from "./InfoboxTemplate";
+export * from "./SwitchInfobox";

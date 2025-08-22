@@ -1,10 +1,7 @@
-import {
-  InfoboxTemplate,
-  MediaWikiDate,
-  MediaWikiFile,
-} from "@osrs-wiki/mediawiki-builder";
+import { MediaWikiDate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxMonster } from "./InfoboxMonster.types";
+import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
 import {
@@ -23,13 +20,20 @@ import {
 import { NPC } from "@/utils/cache2";
 import { stripHtmlTags } from "@/utils/string";
 
-const InfoboxMonsterTemplate = (npc: NPC) => {
+/**
+ * Creates InfoboxMonster data for a single NPC
+ */
+const createInfoboxMonsterData = (npc: NPC, index = 0): InfoboxMonster => {
   const cleanName = stripHtmlTags(npc.name);
-  const infoboxData: InfoboxMonster = {
+  
+  return {
     "name": cleanName,
-    "image": new MediaWikiFile(`${cleanName}.png`, {
-      resizing: { width: 120 },
-    }),
+    "image": new MediaWikiFile(
+      `${cleanName}${index > 0 ? ` (${index + 1})` : ""}.png`,
+      {
+        resizing: { width: 120 },
+      }
+    ),
     "release": Context.updateDate
       ? new MediaWikiDate(new Date(Context.updateDate))
       : undefined,
@@ -80,8 +84,22 @@ const InfoboxMonsterTemplate = (npc: NPC) => {
       : undefined,
     "id": `${Context.beta ? "beta" : ""}${npc.id.toString()}`,
   };
+};
 
-  return new InfoboxTemplate<InfoboxMonster>("Monster", infoboxData);
+const InfoboxMonsterTemplate = (npcs: NPC | NPC[]) => {
+  const npcArray = Array.isArray(npcs) ? npcs : [npcs];
+
+  if (npcArray.length === 1) {
+    // Single NPC - existing behavior
+    const infoboxData = createInfoboxMonsterData(npcArray[0]);
+    return new InfoboxTemplate<InfoboxMonster>("Monster", infoboxData);
+  } else {
+    // Multiple NPCs - create array of infobox data
+    const infoboxDataArray = npcArray.map((npc, index) =>
+      createInfoboxMonsterData(npc, index)
+    );
+    return new InfoboxTemplate<InfoboxMonster>("Monster", infoboxDataArray);
+  }
 };
 
 export default InfoboxMonsterTemplate;

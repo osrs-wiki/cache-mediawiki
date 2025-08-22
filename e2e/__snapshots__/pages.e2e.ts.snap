@@ -13,7 +13,7 @@ exports[`Pages Command E2E Tests Area Pages should generate area page content th
 |type = 
 }}
 [[File:undefined.png|300px|left]]
-"
+ is an area."
 `;
 
 exports[`Pages Command E2E Tests Item Pages should generate different item page for different ID: item-2-output.txt 1`] = `
@@ -37,7 +37,7 @@ exports[`Pages Command E2E Tests Item Pages should generate different item page 
 |id = 2
 }}
 [[File:Cannonball detail.png|130px|left]]
-'''Cannonball'''"
+'''Cannonball''' is an item."
 `;
 
 exports[`Pages Command E2E Tests Item Pages should generate item page content that matches snapshot: item-1-output.txt 1`] = `
@@ -61,7 +61,7 @@ exports[`Pages Command E2E Tests Item Pages should generate item page content th
 |id = 1
 }}
 [[File:Toolkit detail.png|130px|left]]
-'''Toolkit'''"
+'''Toolkit''' is an item."
 `;
 
 exports[`Pages Command E2E Tests NPC Pages should generate npc page content that matches snapshot: npc-1-output.txt 1`] = `
@@ -83,8 +83,7 @@ exports[`Pages Command E2E Tests NPC Pages should generate npc page content that
 |dmagic = 30
 |id = 1
 }}
-[[File:Molanisk chathead.png|left]]
-'''Molanisk'''"
+'''Molanisk''' is an NPC."
 `;
 
 exports[`Pages Command E2E Tests Scenery Pages should generate scenery page content that matches snapshot: scenery-1-output.txt 1`] = `
@@ -99,6 +98,5 @@ exports[`Pages Command E2E Tests Scenery Pages should generate scenery page cont
 |map = No
 |id = 1
 }}
-[[File:Crate detail.png|130px|left]]
-'''Crate'''"
+'''Crate''' is a scenery object."
 `;

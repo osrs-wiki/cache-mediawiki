@@ -36,10 +36,10 @@ describe("writePageToFile", () => {
       "page content"
     );
     expect(formatFileName).toHaveBeenCalledWith(
-      "./out/pages/npc/named/Goblin.txt"
+      "./out/pages/npc/named/Goblin-123.txt"
     );
     expect(writeFile).toHaveBeenCalledWith(
-      "./out/pages/npc/named/Goblin.txt",
+      "./out/pages/npc/named/Goblin-123.txt",
       "page content"
     );
   });
