@@ -251,7 +251,7 @@ export function createWidgetCompareFunction<T extends DecodableWithGameVal, ID>(
     }
 
     // Filter out child widgets - only include parent widgets (parentId === -1)
-    /*const isOldParent =
+    const isOldParent =
       oldEntry &&
       "parentId" in oldEntry &&
       (oldEntry as unknown as Widget).parentId === -1;
@@ -263,7 +263,7 @@ export function createWidgetCompareFunction<T extends DecodableWithGameVal, ID>(
     // Only process if at least one of the entries is a parent widget
     if (!isOldParent && !isNewParent) {
       return {};
-    }*/
+    }
 
     console.log(`widget gameVal: ${oldEntry?.gameVal ?? newEntry?.gameVal}`);
     return getFileDifferences(oldEntry, newEntry);
