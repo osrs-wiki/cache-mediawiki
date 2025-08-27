@@ -58,6 +58,10 @@ const differencesCache = async ({
     `${dir}/${newVersion} JSON.json`,
     JSON.stringify(cacheDifferences)
   );
+  await writeFile(
+    `${dir}/${newVersion} content.txt`,
+    JSON.stringify(builder.content)
+  );
   await writeFile(`${dir}/${newVersion}.txt`, builder.build());
 };
 

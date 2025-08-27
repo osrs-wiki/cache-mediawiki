@@ -16,6 +16,7 @@ import {
   Struct,
   VarPlayer,
   Varbit,
+  Widget,
 } from "@/utils/cache2";
 import { Loadable } from "@/utils/cache2/Loadable";
 
@@ -43,7 +44,8 @@ export type IndexFeatures =
   | IndexFeature<Sprites, "Sprites">
   | IndexFeature<Struct, "Structs">
   | IndexFeature<Varbit, "Varbits">
-  | IndexFeature<VarPlayer, "VarPlayers">;
+  | IndexFeature<VarPlayer, "VarPlayers">
+  | IndexFeature<Widget, "Widgets">;
 
 export const resultNameMap: { [key in Difference]: string } = {
   added: "New",
@@ -164,6 +166,24 @@ export const indexNameMap: {
       urls: {
         chisel: "https://chisel.weirdgloop.org/varbs/display?varplayer=",
       },
+    },
+  },
+  [IndexType.Interfaces]: {
+    name: "Widgets",
+    identifiers: ["id"],
+    fields: [
+      "gameVal",
+      ,
+      "parentId",
+      "type",
+      "name",
+      "text",
+      "tooltip",
+      "actions",
+      "configActions",
+    ],
+    urls: {
+      abex: "https://abextm.github.io/cache2/#/viewer/interface/",
     },
   },
   [IndexType.Sprites]: {

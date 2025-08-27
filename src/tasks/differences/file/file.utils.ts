@@ -41,6 +41,9 @@ import {
   VarbitID,
   VarPlayer,
   VarPID,
+  Widget,
+  WidgetID,
+  GameValType,
 } from "@/utils/cache2";
 import { PerFileLoadable } from "@/utils/cache2/Loadable";
 
@@ -70,6 +73,7 @@ export const indexMap: {
       VarPlayer
     ),
   },
+  [IndexType.Interfaces]: createWidgetCompareFunction<Widget, WidgetID>(Widget),
   [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
 };
 
@@ -197,6 +201,71 @@ export function createArchiveCompareFunction<
       );
     }
 
+    return getFileDifferences(oldEntry, newEntry);
+  };
+}
+
+/**
+ * Creates a compare function for widgets that use (archiveId << 16) + fileId as the widget ID
+ * Only includes widgets that are parents (parentId === -1), filtering out child widgets
+ * @param decoder The decoder class with a static decode method
+ * @returns A CompareFn that can be used for widget comparisons
+ */
+export function createWidgetCompareFunction<T extends DecodableWithGameVal, ID>(
+  decoder: Decoder<T, ID>
+): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const oldEntry = oldFile
+      ? decoder.decode(
+          new Reader(oldFile.file.data, {
+            era: "osrs",
+            indexRevision: oldFile.index.revision,
+          }),
+          ((oldFile.archive.archive << 16) + oldFile.file.id) as ID
+        )
+      : undefined;
+
+    if (oldEntry) {
+      oldEntry.gameVal = await GameVal.nameFor(
+        Context.oldCacheProvider,
+        oldEntry
+      );
+    }
+
+    const newEntry = newFile
+      ? decoder.decode(
+          new Reader(newFile.file.data, {
+            era: "osrs",
+            indexRevision: newFile.index.revision,
+          }),
+          ((newFile.archive.archive << 16) + newFile.file.id) as ID
+        )
+      : undefined;
+
+    if (newEntry) {
+      console.log("New widget archive: ", newFile.archive.archive);
+      newEntry.gameVal = await GameVal.nameFor(
+        Context.newCacheProvider,
+        newEntry
+      );
+    }
+
+    // Filter out child widgets - only include parent widgets (parentId === -1)
+    /*const isOldParent =
+      oldEntry &&
+      "parentId" in oldEntry &&
+      (oldEntry as unknown as Widget).parentId === -1;
+    const isNewParent =
+      newEntry &&
+      "parentId" in newEntry &&
+      (newEntry as unknown as Widget).parentId === -1;
+
+    // Only process if at least one of the entries is a parent widget
+    if (!isOldParent && !isNewParent) {
+      return {};
+    }*/
+
+    console.log(`widget gameVal: ${oldEntry?.gameVal ?? newEntry?.gameVal}`);
     return getFileDifferences(oldEntry, newEntry);
   };
 }

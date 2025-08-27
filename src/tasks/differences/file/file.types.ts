@@ -1,6 +1,7 @@
 import { Reader } from "../../../utils/cache2";
 
 export interface DecodableWithGameVal {
+  archiveId?: number;
   gameVal?: unknown;
   id: number;
 }

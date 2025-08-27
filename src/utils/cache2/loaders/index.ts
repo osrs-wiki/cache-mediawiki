@@ -1,5 +1,6 @@
 export * from "./Animation";
 export * from "./Area";
+export * from "./ClientScript";
 export * from "./DBRow";
 export * from "./Enum";
 export * from "./GameVal";
@@ -15,3 +16,4 @@ export * from "./Struct";
 export * from "./Underlay";
 export * from "./Varbit";
 export * from "./VarPlayer";
+export * from "./Widget";
