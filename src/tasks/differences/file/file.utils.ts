@@ -346,6 +346,12 @@ export const getChangedResult = <T extends PerFileLoadable>(
       newValue: newEntry.name as string,
     };
   }
+  if ("gameVal" in oldEntry && "gameVal" in newEntry) {
+    changed["gameVal"] = {
+      oldValue: oldEntry.gameVal as string,
+      newValue: newEntry.gameVal as string,
+    };
+  }
   return changed;
 };
 

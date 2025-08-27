@@ -170,7 +170,7 @@ export const indexNameMap: {
   },
   [IndexType.Interfaces]: {
     name: "Widgets",
-    identifiers: ["id"],
+    identifiers: ["id", "gameVal"],
     fields: [
       "gameVal",
       ,
