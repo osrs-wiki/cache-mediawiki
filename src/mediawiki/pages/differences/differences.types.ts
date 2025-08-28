@@ -173,7 +173,6 @@ export const indexNameMap: {
     identifiers: ["id", "gameVal"],
     fields: [
       "gameVal",
-      ,
       "parentId",
       "type",
       "name",
