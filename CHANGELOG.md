@@ -1,5 +1,18 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.6.0
+
+### Minor Changes
+
+- 677dcd1: Add support for identifying duplicate entities to prevent page overrides
+- 677dcd1: Add MultiChildrenEntity base class for entities with multiChildren support
+- 677dcd1: Add Switch infobox support for NPCs with mixed combat and non-combat variants
+- 6d7cca3: Add support for widget/interface diffs
+
+### Patch Changes
+
+- cf9c566: Bump brace-expansion from 1.1.11 to 1.1.12
+
 ## 1.5.0
 
 ### Minor Changes
