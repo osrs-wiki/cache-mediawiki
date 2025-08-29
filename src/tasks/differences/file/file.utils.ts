@@ -256,13 +256,6 @@ export function createArchiveParentCompareFunction<
       );
     }
 
-    console.log(
-      `Old result: ${JSON.stringify(oldEntry)} oldFile: ${oldFile?.file?.id}`
-    );
-    console.log(
-      `New result: ${JSON.stringify(newEntry)} newFile: ${newFile.file.id}`
-    );
-
     return getFileDifferences(oldEntry, newEntry);
   };
 }
