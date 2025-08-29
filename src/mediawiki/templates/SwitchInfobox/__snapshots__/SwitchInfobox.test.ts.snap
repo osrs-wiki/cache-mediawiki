@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SwitchInfobox should build switch infobox with multiple items 1`] = `
+"{{Switch infobox
+|text1 = Royal servant
+|item1 = {{Infobox NPC|name=Ennius Tullus}}
+|text2 = In combat
+|item2 = {{Infobox Monster|name=Ennius Tullus}}
+}}
+"
+`;
+
+exports[`SwitchInfobox should build switch infobox with three items 1`] = `
+"{{Switch infobox
+|text1 = Royal servant
+|item1 = {{Infobox NPC|name=Ennius Tullus}}
+|text2 = Cultist
+|item2 = {{Infobox NPC|name=Ennius Tullus (cultist)}}
+|text3 = In combat
+|item3 = {{Infobox Monster|name=Ennius Tullus}}
+}}
+"
+`;
+
+exports[`SwitchInfobox should handle empty items array 1`] = `
+"{{Switch infobox}}
+"
+`;
+
+exports[`SwitchInfobox should handle single item 1`] = `
+"{{Switch infobox|text1=Default|item1={{Infobox NPC|name=Test NPC}}}}
+"
+`;

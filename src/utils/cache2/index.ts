@@ -2,6 +2,7 @@ export * from "./Cache";
 export * from "./DiskCache";
 export * from "./FlatCache";
 export * from "./loaders";
+export * from "./MultiChildrenEntity";
 export * from "./Reader";
 export { Typed } from "./reflect";
 export * from "./ScriptVarType";
