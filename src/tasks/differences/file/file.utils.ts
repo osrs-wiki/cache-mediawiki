@@ -46,9 +46,8 @@ import {
   VarPlayer,
   VarPID,
   Widget,
-  GameValType,
 } from "@/utils/cache2";
-import { Loadable, PerFileLoadable } from "@/utils/cache2/Loadable";
+import { Loadable } from "@/utils/cache2/Loadable";
 
 /**
  * A map of index and archive types to decoding functions.
