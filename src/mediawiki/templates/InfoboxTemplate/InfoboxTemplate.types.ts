@@ -1,0 +1,1 @@
+export { InfoboxTemplateOptions, Template } from "../templates.types";
