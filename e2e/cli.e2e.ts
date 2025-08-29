@@ -89,7 +89,7 @@ describe("CLI E2E Tests", () => {
         "error: option '-t, --type <type>' argument 'invalid' is invalid"
       );
       expect(result.stderr).toContain(
-        "Allowed choices are area, item, npc, scenery"
+        "Allowed choices are area, item, music, npc, scenery"
       );
     });
   });

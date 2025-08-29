@@ -26,7 +26,7 @@ describe("Pages Command E2E Tests", () => {
 
       expect(result.exitCode).toBe(0);
       expect(existsSync("./out/pages/item/1.txt")).toBe(true);
-      expect(existsSync("./out/pages/item/named/Toolkit.txt")).toBe(true);
+      expect(existsSync("./out/pages/item/named/Toolkit-1.txt")).toBe(true);
     });
 
     it("should generate item page content that matches snapshot", async () => {
