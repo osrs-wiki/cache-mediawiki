@@ -1,6 +1,6 @@
 import { ClientScript1Instruction } from "./ClientScript";
-import { ArchiveData } from "../Cache";
-import { PerFileLoadable } from "../Loadable";
+import { ArchiveData, CacheProvider } from "../Cache";
+import { PerArchiveParentLoadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
 import {
@@ -15,13 +15,12 @@ import {
 } from "../types";
 
 @Typed
-export class Widget extends PerFileLoadable {
+export class Widget extends PerArchiveParentLoadable {
   constructor(public id: WidgetID) {
     super();
   }
 
   public static readonly index = IndexType.Interfaces;
-  public static readonly archive = -1; // Per-archive loading
   public static readonly gameval = GameValType.Widget;
 
   public archiveId?: number;
@@ -201,6 +200,89 @@ export class Widget extends PerFileLoadable {
 
     // Decode the widget
     return Widget.decode(reader, widgetId);
+  }
+
+  /**
+   * Generate widget ID from archive ID and file ID
+   * Widget IDs are composed as: (archiveId << 16) + fileId
+   */
+  public static getId(archiveId: number, fileId: number): WidgetID {
+    return ((archiveId << 16) + fileId) as WidgetID;
+  }
+
+  /**
+   * Load a widget archive as parent with children using the new parent-child structure
+   */
+  public static async loadWidgetArchive(
+    cache: CacheProvider,
+    archiveId: number
+  ): Promise<Widget | undefined> {
+    const result = await Widget.loadDataWithChildren(cache, archiveId);
+    if (!result) return undefined;
+
+    // Populate the parent's children array
+    result.parent.children = result.children;
+    return result.parent as Widget;
+  }
+
+  /**
+   * Load all widget archives with parent-child relationships populated
+   */
+  public static async allWithChildren(
+    cache: CacheProvider | Promise<CacheProvider>
+  ): Promise<Widget[]> {
+    const resolvedCache = await cache;
+    const ids = await resolvedCache.getArchives(Widget.index);
+    if (!ids) {
+      return [];
+    }
+
+    const results = await Promise.all(
+      ids.map(async (id) => {
+        try {
+          return await Widget.loadWidgetArchive(resolvedCache, id);
+        } catch (e) {
+          if (typeof e === "object" && e && "message" in e) {
+            const errorWithMessage = e as { message: string };
+            errorWithMessage.message = id + ": " + errorWithMessage.message;
+          }
+          throw e;
+        }
+      })
+    );
+
+    return results.filter((result): result is Widget => result !== undefined);
+  }
+
+  /**
+   * Get parent widget ID from any child widget ID
+   */
+  public static getParentId(widgetId: WidgetID): WidgetID {
+    return (widgetId & ~0xffff) as WidgetID;
+  }
+
+  /**
+   * Check if this widget is a parent widget (file ID 0)
+   */
+  public isParent(): boolean {
+    return (this.id & 0xffff) === 0;
+  }
+
+  /**
+   * Get all child widgets of this widget
+   */
+  public getChildren(): Widget[] {
+    return (this.children as Widget[]) || [];
+  }
+
+  /**
+   * Add a child widget to this parent widget
+   */
+  public addChild(child: Widget): void {
+    if (!this.children) {
+      this.children = [];
+    }
+    (this.children as Widget[]).push(child);
   }
 
   private decodeIf1(r: Reader): void {

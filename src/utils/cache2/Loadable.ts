@@ -116,6 +116,136 @@ export abstract class NamedPerArchiveLoadable extends PerArchiveLoadable {
   }
 }
 
+export abstract class PerArchiveParentLoadable extends Loadable {
+  public children?: this[] = [];
+
+  public static async loadData(
+    this: { index: number },
+    cache: CacheProvider,
+    id: number
+  ): Promise<Reader | undefined> {
+    const archive = await cache.getArchive(this.index, id as number);
+    const version = await cache.getVersion(this.index);
+    const data = archive?.getFile(0)?.data;
+    return data ? new Reader(data, version) : undefined;
+  }
+
+  public static async loadDataWithChildren<
+    I extends PerArchiveParentLoadable,
+    ID extends number
+  >(
+    this: {
+      index: number;
+      decode(reader: Reader, id: ID): I;
+      loadDataWithChildren(
+        cache: CacheProvider,
+        archiveId: number
+      ): Promise<{ parent: I; children: I[] } | undefined>;
+      getId(archiveId: number, fileId: number): ID;
+    },
+    cache: CacheProvider,
+    archiveId: number
+  ): Promise<{ parent: I; children: I[] } | undefined> {
+    const archive = await cache.getArchive(this.index, archiveId);
+    if (!archive) {
+      return undefined;
+    }
+
+    const version = await cache.getVersion(this.index);
+    const files = [...archive.getFiles().values()];
+
+    if (files.length === 0) {
+      return undefined;
+    }
+
+    // Sort files by ID to ensure consistent ordering
+    files.sort((a, b) => a.id - b.id);
+
+    const items: I[] = [];
+    let parent: I | undefined;
+
+    for (const file of files) {
+      if (file.data.length <= 1 || file.data[0] === 0) {
+        continue;
+      }
+
+      try {
+        const itemId = this.getId(archiveId, file.id);
+        const item = this.decode(new Reader(file.data, version), itemId);
+        items.push(item);
+
+        // The parent is typically the item with file ID 0
+        if (file.id === 0) {
+          parent = item;
+        }
+      } catch (e) {
+        if (typeof e === "object" && e && "message" in e) {
+          const errorWithMessage = e as { message: string };
+          errorWithMessage.message = file.id + ": " + errorWithMessage.message;
+        }
+        throw e;
+      }
+    }
+
+    // If no file ID 0 exists, use the first item as parent
+    if (!parent && items.length > 0) {
+      parent = items[0];
+    }
+
+    if (!parent) {
+      return undefined;
+    }
+
+    // Children are all items except the parent
+    const children = items.filter((item) => item !== parent);
+
+    return { parent, children };
+  }
+
+  public static async all<
+    I extends PerArchiveParentLoadable,
+    ID extends number
+  >(
+    this: {
+      index: number;
+      decode(reader: Reader, id: ID): I;
+      loadDataWithChildren(
+        cache: CacheProvider,
+        archiveId: number
+      ): Promise<{ parent: I; children: I[] } | undefined>;
+    },
+    cache0: CacheProvider | Promise<CacheProvider>
+  ): Promise<I[]> {
+    const cache = await cache0;
+    const ids = await cache.getArchives(this.index);
+    if (!ids) {
+      return [];
+    }
+
+    const results = await Promise.all(
+      ids.map(async (id) => {
+        try {
+          const result = await this.loadDataWithChildren(cache, id);
+          if (result) {
+            // Populate the parent's children array
+            result.parent.children = result.children;
+            return result.parent;
+          }
+          return null;
+        } catch (e) {
+          if (typeof e === "object" && e && "message" in e) {
+            const errorWithMessage = e as { message: string };
+            errorWithMessage.message = id + ": " + errorWithMessage.message;
+          }
+          throw e;
+        }
+      })
+    );
+
+    return results.filter((result) => result !== null) as I[];
+  }
+}
+
 export class PerFileLoadable extends Loadable {
   public static async loadData(
     this: { index: number; archive: number },
@@ -151,8 +281,8 @@ export class PerFileLoadable extends Loadable {
           return this.decode(new Reader(v.data, version), v.id as ID);
         } catch (e) {
           if (typeof e === "object" && e && "message" in e) {
-            const ea = e as any;
-            ea.message = v.id + ": " + ea.message;
+            const errorWithMessage = e as { message: string };
+            errorWithMessage.message = v.id + ": " + errorWithMessage.message;
           }
           throw e;
         }

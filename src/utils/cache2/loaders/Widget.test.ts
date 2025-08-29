@@ -70,7 +70,7 @@ describe("Widget", () => {
     test("should have correct GameVal type", () => {
       expect(Widget.gameval).toBe(GameValType.Widget);
       expect(Widget.index).toBe(3);
-      expect(Widget.archive).toBe(-1);
+      // Note: archive property removed since Widget now uses PerArchiveParentLoadable
     });
 
     test("should have gameVal property", () => {
@@ -80,6 +80,13 @@ describe("Widget", () => {
       // Can be assigned
       widget.gameVal = "test-value";
       expect(widget.gameVal).toBe("test-value");
+    });
+
+    test("should have children array", () => {
+      const widget = new Widget(123 as WidgetID);
+      expect(widget.children).toBeDefined();
+      expect(Array.isArray(widget.getChildren())).toBe(true);
+      expect(widget.getChildren()).toHaveLength(0);
     });
   });
 
@@ -282,6 +289,40 @@ describe("Widget", () => {
         // Restore original decode method
         Widget.decode = originalDecode;
       }
+    });
+  });
+
+  describe("PerArchiveParentLoadable functionality", () => {
+    test("should identify parent widgets correctly", () => {
+      const parentWidget = new Widget((123 << 16) as WidgetID); // Archive 123, File ID 0
+      const childWidget = new Widget(((123 << 16) + 5) as WidgetID); // Archive 123, File ID 5
+
+      expect(parentWidget.isParent()).toBe(true);
+      expect(childWidget.isParent()).toBe(false);
+    });
+
+    test("should get parent ID correctly", () => {
+      const archiveId = 123;
+      const childId = ((archiveId << 16) + 5) as WidgetID;
+      const expectedParentId = (archiveId << 16) as WidgetID;
+
+      expect(Widget.getParentId(childId)).toBe(expectedParentId);
+    });
+
+    test("should manage children correctly", () => {
+      const parentWidget = new Widget((123 << 16) as WidgetID); // Archive 123, File ID 0
+      const child1 = new Widget(((123 << 16) + 1) as WidgetID); // Archive 123, File ID 1
+      const child2 = new Widget(((123 << 16) + 2) as WidgetID); // Archive 123, File ID 2
+
+      expect(parentWidget.getChildren()).toHaveLength(0);
+
+      parentWidget.addChild(child1);
+      expect(parentWidget.getChildren()).toHaveLength(1);
+      expect(parentWidget.getChildren()[0]).toBe(child1);
+
+      parentWidget.addChild(child2);
+      expect(parentWidget.getChildren()).toHaveLength(2);
+      expect(parentWidget.getChildren()[1]).toBe(child2);
     });
   });
 });

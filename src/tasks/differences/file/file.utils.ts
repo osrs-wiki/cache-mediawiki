@@ -1,6 +1,10 @@
 import _ from "underscore";
 
-import { DecodableWithGameVal, Decoder } from "./file.types";
+import {
+  DecodableWithGameVal,
+  Decoder,
+  ParentArchiveDecoder,
+} from "./file.types";
 import {
   ChangedResult,
   ResultValue,
@@ -42,10 +46,9 @@ import {
   VarPlayer,
   VarPID,
   Widget,
-  WidgetID,
   GameValType,
 } from "@/utils/cache2";
-import { PerFileLoadable } from "@/utils/cache2/Loadable";
+import { Loadable, PerFileLoadable } from "@/utils/cache2/Loadable";
 
 /**
  * A map of index and archive types to decoding functions.
@@ -73,7 +76,7 @@ export const indexMap: {
       VarPlayer
     ),
   },
-  [IndexType.Interfaces]: createWidgetCompareFunction<Widget, WidgetID>(Widget),
+  [IndexType.Interfaces]: createArchiveParentCompareFunction<Widget>(Widget),
   [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
 };
 
@@ -206,24 +209,39 @@ export function createArchiveCompareFunction<
 }
 
 /**
- * Creates a compare function for widgets that use (archiveId << 16) + fileId as the widget ID
- * Only includes widgets that are parents (parentId === -1), filtering out child widgets
- * @param decoder The decoder class with a static decode method
- * @returns A CompareFn that can be used for widget comparisons
+ * Creates a compare function for PerArchiveParentLoadable entries
+ * Loads entire archives with parent-child relationships and compares them as single units
+ * @param loadableClass The PerArchiveParentLoadable class with static methods
+ * @returns A CompareFn that can be used for archive-based comparisons
  */
-export function createWidgetCompareFunction<T extends DecodableWithGameVal, ID>(
-  decoder: Decoder<T, ID>
-): CompareFn {
+export function createArchiveParentCompareFunction<
+  T extends DecodableWithGameVal
+>(decoder: ParentArchiveDecoder<T>): CompareFn {
   return async ({ oldFile, newFile }) => {
-    const oldEntry = oldFile
-      ? decoder.decode(
-          new Reader(oldFile.file.data, {
-            era: "osrs",
-            indexRevision: oldFile.index.revision,
-          }),
-          ((oldFile.archive.archive << 16) + oldFile.file.id) as ID
-        )
+    // We only process one file per archive (typically file 0, the parent)
+    // Skip processing if this isn't the first file in the archive
+    if (
+      (oldFile && oldFile.file.id !== 0) ||
+      (newFile && newFile.file.id !== 0)
+    ) {
+      return {};
+    }
+
+    const archiveId = oldFile?.archive.archive ?? newFile?.archive.archive;
+    if (archiveId === undefined) {
+      return {};
+    }
+
+    // Load the complete archive with parent-child structure
+    const oldResult = oldFile
+      ? await decoder.loadDataWithChildren(Context.oldCacheProvider, archiveId)
       : undefined;
+    const newResult = newFile
+      ? await decoder.loadDataWithChildren(Context.newCacheProvider, archiveId)
+      : undefined;
+
+    const oldEntry = oldResult?.parent;
+    const newEntry = newResult?.parent;
 
     if (oldEntry) {
       oldEntry.gameVal = await GameVal.nameFor(
@@ -232,40 +250,20 @@ export function createWidgetCompareFunction<T extends DecodableWithGameVal, ID>(
       );
     }
 
-    const newEntry = newFile
-      ? decoder.decode(
-          new Reader(newFile.file.data, {
-            era: "osrs",
-            indexRevision: newFile.index.revision,
-          }),
-          ((newFile.archive.archive << 16) + newFile.file.id) as ID
-        )
-      : undefined;
-
     if (newEntry) {
-      console.log("New widget archive: ", newFile.archive.archive);
       newEntry.gameVal = await GameVal.nameFor(
         Context.newCacheProvider,
         newEntry
       );
     }
 
-    // Filter out child widgets - only include parent widgets (parentId === -1)
-    const isOldParent =
-      oldEntry &&
-      "parentId" in oldEntry &&
-      (oldEntry as unknown as Widget).parentId === -1;
-    const isNewParent =
-      newEntry &&
-      "parentId" in newEntry &&
-      (newEntry as unknown as Widget).parentId === -1;
+    console.log(
+      `Old result: ${JSON.stringify(oldEntry)} oldFile: ${oldFile?.file?.id}`
+    );
+    console.log(
+      `New result: ${JSON.stringify(newEntry)} newFile: ${newFile.file.id}`
+    );
 
-    // Only process if at least one of the entries is a parent widget
-    if (!isOldParent && !isNewParent) {
-      return {};
-    }
-
-    console.log(`widget gameVal: ${oldEntry?.gameVal ?? newEntry?.gameVal}`);
     return getFileDifferences(oldEntry, newEntry);
   };
 }
@@ -275,7 +273,7 @@ export function createWidgetCompareFunction<T extends DecodableWithGameVal, ID>(
  * @param oldEntry The old file
  * @param newEntry The new file
  */
-export const getChangedResult = <T extends PerFileLoadable>(
+export const getChangedResult = <T extends Loadable>(
   oldEntry: T,
   newEntry: T
 ) => {
@@ -360,7 +358,7 @@ export const getChangedResult = <T extends PerFileLoadable>(
  * @param entry The file
  * @returns A generated Result
  */
-export const getFileResult = <T extends PerFileLoadable>(entry: T) => {
+export const getFileResult = <T extends Loadable>(entry: T) => {
   const result: Result = {};
   Object.keys(entry).forEach((key) => {
     const newEntryValue = entry[key as keyof T] as ResultValue;
@@ -378,7 +376,7 @@ export const getFileResult = <T extends PerFileLoadable>(entry: T) => {
  * @param newEntry The new file data
  * @returns {FileDifferences}
  */
-export const getFileDifferences = <T extends PerFileLoadable>(
+export const getFileDifferences = <T extends Loadable>(
   oldEntry: T,
   newEntry: T
 ): FileDifferences => {
