@@ -64,6 +64,7 @@ export type TextureID = NewType<number, "TextureID">;
 export type UnderlayID = NewType<number, "UnderlayID">;
 export type VarbitID = NewType<number, "VarbitID">;
 export type VarPID = NewType<number, "VarPID">;
+export type WidgetID = NewType<number, "WidgetID">;
 
 export type HSL = AliasType<number, "HSL">;
 export type RGB = AliasType<number, "RGB">;
@@ -278,5 +279,6 @@ export enum GameValType {
   DBTables = 10,
   Jingles = 11,
   Sprites = 12,
-  Interfaces = 13,
+  LegacyWidget = 13,
+  Widget = 14,
 }

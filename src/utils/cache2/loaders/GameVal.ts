@@ -31,11 +31,11 @@ export class GameVal extends Loadable {
 
   public static async nameFor(
     cache: CacheProvider | Promise<CacheProvider>,
-    obj: { id: number }
+    obj: { archiveId?: number; id: number }
   ): Promise<string | undefined> {
     const clazz = obj?.constructor;
     if (clazz && "gameval" in clazz) {
-      const gv = await this.load(cache, clazz.gameval, obj.id);
+      const gv = await this.load(cache, clazz.gameval, obj.archiveId ?? obj.id);
       return gv?.name;
     }
     return undefined;

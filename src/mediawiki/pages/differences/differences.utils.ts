@@ -105,7 +105,9 @@ export const formatEntryIdentifier = (
         : [new MediaWikiText(formatEntryValue(identifier, value))];
     case "name":
       return [
-        value ? new MediaWikiLink(stripHtmlTags(value as string)) : new MediaWikiText(""),
+        value
+          ? new MediaWikiLink(stripHtmlTags(value as string))
+          : new MediaWikiText(""),
       ];
     default:
       return [new MediaWikiText(formatEntryValue(identifier, value))];
@@ -379,22 +381,24 @@ export const buildResultTable = (
   type: Difference
 ): MediaWikiContent[] => {
   const differenceName = resultNameMap[type];
-  const tableFields = indexFeatures.fields.map((field) => field.toString());
+  const tableFields = indexFeatures.fields
+    .map((field) => field.toString())
+    .filter((field) => !!field);
   const fields = [...indexFeatures.identifiers, ...tableFields];
   const content: MediaWikiContent[] = [];
 
   const rows: MediaWikiTableRow[] =
     results?.length > 0
       ? results.map((entry) => {
-          const identifierCells = indexFeatures.identifiers.map(
-            (identifier) => ({
+          const identifierCells = indexFeatures.identifiers
+            .filter((identifier) => !!identifier)
+            .map((identifier) => ({
               content: formatEntryIdentifier(
                 identifier,
                 entry[identifier],
                 indexFeatures.urls
               ),
-            })
-          );
+            }));
           return {
             cells: [
               ...identifierCells,
@@ -431,10 +435,12 @@ export const buildResultTable = (
         {
           header: true,
           minimal: true,
-          cells: fields.map((field, index) => ({
-            content: [new MediaWikiText(field)],
-            options: index == 0 ? { style: "width: 15em" } : undefined,
-          })),
+          cells: fields
+            .filter((field) => !!field)
+            .map((field, index) => ({
+              content: [new MediaWikiText(field)],
+              options: index == 0 ? { style: "width: 15em" } : undefined,
+            })),
         },
         ...rows,
       ],
