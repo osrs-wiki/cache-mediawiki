@@ -3,7 +3,7 @@ import { Item } from "@/utils/cache2";
 
 export type CluePageBuilderProps = {
   answers?: ClueAnswer[];
-  challenge?: ClueChallenge;
+  challenges?: ClueChallenge[];
   clue: string;
   emotes?: number[];
   id: string;

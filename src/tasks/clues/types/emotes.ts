@@ -1,7 +1,7 @@
 import {
   ITEM_PARAM_ID,
   getAnswer,
-  getChallenge,
+  getChallenges,
   getRequirements,
   getTblRegions,
   getTier,
@@ -51,7 +51,7 @@ const generateEmotePages = async (
         answers: await getAnswer(cache, values[3], "emote"),
         emotes: values[4].map((val) => val as number),
         requirements: await getRequirements(cache, values[10]),
-        challenge: await getChallenge(cache, values[9]?.[0]),
+        challenges: await getChallenges(cache, values[9]),
         tblRegions: getTblRegions(values[11]),
         wieldedItems: await getWieldedItems(cache, values[6]),
         itemName,
