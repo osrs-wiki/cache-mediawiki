@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.9",
-    "@changesets/cli": "^2.29.2",
+    "@changesets/cli": "^2.29.6",
     "@types/diff": "^7.0.2",
     "@types/jest": "^28.1.7",
     "@types/node": "^22.15.3",
