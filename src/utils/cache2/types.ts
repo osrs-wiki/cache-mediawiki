@@ -78,7 +78,40 @@ export type AnimRestartMode = NewType<number, "AnimRestartMode">;
 export type AmbientSoundCurve = NewType<number, "AmbientSoundCurve">;
 export type AnimMayaID = NewType<number, "AnimMayaID">;
 
+// Region coordinates and IDs
+export type RegionID = NewType<number, "RegionID">;
+export type RegionX = NewType<number, "RegionX">;
+export type RegionY = NewType<number, "RegionY">;
+export type WorldX = NewType<number, "WorldX">;
+export type WorldY = NewType<number, "WorldY">;
+export type TileHeight = NewType<number, "TileHeight">;
+
+// Location/Object placement
+export type LocationID = NewType<number, "LocationID">;
+export type LocationType = NewType<number, "LocationType">;
+export type LocationOrientation = NewType<number, "LocationOrientation">;
+
+// Tile data
+export type OverlayID = NewType<number, "OverlayID">;
+export type OverlayPath = NewType<number, "OverlayPath">;
+export type OverlayRotation = NewType<number, "OverlayRotation">;
+export type TileSettings = NewType<number, "TileSettings">;
+
 export class Params extends Map<ParamID, string | number> {}
+
+// Position utilities
+export namespace Position {
+  export function pack(x: number, y: number, z: number): number {
+    return (z << 28) | ((x & 16383) << 14) | (y & 16383);
+  }
+
+  export function unpack(packed: number): [x: number, y: number, z: number] {
+    const z = (packed >> 28) & 3;
+    const x = (packed >> 14) & 16383;
+    const y = packed & 16383;
+    return [x, y, z];
+  }
+}
 
 export type KitOrItem = { kit: KitID } | { item: ItemID } | undefined;
 

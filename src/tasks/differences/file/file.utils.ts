@@ -46,8 +46,10 @@ import {
   VarPlayer,
   VarPID,
   Widget,
+  Region,
+  RegionID,
 } from "@/utils/cache2";
-import { Loadable } from "@/utils/cache2/Loadable";
+import { Loadable, PerArchiveLoadable } from "@/utils/cache2/Loadable";
 
 /**
  * A map of index and archive types to decoding functions.
@@ -76,6 +78,7 @@ export const indexMap: {
     ),
   },
   [IndexType.Interfaces]: createArchiveParentCompareFunction<Widget>(Widget),
+  [IndexType.Maps]: createArchiveCompareFunction<Region, RegionID>(Region),
   [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
 };
 
@@ -165,7 +168,7 @@ export function createSimpleCompareFunction<T, ID>(decoder: {
  * @returns A CompareFn that can be used for archive-based comparisons (like sprites)
  */
 export function createArchiveCompareFunction<
-  T extends DecodableWithGameVal,
+  T extends DecodableWithGameVal | PerArchiveLoadable,
   ID
 >(decoder: Decoder<T, ID>): CompareFn {
   return async ({ oldFile, newFile }) => {
@@ -179,7 +182,7 @@ export function createArchiveCompareFunction<
         )
       : undefined;
 
-    if (oldEntry) {
+    if (oldEntry && "gameVal" in oldEntry) {
       oldEntry.gameVal = await GameVal.nameFor(
         Context.oldCacheProvider,
         oldEntry
@@ -196,7 +199,7 @@ export function createArchiveCompareFunction<
         )
       : undefined;
 
-    if (newEntry) {
+    if (newEntry && "gameVal" in newEntry) {
       newEntry.gameVal = await GameVal.nameFor(
         Context.newCacheProvider,
         newEntry
@@ -383,3 +386,42 @@ export const getFileDifferences = <T extends Loadable>(
 
   return results;
 };
+
+/**
+ * Creates a compare function for region data that handles both map and location archives.
+ * Regions work differently than other cache entries as they combine data from multiple archives.
+ */
+export function createRegionCompareFunction(): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const results: FileDifferences = {};
+
+    const archiveId =
+      oldFile?.archive.archive || newFile?.archive.archive || -1;
+
+    const oldData = oldFile?.file.data;
+    const newData = newFile?.file.data;
+
+    if (oldData && newData) {
+      // Both files exist - compare binary data for now
+      const isSame = Buffer.compare(oldData, newData) === 0;
+      if (!isSame) {
+        results.changed = {
+          [`archive_${archiveId}`]: {
+            oldValue: `Binary data (${oldData.length} bytes)`,
+            newValue: `Binary data (${newData.length} bytes)`,
+          },
+        };
+      }
+    } else if (oldData && !newData) {
+      results.removed = {
+        [`archive_${archiveId}`]: `Binary data (${oldData.length} bytes)`,
+      };
+    } else if (!oldData && newData) {
+      results.added = {
+        [`archive_${archiveId}`]: `Binary data (${newData.length} bytes)`,
+      };
+    }
+
+    return results;
+  };
+}
