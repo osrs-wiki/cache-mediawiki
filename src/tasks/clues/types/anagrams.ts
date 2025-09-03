@@ -1,7 +1,7 @@
 import {
   ITEM_PARAM_ID,
   getAnswer,
-  getChallenge,
+  getChallenges,
   getRequirements,
   getTblRegions,
   getTier,
@@ -49,7 +49,7 @@ const generateAnagramPages = async (
         clue,
         requirements: await getRequirements(cache, values[6]),
         answers: await getAnswer(cache, values[3]),
-        challenges: await getChallenge(cache, values[4]),
+        challenges: await getChallenges(cache, values[4]),
         tblRegions: getTblRegions(values[5]),
         itemName,
         item,

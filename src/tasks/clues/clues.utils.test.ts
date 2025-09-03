@@ -1,5 +1,5 @@
 // Import the function we want to test directly without mocking modules
-import { getChallenge } from "./clues.utils";
+import { getChallenges } from "./clues.utils";
 
 import type { CacheProvider } from "@/utils/cache2";
 
@@ -10,19 +10,19 @@ describe("clues utils", () => {
     mockCache = Promise.resolve({} as CacheProvider);
   });
 
-  describe("getChallenge", () => {
+  describe("getChallenges", () => {
     // Test the types and public interface
     it("should be imported successfully", async () => {
-      expect(typeof getChallenge).toBe("function");
+      expect(typeof getChallenges).toBe("function");
     });
 
     it("should return empty array when no challengeIds provided", async () => {
-      const result = await getChallenge(mockCache, []);
+      const result = await getChallenges(mockCache, []);
       expect(result).toEqual([]);
     });
 
     it("should return empty array when challengeIds is undefined", async () => {
-      const result = await getChallenge(mockCache, undefined);
+      const result = await getChallenges(mockCache, undefined);
       expect(result).toEqual([]);
     });
   });

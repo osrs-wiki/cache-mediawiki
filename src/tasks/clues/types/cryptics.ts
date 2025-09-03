@@ -1,7 +1,7 @@
 import {
   ITEM_PARAM_ID,
   getAnswer,
-  getChallenge,
+  getChallenges,
   getRequirements,
   getTblRegions,
   getTier,
@@ -51,7 +51,7 @@ const generateCrypticPages = async (
           clue,
           answers: await getAnswer(cache, values[3]),
           requirements: await getRequirements(cache, values[4]),
-          challenges: await getChallenge(cache, values[5]),
+          challenges: await getChallenges(cache, values[5]),
           tblRegions: getTblRegions(values[10]),
           itemName,
           item,

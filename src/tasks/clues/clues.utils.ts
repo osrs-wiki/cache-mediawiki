@@ -117,7 +117,7 @@ export const getAnswer = async (
   return [];
 };
 
-export const getChallenge = async (
+export const getChallenges = async (
   cache: Promise<CacheProvider>,
   challengeIds?: (string | number | bigint)[]
 ): Promise<ClueChallenge[]> => {
