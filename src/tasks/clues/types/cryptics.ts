@@ -51,7 +51,7 @@ const generateCrypticPages = async (
           clue,
           answers: await getAnswer(cache, values[3]),
           requirements: await getRequirements(cache, values[4]),
-          challenge: await getChallenge(cache, values[5]?.[0]),
+          challenges: await getChallenge(cache, values[5]),
           tblRegions: getTblRegions(values[10]),
           itemName,
           item,

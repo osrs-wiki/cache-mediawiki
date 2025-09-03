@@ -119,31 +119,41 @@ export const getAnswer = async (
 
 export const getChallenge = async (
   cache: Promise<CacheProvider>,
-  challengeId?: string | number | bigint
-): Promise<ClueChallenge> => {
-  let challenge;
-  let challengeAnswer;
-  if (challengeId) {
-    const challengeRow = await DBRow.load(cache, challengeId);
-    if (challengeRow.table === 25) {
-      // Question & answer
-      challenge = `Question: ''${challengeRow.values[0][0] as string}''`;
-      challengeAnswer = `Answer: '''${challengeRow.values[0][1] as number}'''`;
-    } else if (challengeRow.table === 26) {
-      // Puzzle/light box
-      challenge = challengeRow.values[0][0];
-    } else if (challengeRow.table === 27) {
-      // Kill an npc
-      //challenge = challengeRow.values[0][0];
-      const npc = await getNpc(cache, challengeRow.values[1][0] as number);
-      if (npc) {
-        challengeAnswer = `Kill ${vowel(npc.name)} [[${npc.name}]].`;
+  challengeIds?: (string | number | bigint)[]
+): Promise<ClueChallenge[]> => {
+  if (!challengeIds || challengeIds.length === 0) {
+    return [];
+  }
+
+  const challengePromises = challengeIds.map(async (challengeId) => {
+    let challenge;
+    let challengeAnswer;
+    if (challengeId) {
+      const challengeRow = await DBRow.load(cache, challengeId);
+      if (challengeRow.table === 25) {
+        // Question & answer
+        challenge = `Question: ''${challengeRow.values[0][0] as string}''`;
+        challengeAnswer = `Answer: '''${challengeRow.values[0][1] as number}'''`;
+      } else if (challengeRow.table === 26) {
+        // Puzzle/light box
+        challenge = challengeRow.values[0][0];
+      } else if (challengeRow.table === 27) {
+        // Kill an npc
+        //challenge = challengeRow.values[0][0];
+        const npc = await getNpc(cache, challengeRow.values[1][0] as number);
+        if (npc) {
+          challengeAnswer = `Kill ${vowel(npc.name)} [[${npc.name}]].`;
+        }
       }
     }
-  }
-  if (challenge || challengeAnswer) {
-    return { task: challenge as string, answer: challengeAnswer as string };
-  }
+    if (challenge || challengeAnswer) {
+      return { task: challenge as string, answer: challengeAnswer as string };
+    }
+    return null;
+  });
+
+  const challenges = await Promise.all(challengePromises);
+  return challenges.filter((challenge): challenge is ClueChallenge => challenge !== null);
 };
 
 export const getRequirements = async (

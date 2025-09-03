@@ -47,7 +47,7 @@ const generateCipherPages = async (
         tier,
         clue,
         answers: await getAnswer(cache, values[3]),
-        challenge: await getChallenge(cache, values[4]?.[0]),
+        challenges: await getChallenge(cache, values[4]),
         tblRegions: getTblRegions(values[6]),
         itemName,
         item,
