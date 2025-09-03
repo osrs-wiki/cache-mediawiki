@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.7.0
+
+### Minor Changes
+
+- f109ba5: Add support for multiple clue challenges
+
 ## 1.6.0
 
 ### Minor Changes
