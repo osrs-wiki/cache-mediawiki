@@ -5,7 +5,7 @@ import { MusicTrack } from "@/types/music";
 // Mock Context module
 jest.mock("@/context", () => ({
   default: {
-    updateDate: "2024-09-25",
+    updateDate: "2024-09-25T00:00:00.000Z",
     update: "Varlamore: The Rising Darkness is OUT NOW",
   },
 }));
