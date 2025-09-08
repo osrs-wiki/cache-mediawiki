@@ -19,7 +19,9 @@ import {
  * Based on RuneLite's LocationsLoader.
  */
 export class LocationsDefinition extends PerArchiveLoadable {
-  public static readonly INDEX_TYPE = IndexType.Maps;
+  public static readonly index = IndexType.Maps;
+  public static readonly gameval = "locationsdefinition";
+  public readonly gameval = "locationsdefinition";
 
   private readonly regionX: RegionX;
   private readonly regionY: RegionY;
@@ -29,6 +31,10 @@ export class LocationsDefinition extends PerArchiveLoadable {
     super();
     this.regionX = regionX;
     this.regionY = regionY;
+  }
+
+  public get id(): number {
+    return (this.regionX << 8) | this.regionY;
   }
 
   public getRegionX(): RegionX {
@@ -109,6 +115,6 @@ export class LocationsDefinition extends PerArchiveLoadable {
   }
 
   public getType(): IndexType {
-    return LocationsDefinition.INDEX_TYPE;
+    return LocationsDefinition.index;
   }
 }

@@ -99,20 +99,6 @@ export type TileSettings = NewType<number, "TileSettings">;
 
 export class Params extends Map<ParamID, string | number> {}
 
-// Position utilities
-export namespace Position {
-  export function pack(x: number, y: number, z: number): number {
-    return (z << 28) | ((x & 16383) << 14) | (y & 16383);
-  }
-
-  export function unpack(packed: number): [x: number, y: number, z: number] {
-    const z = (packed >> 28) & 3;
-    const x = (packed >> 14) & 16383;
-    const y = packed & 16383;
-    return [x, y, z];
-  }
-}
-
 export type KitOrItem = { kit: KitID } | { item: ItemID } | undefined;
 
 function makeByID<T extends number>(): (

@@ -11,6 +11,7 @@ export class MapDefinition extends PerArchiveLoadable {
   public static readonly Z = 4;
 
   public static readonly index = IndexType.Maps;
+  public static readonly gameval: undefined = undefined;
 
   public regionX: RegionX;
   public regionY: RegionY;
@@ -33,6 +34,12 @@ export class MapDefinition extends PerArchiveLoadable {
       }
     }
   }
+
+  public get id(): number {
+    return (this.regionX << 8) | this.regionY;
+  }
+
+  public readonly gameVal: undefined = undefined;
 
   public getTiles(): Tile[][][] {
     return this.tiles;

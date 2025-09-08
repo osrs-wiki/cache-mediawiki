@@ -11,13 +11,18 @@ import { RegionX, RegionY, IndexType, RegionID } from "../types";
  * Based on RuneLite's Region class.
  */
 export class Region extends PerArchiveLoadable {
-  public static readonly INDEX_TYPE = IndexType.Maps;
+  public static readonly index = IndexType.Maps;
+  public static readonly gameval = "region";
+  public readonly gameval = "region";
 
   private readonly regionId: RegionID;
   private readonly regionX: RegionX;
   private readonly regionY: RegionY;
   private readonly mapDefinition: MapDefinition;
   private readonly locationsDefinition: LocationsDefinition;
+
+  // Mutable gameVal for differences task
+  public gameVal?: string;
 
   constructor(
     regionX: RegionX,
@@ -37,8 +42,6 @@ export class Region extends PerArchiveLoadable {
   public get id(): number {
     return this.regionId;
   }
-
-  public readonly gameVal: undefined = undefined;
 
   public getRegionId(): RegionID {
     return this.regionId;
@@ -167,6 +170,6 @@ export class Region extends PerArchiveLoadable {
   }
 
   public getType(): IndexType {
-    return Region.INDEX_TYPE;
+    return Region.index;
   }
 }

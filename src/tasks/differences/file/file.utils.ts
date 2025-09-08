@@ -46,10 +46,11 @@ import {
   VarPlayer,
   VarPID,
   Widget,
-  Region,
-  RegionID,
 } from "@/utils/cache2";
 import { Loadable, PerArchiveLoadable } from "@/utils/cache2/Loadable";
+import { Region } from "@/utils/cache2/loaders/Region";
+import { RegionMapper } from "@/utils/cache2/loaders/RegionMapper";
+import { RegionX, RegionY } from "@/utils/cache2/types";
 
 /**
  * A map of index and archive types to decoding functions.
@@ -78,7 +79,7 @@ export const indexMap: {
     ),
   },
   [IndexType.Interfaces]: createArchiveParentCompareFunction<Widget>(Widget),
-  [IndexType.Maps]: createArchiveCompareFunction<Region, RegionID>(Region),
+  [IndexType.Maps]: createRegionCompareFunction(),
   [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
 };
 
@@ -388,8 +389,29 @@ export const getFileDifferences = <T extends Loadable>(
 };
 
 /**
+ * Helper function to load a Region from map and location data.
+ * Handles XTEA decryption for location data when needed.
+ */
+async function loadRegionFromFiles(
+  regionX: RegionX,
+  regionY: RegionY,
+  cacheProvider: unknown,
+  locationData?: Uint8Array,
+  mapData?: Uint8Array
+): Promise<Region> {
+  // Convert Uint8Array to Buffer if needed
+  const mapBuffer = mapData ? Buffer.from(mapData) : undefined;
+  const locationBuffer = locationData ? Buffer.from(locationData) : undefined;
+
+  // For now, create a simple Region using the create method
+  // This will need to be updated based on the actual Region.create implementation
+  return Region.create(regionX, regionY, mapBuffer, locationBuffer);
+}
+
+/**
  * Creates a compare function for region data that handles both map and location archives.
- * Regions work differently than other cache entries as they combine data from multiple archives.
+ * Regions work differently than other cache entries as they combine data from multiple archives
+ * and require RegionMapper to resolve archive IDs to coordinates.
  */
 export function createRegionCompareFunction(): CompareFn {
   return async ({ oldFile, newFile }) => {
@@ -398,30 +420,107 @@ export function createRegionCompareFunction(): CompareFn {
     const archiveId =
       oldFile?.archive.archive || newFile?.archive.archive || -1;
 
-    const oldData = oldFile?.file.data;
-    const newData = newFile?.file.data;
+    // Use RegionMapper to get region coordinates from archive ID
+    const regionInfo = await RegionMapper.getRegionFromArchiveId(archiveId);
+    if (!regionInfo) {
+      // Archive ID doesn't correspond to a valid region, treat as generic file
+      const oldData = oldFile?.file.data;
+      const newData = newFile?.file.data;
 
-    if (oldData && newData) {
-      // Both files exist - compare binary data for now
-      const isSame = Buffer.compare(oldData, newData) === 0;
-      if (!isSame) {
-        results.changed = {
-          [`archive_${archiveId}`]: {
-            oldValue: `Binary data (${oldData.length} bytes)`,
-            newValue: `Binary data (${newData.length} bytes)`,
-          },
+      if (oldData && newData) {
+        const isSame = Buffer.compare(oldData, newData) === 0;
+        if (!isSame) {
+          results.changed = {
+            [`archive_${archiveId}`]: {
+              oldValue: `Binary data (${oldData.length} bytes)`,
+              newValue: `Binary data (${newData.length} bytes)`,
+            },
+          };
+        }
+      } else if (oldData && !newData) {
+        results.removed = {
+          [`archive_${archiveId}`]: `Binary data (${oldData.length} bytes)`,
+        };
+      } else if (!oldData && newData) {
+        results.added = {
+          [`archive_${archiveId}`]: `Binary data (${newData.length} bytes)`,
         };
       }
-    } else if (oldData && !newData) {
-      results.removed = {
-        [`archive_${archiveId}`]: `Binary data (${oldData.length} bytes)`,
-      };
-    } else if (!oldData && newData) {
-      results.added = {
-        [`archive_${archiveId}`]: `Binary data (${newData.length} bytes)`,
-      };
+
+      return results;
     }
 
-    return results;
+    const { regionX, regionY, type } = regionInfo;
+
+    try {
+      // Load the old region data
+      const oldRegion = oldFile
+        ? await loadRegionFromFiles(
+            regionX,
+            regionY,
+            Context.oldCacheProvider,
+            type === "locations" ? oldFile.file.data : undefined,
+            type === "map" ? oldFile.file.data : undefined
+          )
+        : undefined;
+
+      // Load the new region data
+      const newRegion = newFile
+        ? await loadRegionFromFiles(
+            regionX,
+            regionY,
+            Context.newCacheProvider,
+            type === "locations" ? newFile.file.data : undefined,
+            type === "map" ? newFile.file.data : undefined
+          )
+        : undefined;
+
+      // Set GameVal names for both regions
+      if (oldRegion) {
+        oldRegion.gameVal = await GameVal.nameFor(
+          Context.oldCacheProvider,
+          oldRegion
+        );
+      }
+
+      if (newRegion) {
+        newRegion.gameVal = await GameVal.nameFor(
+          Context.newCacheProvider,
+          newRegion
+        );
+      }
+
+      return getFileDifferences(oldRegion, newRegion);
+    } catch (error) {
+      console.warn(
+        `Error processing region ${regionX},${regionY} from archive ${archiveId}:`,
+        error
+      );
+      // Fall back to binary comparison
+      const oldData = oldFile?.file.data;
+      const newData = newFile?.file.data;
+
+      if (oldData && newData) {
+        const isSame = Buffer.compare(oldData, newData) === 0;
+        if (!isSame) {
+          results.changed = {
+            [`region_${regionX}_${regionY}_error`]: {
+              oldValue: `Binary data (${oldData.length} bytes)`,
+              newValue: `Binary data (${newData.length} bytes)`,
+            },
+          };
+        }
+      } else if (oldData && !newData) {
+        results.removed = {
+          [`region_${regionX}_${regionY}_error`]: `Binary data (${oldData.length} bytes)`,
+        };
+      } else if (!oldData && newData) {
+        results.added = {
+          [`region_${regionX}_${regionY}_error`]: `Binary data (${newData.length} bytes)`,
+        };
+      }
+
+      return results;
+    }
   };
 }
