@@ -1,5 +1,12 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.7.1
+
+### Patch Changes
+
+- a0439f1: Fix widget diffs
+- a0439f1: Fix gamevals for dbrows, varbits, and varps.
+
 ## 1.7.0
 
 ### Minor Changes
