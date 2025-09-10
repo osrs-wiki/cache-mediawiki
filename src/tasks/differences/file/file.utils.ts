@@ -60,8 +60,8 @@ export const indexMap: {
       Animation
     ),
     [ConfigType.Area]: createSimpleCompareFunction<Area, AreaID>(Area),
-    [ConfigType.DbRow]: createSimpleCompareFunction<DBRow, DBRowID>(DBRow),
-    [ConfigType.Enum]: createCompareFunction<Enum, EnumID>(Enum),
+    [ConfigType.DbRow]: createCompareFunction<DBRow, DBRowID>(DBRow),
+    [ConfigType.Enum]: createSimpleCompareFunction<Enum, EnumID>(Enum),
     [ConfigType.Item]: createCompareFunction<Item, ItemID>(Item),
     [ConfigType.Npc]: createCompareFunction<NPC, NPCID>(NPC),
     [ConfigType.Object]: createCompareFunction<Obj, ObjID>(Obj),
@@ -70,10 +70,8 @@ export const indexMap: {
       SpotAnim
     ),
     [ConfigType.Struct]: createSimpleCompareFunction<Struct, StructID>(Struct),
-    [ConfigType.VarBit]: createSimpleCompareFunction<Varbit, VarbitID>(Varbit),
-    [ConfigType.VarPlayer]: createSimpleCompareFunction<VarPlayer, VarPID>(
-      VarPlayer
-    ),
+    [ConfigType.VarBit]: createCompareFunction<Varbit, VarbitID>(Varbit),
+    [ConfigType.VarPlayer]: createCompareFunction<VarPlayer, VarPID>(VarPlayer),
   },
   [IndexType.Interfaces]: createArchiveParentCompareFunction<Widget>(Widget),
   [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
@@ -217,15 +215,6 @@ export function createArchiveParentCompareFunction<
   T extends DecodableWithGameVal
 >(decoder: ParentArchiveDecoder<T>): CompareFn {
   return async ({ oldFile, newFile }) => {
-    // We only process one file per archive (typically file 0, the parent)
-    // Skip processing if this isn't the first file in the archive
-    if (
-      (oldFile && oldFile.file.id !== 0) ||
-      (newFile && newFile.file.id !== 0)
-    ) {
-      return {};
-    }
-
     const archiveId = oldFile?.archive.archive ?? newFile?.archive.archive;
     if (archiveId === undefined) {
       return {};
