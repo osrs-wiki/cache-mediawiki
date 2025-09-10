@@ -12,7 +12,7 @@ import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import _ from "underscore";
 
 import { CluePageBuilderProps } from "./clue.types";
-import { formatAnswers, getDirections } from "./clue.utils";
+import { formatAnswers, getDirections, formatChallenges } from "./clue.utils";
 
 import Context from "@/context";
 import { vowel } from "@/utils/string";
@@ -20,7 +20,7 @@ import { vowel } from "@/utils/string";
 const cluePageBuilder = ({
   answers,
   clue,
-  challenge,
+  challenges,
   emotes,
   id,
   item,
@@ -73,11 +73,7 @@ const cluePageBuilder = ({
         (requirements?.length > 0
           ? `\nRequires: ${requirements.join(", ")}`
           : "") +
-        (challenge
-          ? `\nThe clue has an additional challenge:${
-              challenge.task ? "\n\n" + challenge.task : ""
-            }${challenge.answer ? "\n\n" : ""}${challenge.answer}`
-          : ""),
+        formatChallenges(challenges),
       _.flatten(
         answers.map((answer) => answer.worldLocs),
         1

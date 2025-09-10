@@ -1,4 +1,4 @@
-import { getDirections, formatMapAnswer, formatAnswers } from "./clue.utils";
+import { getDirections, formatMapAnswer, formatAnswers, formatChallenges } from "./clue.utils";
 
 describe("clue utils", () => {
   describe("getDirections", () => {
@@ -119,6 +119,55 @@ describe("clue utils", () => {
         },
       ]);
       expect(result).toBe("some random text");
+    });
+  });
+
+  describe("formatChallenges", () => {
+    it("should return empty string when no challenges provided", () => {
+      const result = formatChallenges();
+      expect(result).toBe("");
+    });
+
+    it("should return empty string when empty challenges array provided", () => {
+      const result = formatChallenges([]);
+      expect(result).toBe("");
+    });
+
+    it("should format a single challenge with task and answer", () => {
+      const result = formatChallenges([
+        { task: "Question: ''What is 2 + 2?''", answer: "Answer: '''4'''" }
+      ]);
+      expect(result).toBe("\nThe clue has an additional challenge:\n\nQuestion: ''What is 2 + 2?''\n\nAnswer: '''4'''");
+    });
+
+    it("should format a single challenge with only task", () => {
+      const result = formatChallenges([
+        { task: "Complete the puzzle box", answer: "" }
+      ]);
+      expect(result).toBe("\nThe clue has an additional challenge:\n\nComplete the puzzle box");
+    });
+
+    it("should format a single challenge with only answer", () => {
+      const result = formatChallenges([
+        { task: "", answer: "Kill a goblin." }
+      ]);
+      expect(result).toBe("\nThe clue has an additional challenge:\n\nKill a goblin.");
+    });
+
+    it("should format multiple challenges", () => {
+      const result = formatChallenges([
+        { task: "Question: ''What is 2 + 2?''", answer: "Answer: '''4'''" },
+        { task: "Complete the puzzle box", answer: "" },
+        { task: "", answer: "Kill a goblin." }
+      ]);
+      expect(result).toBe("\nThe clue will have one of the following challenges:\n- Question: ''What is 2 + 2?''\n  Answer: '''4'''\n- Complete the puzzle box\n- Kill a goblin.");
+    });
+
+    it("should handle challenge with empty task and answer", () => {
+      const result = formatChallenges([
+        { task: "", answer: "" }
+      ]);
+      expect(result).toBe("\nThe clue has an additional challenge:");
     });
   });
 });

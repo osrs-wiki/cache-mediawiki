@@ -1,4 +1,4 @@
-import { ClueAnswer } from "@/types/clue";
+import { ClueAnswer, ClueChallenge } from "@/types/clue";
 import { lowerCaseFirst } from "@/utils/string";
 
 export const getDirections = (
@@ -91,4 +91,21 @@ const emotes: { [key: number]: string } = {
 
 export const getEmotePage = (emote: number): string => {
   return emotes[emote];
+};
+
+export const formatChallenges = (challenges?: ClueChallenge[]): string => {
+  if (!challenges || challenges.length === 0) {
+    return "";
+  }
+
+  if (challenges.length === 1) {
+    return `\nThe clue has an additional challenge:${
+      challenges[0].task ? "\n\n" + challenges[0].task : ""
+    }${challenges[0].answer ? "\n\n" : ""}${challenges[0].answer || ""}`;
+  } else {
+    return `\nThe clue will have one of the following challenges:${challenges.map(
+      (challenge) => 
+        `\n- ${challenge.task ? challenge.task + (challenge.answer ? "\n  " + challenge.answer : "") : challenge.answer || ""}`
+    ).join("")}`;
+  }
 };
