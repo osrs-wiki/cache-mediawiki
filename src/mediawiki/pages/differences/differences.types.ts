@@ -59,8 +59,8 @@ export const indexNameMap: {
   [IndexType.Configs]: {
     [ConfigType.Sequence]: {
       name: "Animations",
-      identifiers: ["id"],
-      fields: ["gameVal", "debugName", "leftHandItem", "rightHandItem"],
+      identifiers: ["id", "gameVal"],
+      fields: ["debugName", "leftHandItem", "rightHandItem"],
       urls: {},
     },
     [ConfigType.Area]: {
@@ -71,8 +71,8 @@ export const indexNameMap: {
     },
     [ConfigType.Object]: {
       name: "Objects",
-      identifiers: ["name", "id"],
-      fields: ["gameVal", "actions"],
+      identifiers: ["name", "id", "gameVal"],
+      fields: ["actions"],
       urls: {
         chisel: "https://chisel.weirdgloop.org/moid/object_id.html#",
         abex: "https://abextm.github.io/cache2/#/viewer/obj/",
@@ -90,8 +90,8 @@ export const indexNameMap: {
     },
     [ConfigType.Npc]: {
       name: "Npcs",
-      identifiers: ["name", "id"],
-      fields: ["gameVal", "combatLevel", "actions"],
+      identifiers: ["name", "id", "gameVal"],
+      fields: ["combatLevel", "actions"],
       urls: {
         chisel: "https://chisel.weirdgloop.org/moid/npc_id.html#",
         abex: "https://abextm.github.io/cache2/#/viewer/npc/",
@@ -99,9 +99,8 @@ export const indexNameMap: {
     },
     [ConfigType.Item]: {
       name: "Items",
-      identifiers: ["name", "id"],
+      identifiers: ["name", "id", "gameVal"],
       fields: [
-        "gameVal",
         "examine",
         "isMembers",
         "isGrandExchangable",
@@ -139,30 +138,30 @@ export const indexNameMap: {
     },
     [ConfigType.DbRow]: {
       name: "Database Rows",
-      identifiers: ["id"],
-      fields: ["gameVal", "table", "values"],
+      identifiers: ["id", "gameVal"],
+      fields: ["table", "values"],
       urls: {
         abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
       },
     },
     [ConfigType.SpotAnim]: {
       name: "Spot Anims",
-      identifiers: ["id"],
-      fields: ["gameVal", "modelId", "animationId"],
+      identifiers: ["id", "gameVal"],
+      fields: ["modelId", "animationId"],
       urls: {},
     },
     [ConfigType.VarBit]: {
       name: "Varbits",
-      identifiers: ["id"],
-      fields: ["gameVal", "index", "leastSignificantBit", "mostSignificantBit"],
+      identifiers: ["id", "gameVal"],
+      fields: ["index", "leastSignificantBit", "mostSignificantBit"],
       urls: {
         chisel: "https://chisel.weirdgloop.org/varbs/display?varbit=",
       },
     },
     [ConfigType.VarPlayer]: {
       name: "VarPlayers",
-      identifiers: ["id"],
-      fields: ["gameVal"],
+      identifiers: ["id", "gameVal"],
+      fields: [],
       urls: {
         chisel: "https://chisel.weirdgloop.org/varbs/display?varplayer=",
       },
@@ -170,7 +169,7 @@ export const indexNameMap: {
   },
   [IndexType.Interfaces]: {
     name: "Widgets",
-    identifiers: ["gameVal"],
+    identifiers: ["id", "gameVal"],
     fields: [
       "parentId",
       "type",
@@ -186,8 +185,8 @@ export const indexNameMap: {
   },
   [IndexType.Sprites]: {
     name: "Sprites",
-    identifiers: ["id"],
-    fields: ["gameVal", "width", "height"],
+    identifiers: ["id", "gameVal"],
+    fields: ["width", "height"],
     urls: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
