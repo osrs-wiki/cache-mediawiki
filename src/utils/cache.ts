@@ -17,36 +17,47 @@ export const getCacheProviderLocal = async (
 };
 
 export const getCacheProviderDiskLocal = async (version: string) => {
-  return new DiskCacheProvider({
-    async getFile(name) {
-      const ab = (await readFile(`./data/diskcache/${version}/${name}`)).buffer;
-      return new Uint8Array(ab);
+  return new DiskCacheProvider(
+    {
+      async getFile(name) {
+        const ab = (await readFile(`./data/diskcache/${version}/${name}`))
+          .buffer;
+        return new Uint8Array(ab);
+      },
     },
-  });
+    version
+  );
 };
 
 export const getCacheProviderFlatLocal = async (version: string) => {
-  return new FlatCacheProvider({
-    async getFile(name) {
-      const ab = (await readFile(`./data/flatcache/${version}/${name}`)).buffer;
-      return new Uint8Array(ab);
+  return new FlatCacheProvider(
+    {
+      async getFile(name) {
+        const ab = (await readFile(`./data/flatcache/${version}/${name}`))
+          .buffer;
+        return new Uint8Array(ab);
+      },
     },
-  });
+    version
+  );
 };
 
 export const getCacheProviderGithub = async (version = "master") => {
-  return new FlatCacheProvider({
-    async getFile(name) {
-      const req = await fetch(
-        `https://raw.githubusercontent.com/abextm/osrs-cache/${version}/${name}`
-      );
-      if (!req.ok) {
-        return;
-      }
-      const ab = await req.arrayBuffer();
-      return new Uint8Array(ab);
+  return new FlatCacheProvider(
+    {
+      async getFile(name) {
+        const req = await fetch(
+          `https://raw.githubusercontent.com/abextm/osrs-cache/${version}/${name}`
+        );
+        if (!req.ok) {
+          return;
+        }
+        const ab = await req.arrayBuffer();
+        return new Uint8Array(ab);
+      },
     },
-  });
+    version
+  );
 };
 
 export const getEnumMap = async (

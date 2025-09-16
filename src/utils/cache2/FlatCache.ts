@@ -8,6 +8,9 @@ import {
   hash,
   IndexData,
 } from "./Cache";
+import { XTEAKeyManager } from "./xtea";
+
+import { loadXTEAKeysForCache } from "@/utils/openrs2";
 
 export class FlatIndexData implements IndexData {
   public revision!: number;
@@ -96,8 +99,13 @@ export class FlatIndexData implements IndexData {
 
 export class FlatCacheProvider implements CacheProvider {
   private indexes: Map<number, Promise<FlatIndexData | undefined>> = new Map();
+  private xteaKeyManager?: XTEAKeyManager;
+  private xteaLoadPromise?: Promise<XTEAKeyManager>;
 
-  constructor(private disk: FileProvider) {}
+  constructor(
+    private disk: FileProvider,
+    private readonly cacheVersion?: string
+  ) {}
 
   public async getIndex(index: number): Promise<FlatIndexData | undefined> {
     let idxp = this.indexes.get(index);
@@ -142,5 +150,33 @@ export class FlatCacheProvider implements CacheProvider {
       era: "osrs",
       indexRevision: (await this.getIndex(index))?.revision ?? 0,
     };
+  }
+
+  public async getKeys(): Promise<XTEAKeyManager> {
+    // Return cached manager if available
+    if (this.xteaKeyManager) {
+      return this.xteaKeyManager;
+    }
+
+    // Return existing promise if loading is in progress
+    if (this.xteaLoadPromise) {
+      return this.xteaLoadPromise;
+    }
+
+    // If no cache version specified, return empty manager
+    if (!this.cacheVersion) {
+      this.xteaKeyManager = new XTEAKeyManager();
+      return this.xteaKeyManager;
+    }
+
+    // Start loading XTEA keys
+    this.xteaLoadPromise = loadXTEAKeysForCache(this.cacheVersion).then(
+      (manager) => {
+        this.xteaKeyManager = manager;
+        return manager;
+      }
+    );
+
+    return this.xteaLoadPromise;
   }
 }

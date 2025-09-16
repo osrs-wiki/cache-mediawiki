@@ -1,8 +1,4 @@
-import {
-  FlatCacheProvider,
-  DiskCacheProvider,
-  XTEAKeyManager,
-} from "@/utils/cache2";
+import { FlatCacheProvider, DiskCacheProvider } from "@/utils/cache2";
 
 type CacheMediaWikiContext = {
   beta?: boolean;
@@ -15,7 +11,6 @@ type CacheMediaWikiContext = {
   oldCache?: string;
   oldCacheProvider?: FlatCacheProvider | DiskCacheProvider;
   newCacheProvider?: FlatCacheProvider | DiskCacheProvider;
-  xteaKeyManager?: XTEAKeyManager;
   newContentTemplate?: string;
   renders?: string;
   update?: string;
