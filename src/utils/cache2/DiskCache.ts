@@ -36,6 +36,27 @@ export class DiskCacheProvider implements CacheProvider {
   ) {
     this.data = disk.getFile("main_file_cache.dat2");
     this.getPointers(255);
+    
+    // Start loading XTEA keys immediately if cache version is provided
+    if (this.cacheVersion) {
+      this.initializeXTEAKeys();
+    }
+  }
+
+  private initializeXTEAKeys(): void {
+    if (!this.cacheVersion) {
+      return;
+    }
+    
+    this.xteaLoadPromise = loadXTEAKeysForCache(this.cacheVersion).then(manager => {
+      this.xteaKeyManager = manager;
+      return manager;
+    }).catch(error => {
+      console.warn(`Failed to load XTEA keys for cache ${this.cacheVersion}: ${error.message}`);
+      // Return empty manager on failure
+      this.xteaKeyManager = new XTEAKeyManager();
+      return this.xteaKeyManager;
+    });
   }
 
   public async getIndex(index: number): Promise<DiskIndexData | undefined> {
@@ -273,19 +294,7 @@ export class DiskCacheProvider implements CacheProvider {
     }
 
     // If no cache version specified, return empty manager
-    if (!this.cacheVersion) {
-      this.xteaKeyManager = new XTEAKeyManager();
-      return this.xteaKeyManager;
-    }
-
-    // Start loading XTEA keys
-    this.xteaLoadPromise = loadXTEAKeysForCache(this.cacheVersion).then(
-      (manager) => {
-        this.xteaKeyManager = manager;
-        return manager;
-      }
-    );
-
-    return this.xteaLoadPromise;
+    this.xteaKeyManager = new XTEAKeyManager();
+    return this.xteaKeyManager;
   }
 }
