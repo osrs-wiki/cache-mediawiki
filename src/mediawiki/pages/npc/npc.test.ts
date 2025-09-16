@@ -15,8 +15,6 @@ jest.mock("@/utils/cache2", () => ({
 describe("npcPageBuilder", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Reset context - Use UTC date format to avoid timezone issues
-    Context.updateDate = "2024-03-19T00:00:00.000Z";
     Context.update = "Varlamore: Part One";
     Context.beta = false;
     Context.examines = {
