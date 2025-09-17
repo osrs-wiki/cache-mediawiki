@@ -41,10 +41,6 @@ export class MapDefinition extends PerArchiveLoadable {
 
   public readonly gameVal: undefined = undefined;
 
-  public getTiles(): Tile[][][] {
-    return this.tiles;
-  }
-
   public static decode(
     r: Reader,
     regionX: RegionX,

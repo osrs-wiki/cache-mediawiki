@@ -23,9 +23,9 @@ export class LocationsDefinition extends PerArchiveLoadable {
   public static readonly gameval = "locationsdefinition";
   public readonly gameval = "locationsdefinition";
 
-  private readonly regionX: RegionX;
-  private readonly regionY: RegionY;
-  private locations: Location[] = [];
+  public readonly regionX: RegionX;
+  public readonly regionY: RegionY;
+  public locations: Location[] = [];
 
   constructor(regionX: RegionX, regionY: RegionY) {
     super();
@@ -35,18 +35,6 @@ export class LocationsDefinition extends PerArchiveLoadable {
 
   public get id(): number {
     return (this.regionX << 8) | this.regionY;
-  }
-
-  public getRegionX(): RegionX {
-    return this.regionX;
-  }
-
-  public getRegionY(): RegionY {
-    return this.regionY;
-  }
-
-  public getLocations(): Location[] {
-    return this.locations;
   }
 
   /**

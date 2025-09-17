@@ -43,7 +43,8 @@ export class ArchiveFile {
 export class ArchiveData {
   public constructor(
     public readonly index: number,
-    public readonly archive: number
+    public readonly archive: number,
+    public readonly key?: XTEAKey
   ) {}
 
   public compressedData!: Uint8Array;
@@ -54,8 +55,6 @@ export class ArchiveData {
   public decompressedSize!: number;
 
   /**@internal*/ files: Map<number, ArchiveFile> = new Map();
-
-  public key: XTEAKey | undefined;
 
   /**@internal*/ decryptedData: Uint8Array | undefined;
 

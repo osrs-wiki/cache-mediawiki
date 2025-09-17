@@ -8,6 +8,8 @@ import {
   hash,
   IndexData,
 } from "./Cache";
+import { RegionMapper } from "./loaders";
+import { IndexType } from "./types";
 import { XTEAKeyManager } from "./xtea";
 
 import { loadXTEAKeysForCache } from "@/utils/openrs2";
@@ -105,12 +107,7 @@ export class FlatCacheProvider implements CacheProvider {
   constructor(
     private disk: FileProvider,
     private readonly cacheVersion?: string
-  ) {
-    // Start loading XTEA keys immediately if cache version is provided
-    if (this.cacheVersion) {
-      this.initializeXTEAKeys();
-    }
-  }
+  ) {}
 
   private initializeXTEAKeys(): void {
     if (!this.cacheVersion) {
@@ -133,6 +130,10 @@ export class FlatCacheProvider implements CacheProvider {
   }
 
   public async getIndex(index: number): Promise<FlatIndexData | undefined> {
+    if (index === IndexType.Maps) {
+      RegionMapper.initialize();
+      await this.initializeXTEAKeys();
+    }
     let idxp = this.indexes.get(index);
     if (!idxp) {
       this.indexes.set(

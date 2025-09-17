@@ -62,7 +62,7 @@ export class RegionMapper {
    * Pre-compute all possible region archive ID mappings.
    * Private - called automatically when needed via lazy initialization.
    */
-  private static initialize(): void {
+  public static initialize(): void {
     if (this.initialized) {
       return;
     }

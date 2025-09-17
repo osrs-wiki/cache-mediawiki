@@ -15,11 +15,11 @@ export class Region extends PerArchiveLoadable {
   public static readonly gameval = "region";
   public readonly gameval = "region";
 
-  private readonly regionId: RegionID;
-  private readonly regionX: RegionX;
-  private readonly regionY: RegionY;
-  private readonly mapDefinition: MapDefinition;
-  private readonly locationsDefinition: LocationsDefinition;
+  public readonly regionId: RegionID;
+  public readonly regionX: RegionX;
+  public readonly regionY: RegionY;
+  public readonly mapDefinition: MapDefinition;
+  public readonly locationsDefinition: LocationsDefinition;
 
   // Mutable gameVal for differences task
   public gameVal?: string;
@@ -43,32 +43,12 @@ export class Region extends PerArchiveLoadable {
     return this.regionId;
   }
 
-  public getRegionId(): RegionID {
-    return this.regionId;
-  }
-
-  public getRegionX(): RegionX {
-    return this.regionX;
-  }
-
-  public getRegionY(): RegionY {
-    return this.regionY;
-  }
-
-  public getMapDefinition(): MapDefinition {
-    return this.mapDefinition;
-  }
-
-  public getLocationsDefinition(): LocationsDefinition {
-    return this.locationsDefinition;
-  }
-
   public getTiles(): Tile[][][] {
-    return this.mapDefinition.getTiles();
+    return this.mapDefinition.tiles;
   }
 
   public getLocations(): Location[] {
-    return this.locationsDefinition.getLocations();
+    return this.locationsDefinition.locations;
   }
 
   /**

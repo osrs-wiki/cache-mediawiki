@@ -6,7 +6,9 @@ import {
   hash,
   IndexData,
 } from "./Cache";
+import { RegionMapper } from "./loaders";
 import { Reader } from "./Reader";
+import { IndexType } from "./types";
 import { XTEAKeyManager } from "./xtea";
 
 import { loadXTEAKeysForCache } from "@/utils/openrs2";
@@ -36,11 +38,6 @@ export class DiskCacheProvider implements CacheProvider {
   ) {
     this.data = disk.getFile("main_file_cache.dat2");
     this.getPointers(255);
-
-    // Start loading XTEA keys immediately if cache version is provided
-    if (this.cacheVersion) {
-      this.initializeXTEAKeys();
-    }
   }
 
   private initializeXTEAKeys(): void {
@@ -64,6 +61,10 @@ export class DiskCacheProvider implements CacheProvider {
   }
 
   public async getIndex(index: number): Promise<DiskIndexData | undefined> {
+    if (index === IndexType.Maps) {
+      RegionMapper.initialize();
+      await this.initializeXTEAKeys();
+    }
     let id = this.indexData.get(index);
     if (!id) {
       this.indexData.set(
