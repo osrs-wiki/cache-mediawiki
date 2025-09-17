@@ -37,7 +37,7 @@ describe("Cache Provider XTEA Integration", () => {
   describe("DiskCacheProvider", () => {
     it("should start loading XTEA keys in constructor when cache version is provided", () => {
       const cacheVersion = "2025-09-03-rev232";
-      
+
       new DiskCacheProvider(mockFileProvider, cacheVersion);
 
       // XTEA loading should be initiated immediately
@@ -55,7 +55,7 @@ describe("Cache Provider XTEA Integration", () => {
       const provider = new DiskCacheProvider(mockFileProvider, cacheVersion);
 
       // Wait for initialization to complete
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       const keys = await provider.getKeys();
       expect(keys).toBe(mockXTEAManager);
@@ -70,13 +70,15 @@ describe("Cache Provider XTEA Integration", () => {
     });
 
     it("should handle XTEA loading errors gracefully", async () => {
-      (loadXTEAKeysForCache as jest.Mock).mockRejectedValue(new Error("API Error"));
-      
+      (loadXTEAKeysForCache as jest.Mock).mockRejectedValue(
+        new Error("API Error")
+      );
+
       const cacheVersion = "2025-09-03-rev232";
       const provider = new DiskCacheProvider(mockFileProvider, cacheVersion);
 
       // Wait for initialization to complete
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       const keys = await provider.getKeys();
       expect(keys).toBeInstanceOf(XTEAKeyManager);
@@ -89,7 +91,7 @@ describe("Cache Provider XTEA Integration", () => {
   describe("FlatCacheProvider", () => {
     it("should start loading XTEA keys in constructor when cache version is provided", () => {
       const cacheVersion = "2025-09-03-rev232";
-      
+
       new FlatCacheProvider(mockFileProvider, cacheVersion);
 
       // XTEA loading should be initiated immediately
@@ -107,7 +109,7 @@ describe("Cache Provider XTEA Integration", () => {
       const provider = new FlatCacheProvider(mockFileProvider, cacheVersion);
 
       // Wait for initialization to complete
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       const keys = await provider.getKeys();
       expect(keys).toBe(mockXTEAManager);
@@ -122,13 +124,15 @@ describe("Cache Provider XTEA Integration", () => {
     });
 
     it("should handle XTEA loading errors gracefully", async () => {
-      (loadXTEAKeysForCache as jest.Mock).mockRejectedValue(new Error("Network timeout"));
-      
+      (loadXTEAKeysForCache as jest.Mock).mockRejectedValue(
+        new Error("Network timeout")
+      );
+
       const cacheVersion = "2025-09-03-rev232";
       const provider = new FlatCacheProvider(mockFileProvider, cacheVersion);
 
       // Wait for initialization to complete
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
 
       const keys = await provider.getKeys();
       expect(keys).toBeInstanceOf(XTEAKeyManager);

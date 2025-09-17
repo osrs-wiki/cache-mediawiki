@@ -116,16 +116,20 @@ export class FlatCacheProvider implements CacheProvider {
     if (!this.cacheVersion) {
       return;
     }
-    
-    this.xteaLoadPromise = loadXTEAKeysForCache(this.cacheVersion).then(manager => {
-      this.xteaKeyManager = manager;
-      return manager;
-    }).catch(error => {
-      console.warn(`Failed to load XTEA keys for cache ${this.cacheVersion}: ${error.message}`);
-      // Return empty manager on failure
-      this.xteaKeyManager = new XTEAKeyManager();
-      return this.xteaKeyManager;
-    });
+
+    this.xteaLoadPromise = loadXTEAKeysForCache(this.cacheVersion)
+      .then((manager) => {
+        this.xteaKeyManager = manager;
+        return manager;
+      })
+      .catch((error) => {
+        console.warn(
+          `Failed to load XTEA keys for cache ${this.cacheVersion}: ${error.message}`
+        );
+        // Return empty manager on failure
+        this.xteaKeyManager = new XTEAKeyManager();
+        return this.xteaKeyManager;
+      });
   }
 
   public async getIndex(index: number): Promise<FlatIndexData | undefined> {
