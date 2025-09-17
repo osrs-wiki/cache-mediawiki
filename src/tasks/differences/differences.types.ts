@@ -18,6 +18,7 @@ export type DifferencesParams = {
   oldVersion: string;
   method: CacheSource;
   type: CacheFileType;
+  indices?: string;
 };
 
 export type FileContext = {

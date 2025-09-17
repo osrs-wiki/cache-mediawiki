@@ -58,7 +58,7 @@ export const resultNameMap: { [key in Difference]: string } = {
 export const indexNameMap: {
   [key in IndexType]?: { [key: number]: IndexFeatures } | IndexFeatures;
 } = {
-  /*[IndexType.Configs]: {
+  [IndexType.Configs]: {
     [ConfigType.Sequence]: {
       name: "Animations",
       identifiers: ["id", "gameVal"],
@@ -184,14 +184,14 @@ export const indexNameMap: {
     urls: {
       abex: "https://abextm.github.io/cache2/#/viewer/interface/",
     },
-  },*/
+  },
   [IndexType.Maps]: {
     name: "Regions",
     identifiers: ["regionId"],
     fields: ["regionX", "regionY"],
     urls: {},
   },
-  /*[IndexType.Sprites]: {
+  [IndexType.Sprites]: {
     name: "Sprites",
     identifiers: ["id", "gameVal"],
     fields: ["width", "height"],
@@ -199,5 +199,5 @@ export const indexNameMap: {
       chisel: "",
       abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
     },
-  },*/
+  },
 };

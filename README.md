@@ -43,6 +43,9 @@ Global options:
   --newContentTemplate <newContentTemplate>  The template for new content. (default: "New Content")
   -h, --help                           display help for command
 
+differences options:
+  --indices <indices>                  Comma-separated list of index IDs to include in differences (e.g., '2,5,8'). If not provided, all indices are checked.
+
 pages options:
   -t, --type <type>                    The type of page to generate (item, npc, scenery) (choices: "item", "npc", "scenery", default: "item")
   -i, --id <id>                        The ID of the item, NPC, or scenery.

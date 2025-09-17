@@ -15,12 +15,14 @@ import { LazyPromise } from "@/utils/cache2/LazyPromise";
  * Write cache differences to output files.
  * @param oldVersion The old abex cache version (ex: 2024-01-31-rev219)
  * @param newVersion The new abex cache version (ex: 2024-02-07-rev219)
+ * @param indices Optional comma-separated list of index IDs to check (ex: "2,5,8")
  */
 const differencesCache = async ({
   oldVersion,
   newVersion = "master",
   method = "github",
   type = "disk",
+  indices,
 }: DifferencesParams) => {
   Context.oldCacheProvider = await new LazyPromise(() =>
     method === "github"
@@ -34,9 +36,22 @@ const differencesCache = async ({
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};
+
+  // Determine which indices to check
+  const indicesToCheck = indices
+    ? indices.split(",").map((id) => id.trim())
+    : Object.keys(indexNameMap);
+
   await Promise.all(
-    Object.keys(indexNameMap).map(async (indexString) => {
+    indicesToCheck.map(async (indexString) => {
       const index = parseInt(indexString);
+
+      // Skip if index is not in indexNameMap when filtering by specific indices
+      if (indices && !(index in indexNameMap)) {
+        console.log(`Skipping index ${index} - not found in indexNameMap`);
+        return;
+      }
+
       console.log(`Checking index ${index} differences`);
       const oldIndex = await Context.oldCacheProvider.getIndex(index);
       const newIndex = await Context.newCacheProvider.getIndex(index);
