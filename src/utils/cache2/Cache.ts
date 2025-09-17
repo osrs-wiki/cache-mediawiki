@@ -44,7 +44,7 @@ export class ArchiveData {
   public constructor(
     public readonly index: number,
     public readonly archive: number,
-    public readonly key?: XTEAKey
+    public key?: XTEAKey
   ) {}
 
   public compressedData!: Uint8Array;

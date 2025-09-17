@@ -420,7 +420,19 @@ export function createRegionCompareFunction(): CompareFn {
         const isSame = Buffer.compare(oldData, newData) === 0;
         if (!isSame) {
           results.changed = {
-            [`archive_${archiveId}`]: {
+            regionId: {
+              oldValue: archiveId,
+              newValue: archiveId,
+            },
+            regionX: {
+              oldValue: "unknown",
+              newValue: "unknown",
+            },
+            regionY: {
+              oldValue: "unknown",
+              newValue: "unknown",
+            },
+            [`archive_data`]: {
               oldValue: `Binary data (${oldData.length} bytes)`,
               newValue: `Binary data (${newData.length} bytes)`,
             },
@@ -428,11 +440,17 @@ export function createRegionCompareFunction(): CompareFn {
         }
       } else if (oldData && !newData) {
         results.removed = {
-          [`archive_${archiveId}`]: `Binary data (${oldData.length} bytes)`,
+          regionId: archiveId,
+          regionX: "unknown",
+          regionY: "unknown",
+          archive_data: `Binary data (${oldData.length} bytes)`,
         };
       } else if (!oldData && newData) {
         results.added = {
-          [`archive_${archiveId}`]: `Binary data (${newData.length} bytes)`,
+          regionId: archiveId,
+          regionX: "unknown",
+          regionY: "unknown",
+          archive_data: `Binary data (${newData.length} bytes)`,
         };
       }
 
@@ -488,12 +506,25 @@ export function createRegionCompareFunction(): CompareFn {
       // Fall back to binary comparison
       const oldData = oldFile?.file.data;
       const newData = newFile?.file.data;
+      const regionId = (regionX << 8) | regionY;
 
       if (oldData && newData) {
         const isSame = Buffer.compare(oldData, newData) === 0;
         if (!isSame) {
           results.changed = {
-            [`region_${regionX}_${regionY}_error`]: {
+            regionId: {
+              oldValue: regionId,
+              newValue: regionId,
+            },
+            regionX: {
+              oldValue: regionX,
+              newValue: regionX,
+            },
+            regionY: {
+              oldValue: regionY,
+              newValue: regionY,
+            },
+            [`data_error`]: {
               oldValue: `Binary data (${oldData.length} bytes)`,
               newValue: `Binary data (${newData.length} bytes)`,
             },
@@ -501,11 +532,17 @@ export function createRegionCompareFunction(): CompareFn {
         }
       } else if (oldData && !newData) {
         results.removed = {
-          [`region_${regionX}_${regionY}_error`]: `Binary data (${oldData.length} bytes)`,
+          regionId: regionId,
+          regionX: regionX,
+          regionY: regionY,
+          data_error: `Binary data (${oldData.length} bytes)`,
         };
       } else if (!oldData && newData) {
         results.added = {
-          [`region_${regionX}_${regionY}_error`]: `Binary data (${newData.length} bytes)`,
+          regionId: regionId,
+          regionX: regionX,
+          regionY: regionY,
+          data_error: `Binary data (${newData.length} bytes)`,
         };
       }
 

@@ -10,7 +10,7 @@ import {
 } from "./Cache";
 import { RegionMapper } from "./loaders";
 import { IndexType } from "./types";
-import { XTEAKeyManager } from "./xtea";
+import { XTEAKeyManager } from "./xtea/xtea";
 
 import { loadXTEAKeysForCache } from "@/utils/openrs2";
 
@@ -151,7 +151,32 @@ export class FlatCacheProvider implements CacheProvider {
     archive: number
   ): Promise<ArchiveData | undefined> {
     const idx = await this.getIndex(index);
-    return idx?.getArchive(archive);
+    const archiveData = idx?.getArchive(archive);
+
+    // Set XTEA key for Maps index
+    if (archiveData && index === IndexType.Maps) {
+      const xteaManager = await this.getKeys();
+
+      // Convert archive ID to region ID using RegionMapper
+      const regionInfo = RegionMapper.getRegionFromArchiveId(archive);
+      if (regionInfo) {
+        // Use tryDecrypt to find and set the correct XTEA key
+        const decryptionError = xteaManager.tryDecrypt(
+          archiveData,
+          regionInfo.regionId
+        );
+        if (decryptionError) {
+          console.warn(
+            `XTEA decryption failed for archive ${archive} (region ${regionInfo.regionId}):`,
+            decryptionError.message
+          );
+          // Return undefined to indicate the archive cannot be decrypted
+          return undefined;
+        }
+      }
+    }
+
+    return archiveData;
   }
 
   public async getArchives(index: number): Promise<number[] | undefined> {

@@ -9,7 +9,7 @@ import {
 import { RegionMapper } from "./loaders";
 import { Reader } from "./Reader";
 import { IndexType } from "./types";
-import { XTEAKeyManager } from "./xtea";
+import { XTEAKeyManager } from "./xtea/xtea";
 
 import { loadXTEAKeysForCache } from "@/utils/openrs2";
 
@@ -191,6 +191,27 @@ export class DiskCacheProvider implements CacheProvider {
       }
       am.compressedData = d;
     }
+
+    // Set XTEA key for Maps index
+    if (index === IndexType.Maps) {
+      const xteaManager = await this.getKeys();
+
+      // Convert archive ID to region ID using RegionMapper
+      const regionInfo = RegionMapper.getRegionFromArchiveId(archive);
+      if (regionInfo) {
+        // Use tryDecrypt to find and set the correct XTEA key
+        const decryptionError = xteaManager.tryDecrypt(am, regionInfo.regionId);
+        if (decryptionError) {
+          console.warn(
+            `XTEA decryption failed for archive ${archive} (region ${regionInfo.regionId}):`,
+            decryptionError.message
+          );
+          // Return undefined to indicate the archive cannot be decrypted
+          return undefined;
+        }
+      }
+    }
+
     return am;
   }
 

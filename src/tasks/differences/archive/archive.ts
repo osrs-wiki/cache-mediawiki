@@ -55,16 +55,22 @@ const differencesArchive = async ({
   if (addedKeys) {
     await Promise.all(
       addedKeys.map(async (fileKey) => {
-        const newFile = newArchive.getFile(fileKey);
-        console.log(
-          `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
-        );
-        const results = await differencesFile({
-          newFile: { index: newIndex, archive: newArchive, file: newFile },
-        });
-        archiveDifferences[fileKey] = archiveDifferences[fileKey]
-          ? { ...archiveDifferences[fileKey], ...results }
-          : results;
+        try {
+          const newFile = newArchive.getFile(fileKey);
+          console.log(
+            `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
+          );
+          const results = await differencesFile({
+            newFile: { index: newIndex, archive: newArchive, file: newFile },
+          });
+          archiveDifferences[fileKey] = archiveDifferences[fileKey]
+            ? { ...archiveDifferences[fileKey], ...results }
+            : results;
+        } catch (error) {
+          console.error(
+            `Error checking diffs for ${newIndex.id}/${newArchive.archive}/${fileKey} (added file)`
+          );
+        }
       })
     );
   }
