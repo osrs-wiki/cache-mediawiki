@@ -297,18 +297,22 @@ export const buildChangedResultTable = (
             return diffKeys.length > 0
               ? [
                   {
-                    cells: indexFeatures.identifiers.map<MediaWikiTableCell>(
-                      (identifier) => ({
-                        content: formatEntryIdentifier(
-                          identifier,
-                          entry[identifier].newValue,
-                          indexFeatures.urls
-                        ),
-                        options: {
-                          rowspan: diffKeys.length + 1,
-                        },
-                      })
-                    ),
+                    cells: indexFeatures.identifiers
+                      .map<MediaWikiTableCell>((identifier) =>
+                        entry[identifier]
+                          ? {
+                              content: formatEntryIdentifier(
+                                identifier,
+                                entry[identifier].newValue,
+                                indexFeatures.urls
+                              ),
+                              options: {
+                                rowspan: diffKeys.length + 1,
+                              },
+                            }
+                          : undefined
+                      )
+                      .filter((value) => value !== undefined),
                   },
                   ...diffKeys.map<MediaWikiTableRow>((field) =>
                     getFieldDifferencesRow(entry, field)

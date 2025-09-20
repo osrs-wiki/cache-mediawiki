@@ -151,10 +151,12 @@ export class FlatCacheProvider implements CacheProvider {
 
     // Set XTEA key for Maps index
     if (archiveData && index === IndexType.Maps) {
-      const xteaManager = await this.getKeys();
+      const xteaManager = this.getKeys();
 
       // Convert archive ID to region ID using RegionMapper
-      const regionInfo = RegionMapper.getRegionFromArchiveId(archive);
+      const regionInfo = RegionMapper.getRegionFromArchiveId(
+        archiveData.namehash
+      );
       if (regionInfo) {
         // Use tryDecrypt to find and set the correct XTEA key
         console.debug(
@@ -202,15 +204,10 @@ export class FlatCacheProvider implements CacheProvider {
     };
   }
 
-  public async getKeys(): Promise<XTEAKeyManager> {
+  public getKeys(): XTEAKeyManager {
     // Return cached manager if available
     if (this.xteaKeyManager) {
       return this.xteaKeyManager;
-    }
-
-    // Return existing promise if loading is in progress
-    if (this.xteaLoadPromise) {
-      return this.xteaLoadPromise;
     }
 
     // If no cache version specified, return empty manager

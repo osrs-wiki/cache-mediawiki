@@ -31,21 +31,15 @@ const differencesArchive = async ({
   const archiveDifferences: ArchiveDifferences = {};
 
   if (newIndex.id === IndexType.Maps) {
-    const archiveId = newArchive.archive;
-    const regionInfo = RegionMapper.getRegionFromArchiveId(archiveId);
-    if (regionInfo) {
-      console.debug(
-        `Attempting XTEA decryption for archive ${archiveId} (region ${regionInfo.regionId})`
-      );
-      (await Context.newCacheProvider.getKeys()).tryDecrypt(
-        newArchive,
-        regionInfo.regionId
-      );
-      if (oldArchive) {
-        (await Context.oldCacheProvider.getKeys()).tryDecrypt(
-          oldArchive,
-          regionInfo.regionId
-        );
+    const regionInfo = RegionMapper.getRegionFromArchiveId(newArchive.namehash);
+    if (regionInfo && Context.newCacheProvider.getKeys().hasKeys()) {
+      Context.newCacheProvider
+        .getKeys()
+        .tryDecrypt(newArchive, regionInfo.regionId);
+      if (oldArchive && Context.oldCacheProvider.getKeys().hasKeys()) {
+        Context.oldCacheProvider
+          .getKeys()
+          .tryDecrypt(oldArchive, regionInfo.regionId);
       }
     }
   }

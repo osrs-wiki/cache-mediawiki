@@ -12,17 +12,12 @@ import { RegionX, RegionY, IndexType, RegionID } from "../types";
  */
 export class Region extends PerArchiveLoadable {
   public static readonly index = IndexType.Maps;
-  public static readonly gameval = "region";
-  public readonly gameval = "region";
 
   public readonly regionId: RegionID;
   public readonly regionX: RegionX;
   public readonly regionY: RegionY;
   public readonly mapDefinition: MapDefinition;
   public readonly locationsDefinition: LocationsDefinition;
-
-  // Mutable gameVal for differences task
-  public gameVal?: string;
 
   constructor(
     regionX: RegionX,
@@ -38,7 +33,6 @@ export class Region extends PerArchiveLoadable {
     this.locationsDefinition = locationsDefinition;
   }
 
-  // DecodableWithGameVal interface implementation
   public get id(): number {
     return this.regionId;
   }

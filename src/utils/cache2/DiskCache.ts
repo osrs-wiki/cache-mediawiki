@@ -29,8 +29,7 @@ export class DiskCacheProvider implements CacheProvider {
   private indexData: Map<number, Promise<DiskIndexData | undefined>> =
     new Map();
   private pointers: Map<number, Promise<Reader | undefined>> = new Map();
-  private xteaKeyManager?: XTEAKeyManager;
-  private xteaLoadPromise?: Promise<XTEAKeyManager>;
+  private xteaKeyManager?: XTEAKeyManager = new XTEAKeyManager();
 
   public constructor(
     private readonly disk: FileProvider,
@@ -190,10 +189,10 @@ export class DiskCacheProvider implements CacheProvider {
 
     // Set XTEA key for Maps index
     if (index === IndexType.Maps) {
-      const xteaManager = await this.getKeys();
+      const xteaManager = this.getKeys();
 
       // Convert archive ID to region ID using RegionMapper
-      const regionInfo = RegionMapper.getRegionFromArchiveId(archive);
+      const regionInfo = RegionMapper.getRegionFromArchiveId(am.namehash);
       if (regionInfo) {
         // Use tryDecrypt to find and set the correct XTEA key
         const decryptionError = xteaManager.tryDecrypt(am, regionInfo.regionId);
@@ -304,15 +303,10 @@ export class DiskCacheProvider implements CacheProvider {
     };
   }
 
-  public async getKeys(): Promise<XTEAKeyManager> {
+  public getKeys(): XTEAKeyManager {
     // Return cached manager if available
     if (this.xteaKeyManager) {
       return this.xteaKeyManager;
-    }
-
-    // Return existing promise if loading is in progress
-    if (this.xteaLoadPromise) {
-      return this.xteaLoadPromise;
     }
 
     // If no cache version specified, return empty manager

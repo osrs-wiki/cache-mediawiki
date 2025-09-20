@@ -50,7 +50,6 @@ import {
 import { Loadable, PerArchiveLoadable } from "@/utils/cache2/Loadable";
 import { Region } from "@/utils/cache2/loaders/Region";
 import { RegionMapper } from "@/utils/cache2/loaders/RegionMapper";
-import { RegionX, RegionY } from "@/utils/cache2/types";
 
 /**
  * A map of index and archive types to decoding functions.
@@ -388,52 +387,12 @@ export function createRegionCompareFunction(): CompareFn {
 
     const archiveId =
       oldFile?.archive.archive || newFile?.archive.archive || -1;
+    const archiveNameHash =
+      oldFile?.archive.namehash || newFile?.archive.namehash || -1;
 
     // Use RegionMapper to get region coordinates from archive ID
-    const regionInfo = RegionMapper.getRegionFromArchiveId(archiveId);
+    const regionInfo = RegionMapper.getRegionFromArchiveId(archiveNameHash);
     if (!regionInfo) {
-      // Archive ID doesn't correspond to a valid region, treat as generic file
-      const oldData = oldFile?.file.data;
-      const newData = newFile?.file.data;
-
-      if (oldData && newData) {
-        const isSame = Buffer.compare(oldData, newData) === 0;
-        if (!isSame) {
-          results.changed = {
-            regionId: {
-              oldValue: archiveId,
-              newValue: archiveId,
-            },
-            regionX: {
-              oldValue: "unknown",
-              newValue: "unknown",
-            },
-            regionY: {
-              oldValue: "unknown",
-              newValue: "unknown",
-            },
-            [`archive_data`]: {
-              oldValue: `Binary data (${oldData.length} bytes)`,
-              newValue: `Binary data (${newData.length} bytes)`,
-            },
-          };
-        }
-      } else if (oldData && !newData) {
-        results.removed = {
-          regionId: archiveId,
-          regionX: "unknown",
-          regionY: "unknown",
-          archive_data: `Binary data (${oldData.length} bytes)`,
-        };
-      } else if (!oldData && newData) {
-        results.added = {
-          regionId: archiveId,
-          regionX: "unknown",
-          regionY: "unknown",
-          archive_data: `Binary data (${newData.length} bytes)`,
-        };
-      }
-
       return results;
     }
 
@@ -472,49 +431,6 @@ export function createRegionCompareFunction(): CompareFn {
         `Error processing region ${regionX},${regionY} from archive ${archiveId}:`,
         error
       );
-      // Fall back to binary comparison
-      const oldData = oldFile?.file.data;
-      const newData = newFile?.file.data;
-      const regionId = (regionX << 8) | regionY;
-
-      if (oldData && newData) {
-        const isSame = Buffer.compare(oldData, newData) === 0;
-        if (!isSame) {
-          results.changed = {
-            regionId: {
-              oldValue: regionId,
-              newValue: regionId,
-            },
-            regionX: {
-              oldValue: regionX,
-              newValue: regionX,
-            },
-            regionY: {
-              oldValue: regionY,
-              newValue: regionY,
-            },
-            [`data_error`]: {
-              oldValue: `Binary data (${oldData.length} bytes)`,
-              newValue: `Binary data (${newData.length} bytes)`,
-            },
-          };
-        }
-      } else if (oldData && !newData) {
-        results.removed = {
-          regionId: regionId,
-          regionX: regionX,
-          regionY: regionY,
-          data_error: `Binary data (${oldData.length} bytes)`,
-        };
-      } else if (!oldData && newData) {
-        results.added = {
-          regionId: regionId,
-          regionX: regionX,
-          regionY: regionY,
-          data_error: `Binary data (${newData.length} bytes)`,
-        };
-      }
-
       return results;
     }
   };

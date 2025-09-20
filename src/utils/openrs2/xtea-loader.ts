@@ -19,6 +19,7 @@ export const loadXTEAKeysForCache = async (
     }
 
     const keys = await fetchCacheKeys(cacheEntry.id);
+
     const manager = new XTEAKeyManager();
     const keysLoaded = manager.loadKeys(keys);
 

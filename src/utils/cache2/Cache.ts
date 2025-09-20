@@ -14,7 +14,7 @@ export interface CacheProvider {
   ): Promise<ArchiveData | undefined>;
   getArchives(index: number): Promise<number[] | undefined>;
   getVersion(index: number): Promise<CacheVersion>;
-  getKeys?(): Promise<XTEAKeyManager>;
+  getKeys?(): XTEAKeyManager;
 }
 
 export interface FileProvider {
