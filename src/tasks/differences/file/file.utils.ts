@@ -425,7 +425,52 @@ export function createRegionCompareFunction(): CompareFn {
         newRegion = Region.create(regionX, regionY, mapData, locationData);
       }
 
-      return getFileDifferences(oldRegion, newRegion);
+      let contentDifferences: FileDifferences;
+      if (type === "map") {
+        const changedTileCount = oldFile
+          ? newRegion.mapDefinition.getDifferentTileCount(
+              oldRegion?.mapDefinition
+            )
+          : 0;
+        if (changedTileCount > 0) {
+          contentDifferences = {
+            changed: {
+              changedTiles: {
+                oldValue: 0,
+                newValue: changedTileCount,
+              },
+            },
+          };
+        }
+      } else if (type === "locations") {
+        const changedSpawnCount = oldFile
+          ? newRegion.locationsDefinition.getDifferentLocationCount(
+              oldRegion?.locationsDefinition
+            )
+          : 0;
+        if (changedSpawnCount > 0) {
+          contentDifferences = {
+            changed: {
+              changedSpawns: {
+                oldValue: 0,
+                newValue: changedSpawnCount,
+              },
+            },
+          };
+        }
+      }
+
+      const regionDifferences = getFileDifferences(
+        oldFile ? oldRegion : undefined,
+        newFile ? newRegion : undefined
+      );
+      return {
+        ...regionDifferences,
+        changed: {
+          ...regionDifferences.changed,
+          ...(contentDifferences ? contentDifferences?.changed : {}),
+        },
+      };
     } catch (error) {
       console.warn(
         `Error processing region ${regionX},${regionY} from archive ${archiveId}:`,

@@ -338,7 +338,7 @@ export const buildChangedResultTable = (
                 new MediaWikiText(`${differenceName} ${indexFeatures.name}`),
               ],
               options: {
-                colspan: 2 + indexFeatures.identifiers.length,
+                colspan: indexFeatures.identifiers.length + 3,
               },
             },
           ],

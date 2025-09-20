@@ -105,4 +105,69 @@ export class LocationsDefinition extends PerArchiveLoadable {
   public getType(): IndexType {
     return LocationsDefinition.index;
   }
+
+  /**
+   * Compares this LocationsDefinition with another and returns the number of locations that are different.
+   * This includes locations that are added, removed, or modified between the two definitions.
+   *
+   * @param other The other LocationsDefinition to compare against
+   * @returns The number of locations that are not identical between the two LocationsDefinitions
+   */
+  public getDifferentLocationCount(other: LocationsDefinition): number {
+    if (!other) {
+      // If comparing against null/undefined, all locations are different
+      return this.locations.length;
+    }
+
+    if (this.regionX !== other.regionX || this.regionY !== other.regionY) {
+      // If comparing different regions, all locations are different
+      return Math.max(this.locations.length, other.locations.length);
+    }
+
+    // Create maps for efficient lookup
+    const thisLocationMap = new Map<string, Location>();
+    const otherLocationMap = new Map<string, Location>();
+
+    // Build lookup maps using a composite key (id + position + type + orientation)
+    for (const location of this.locations) {
+      const key = this.getLocationKey(location);
+      thisLocationMap.set(key, location);
+    }
+
+    for (const location of other.locations) {
+      const key = this.getLocationKey(location);
+      otherLocationMap.set(key, location);
+    }
+
+    // Count differences
+    let differentCount = 0;
+
+    // Check for locations in this definition that are not in the other or are different
+    for (const [key, thisLocation] of thisLocationMap) {
+      const otherLocation = otherLocationMap.get(key);
+      if (!otherLocation || !thisLocation.equals(otherLocation)) {
+        differentCount++;
+      }
+    }
+
+    // Check for locations in the other definition that are not in this one
+    for (const [key] of otherLocationMap) {
+      if (!thisLocationMap.has(key)) {
+        differentCount++;
+      }
+    }
+
+    return differentCount;
+  }
+
+  /**
+   * Creates a unique key for a location based on its properties.
+   *
+   * @param location The location to create a key for
+   * @returns A string key that uniquely identifies the location
+   */
+  private getLocationKey(location: Location): string {
+    const pos = location.getPosition();
+    return `${pos.getX()}_${pos.getY()}_${pos.getZ()}`;
+  }
 }

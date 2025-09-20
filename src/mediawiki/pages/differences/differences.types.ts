@@ -187,7 +187,7 @@ export const indexNameMap: {
   },
   [IndexType.Maps]: {
     name: "Regions",
-    identifiers: ["regionId"],
+    identifiers: ["id", "name"],
     fields: ["regionX", "regionY"],
     urls: {},
   },

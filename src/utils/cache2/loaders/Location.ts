@@ -23,4 +23,23 @@ export class Location {
   public getPosition(): Position {
     return this.position;
   }
+
+  /**
+   * Compares this location with another to determine if they are identical.
+   *
+   * @param other The other location to compare against
+   * @returns true if the locations are identical, false otherwise
+   */
+  public equals(other: Location): boolean {
+    if (!other) {
+      return false;
+    }
+
+    return (
+      this.id === other.id &&
+      this.type === other.type &&
+      this.orientation === other.orientation &&
+      this.position.equals(other.position)
+    );
+  }
 }

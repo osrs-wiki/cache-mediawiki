@@ -41,4 +41,26 @@ export class Tile {
   public getUnderlayId(): UnderlayID {
     return this.underlayId;
   }
+
+  /**
+   * Compares this tile with another to determine if they are identical.
+   *
+   * @param other The other tile to compare against
+   * @returns true if the tiles are identical, false otherwise
+   */
+  public equals(other: Tile): boolean {
+    if (!other) {
+      return false;
+    }
+
+    return (
+      this.height === other.height &&
+      this.attrOpcode === other.attrOpcode &&
+      this.settings === other.settings &&
+      this.overlayId === other.overlayId &&
+      this.overlayPath === other.overlayPath &&
+      this.overlayRotation === other.overlayRotation &&
+      this.underlayId === other.underlayId
+    );
+  }
 }

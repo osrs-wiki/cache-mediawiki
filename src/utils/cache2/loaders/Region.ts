@@ -13,11 +13,11 @@ import { RegionX, RegionY, IndexType, RegionID } from "../types";
 export class Region extends PerArchiveLoadable {
   public static readonly index = IndexType.Maps;
 
-  public readonly regionId: RegionID;
-  public readonly regionX: RegionX;
-  public readonly regionY: RegionY;
-  public readonly mapDefinition: MapDefinition;
-  public readonly locationsDefinition: LocationsDefinition;
+  public regionId: RegionID;
+  public regionX: RegionX;
+  public regionY: RegionY;
+  public mapDefinition: MapDefinition;
+  public locationsDefinition: LocationsDefinition;
 
   constructor(
     regionX: RegionX,
@@ -35,6 +35,10 @@ export class Region extends PerArchiveLoadable {
 
   public get id(): number {
     return this.regionId;
+  }
+
+  public get name(): string {
+    return `${this.regionX}_${this.regionY}`;
   }
 
   public getTiles(): Tile[][][] {

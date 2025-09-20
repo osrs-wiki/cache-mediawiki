@@ -79,4 +79,41 @@ export class MapDefinition extends PerArchiveLoadable {
 
     return mapDef;
   }
+
+  /**
+   * Compares this MapDefinition with another and returns the number of tiles that are different.
+   * Two tiles are considered different if any of their properties (height, overlayId, underlayId,
+   * overlayPath, overlayRotation, settings, or attrOpcode) don't match.
+   *
+   * @param other The other MapDefinition to compare against
+   * @returns The number of tiles that are not identical between the two MapDefinitions
+   */
+  public getDifferentTileCount(other: MapDefinition): number {
+    if (!other) {
+      // If comparing against null/undefined, all tiles are different
+      return MapDefinition.X * MapDefinition.Y * MapDefinition.Z;
+    }
+
+    if (this.regionX !== other.regionX || this.regionY !== other.regionY) {
+      // If comparing different regions, all tiles are different
+      return MapDefinition.X * MapDefinition.Y * MapDefinition.Z;
+    }
+
+    let differentCount = 0;
+
+    for (let z = 0; z < MapDefinition.Z; z++) {
+      for (let x = 0; x < MapDefinition.X; x++) {
+        for (let y = 0; y < MapDefinition.Y; y++) {
+          const thisTile = this.tiles[z][x][y];
+          const otherTile = other.tiles[z][x][y];
+
+          if (!thisTile.equals(otherTile)) {
+            differentCount++;
+          }
+        }
+      }
+    }
+
+    return differentCount;
+  }
 }

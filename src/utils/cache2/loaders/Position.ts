@@ -30,4 +30,18 @@ export class Position {
   public getZ(): number {
     return this.z;
   }
+
+  /**
+   * Compares this position with another to determine if they are identical.
+   *
+   * @param other The other position to compare against
+   * @returns true if the positions are identical, false otherwise
+   */
+  public equals(other: Position): boolean {
+    if (!other) {
+      return false;
+    }
+
+    return this.x === other.x && this.y === other.y && this.z === other.z;
+  }
 }
