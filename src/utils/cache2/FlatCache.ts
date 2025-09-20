@@ -9,7 +9,7 @@ import {
   IndexData,
 } from "./Cache";
 import { RegionMapper } from "./loaders";
-import { IndexType } from "./types";
+import { IndexType, XTEAKey } from "./types";
 import { XTEAKeyManager } from "./xtea/xtea";
 
 import { loadXTEAKeysForCache } from "@/utils/openrs2";
@@ -109,24 +109,20 @@ export class FlatCacheProvider implements CacheProvider {
     private readonly cacheVersion?: string
   ) {}
 
-  private initializeXTEAKeys(): void {
+  private async initializeXTEAKeys(): Promise<void> {
     if (!this.cacheVersion) {
       return;
     }
 
-    this.xteaLoadPromise = loadXTEAKeysForCache(this.cacheVersion)
-      .then((manager) => {
-        this.xteaKeyManager = manager;
-        return manager;
-      })
-      .catch((error) => {
-        console.warn(
-          `Failed to load XTEA keys for cache ${this.cacheVersion}: ${error.message}`
-        );
-        // Return empty manager on failure
-        this.xteaKeyManager = new XTEAKeyManager();
-        return this.xteaKeyManager;
-      });
+    try {
+      this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion);
+    } catch (error) {
+      console.warn(
+        `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
+        error
+      );
+      this.xteaKeyManager = new XTEAKeyManager();
+    }
   }
 
   public async getIndex(index: number): Promise<FlatIndexData | undefined> {
@@ -161,6 +157,9 @@ export class FlatCacheProvider implements CacheProvider {
       const regionInfo = RegionMapper.getRegionFromArchiveId(archive);
       if (regionInfo) {
         // Use tryDecrypt to find and set the correct XTEA key
+        console.debug(
+          `Attempting XTEA decryption for archive ${archive} (region ${regionInfo.regionId})`
+        );
         const decryptionError = xteaManager.tryDecrypt(
           archiveData,
           regionInfo.regionId

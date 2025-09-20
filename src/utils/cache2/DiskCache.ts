@@ -40,24 +40,20 @@ export class DiskCacheProvider implements CacheProvider {
     this.getPointers(255);
   }
 
-  private initializeXTEAKeys(): void {
+  private async initializeXTEAKeys(): Promise<void> {
     if (!this.cacheVersion) {
       return;
     }
 
-    this.xteaLoadPromise = loadXTEAKeysForCache(this.cacheVersion)
-      .then((manager) => {
-        this.xteaKeyManager = manager;
-        return manager;
-      })
-      .catch((error) => {
-        console.warn(
-          `Failed to load XTEA keys for cache ${this.cacheVersion}: ${error.message}`
-        );
-        // Return empty manager on failure
-        this.xteaKeyManager = new XTEAKeyManager();
-        return this.xteaKeyManager;
-      });
+    try {
+      this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion);
+    } catch (error) {
+      console.warn(
+        `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
+        error
+      );
+      this.xteaKeyManager = new XTEAKeyManager();
+    }
   }
 
   public async getIndex(index: number): Promise<DiskIndexData | undefined> {

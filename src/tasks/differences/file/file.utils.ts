@@ -378,26 +378,6 @@ export const getFileDifferences = <T extends Loadable>(
 };
 
 /**
- * Helper function to load a Region from map and location data.
- * Handles XTEA decryption for location data when needed.
- */
-async function loadRegionFromFiles(
-  regionX: RegionX,
-  regionY: RegionY,
-  cacheProvider: unknown,
-  locationData?: Uint8Array,
-  mapData?: Uint8Array
-): Promise<Region> {
-  // Convert Uint8Array to Buffer if needed
-  const mapBuffer = mapData ? Buffer.from(mapData) : undefined;
-  const locationBuffer = locationData ? Buffer.from(locationData) : undefined;
-
-  // For now, create a simple Region using the create method
-  // This will need to be updated based on the actual Region.create implementation
-  return Region.create(regionX, regionY, mapBuffer, locationBuffer);
-}
-
-/**
  * Creates a compare function for region data that handles both map and location archives.
  * Regions work differently than other cache entries as they combine data from multiple archives
  * and require RegionMapper to resolve archive IDs to coordinates.
@@ -410,7 +390,7 @@ export function createRegionCompareFunction(): CompareFn {
       oldFile?.archive.archive || newFile?.archive.archive || -1;
 
     // Use RegionMapper to get region coordinates from archive ID
-    const regionInfo = await RegionMapper.getRegionFromArchiveId(archiveId);
+    const regionInfo = RegionMapper.getRegionFromArchiveId(archiveId);
     if (!regionInfo) {
       // Archive ID doesn't correspond to a valid region, treat as generic file
       const oldData = oldFile?.file.data;
@@ -460,41 +440,30 @@ export function createRegionCompareFunction(): CompareFn {
     const { regionX, regionY, type } = regionInfo;
 
     try {
-      // Load the old region data
-      const oldRegion = oldFile
-        ? await loadRegionFromFiles(
-            regionX,
-            regionY,
-            Context.oldCacheProvider,
-            type === "locations" ? oldFile.file.data : undefined,
-            type === "map" ? oldFile.file.data : undefined
-          )
-        : undefined;
+      // Create Region objects from the file data
+      // Note: Region.create expects both map and location data, but we might only have one type
+      // We'll create regions with the available data and undefined for missing data
+      let oldRegion: Region | undefined = undefined;
+      let newRegion: Region | undefined = undefined;
 
-      // Load the new region data
-      const newRegion = newFile
-        ? await loadRegionFromFiles(
-            regionX,
-            regionY,
-            Context.newCacheProvider,
-            type === "locations" ? newFile.file.data : undefined,
-            type === "map" ? newFile.file.data : undefined
-          )
-        : undefined;
-
-      // Set GameVal names for both regions
-      if (oldRegion) {
-        oldRegion.gameVal = await GameVal.nameFor(
-          Context.oldCacheProvider,
-          oldRegion
-        );
+      if (oldFile) {
+        // Determine which data to pass based on the file type
+        // Convert Uint8Array to Buffer as required by Region.create
+        const mapData =
+          type === "map" ? Buffer.from(oldFile.file.data) : undefined;
+        const locationData =
+          type === "locations" ? Buffer.from(oldFile.file.data) : undefined;
+        oldRegion = Region.create(regionX, regionY, mapData, locationData);
       }
 
-      if (newRegion) {
-        newRegion.gameVal = await GameVal.nameFor(
-          Context.newCacheProvider,
-          newRegion
-        );
+      if (newFile) {
+        // Determine which data to pass based on the file type
+        // Convert Uint8Array to Buffer as required by Region.create
+        const mapData =
+          type === "map" ? Buffer.from(newFile.file.data) : undefined;
+        const locationData =
+          type === "locations" ? Buffer.from(newFile.file.data) : undefined;
+        newRegion = Region.create(regionX, regionY, mapData, locationData);
       }
 
       return getFileDifferences(oldRegion, newRegion);

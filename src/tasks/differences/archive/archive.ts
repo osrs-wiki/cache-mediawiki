@@ -1,8 +1,15 @@
+import Context from "../../../context";
 import { ArchiveDifferences } from "../differences.types";
 import { isEqualBytes } from "../differences.utils";
 import { differencesFile } from "../file";
 
-import { ArchiveData, DiskIndexData, FlatIndexData } from "@/utils/cache2";
+import {
+  ArchiveData,
+  DiskIndexData,
+  FlatIndexData,
+  IndexType,
+  RegionMapper,
+} from "@/utils/cache2";
 
 /**
  * Retrieve the differences between two archives and their files
@@ -23,6 +30,26 @@ const differencesArchive = async ({
   const oldKeys = oldArchive ? Array.from(oldArchive.files.keys()) : [];
   const archiveDifferences: ArchiveDifferences = {};
 
+  if (newIndex.id === IndexType.Maps) {
+    const archiveId = newArchive.archive;
+    const regionInfo = RegionMapper.getRegionFromArchiveId(archiveId);
+    if (regionInfo) {
+      console.debug(
+        `Attempting XTEA decryption for archive ${archiveId} (region ${regionInfo.regionId})`
+      );
+      (await Context.newCacheProvider.getKeys()).tryDecrypt(
+        newArchive,
+        regionInfo.regionId
+      );
+      if (oldArchive) {
+        (await Context.oldCacheProvider.getKeys()).tryDecrypt(
+          oldArchive,
+          regionInfo.regionId
+        );
+      }
+    }
+  }
+
   if (newArchive && oldArchive) {
     const sharedKeys = newKeys.filter((key) => oldArchive.files.has(key));
     await Promise.all(
@@ -42,7 +69,8 @@ const differencesArchive = async ({
           }
         } catch (error) {
           console.error(
-            `Error checking diffs for ${oldIndex.id}/${oldArchive.archive}/${fileKey}`
+            `Error checking diffs for ${oldIndex.id}/${oldArchive.archive}/${fileKey}`,
+            error
           );
         }
       })
@@ -68,7 +96,8 @@ const differencesArchive = async ({
             : results;
         } catch (error) {
           console.error(
-            `Error checking diffs for ${newIndex.id}/${newArchive.archive}/${fileKey} (added file)`
+            `Error checking diffs for ${newIndex.id}/${newArchive.archive}/${fileKey} (added file):`,
+            error
           );
         }
       })
