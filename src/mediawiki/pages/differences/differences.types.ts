@@ -20,17 +20,45 @@ import {
   Widget,
 } from "@/utils/cache2";
 import { Loadable } from "@/utils/cache2/Loadable";
+import { regionToWorldMapURL } from "@/utils/url-generation";
 
 export type IndexFeature<T extends Loadable, Name> = {
   name: Name;
   identifiers: (keyof T)[];
   fields: (keyof T)[];
-  urls?: IndexURLs;
+  urls?: IndexFieldURLs;
 };
 
-export type IndexURLType = "abex" | "chisel";
+export type IndexURLType = "abex" | "chisel" | "world";
 
-export type IndexURLs = { [key in IndexURLType]?: string };
+// URL Generator function signature
+export type URLGeneratorFunction = (
+  value: unknown,
+  context?: URLGeneratorContext
+) => string;
+
+// Context provided to URL generator functions
+export type URLGeneratorContext = {
+  fieldName: string;
+  entityType: string;
+  allFields?: Record<string, unknown>;
+};
+
+// Template URL with placeholder substitution
+export type TemplateURL = string; // Contains {fieldName} placeholders
+
+// URL definition for a specific provider
+export type URLDefinition = TemplateURL | URLGeneratorFunction;
+
+// Field-specific URL mapping
+export type FieldURLs = {
+  [provider in IndexURLType]?: URLDefinition;
+};
+
+// New field-specific URL structure
+export type IndexFieldURLs = {
+  [fieldName: string]: FieldURLs;
+};
 
 export type IndexFeatures =
   | IndexFeature<Animation, "Animations">
@@ -76,8 +104,10 @@ export const indexNameMap: {
       identifiers: ["name", "id", "gameVal"],
       fields: ["actions"],
       urls: {
-        chisel: "https://chisel.weirdgloop.org/moid/object_id.html#",
-        abex: "https://abextm.github.io/cache2/#/viewer/obj/",
+        id: {
+          chisel: "https://chisel.weirdgloop.org/moid/object_id.html#{id}",
+          abex: "https://abextm.github.io/cache2/#/viewer/obj/{id}",
+        },
       },
     },
     [ConfigType.Enum]: {
@@ -85,9 +115,11 @@ export const indexNameMap: {
       identifiers: ["id"],
       fields: ["defaultValue", "map"],
       urls: {
-        chisel:
-          "https://chisel.weirdgloop.org/structs/index.html?type=enums&id=",
-        abex: "https://abextm.github.io/cache2/#/viewer/enum/",
+        id: {
+          chisel:
+            "https://chisel.weirdgloop.org/structs/index.html?type=enums&id={id}",
+          abex: "https://abextm.github.io/cache2/#/viewer/enum/{id}",
+        },
       },
     },
     [ConfigType.Npc]: {
@@ -95,8 +127,10 @@ export const indexNameMap: {
       identifiers: ["name", "id", "gameVal"],
       fields: ["combatLevel", "actions"],
       urls: {
-        chisel: "https://chisel.weirdgloop.org/moid/npc_id.html#",
-        abex: "https://abextm.github.io/cache2/#/viewer/npc/",
+        id: {
+          chisel: "https://chisel.weirdgloop.org/moid/npc_id.html#{id}",
+          abex: "https://abextm.github.io/cache2/#/viewer/npc/{id}",
+        },
       },
     },
     [ConfigType.Item]: {
@@ -114,8 +148,10 @@ export const indexNameMap: {
         "weight",
       ],
       urls: {
-        chisel: "https://chisel.weirdgloop.org/moid/item_id.html#",
-        abex: "https://abextm.github.io/cache2/#/viewer/item/",
+        id: {
+          chisel: "https://chisel.weirdgloop.org/moid/item_id.html#{id}",
+          abex: "https://abextm.github.io/cache2/#/viewer/item/{id}",
+        },
       },
     },
     [ConfigType.Params]: {
@@ -123,9 +159,11 @@ export const indexNameMap: {
       identifiers: ["id"],
       fields: ["type", "defaultInt", "defaultString", "isMembers"],
       urls: {
-        chisel:
-          "https://chisel.weirdgloop.org/structs/index.html?type=enums&id=",
-        abex: "https://abextm.github.io/cache2/#/viewer/enum/",
+        id: {
+          chisel:
+            "https://chisel.weirdgloop.org/structs/index.html?type=enums&id={id}",
+          abex: "https://abextm.github.io/cache2/#/viewer/enum/{id}",
+        },
       },
     },
     [ConfigType.Struct]: {
@@ -133,9 +171,11 @@ export const indexNameMap: {
       identifiers: ["id"],
       fields: ["params"],
       urls: {
-        chisel:
-          "https://chisel.weirdgloop.org/structs/index.html?type=structs&id=",
-        abex: "https://abextm.github.io/cache2/#/viewer/struct/",
+        id: {
+          chisel:
+            "https://chisel.weirdgloop.org/structs/index.html?type=structs&id={id}",
+          abex: "https://abextm.github.io/cache2/#/viewer/struct/{id}",
+        },
       },
     },
     [ConfigType.DbRow]: {
@@ -143,7 +183,9 @@ export const indexNameMap: {
       identifiers: ["id", "gameVal"],
       fields: ["table", "values"],
       urls: {
-        abex: "https://abextm.github.io/cache2/#/viewer/dbrow/",
+        id: {
+          abex: "https://abextm.github.io/cache2/#/viewer/dbrow/{id}",
+        },
       },
     },
     [ConfigType.SpotAnim]: {
@@ -157,7 +199,9 @@ export const indexNameMap: {
       identifiers: ["id", "gameVal"],
       fields: ["index", "leastSignificantBit", "mostSignificantBit"],
       urls: {
-        chisel: "https://chisel.weirdgloop.org/varbs/display?varbit=",
+        id: {
+          chisel: "https://chisel.weirdgloop.org/varbs/display?varbit={id}",
+        },
       },
     },
     [ConfigType.VarPlayer]: {
@@ -165,7 +209,9 @@ export const indexNameMap: {
       identifiers: ["id", "gameVal"],
       fields: [],
       urls: {
-        chisel: "https://chisel.weirdgloop.org/varbs/display?varplayer=",
+        id: {
+          chisel: "https://chisel.weirdgloop.org/varbs/display?varplayer={id}",
+        },
       },
     },
   },
@@ -182,22 +228,29 @@ export const indexNameMap: {
       "configActions",
     ],
     urls: {
-      abex: "https://abextm.github.io/cache2/#/viewer/interface/",
+      id: {
+        abex: "https://abextm.github.io/cache2/#/viewer/interface/{id}",
+      },
     },
   },
   [IndexType.Maps]: {
     name: "Regions",
     identifiers: ["id", "name"],
     fields: ["regionX", "regionY"],
-    urls: {},
+    urls: {
+      id: {
+        world: regionToWorldMapURL,
+      },
+    },
   },
   [IndexType.Sprites]: {
     name: "Sprites",
     identifiers: ["id", "gameVal"],
     fields: ["width", "height"],
     urls: {
-      chisel: "",
-      abex: "https://abextm.github.io/cache2/#/viewer/sprite/",
+      id: {
+        abex: "https://abextm.github.io/cache2/#/viewer/sprite/{id}",
+      },
     },
   },
 };

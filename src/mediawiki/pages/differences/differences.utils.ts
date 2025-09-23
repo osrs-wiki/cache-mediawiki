@@ -15,7 +15,9 @@ import _, { flatten } from "underscore";
 import {
   IndexFeatures,
   IndexURLType,
-  IndexURLs,
+  IndexFieldURLs,
+  FieldURLs,
+  URLGeneratorContext,
   resultNameMap,
 } from "./differences.types";
 import {
@@ -29,6 +31,7 @@ import {
 
 import { jagexHSLtoHex } from "@/utils/colors";
 import { capitalize, stripHtmlTags } from "@/utils/string";
+import { generateURL } from "@/utils/url-generation";
 
 /**
  * Format the value a field.
@@ -84,25 +87,18 @@ export const formatEntryValue = (field: string, value: ResultValue): string => {
  * @param identifier The field identifier key
  * @param value The Result value
  * @param urls Supported urls for names and identifiers
+ * @param allFieldValues All field values for context
+ * @param entityType Entity type for context
  * @returns
  */
 export const formatEntryIdentifier = (
   identifier: string,
   value: ResultValue,
-  urls: IndexURLs
+  urls: IndexFieldURLs,
+  allFieldValues?: Record<string, unknown>,
+  entityType?: string
 ): MediaWikiContent[] => {
   switch (identifier) {
-    case "id":
-      const urlKeys = Object.keys(urls);
-      return urlKeys.length > 0
-        ? urlKeys.map(
-            (url, index) =>
-              new MediaWikiExternalLink(
-                index === 0 ? `${value}` : `(${index})`,
-                `${urls[url as IndexURLType]}${value as string}`
-              )
-          )
-        : [new MediaWikiText(formatEntryValue(identifier, value))];
     case "name":
       return [
         value
@@ -110,9 +106,64 @@ export const formatEntryIdentifier = (
           : new MediaWikiText(""),
       ];
     default:
-      return [new MediaWikiText(formatEntryValue(identifier, value))];
+      // Check if this field has specific URLs defined
+      const fieldURLs = urls[identifier];
+      if (!fieldURLs) {
+        return [new MediaWikiText(formatEntryValue(identifier, value))];
+      }
+
+      return generateLinksForField(
+        identifier,
+        value,
+        fieldURLs,
+        allFieldValues,
+        entityType
+      );
   }
 };
+
+/**
+ * Generate external links for a specific field
+ */
+function generateLinksForField(
+  fieldName: string,
+  value: ResultValue,
+  fieldURLs: FieldURLs,
+  allFieldValues?: Record<string, unknown>,
+  entityType?: string
+): MediaWikiContent[] {
+  const urlProviders = Object.keys(fieldURLs) as IndexURLType[];
+  if (urlProviders.length === 0) {
+    return [new MediaWikiText(formatEntryValue(fieldName, value))];
+  }
+
+  const context: URLGeneratorContext = {
+    fieldName,
+    entityType: entityType || "unknown",
+    allFields: allFieldValues || {},
+  };
+
+  return urlProviders.map((provider, index) => {
+    const urlDefinition = fieldURLs[provider];
+    if (!urlDefinition) {
+      return new MediaWikiText(formatEntryValue(fieldName, value));
+    }
+
+    try {
+      const generatedURL = generateURL(urlDefinition, value, context);
+      return new MediaWikiExternalLink(
+        index === 0 ? `${value}` : `(${index})`,
+        generatedURL
+      );
+    } catch (error) {
+      console.warn(
+        `Failed to generate URL for ${fieldName}:${provider}`,
+        error
+      );
+      return new MediaWikiText(formatEntryValue(fieldName, value));
+    }
+  });
+}
 
 /**
  * Format entry field values and highlight any differences.
@@ -304,7 +355,16 @@ export const buildChangedResultTable = (
                               content: formatEntryIdentifier(
                                 identifier,
                                 entry[identifier].newValue,
-                                indexFeatures.urls
+                                indexFeatures.urls || {},
+                                Object.fromEntries(
+                                  Object.entries(entry).map(
+                                    ([key, changeEntry]) => [
+                                      key,
+                                      changeEntry.newValue,
+                                    ]
+                                  )
+                                ),
+                                indexFeatures.name
                               ),
                               options: {
                                 rowspan: diffKeys.length + 1,
@@ -400,7 +460,9 @@ export const buildResultTable = (
               content: formatEntryIdentifier(
                 identifier,
                 entry[identifier],
-                indexFeatures.urls
+                indexFeatures.urls || {},
+                entry,
+                indexFeatures.name
               ),
             }));
           return {
