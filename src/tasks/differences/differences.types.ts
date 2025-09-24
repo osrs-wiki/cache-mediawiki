@@ -19,6 +19,7 @@ export type DifferencesParams = {
   method: CacheSource;
   type: CacheFileType;
   indices?: string;
+  ignoreIndices?: string;
 };
 
 export type FileContext = {

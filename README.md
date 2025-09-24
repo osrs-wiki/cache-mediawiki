@@ -45,6 +45,7 @@ Global options:
 
 differences options:
   --indices <indices>                  Comma-separated list of index IDs to include in differences (e.g., '2,5,8'). If not provided, all indices are checked.
+  --ignoreIndices <ignoreIndices>      Comma-separated list of index IDs to exclude from differences (e.g., '2,5,8'). Takes precedence over --indices option.
 
 pages options:
   -t, --type <type>                    The type of page to generate (item, npc, scenery) (choices: "item", "npc", "scenery", default: "item")
