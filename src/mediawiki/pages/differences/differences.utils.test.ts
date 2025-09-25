@@ -146,11 +146,10 @@ describe("differences builder utils", () => {
 
     test("should handle field-specific URL format with templates", () => {
       const fieldSpecificURLs = {
-        id: {
-          chisel:
-            "https://chisel.weirdgloop.org/moid/npc_id.html#{id}" as const,
-          abex: "https://abextm.github.io/cache2/#/viewer/npc/{id}" as const,
-        },
+        id: [
+          "https://chisel.weirdgloop.org/moid/npc_id.html#{id}" as const,
+          "https://abextm.github.io/cache2/#/viewer/npc/{id}" as const,
+        ],
       };
 
       const result = formatEntryIdentifier("id", 123, fieldSpecificURLs);
@@ -171,9 +170,7 @@ describe("differences builder utils", () => {
 
     test("should handle function-based URLs", () => {
       const functionURLs = {
-        id: {
-          world: regionToWorldMapURL,
-        },
+        id: [regionToWorldMapURL],
       };
 
       const regionId = (50 << 8) | 30;
@@ -189,7 +186,7 @@ describe("differences builder utils", () => {
 
     test("should fall back to text for fields without URLs", () => {
       const fieldSpecificURLs = {
-        id: { chisel: "https://example.com/{id}" as const },
+        id: ["https://example.com/{id}" as const],
       };
 
       const result = formatEntryIdentifier(
@@ -210,9 +207,7 @@ describe("differences builder utils", () => {
     test("should pass context to URL generation", () => {
       const mockFunction = jest.fn().mockReturnValue("https://test.com");
       const functionURLs = {
-        id: {
-          world: mockFunction as unknown as typeof regionToWorldMapURL,
-        },
+        id: [mockFunction as unknown as typeof regionToWorldMapURL],
       };
 
       const allFields = { name: "Test Item", id: 123 };
@@ -241,9 +236,7 @@ describe("differences builder utils", () => {
       const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation();
 
       const functionURLs = {
-        id: {
-          world: errorFunction as unknown as typeof regionToWorldMapURL,
-        },
+        id: [errorFunction as unknown as typeof regionToWorldMapURL],
       };
 
       const result = formatEntryIdentifier("id", 123, functionURLs);
@@ -251,7 +244,7 @@ describe("differences builder utils", () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toBeInstanceOf(MediaWikiText);
       expect(consoleWarnSpy).toHaveBeenCalledWith(
-        "Failed to generate URL for id:world",
+        "Failed to generate URL for id at index 0",
         expect.any(Error)
       );
 
@@ -260,10 +253,10 @@ describe("differences builder utils", () => {
 
     test("should create external links with correct content", () => {
       const fieldSpecificURLs = {
-        id: {
-          chisel: "https://first.com/{id}" as const,
-          abex: "https://second.com/{id}" as const,
-        },
+        id: [
+          "https://first.com/{id}" as const,
+          "https://second.com/{id}" as const,
+        ],
       };
 
       const result = formatEntryIdentifier("id", 456, fieldSpecificURLs);

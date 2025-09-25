@@ -29,8 +29,6 @@ export type IndexFeature<T extends Loadable, Name> = {
   urls?: IndexFieldURLs;
 };
 
-export type IndexURLType = "abex" | "chisel" | "world";
-
 // URL Generator function signature
 export type URLGeneratorFunction = (
   value: unknown,
@@ -50,14 +48,9 @@ export type TemplateURL = string; // Contains {fieldName} placeholders
 // URL definition for a specific provider
 export type URLDefinition = TemplateURL | URLGeneratorFunction;
 
-// Field-specific URL mapping
-export type FieldURLs = {
-  [provider in IndexURLType]?: URLDefinition;
-};
-
-// New field-specific URL structure
+// Field-specific URL structure
 export type IndexFieldURLs = {
-  [fieldName: string]: FieldURLs;
+  [fieldName: string]: URLDefinition[];
 };
 
 export type IndexFeatures =
@@ -104,10 +97,10 @@ export const indexNameMap: {
       identifiers: ["name", "id", "gameVal"],
       fields: ["actions"],
       urls: {
-        id: {
-          chisel: "https://chisel.weirdgloop.org/moid/object_id.html#{id}",
-          abex: "https://abextm.github.io/cache2/#/viewer/obj/{id}",
-        },
+        id: [
+          "https://chisel.weirdgloop.org/moid/object_id.html#{id}",
+          "https://abextm.github.io/cache2/#/viewer/obj/{id}",
+        ],
       },
     },
     [ConfigType.Enum]: {
@@ -115,11 +108,10 @@ export const indexNameMap: {
       identifiers: ["id"],
       fields: ["defaultValue", "map"],
       urls: {
-        id: {
-          chisel:
-            "https://chisel.weirdgloop.org/structs/index.html?type=enums&id={id}",
-          abex: "https://abextm.github.io/cache2/#/viewer/enum/{id}",
-        },
+        id: [
+          "https://chisel.weirdgloop.org/structs/index.html?type=enums&id={id}",
+          "https://abextm.github.io/cache2/#/viewer/enum/{id}",
+        ],
       },
     },
     [ConfigType.Npc]: {
@@ -127,10 +119,10 @@ export const indexNameMap: {
       identifiers: ["name", "id", "gameVal"],
       fields: ["combatLevel", "actions"],
       urls: {
-        id: {
-          chisel: "https://chisel.weirdgloop.org/moid/npc_id.html#{id}",
-          abex: "https://abextm.github.io/cache2/#/viewer/npc/{id}",
-        },
+        id: [
+          "https://chisel.weirdgloop.org/moid/npc_id.html#{id}",
+          "https://abextm.github.io/cache2/#/viewer/npc/{id}",
+        ],
       },
     },
     [ConfigType.Item]: {
@@ -148,10 +140,10 @@ export const indexNameMap: {
         "weight",
       ],
       urls: {
-        id: {
-          chisel: "https://chisel.weirdgloop.org/moid/item_id.html#{id}",
-          abex: "https://abextm.github.io/cache2/#/viewer/item/{id}",
-        },
+        id: [
+          "https://chisel.weirdgloop.org/moid/item_id.html#{id}",
+          "https://abextm.github.io/cache2/#/viewer/item/{id}",
+        ],
       },
     },
     [ConfigType.Params]: {
@@ -159,11 +151,10 @@ export const indexNameMap: {
       identifiers: ["id"],
       fields: ["type", "defaultInt", "defaultString", "isMembers"],
       urls: {
-        id: {
-          chisel:
-            "https://chisel.weirdgloop.org/structs/index.html?type=enums&id={id}",
-          abex: "https://abextm.github.io/cache2/#/viewer/enum/{id}",
-        },
+        id: [
+          "https://chisel.weirdgloop.org/structs/index.html?type=enums&id={id}",
+          "https://abextm.github.io/cache2/#/viewer/enum/{id}",
+        ],
       },
     },
     [ConfigType.Struct]: {
@@ -171,11 +162,10 @@ export const indexNameMap: {
       identifiers: ["id"],
       fields: ["params"],
       urls: {
-        id: {
-          chisel:
-            "https://chisel.weirdgloop.org/structs/index.html?type=structs&id={id}",
-          abex: "https://abextm.github.io/cache2/#/viewer/struct/{id}",
-        },
+        id: [
+          "https://chisel.weirdgloop.org/structs/index.html?type=structs&id={id}",
+          "https://abextm.github.io/cache2/#/viewer/struct/{id}",
+        ],
       },
     },
     [ConfigType.DbRow]: {
@@ -183,9 +173,7 @@ export const indexNameMap: {
       identifiers: ["id", "gameVal"],
       fields: ["table", "values"],
       urls: {
-        id: {
-          abex: "https://abextm.github.io/cache2/#/viewer/dbrow/{id}",
-        },
+        id: ["https://abextm.github.io/cache2/#/viewer/dbrow/{id}"],
       },
     },
     [ConfigType.SpotAnim]: {
@@ -199,9 +187,7 @@ export const indexNameMap: {
       identifiers: ["id", "gameVal"],
       fields: ["index", "leastSignificantBit", "mostSignificantBit"],
       urls: {
-        id: {
-          chisel: "https://chisel.weirdgloop.org/varbs/display?varbit={id}",
-        },
+        id: ["https://chisel.weirdgloop.org/varbs/display?varbit={id}"],
       },
     },
     [ConfigType.VarPlayer]: {
@@ -209,9 +195,7 @@ export const indexNameMap: {
       identifiers: ["id", "gameVal"],
       fields: [],
       urls: {
-        id: {
-          chisel: "https://chisel.weirdgloop.org/varbs/display?varplayer={id}",
-        },
+        id: ["https://chisel.weirdgloop.org/varbs/display?varplayer={id}"],
       },
     },
   },
@@ -228,9 +212,10 @@ export const indexNameMap: {
       "configActions",
     ],
     urls: {
-      id: {
-        abex: "https://abextm.github.io/cache2/#/viewer/interface/{id}",
-      },
+      id: ["https://abextm.github.io/cache2/#/viewer/interface/{id}"],
+      gameVal: [
+        "https://oldschool.runescape.wiki/w/Special:Ask?q=%5B%5BFile:+%5D%5D%20%5B%5BInterface%20name::{gameVal}%5D%5D&po=%3FInterface%20name&format=table&p%5Dlimit%5B=50",
+      ],
     },
   },
   [IndexType.Maps]: {
@@ -238,9 +223,7 @@ export const indexNameMap: {
     identifiers: ["id", "name"],
     fields: ["regionX", "regionY"],
     urls: {
-      id: {
-        world: regionToWorldMapURL,
-      },
+      id: [regionToWorldMapURL],
     },
   },
   [IndexType.Sprites]: {
@@ -248,9 +231,7 @@ export const indexNameMap: {
     identifiers: ["id", "gameVal"],
     fields: ["width", "height"],
     urls: {
-      id: {
-        abex: "https://abextm.github.io/cache2/#/viewer/sprite/{id}",
-      },
+      id: ["https://abextm.github.io/cache2/#/viewer/sprite/{id}"],
     },
   },
 };

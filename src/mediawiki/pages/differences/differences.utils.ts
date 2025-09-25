@@ -14,9 +14,8 @@ import _, { flatten } from "underscore";
 
 import {
   IndexFeatures,
-  IndexURLType,
   IndexFieldURLs,
-  FieldURLs,
+  URLDefinition,
   URLGeneratorContext,
   resultNameMap,
 } from "./differences.types";
@@ -128,12 +127,11 @@ export const formatEntryIdentifier = (
 function generateLinksForField(
   fieldName: string,
   value: ResultValue,
-  fieldURLs: FieldURLs,
+  fieldURLs: URLDefinition[],
   allFieldValues?: Record<string, unknown>,
   entityType?: string
 ): MediaWikiContent[] {
-  const urlProviders = Object.keys(fieldURLs) as IndexURLType[];
-  if (urlProviders.length === 0) {
+  if (fieldURLs.length === 0) {
     return [new MediaWikiText(formatEntryValue(fieldName, value))];
   }
 
@@ -143,12 +141,7 @@ function generateLinksForField(
     allFields: allFieldValues || {},
   };
 
-  return urlProviders.map((provider, index) => {
-    const urlDefinition = fieldURLs[provider];
-    if (!urlDefinition) {
-      return new MediaWikiText(formatEntryValue(fieldName, value));
-    }
-
+  return fieldURLs.map((urlDefinition, index) => {
     try {
       const generatedURL = generateURL(urlDefinition, value, context);
       return new MediaWikiExternalLink(
@@ -157,12 +150,20 @@ function generateLinksForField(
       );
     } catch (error) {
       console.warn(
-        `Failed to generate URL for ${fieldName}:${provider}`,
+        `Failed to generate URL for ${fieldName} at index ${index}`,
         error
       );
       return new MediaWikiText(formatEntryValue(fieldName, value));
     }
   });
+}
+
+export function internalLink(value: ResultValue): MediaWikiContent[] {
+  return [
+    value
+      ? new MediaWikiLink(stripHtmlTags(value as string))
+      : new MediaWikiText(""),
+  ];
 }
 
 /**
