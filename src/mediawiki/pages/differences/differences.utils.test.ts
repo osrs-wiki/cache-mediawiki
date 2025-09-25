@@ -4,7 +4,6 @@ import {
   MediaWikiLink,
 } from "@osrs-wiki/mediawiki-builder";
 
-import { URLGeneratorFunction } from "./differences.types";
 import {
   getFieldDifferencesRow,
   formatEntryValue,

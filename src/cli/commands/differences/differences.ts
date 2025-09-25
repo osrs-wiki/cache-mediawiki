@@ -1,5 +1,7 @@
 import { Command, Option } from "commander";
 
+import { parseIndices } from "./differences.utils";
+
 import differencesCache from "@/tasks/differences/differences";
 
 const differences = new Command("differences")
@@ -25,8 +27,8 @@ const differences = new Command("differences")
       newVersion: options.newCache,
       method: options.cacheSource,
       type: options.cacheType,
-      indices: options.indices,
-      ignoreIndices: options.ignoreIndices,
+      indices: parseIndices(options.indices),
+      ignoreIndices: parseIndices(options.ignoreIndices),
     });
   });
 

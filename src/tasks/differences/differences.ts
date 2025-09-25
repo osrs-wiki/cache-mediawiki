@@ -16,8 +16,8 @@ import { LazyPromise } from "@/utils/cache2/LazyPromise";
  * Write cache differences to output files.
  * @param oldVersion The old abex cache version (ex: 2024-01-31-rev219)
  * @param newVersion The new abex cache version (ex: 2024-02-07-rev219)
- * @param indices Optional comma-separated list of index IDs to check (ex: "2,5,8")
- * @param ignoreIndices Optional comma-separated list of index IDs to exclude from differences (ex: "2,5,8"). Takes precedence over indices option.
+ * @param indices Optional array of index IDs to check (ex: [2, 5, 8])
+ * @param ignoreIndices Optional array of index IDs to exclude from differences (ex: [2, 5, 8]). Takes precedence over indices option.
  */
 const differencesCache = async ({
   oldVersion,
@@ -41,22 +41,17 @@ const differencesCache = async ({
   const cacheDifferences: CacheDifferences = {};
 
   // Determine which indices to check
-  let indicesToCheck = indices
-    ? indices.split(",").map((id) => id.trim())
-    : Object.keys(indexNameMap);
+  let indicesToCheck = indices || Object.keys(indexNameMap).map(Number);
 
   // Filter out ignored indices (takes precedence over indices option)
   if (ignoreIndices) {
-    const ignoredIndices = ignoreIndices.split(",").map((id) => id.trim());
     indicesToCheck = indicesToCheck.filter(
-      (indexString) => !ignoredIndices.includes(indexString)
+      (index) => !ignoreIndices.includes(index)
     );
   }
 
   await Promise.all(
-    indicesToCheck.map(async (indexString) => {
-      const index = parseInt(indexString);
-
+    indicesToCheck.map(async (index) => {
       // Skip if index is not in indexNameMap when filtering by specific indices
       if (indices && !(index in indexNameMap)) {
         console.log(`Skipping index ${index} - not found in indexNameMap`);
