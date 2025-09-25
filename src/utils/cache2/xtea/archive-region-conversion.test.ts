@@ -34,11 +34,15 @@ describe("Archive ID to Region ID Conversion", () => {
     const x = 50;
     const y = 50;
     const regionId = (x << 8) | y; // 12850
-    const testKey = [1, 2, 3, 4];
+    const testKey = [1, 2, 3, 4] as [number, number, number, number];
 
     // Load XTEA key (this is how OpenRS2 data comes in)
     manager.loadKeys([
       {
+        archive: 5,
+        group: 1,
+        name_hash: -1153413389,
+        name: `m${x}_${y}`,
         mapsquare: regionId,
         key: testKey,
       },
@@ -53,19 +57,19 @@ describe("Archive ID to Region ID Conversion", () => {
     expect(regionInfo?.regionId).toBe(regionId);
 
     // Get XTEA keys for this region (this is how we look up keys)
-    const regionKeys = manager.keysByMapSquare.get(regionInfo!.regionId);
+    const regionKeys = manager.keysByMapSquare.get(regionInfo?.regionId ?? 0);
     expect(regionKeys).toBeDefined();
 
     // Extract the actual key (this is how we get the key to set on ArchiveData)
-    const iterator = regionKeys!.iterator();
-    const firstKeyIndex = iterator();
+    const iterator = regionKeys?.iterator();
+    const firstKeyIndex = iterator?.() ?? -1;
     expect(firstKeyIndex).toBeGreaterThanOrEqual(0);
 
     const extractedKey = [
-      regionKeys!.data[firstKeyIndex],
-      regionKeys!.data[firstKeyIndex + 1],
-      regionKeys!.data[firstKeyIndex + 2],
-      regionKeys!.data[firstKeyIndex + 3],
+      regionKeys?.data[firstKeyIndex] ?? 0,
+      regionKeys?.data[firstKeyIndex + 1] ?? 0,
+      regionKeys?.data[firstKeyIndex + 2] ?? 0,
+      regionKeys?.data[firstKeyIndex + 3] ?? 0,
     ];
 
     expect(extractedKey).toEqual(testKey);
@@ -76,13 +80,21 @@ describe("Archive ID to Region ID Conversion", () => {
 
     // Test multiple regions
     const testData = [
-      { x: 50, y: 50, key: [1, 2, 3, 4] },
-      { x: 51, y: 50, key: [5, 6, 7, 8] },
-      { x: 50, y: 51, key: [9, 10, 11, 12] },
+      { x: 50, y: 50, key: [1, 2, 3, 4] as [number, number, number, number] },
+      { x: 51, y: 50, key: [5, 6, 7, 8] as [number, number, number, number] },
+      {
+        x: 50,
+        y: 51,
+        key: [9, 10, 11, 12] as [number, number, number, number],
+      },
     ];
 
     // Load all keys
-    const keyData = testData.map(({ x, y, key }) => ({
+    const keyData = testData.map(({ x, y, key }, index) => ({
+      archive: 5,
+      group: index + 1,
+      name_hash: -(1153413389 + index),
+      name: `m${x}_${y}`,
       mapsquare: (x << 8) | y,
       key,
     }));
@@ -96,16 +108,16 @@ describe("Archive ID to Region ID Conversion", () => {
 
       expect(regionInfo).not.toBeNull();
 
-      const regionKeys = manager.keysByMapSquare.get(regionInfo!.regionId);
+      const regionKeys = manager.keysByMapSquare.get(regionInfo?.regionId ?? 0);
       expect(regionKeys).toBeDefined();
 
-      const iterator = regionKeys!.iterator();
-      const firstKeyIndex = iterator();
+      const iterator = regionKeys?.iterator();
+      const firstKeyIndex = iterator?.() ?? -1;
       const extractedKey = [
-        regionKeys!.data[firstKeyIndex],
-        regionKeys!.data[firstKeyIndex + 1],
-        regionKeys!.data[firstKeyIndex + 2],
-        regionKeys!.data[firstKeyIndex + 3],
+        regionKeys?.data[firstKeyIndex] ?? 0,
+        regionKeys?.data[firstKeyIndex + 1] ?? 0,
+        regionKeys?.data[firstKeyIndex + 2] ?? 0,
+        regionKeys?.data[firstKeyIndex + 3] ?? 0,
       ];
 
       expect(extractedKey).toEqual(key);

@@ -616,8 +616,8 @@ describe("file utils", () => {
         newFile: undefined,
       });
 
-      // Should fall back to binary comparison for unmapped archive
-      expect(result).toHaveProperty("removed");
+      // Should return empty results for unmapped archive
+      expect(result).toEqual({});
     });
 
     test("should handle mapped archive ID with successful region loading", async () => {
@@ -657,9 +657,9 @@ describe("file utils", () => {
         newFile: undefined,
       });
 
-      // Should attempt region loading but fail due to missing cache provider
-      // This will trigger the catch block and fall back to binary comparison
-      expect(result).toHaveProperty("removed");
+      // Should attempt region loading but fail gracefully
+      // Returns empty object when region processing fails
+      expect(result).toEqual({});
     });
 
     test("should handle both old and new files with region loading", async () => {

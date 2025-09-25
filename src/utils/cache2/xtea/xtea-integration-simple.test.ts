@@ -50,6 +50,10 @@ describe("XTEA Integration", () => {
     // Add test keys using the public API
     const testKeys = [
       {
+        archive: 5,
+        group: 1,
+        name_hash: -1153413389,
+        name: "test_region",
         mapsquare: 12345,
         key: [1, 2, 3, 4] as [number, number, number, number],
       },
@@ -85,7 +89,7 @@ describe("XTEA Integration", () => {
         .mockResolvedValue(mockIndex as any);
 
       // Mock getKeys to return our mock XTEA manager
-      jest.spyOn(provider, "getKeys").mockResolvedValue(mockXTEAManager);
+      jest.spyOn(provider, "getKeys").mockReturnValue(mockXTEAManager);
 
       // Mock tryDecrypt to succeed and set the key
       jest.spyOn(mockXTEAManager, "tryDecrypt").mockImplementation((ad) => {
@@ -139,7 +143,7 @@ describe("XTEA Integration", () => {
       jest.spyOn(provider, "getIndex").mockResolvedValue(mockIndex as any);
 
       // Mock getKeys to return our mock XTEA manager
-      jest.spyOn(provider, "getKeys").mockResolvedValue(mockXTEAManager);
+      jest.spyOn(provider, "getKeys").mockReturnValue(mockXTEAManager);
 
       // Mock tryDecrypt to succeed and set the key
       jest.spyOn(mockXTEAManager, "tryDecrypt").mockImplementation((ad) => {

@@ -80,12 +80,14 @@ describe("Cache Provider XTEA Integration", () => {
         await provider.getIndex(5); // IndexType.Maps
         // Should handle error gracefully
         expect(console.warn).toHaveBeenCalledWith(
-          "Failed to load XTEA keys for cache 2025-09-03-rev232: API Error"
+          "Failed to load XTEA keys for cache version 2025-09-03-rev232:",
+          expect.any(Error)
         );
       } catch (error) {
         // Expected to fail due to mock data, but error handling should still work
         expect(console.warn).toHaveBeenCalledWith(
-          "Failed to load XTEA keys for cache 2025-09-03-rev232: API Error"
+          "Failed to load XTEA keys for cache version 2025-09-03-rev232:",
+          expect.any(Error)
         );
       }
     });
@@ -137,12 +139,14 @@ describe("Cache Provider XTEA Integration", () => {
         await provider.getIndex(5); // IndexType.Maps
         // Should handle error gracefully
         expect(console.warn).toHaveBeenCalledWith(
-          "Failed to load XTEA keys for cache 2025-09-03-rev232: Network timeout"
+          "Failed to load XTEA keys for cache version 2025-09-03-rev232:",
+          expect.any(Error)
         );
       } catch (error) {
         // Expected to fail due to mock data, but error handling should still work
         expect(console.warn).toHaveBeenCalledWith(
-          "Failed to load XTEA keys for cache 2025-09-03-rev232: Network timeout"
+          "Failed to load XTEA keys for cache version 2025-09-03-rev232:",
+          expect.any(Error)
         );
       }
     });

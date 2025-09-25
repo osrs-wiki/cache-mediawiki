@@ -1,4 +1,4 @@
-import { fetchCacheList, fetchCacheKeys } from "./api";
+import { fetchCacheList, fetchCacheKeys, OpenRSAPICache } from "./api";
 
 // Mock fetch globally
 global.fetch = jest.fn();
@@ -6,6 +6,9 @@ global.fetch = jest.fn();
 describe("OpenRS2 API", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Clear the cache before each test
+    OpenRSAPICache.cacheList = [];
+    OpenRSAPICache.cacheKeys = {};
   });
 
   describe("fetchCacheList", () => {
