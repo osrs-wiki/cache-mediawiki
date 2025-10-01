@@ -47,7 +47,9 @@ import {
   VarPID,
   Widget,
 } from "@/utils/cache2";
-import { Loadable } from "@/utils/cache2/Loadable";
+import { Loadable, PerArchiveLoadable } from "@/utils/cache2/Loadable";
+import { Region } from "@/utils/cache2/loaders/Region";
+import { RegionMapper } from "@/utils/cache2/loaders/RegionMapper";
 
 /**
  * A map of index and archive types to decoding functions.
@@ -74,6 +76,7 @@ export const indexMap: {
     [ConfigType.VarPlayer]: createCompareFunction<VarPlayer, VarPID>(VarPlayer),
   },
   [IndexType.Interfaces]: createArchiveParentCompareFunction<Widget>(Widget),
+  [IndexType.Maps]: createRegionCompareFunction(),
   [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
 };
 
@@ -163,7 +166,7 @@ export function createSimpleCompareFunction<T, ID>(decoder: {
  * @returns A CompareFn that can be used for archive-based comparisons (like sprites)
  */
 export function createArchiveCompareFunction<
-  T extends DecodableWithGameVal,
+  T extends DecodableWithGameVal | PerArchiveLoadable,
   ID
 >(decoder: Decoder<T, ID>): CompareFn {
   return async ({ oldFile, newFile }) => {
@@ -177,7 +180,7 @@ export function createArchiveCompareFunction<
         )
       : undefined;
 
-    if (oldEntry) {
+    if (oldEntry && "gameVal" in oldEntry) {
       oldEntry.gameVal = await GameVal.nameFor(
         Context.oldCacheProvider,
         oldEntry
@@ -194,7 +197,7 @@ export function createArchiveCompareFunction<
         )
       : undefined;
 
-    if (newEntry) {
+    if (newEntry && "gameVal" in newEntry) {
       newEntry.gameVal = await GameVal.nameFor(
         Context.newCacheProvider,
         newEntry
@@ -372,3 +375,108 @@ export const getFileDifferences = <T extends Loadable>(
 
   return results;
 };
+
+/**
+ * Creates a compare function for region data that handles both map and location archives.
+ * Regions work differently than other cache entries as they combine data from multiple archives
+ * and require RegionMapper to resolve archive IDs to coordinates.
+ */
+export function createRegionCompareFunction(): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const results: FileDifferences = {};
+
+    const archiveId =
+      oldFile?.archive.archive || newFile?.archive.archive || -1;
+    const archiveNameHash =
+      oldFile?.archive.namehash || newFile?.archive.namehash || -1;
+
+    // Use RegionMapper to get region coordinates from archive ID
+    const regionInfo = RegionMapper.getRegionFromArchiveId(archiveNameHash);
+    if (!regionInfo) {
+      return results;
+    }
+
+    const { regionX, regionY, type } = regionInfo;
+
+    try {
+      // Create Region objects from the file data
+      // Note: Region.create expects both map and location data, but we might only have one type
+      // We'll create regions with the available data and undefined for missing data
+      let oldRegion: Region | undefined = undefined;
+      let newRegion: Region | undefined = undefined;
+
+      if (oldFile) {
+        // Determine which data to pass based on the file type
+        // Convert Uint8Array to Buffer as required by Region.create
+        const mapData =
+          type === "map" ? Buffer.from(oldFile.file.data) : undefined;
+        const locationData =
+          type === "locations" ? Buffer.from(oldFile.file.data) : undefined;
+        oldRegion = Region.create(regionX, regionY, mapData, locationData);
+      }
+
+      if (newFile) {
+        // Determine which data to pass based on the file type
+        // Convert Uint8Array to Buffer as required by Region.create
+        const mapData =
+          type === "map" ? Buffer.from(newFile.file.data) : undefined;
+        const locationData =
+          type === "locations" ? Buffer.from(newFile.file.data) : undefined;
+        newRegion = Region.create(regionX, regionY, mapData, locationData);
+      }
+
+      let contentDifferences: FileDifferences;
+      if (type === "map") {
+        const changedTileCount = oldFile
+          ? newRegion.mapDefinition.getDifferentTileCount(
+              oldRegion?.mapDefinition
+            )
+          : 0;
+        if (changedTileCount > 0) {
+          contentDifferences = {
+            changed: {
+              changedTiles: {
+                oldValue: 0,
+                newValue: changedTileCount,
+              },
+            },
+          };
+        }
+      } else if (type === "locations") {
+        const changedSpawnCount = oldFile
+          ? newRegion.locationsDefinition.getDifferentLocationCount(
+              oldRegion?.locationsDefinition
+            )
+          : 0;
+        if (changedSpawnCount > 0) {
+          contentDifferences = {
+            changed: {
+              changedSpawns: {
+                oldValue: 0,
+                newValue: changedSpawnCount,
+              },
+            },
+          };
+        }
+      }
+
+      const regionDifferences = getFileDifferences(
+        oldFile ? oldRegion : undefined,
+        newFile ? newRegion : undefined
+      );
+      return {
+        ...regionDifferences,
+        changed: {
+          ...regionDifferences.changed,
+          ...(contentDifferences ? contentDifferences?.changed : {}),
+        },
+      };
+    } catch (error) {
+      console.warn(
+        `Error processing region ${regionX},${regionY} from archive ${archiveId}:`,
+        error
+      );
+      return results;
+    }
+  };
+}

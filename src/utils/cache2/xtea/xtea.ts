@@ -1,6 +1,7 @@
-import { ArchiveData } from "./Cache";
-import { Reader } from "./Reader";
-import { CompressionType, XTEAKey } from "./types";
+import { OpenRS2XTEAKey } from "../../openrs2/types";
+import { ArchiveData } from "../Cache";
+import { Reader } from "../Reader";
+import { CompressionType, XTEAKey } from "../types";
 
 const ROUNDS = 32;
 const GOLDEN = 0x9e3779b9;
@@ -179,62 +180,25 @@ export class XTEAKeyManager {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
 
-  public loadKeys(document: any): number {
-    if (typeof document !== "object") {
-      throw new Error(
-        `document must be an object or array, not ${typeof document}`
-      );
-    }
+  public hasKeys(): boolean {
+    return this.allKeys.length > 0;
+  }
 
+  public loadKeys(document: OpenRS2XTEAKey[]): number {
     let count = 0;
 
-    if (Array.isArray(document)) {
-      for (const item of document) {
-        if (typeof item !== "object") {
-          throw new Error(
-            `document must contain objects or keys, not ${typeof item}`
-          );
-        }
-        if (Array.isArray(item)) {
-          // OpenRS2 all key list
-          // XTEAKey[]
-          this.unknownKeys.add(item as XTEAKey);
-          if (this.allKeys.add(item as XTEAKey)) {
-            count++;
-          }
-        } else {
-          // OpenRS2 per cache key list
-          // also matches polar/runestats
-          // {mapsquare: packed region id, key: XTEAKey}[]
-          // RuneLite xtea service
-          // {region: packed region id, keys: XTEAKey}[]
-          const key = item.key ?? item.keys;
-          const mapsquare = item.mapsquare ?? item.region;
-          if (key === undefined || mapsquare === undefined) {
-            throw new Error(
-              `document must contain key & mapsquare/region, not ${JSON.stringify(
-                item
-              )}`
-            );
-          }
-          if (this.putKeyForMapsquare(mapsquare, key)) {
-            count++;
-          }
-        }
+    for (const item of document) {
+      const key = item.key;
+      const mapsquare = item.mapsquare;
+      if (key === undefined || mapsquare === undefined) {
+        throw new Error(
+          `document must contain key & mapsquare/region, not ${JSON.stringify(
+            item
+          )}`
+        );
       }
-    } else {
-      for (const [mapsq, item] of Object.entries(document)) {
-        if (Array.isArray(item)) {
-          // RuneLite xtea cache
-          // {packed region id: XTEAKey}
-          if (this.putKeyForMapsquare(~~mapsq, item as XTEAKey)) {
-            count++;
-          }
-        } else {
-          throw new Error(
-            `document must contain keys, not ${JSON.stringify(item)}`
-          );
-        }
+      if (this.putKeyForMapsquare(mapsquare, key)) {
+        count++;
       }
     }
 

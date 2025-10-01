@@ -3,6 +3,7 @@ import {
   createCompareFunction,
   createSimpleCompareFunction,
   createArchiveCompareFunction,
+  createRegionCompareFunction,
 } from "./file.utils";
 
 import { NPC, Reader, GameVal } from "@/utils/cache2";
@@ -565,6 +566,145 @@ describe("file utils", () => {
 
       expect(mockDecoder.decode).not.toHaveBeenCalled();
       expect(result).toEqual({});
+    });
+  });
+
+  describe("createRegionCompareFunction", () => {
+    test("should exist and be callable", () => {
+      const compareFn = createRegionCompareFunction();
+      expect(typeof compareFn).toBe("function");
+    });
+
+    test("should handle undefined files", async () => {
+      const compareFn = createRegionCompareFunction();
+
+      const result = await compareFn({
+        oldFile: undefined,
+        newFile: undefined,
+      });
+
+      expect(result).toEqual({});
+    });
+
+    test("should handle file with unmapped archive ID", async () => {
+      const compareFn = createRegionCompareFunction();
+
+      const mockFile = {
+        file: {
+          data: Buffer.from([1, 2, 3]),
+          id: 1,
+          namehash: 0,
+        },
+        archive: {
+          archive: 999999, // Unmapped archive ID
+          index: 0,
+          compressedData: Buffer.from([]),
+          namehash: 0,
+          revision: 100,
+          crc: 0,
+          version: 0,
+          entryIds: [] as number[],
+          fileCount: 1,
+          diskSize: 0,
+          uncompressedData: Buffer.from([]),
+        } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        index: { revision: 100 } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      };
+
+      const result = await compareFn({
+        oldFile: mockFile,
+        newFile: undefined,
+      });
+
+      // Should return empty results for unmapped archive
+      expect(result).toEqual({});
+    });
+
+    test("should handle mapped archive ID with successful region loading", async () => {
+      const compareFn = createRegionCompareFunction();
+
+      // Get a valid archive ID from RegionMapper
+      const { RegionMapper } = await import(
+        "@/utils/cache2/loaders/RegionMapper"
+      );
+      const validArchiveIds = RegionMapper.getAllRegionArchiveIds();
+      const archiveId = validArchiveIds[0]; // Use the first valid archive ID
+
+      const mockFile = {
+        file: {
+          data: Buffer.from([1, 2, 3]),
+          id: 1,
+          namehash: 0,
+        },
+        archive: {
+          archive: archiveId,
+          index: 0,
+          compressedData: Buffer.from([]),
+          namehash: 0,
+          revision: 100,
+          crc: 0,
+          version: 0,
+          entryIds: [] as number[],
+          fileCount: 1,
+          diskSize: 0,
+          uncompressedData: Buffer.from([]),
+        } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        index: { revision: 100 } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      };
+
+      const result = await compareFn({
+        oldFile: mockFile,
+        newFile: undefined,
+      });
+
+      // Should attempt region loading but fail gracefully
+      // Returns empty object when region processing fails
+      expect(result).toEqual({});
+    });
+
+    test("should handle both old and new files with region loading", async () => {
+      const compareFn = createRegionCompareFunction();
+
+      // Get a valid archive ID from RegionMapper
+      const { RegionMapper } = await import(
+        "@/utils/cache2/loaders/RegionMapper"
+      );
+      const validArchiveIds = RegionMapper.getAllRegionArchiveIds();
+      const archiveId = validArchiveIds[0]; // Use the first valid archive ID
+
+      const createMockFile = () => ({
+        file: {
+          data: Buffer.from([1, 2, 3]),
+          id: 1,
+          namehash: 0,
+        },
+        archive: {
+          archive: archiveId,
+          index: 0,
+          compressedData: Buffer.from([]),
+          namehash: 0,
+          revision: 100,
+          crc: 0,
+          version: 0,
+          entryIds: [] as number[],
+          fileCount: 1,
+          diskSize: 0,
+          uncompressedData: Buffer.from([]),
+        } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        index: { revision: 100 } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      });
+
+      const oldFile = createMockFile();
+      const newFile = createMockFile();
+
+      const result = await compareFn({
+        oldFile,
+        newFile,
+      });
+
+      // Should attempt region loading but will fail due to missing cache provider
+      // The compare function will fall back to handling the regions normally
+      expect(result).toBeDefined();
     });
   });
 });

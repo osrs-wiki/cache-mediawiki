@@ -5,7 +5,6 @@ exports[`npcPageBuilder getName() integration should fall back to Unknown NPC wh
 {{Infobox NPC
 |name = null
 |image = [[File:null.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -27,7 +26,6 @@ exports[`npcPageBuilder getName() integration should fall back to direct name wh
 {{Infobox NPC
 |name = Direct Name NPC
 |image = [[File:Direct Name NPC.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -50,7 +48,6 @@ exports[`npcPageBuilder getName() integration should handle getName() error grac
 {{Infobox NPC
 |name = Error NPC
 |image = [[File:Error NPC.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -73,7 +70,6 @@ exports[`npcPageBuilder getName() integration should use getName() for clean pri
 {{Infobox NPC
 |name = Test NPC
 |image = [[File:Test NPC.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -96,7 +92,6 @@ exports[`npcPageBuilder getName() integration should use getName() for multiChil
 {{Infobox NPC
 |name = Child Guard
 |image = [[File:Child Guard.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -124,7 +119,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should handle three var
 |name2 = Cultist
 |image1 = [[File:Royal Servant.png|120px]]
 |image2 = [[File:Cultist (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -142,7 +136,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should handle three var
 |item2 = {{Infobox Monster
 |name = Ennius Tullus
 |image = [[File:Ennius Tullus.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 306
@@ -171,7 +164,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infob
 |item1 = {{Infobox NPC
 |name = Royal Servant
 |image = [[File:Royal Servant.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -187,7 +179,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infob
 |item2 = {{Infobox Monster
 |name = Guard
 |image = [[File:Guard.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -216,7 +207,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infob
 |item1 = {{Infobox NPC
 |name = Ennius Tullus
 |image = [[File:Ennius Tullus.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -232,7 +222,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infob
 |item2 = {{Infobox Monster
 |name = Ennius Tullus
 |image = [[File:Ennius Tullus.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 306
@@ -263,7 +252,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use regular info
 |name2 = Warrior
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Warrior (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat1 = 21
@@ -295,7 +283,6 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use regular info
 |name2 = Merchant
 |image1 = [[File:Servant.png|120px]]
 |image2 = [[File:Merchant (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -324,7 +311,6 @@ exports[`npcPageBuilder multi-version functionality should deduplicate multiChil
 |name2 = Archer
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Archer (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat1 = 21
@@ -355,7 +341,6 @@ exports[`npcPageBuilder multi-version functionality should generate numbered ima
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Guard (2).png|120px]]
 |image3 = [[File:Guard (3).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -386,7 +371,6 @@ exports[`npcPageBuilder multi-version functionality should handle mixed combat a
 |item1 = {{Infobox NPC
 |name = Guard
 |image = [[File:Guard.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -402,7 +386,6 @@ exports[`npcPageBuilder multi-version functionality should handle mixed combat a
 |item2 = {{Infobox Monster
 |name = Guard
 |image = [[File:Guard.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -431,7 +414,6 @@ exports[`npcPageBuilder multi-version functionality should handle mixed null and
 |item1 = {{Infobox NPC
 |name = null
 |image = [[File:null.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -450,7 +432,6 @@ exports[`npcPageBuilder multi-version functionality should handle mixed null and
 |name2 = null
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:null (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -480,7 +461,6 @@ exports[`npcPageBuilder multi-version functionality should handle multiChildren 
 |name = Guard
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Guard (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat1 = 21
@@ -513,7 +493,6 @@ exports[`npcPageBuilder multi-version functionality should handle multiChildren 
 |image1 = [[File:Captain Guard.png|120px]]
 |image2 = [[File:Guard Recruit (2).png|120px]]
 |image3 = [[File:Guard Veteran (3).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat1 = 25
@@ -544,7 +523,6 @@ exports[`npcPageBuilder multi-version functionality should handle multiple NPCs 
 |name = Guard
 |image1 = [[File:Guard.png|120px]]
 |image2 = [[File:Guard (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -571,7 +549,6 @@ exports[`npcPageBuilder multi-version functionality should handle single NPC cor
 {{Infobox Monster
 |name = Guard
 |image = [[File:Guard.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 21
@@ -599,7 +576,6 @@ exports[`npcPageBuilder multi-version functionality should use NPC template when
 |name = Banker
 |image1 = [[File:Banker.png|120px]]
 |image2 = [[File:Banker (2).png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |race = [[Human]]
@@ -622,7 +598,6 @@ exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 100
@@ -643,7 +618,6 @@ exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -658,7 +632,6 @@ exports[`npcPageBuilder should build npc page with chathead when has chatheadMod
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -673,7 +646,6 @@ exports[`npcPageBuilder should build npc page with transcript 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -692,7 +664,6 @@ exports[`npcPageBuilder should build npc page without chathead when no chatheadM
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -706,7 +677,6 @@ exports[`npcPageBuilder should strip HTML tags from NPC name in page content 1`]
 {{Infobox Monster
 |name = Tornado
 |image = [[File:Tornado.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1
@@ -721,7 +691,6 @@ exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
 {{Infobox Monster
 |name = name
 |image = [[File:name.png|120px]]
-|release = [[19 March]] [[2024]]
 |update = Varlamore: Part One
 |members = Yes
 |combat = 1

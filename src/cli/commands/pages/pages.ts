@@ -6,7 +6,11 @@ const pages = new Command("pages")
   .alias("page")
   .description("Generate a page for an area, item, npc, or scenery.")
   .action((options) => {
-    pageGenerator(options.type, options.id);
+    pageGenerator(options.type, options.id, {
+      cacheVersion: options.newCache,
+      cacheSource: options.cacheSource,
+      cacheType: options.cacheType,
+    });
   })
   .addOption(
     new Option(

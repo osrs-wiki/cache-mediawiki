@@ -6,11 +6,31 @@ import {
   writeSceneryPageFromCache,
 } from "./types";
 
-import { getCacheProviderGithub } from "@/utils/cache";
+import { getCacheProviderGithub, getCacheProviderLocal } from "@/utils/cache";
 import { LazyPromise } from "@/utils/cache2/LazyPromise";
 
-const pageGenerator = async (type: string, id: number) => {
-  const cache = new LazyPromise(() => getCacheProviderGithub()).asPromise();
+type CacheOptions = {
+  cacheVersion?: string;
+  cacheSource?: "github" | "local";
+  cacheType?: "disk" | "flat";
+};
+
+const pageGenerator = async (
+  type: string,
+  id: number,
+  options: CacheOptions = {}
+) => {
+  const {
+    cacheVersion = "master",
+    cacheSource = "github",
+    cacheType = "flat",
+  } = options;
+
+  const cache = new LazyPromise(() =>
+    cacheSource === "github"
+      ? getCacheProviderGithub(cacheVersion)
+      : getCacheProviderLocal(cacheVersion, cacheType)
+  ).asPromise();
 
   switch (type) {
     case "area":

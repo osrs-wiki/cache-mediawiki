@@ -1,7 +1,7 @@
 import { differencesArchive } from "../archive";
 import { IndexDifferences } from "../differences.types";
 
-import { DiskIndexData, FlatIndexData } from "@/utils/cache2";
+import { DiskIndexData, FlatIndexData, IndexType } from "@/utils/cache2";
 
 /**
  * Retrieve the differences between two indices, their archives, and their files.

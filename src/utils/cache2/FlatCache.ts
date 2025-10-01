@@ -8,6 +8,11 @@ import {
   hash,
   IndexData,
 } from "./Cache";
+import { RegionMapper } from "./loaders";
+import { IndexType, XTEAKey } from "./types";
+import { XTEAKeyManager } from "./xtea/xtea";
+
+import { loadXTEAKeysForCache } from "@/utils/openrs2";
 
 export class FlatIndexData implements IndexData {
   public revision!: number;
@@ -96,10 +101,35 @@ export class FlatIndexData implements IndexData {
 
 export class FlatCacheProvider implements CacheProvider {
   private indexes: Map<number, Promise<FlatIndexData | undefined>> = new Map();
+  private xteaKeyManager?: XTEAKeyManager;
+  private xteaLoadPromise?: Promise<XTEAKeyManager>;
 
-  constructor(private disk: FileProvider) {}
+  constructor(
+    private disk: FileProvider,
+    private readonly cacheVersion?: string
+  ) {}
+
+  private async initializeXTEAKeys(): Promise<void> {
+    if (!this.cacheVersion) {
+      return;
+    }
+
+    try {
+      this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion);
+    } catch (error) {
+      console.warn(
+        `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
+        error
+      );
+      this.xteaKeyManager = new XTEAKeyManager();
+    }
+  }
 
   public async getIndex(index: number): Promise<FlatIndexData | undefined> {
+    if (index === IndexType.Maps) {
+      RegionMapper.initialize();
+      await this.initializeXTEAKeys();
+    }
     let idxp = this.indexes.get(index);
     if (!idxp) {
       this.indexes.set(
@@ -117,7 +147,37 @@ export class FlatCacheProvider implements CacheProvider {
     archive: number
   ): Promise<ArchiveData | undefined> {
     const idx = await this.getIndex(index);
-    return idx?.getArchive(archive);
+    const archiveData = idx?.getArchive(archive);
+
+    // Set XTEA key for Maps index
+    if (archiveData && index === IndexType.Maps) {
+      const xteaManager = this.getKeys();
+
+      // Convert archive ID to region ID using RegionMapper
+      const regionInfo = RegionMapper.getRegionFromArchiveId(
+        archiveData.namehash
+      );
+      if (regionInfo) {
+        // Use tryDecrypt to find and set the correct XTEA key
+        console.debug(
+          `Attempting XTEA decryption for archive ${archive} (region ${regionInfo.regionId})`
+        );
+        const decryptionError = xteaManager.tryDecrypt(
+          archiveData,
+          regionInfo.regionId
+        );
+        if (decryptionError) {
+          console.warn(
+            `XTEA decryption failed for archive ${archive} (region ${regionInfo.regionId}):`,
+            decryptionError.message
+          );
+          // Return undefined to indicate the archive cannot be decrypted
+          return undefined;
+        }
+      }
+    }
+
+    return archiveData;
   }
 
   public async getArchives(index: number): Promise<number[] | undefined> {
@@ -142,5 +202,16 @@ export class FlatCacheProvider implements CacheProvider {
       era: "osrs",
       indexRevision: (await this.getIndex(index))?.revision ?? 0,
     };
+  }
+
+  public getKeys(): XTEAKeyManager {
+    // Return cached manager if available
+    if (this.xteaKeyManager) {
+      return this.xteaKeyManager;
+    }
+
+    // If no cache version specified, return empty manager
+    this.xteaKeyManager = new XTEAKeyManager();
+    return this.xteaKeyManager;
   }
 }

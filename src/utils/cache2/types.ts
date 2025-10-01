@@ -78,6 +78,25 @@ export type AnimRestartMode = NewType<number, "AnimRestartMode">;
 export type AmbientSoundCurve = NewType<number, "AmbientSoundCurve">;
 export type AnimMayaID = NewType<number, "AnimMayaID">;
 
+// Region coordinates and IDs
+export type RegionID = NewType<number, "RegionID">;
+export type RegionX = NewType<number, "RegionX">;
+export type RegionY = NewType<number, "RegionY">;
+export type WorldX = NewType<number, "WorldX">;
+export type WorldY = NewType<number, "WorldY">;
+export type TileHeight = NewType<number, "TileHeight">;
+
+// Location/Object placement
+export type LocationID = NewType<number, "LocationID">;
+export type LocationType = NewType<number, "LocationType">;
+export type LocationOrientation = NewType<number, "LocationOrientation">;
+
+// Tile data
+export type OverlayID = NewType<number, "OverlayID">;
+export type OverlayPath = NewType<number, "OverlayPath">;
+export type OverlayRotation = NewType<number, "OverlayRotation">;
+export type TileSettings = NewType<number, "TileSettings">;
+
 export class Params extends Map<ParamID, string | number> {}
 
 export type KitOrItem = { kit: KitID } | { item: ItemID } | undefined;

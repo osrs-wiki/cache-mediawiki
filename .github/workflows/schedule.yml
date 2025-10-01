@@ -60,7 +60,7 @@ jobs:
           run-id: ${{ fromJson(steps.get_render_runs.outputs.runs-summary).workflow_runs[0].id }}
 
       - name: Run task
-        run: npm run start differences -- --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }} ${{ steps.download_render_artifacts.outputs.download-path != null && format('--renders renders-{0}-1', fromJson(steps.get_releases.outputs.releases)[0]) || '' }} --update "auto" --updateDate "auto" --pages "true" --examines "true"
+        run: npm run start differences -- --oldCache ${{ fromJson(steps.get_releases.outputs.releases)[1] }} --newCache ${{ fromJson(steps.get_releases.outputs.releases)[0] }} ${{ steps.download_render_artifacts.outputs.download-path != null && format('--renders renders-{0}-1', fromJson(steps.get_releases.outputs.releases)[0]) || '' }} --ignoreIndices 5 --update "auto" --updateDate "auto" --pages "true" --examines "true"
 
       - name: Upload Output
         uses: actions/upload-artifact@v4

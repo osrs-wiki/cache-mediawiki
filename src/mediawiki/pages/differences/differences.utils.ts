@@ -14,8 +14,9 @@ import _, { flatten } from "underscore";
 
 import {
   IndexFeatures,
-  IndexURLType,
-  IndexURLs,
+  IndexFieldURLs,
+  URLDefinition,
+  URLGeneratorContext,
   resultNameMap,
 } from "./differences.types";
 import {
@@ -29,6 +30,7 @@ import {
 
 import { jagexHSLtoHex } from "@/utils/colors";
 import { capitalize, stripHtmlTags } from "@/utils/string";
+import { generateURL } from "@/utils/url-generation";
 
 /**
  * Format the value a field.
@@ -84,25 +86,18 @@ export const formatEntryValue = (field: string, value: ResultValue): string => {
  * @param identifier The field identifier key
  * @param value The Result value
  * @param urls Supported urls for names and identifiers
+ * @param allFieldValues All field values for context
+ * @param entityType Entity type for context
  * @returns
  */
 export const formatEntryIdentifier = (
   identifier: string,
   value: ResultValue,
-  urls: IndexURLs
+  urls: IndexFieldURLs,
+  allFieldValues?: Record<string, unknown>,
+  entityType?: string
 ): MediaWikiContent[] => {
   switch (identifier) {
-    case "id":
-      const urlKeys = Object.keys(urls);
-      return urlKeys.length > 0
-        ? urlKeys.map(
-            (url, index) =>
-              new MediaWikiExternalLink(
-                index === 0 ? `${value}` : `(${index})`,
-                `${urls[url as IndexURLType]}${value as string}`
-              )
-          )
-        : [new MediaWikiText(formatEntryValue(identifier, value))];
     case "name":
       return [
         value
@@ -110,9 +105,66 @@ export const formatEntryIdentifier = (
           : new MediaWikiText(""),
       ];
     default:
-      return [new MediaWikiText(formatEntryValue(identifier, value))];
+      // Check if this field has specific URLs defined
+      const fieldURLs = urls[identifier];
+      if (!fieldURLs) {
+        return [new MediaWikiText(formatEntryValue(identifier, value))];
+      }
+
+      return generateLinksForField(
+        identifier,
+        value,
+        fieldURLs,
+        allFieldValues,
+        entityType
+      );
   }
 };
+
+/**
+ * Generate external links for a specific field
+ */
+function generateLinksForField(
+  fieldName: string,
+  value: ResultValue,
+  fieldURLs: URLDefinition[],
+  allFieldValues?: Record<string, unknown>,
+  entityType?: string
+): MediaWikiContent[] {
+  if (fieldURLs.length === 0) {
+    return [new MediaWikiText(formatEntryValue(fieldName, value))];
+  }
+
+  const context: URLGeneratorContext = {
+    fieldName,
+    entityType: entityType || "unknown",
+    allFields: allFieldValues || {},
+  };
+
+  return fieldURLs.map((urlDefinition, index) => {
+    try {
+      const generatedURL = generateURL(urlDefinition, value, context);
+      return new MediaWikiExternalLink(
+        index === 0 ? `${value}` : `(${index})`,
+        generatedURL
+      );
+    } catch (error) {
+      console.warn(
+        `Failed to generate URL for ${fieldName} at index ${index}`,
+        error
+      );
+      return new MediaWikiText(formatEntryValue(fieldName, value));
+    }
+  });
+}
+
+export function internalLink(value: ResultValue): MediaWikiContent[] {
+  return [
+    value
+      ? new MediaWikiLink(stripHtmlTags(value as string))
+      : new MediaWikiText(""),
+  ];
+}
 
 /**
  * Format entry field values and highlight any differences.
@@ -297,18 +349,31 @@ export const buildChangedResultTable = (
             return diffKeys.length > 0
               ? [
                   {
-                    cells: indexFeatures.identifiers.map<MediaWikiTableCell>(
-                      (identifier) => ({
-                        content: formatEntryIdentifier(
-                          identifier,
-                          entry[identifier].newValue,
-                          indexFeatures.urls
-                        ),
-                        options: {
-                          rowspan: diffKeys.length + 1,
-                        },
-                      })
-                    ),
+                    cells: indexFeatures.identifiers
+                      .map<MediaWikiTableCell>((identifier) =>
+                        entry[identifier]
+                          ? {
+                              content: formatEntryIdentifier(
+                                identifier,
+                                entry[identifier].newValue,
+                                indexFeatures.urls || {},
+                                Object.fromEntries(
+                                  Object.entries(entry).map(
+                                    ([key, changeEntry]) => [
+                                      key,
+                                      changeEntry.newValue,
+                                    ]
+                                  )
+                                ),
+                                indexFeatures.name
+                              ),
+                              options: {
+                                rowspan: diffKeys.length + 1,
+                              },
+                            }
+                          : undefined
+                      )
+                      .filter((value) => value !== undefined),
                   },
                   ...diffKeys.map<MediaWikiTableRow>((field) =>
                     getFieldDifferencesRow(entry, field)
@@ -334,7 +399,7 @@ export const buildChangedResultTable = (
                 new MediaWikiText(`${differenceName} ${indexFeatures.name}`),
               ],
               options: {
-                colspan: 5,
+                colspan: indexFeatures.identifiers.length + 3,
               },
             },
           ],
@@ -396,7 +461,9 @@ export const buildResultTable = (
               content: formatEntryIdentifier(
                 identifier,
                 entry[identifier],
-                indexFeatures.urls
+                indexFeatures.urls || {},
+                entry,
+                indexFeatures.name
               ),
             }));
           return {

@@ -1,8 +1,15 @@
+import Context from "../../../context";
 import { ArchiveDifferences } from "../differences.types";
 import { isEqualBytes } from "../differences.utils";
 import { differencesFile } from "../file";
 
-import { ArchiveData, DiskIndexData, FlatIndexData } from "@/utils/cache2";
+import {
+  ArchiveData,
+  DiskIndexData,
+  FlatIndexData,
+  IndexType,
+  RegionMapper,
+} from "@/utils/cache2";
 
 /**
  * Retrieve the differences between two archives and their files
@@ -23,6 +30,20 @@ const differencesArchive = async ({
   const oldKeys = oldArchive ? Array.from(oldArchive.files.keys()) : [];
   const archiveDifferences: ArchiveDifferences = {};
 
+  if (newIndex.id === IndexType.Maps) {
+    const regionInfo = RegionMapper.getRegionFromArchiveId(newArchive.namehash);
+    if (regionInfo && Context.newCacheProvider.getKeys().hasKeys()) {
+      Context.newCacheProvider
+        .getKeys()
+        .tryDecrypt(newArchive, regionInfo.regionId);
+      if (oldArchive && Context.oldCacheProvider.getKeys().hasKeys()) {
+        Context.oldCacheProvider
+          .getKeys()
+          .tryDecrypt(oldArchive, regionInfo.regionId);
+      }
+    }
+  }
+
   if (newArchive && oldArchive) {
     const sharedKeys = newKeys.filter((key) => oldArchive.files.has(key));
     await Promise.all(
@@ -42,7 +63,8 @@ const differencesArchive = async ({
           }
         } catch (error) {
           console.error(
-            `Error checking diffs for ${oldIndex.id}/${oldArchive.archive}/${fileKey}`
+            `Error checking diffs for ${oldIndex.id}/${oldArchive.archive}/${fileKey}`,
+            error
           );
         }
       })
@@ -55,16 +77,23 @@ const differencesArchive = async ({
   if (addedKeys) {
     await Promise.all(
       addedKeys.map(async (fileKey) => {
-        const newFile = newArchive.getFile(fileKey);
-        console.log(
-          `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
-        );
-        const results = await differencesFile({
-          newFile: { index: newIndex, archive: newArchive, file: newFile },
-        });
-        archiveDifferences[fileKey] = archiveDifferences[fileKey]
-          ? { ...archiveDifferences[fileKey], ...results }
-          : results;
+        try {
+          const newFile = newArchive.getFile(fileKey);
+          console.log(
+            `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
+          );
+          const results = await differencesFile({
+            newFile: { index: newIndex, archive: newArchive, file: newFile },
+          });
+          archiveDifferences[fileKey] = archiveDifferences[fileKey]
+            ? { ...archiveDifferences[fileKey], ...results }
+            : results;
+        } catch (error) {
+          console.error(
+            `Error checking diffs for ${newIndex.id}/${newArchive.archive}/${fileKey} (added file):`,
+            error
+          );
+        }
       })
     );
   }

@@ -1,4 +1,8 @@
 import { CacheProvider, Reader } from "../../../utils/cache2";
+import {
+  PerArchiveLoadable,
+  PerFileLoadable,
+} from "../../../utils/cache2/Loadable";
 
 export interface DecodableWithGameVal {
   archiveId?: number;
@@ -6,7 +10,10 @@ export interface DecodableWithGameVal {
   id: number;
 }
 
-export interface Decoder<T extends DecodableWithGameVal, ID> {
+export interface Decoder<
+  T extends DecodableWithGameVal | PerArchiveLoadable | PerFileLoadable,
+  ID
+> {
   decode(reader: Reader, id: ID): T;
 }
 

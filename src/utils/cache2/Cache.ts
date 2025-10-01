@@ -14,7 +14,7 @@ export interface CacheProvider {
   ): Promise<ArchiveData | undefined>;
   getArchives(index: number): Promise<number[] | undefined>;
   getVersion(index: number): Promise<CacheVersion>;
-  getKeys?(): Promise<XTEAKeyManager>;
+  getKeys?(): XTEAKeyManager;
 }
 
 export interface FileProvider {
@@ -43,7 +43,8 @@ export class ArchiveFile {
 export class ArchiveData {
   public constructor(
     public readonly index: number,
-    public readonly archive: number
+    public readonly archive: number,
+    public key?: XTEAKey
   ) {}
 
   public compressedData!: Uint8Array;
@@ -54,8 +55,6 @@ export class ArchiveData {
   public decompressedSize!: number;
 
   /**@internal*/ files: Map<number, ArchiveFile> = new Map();
-
-  public key: XTEAKey | undefined;
 
   /**@internal*/ decryptedData: Uint8Array | undefined;
 

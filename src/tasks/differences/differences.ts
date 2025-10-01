@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 
 import { CacheDifferences, DifferencesParams } from "./differences.types";
 import { differencesIndex } from "./index";
+import { IndexType } from "../../utils/cache2";
 
 import Context from "@/context";
 import {
@@ -15,12 +16,16 @@ import { LazyPromise } from "@/utils/cache2/LazyPromise";
  * Write cache differences to output files.
  * @param oldVersion The old abex cache version (ex: 2024-01-31-rev219)
  * @param newVersion The new abex cache version (ex: 2024-02-07-rev219)
+ * @param indices Optional array of index IDs to check (ex: [2, 5, 8])
+ * @param ignoreIndices Optional array of index IDs to exclude from differences (ex: [2, 5, 8]). Takes precedence over indices option.
  */
 const differencesCache = async ({
   oldVersion,
   newVersion = "master",
   method = "github",
   type = "disk",
+  indices,
+  ignoreIndices,
 }: DifferencesParams) => {
   Context.oldCacheProvider = await new LazyPromise(() =>
     method === "github"
@@ -34,9 +39,25 @@ const differencesCache = async ({
   ).asPromise();
 
   const cacheDifferences: CacheDifferences = {};
+
+  // Determine which indices to check
+  let indicesToCheck = indices || Object.keys(indexNameMap).map(Number);
+
+  // Filter out ignored indices (takes precedence over indices option)
+  if (ignoreIndices) {
+    indicesToCheck = indicesToCheck.filter(
+      (index) => !ignoreIndices.includes(index)
+    );
+  }
+
   await Promise.all(
-    Object.keys(indexNameMap).map(async (indexString) => {
-      const index = parseInt(indexString);
+    indicesToCheck.map(async (index) => {
+      // Skip if index is not in indexNameMap when filtering by specific indices
+      if (indices && !(index in indexNameMap)) {
+        console.log(`Skipping index ${index} - not found in indexNameMap`);
+        return;
+      }
+
       console.log(`Checking index ${index} differences`);
       const oldIndex = await Context.oldCacheProvider.getIndex(index);
       const newIndex = await Context.newCacheProvider.getIndex(index);
@@ -44,6 +65,16 @@ const differencesCache = async ({
         console.log(
           `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
         );
+        if (
+          index === IndexType.Maps &&
+          (Context.oldCacheProvider.getKeys().hasKeys() === false ||
+            Context.newCacheProvider.getKeys().hasKeys() === false)
+        ) {
+          console.warn(
+            `Warning: XTEA keys are missing for Maps index decryption.`
+          );
+          return;
+        }
         cacheDifferences[index] = await differencesIndex(oldIndex, newIndex);
       } else {
         console.log(`No changes in index ${index}.`);
