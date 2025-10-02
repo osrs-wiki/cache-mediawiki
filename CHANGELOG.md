@@ -1,5 +1,20 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.8.0
+
+### Minor Changes
+
+- 47307b7: Add indices option to differences command for filtering diff result by indices
+- 47307b7: Enhance differences URL generation with flexible template system and function-based URL generators
+- 47307b7: Add XTEA key management system with OpenRS2 integration for Maps index decryption
+- 47307b7: Add support to the differences command for an "ignoreIndices" option
+- 47307b7: Add support for map and region differences with Region, MapDefinition, and LocationsDefinition classes
+
+### Patch Changes
+
+- 47307b7: Fix pages command to properly pass cache version and options to page generator
+- 425663e: Bump tmp and @changesets/cli
+
 ## 1.7.1
 
 ### Patch Changes
