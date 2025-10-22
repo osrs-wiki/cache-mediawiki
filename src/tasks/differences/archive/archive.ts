@@ -30,7 +30,7 @@ const differencesArchive = async ({
   const oldKeys = oldArchive ? Array.from(oldArchive.files.keys()) : [];
   const archiveDifferences: ArchiveDifferences = {};
 
-  if (newIndex.id === IndexType.Maps) {
+  if (newIndex?.id === IndexType.Maps) {
     const regionInfo = RegionMapper.getRegionFromArchiveId(newArchive.namehash);
     if (regionInfo && Context.newCacheProvider.getKeys().hasKeys()) {
       Context.newCacheProvider
