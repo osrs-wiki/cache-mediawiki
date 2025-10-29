@@ -117,6 +117,12 @@ export class ScriptVarType {
     jag: "colour",
     type: "RGB",
   });
+  static readonly objShape = this.t({
+    id: 8,
+    char: "H",
+    jag: "locshape",
+    type: "ObjShape",
+  });
   static readonly widget = this.t({ id: 9, char: "I", jag: "component" });
   static readonly kit = this.t({ id: 10, char: "K", jag: "idkit" });
   static readonly midi = this.t({ id: 11, char: "M", jag: "midi" });
@@ -195,6 +201,12 @@ export class ScriptVarType {
     char: "x",
     jag: "texture",
     type: "TextureID",
+  });
+  static readonly category = this.t({
+    id: 41,
+    char: "y",
+    jag: "category",
+    type: "CategoryID",
   });
   static readonly char = this.t({ id: 42, char: "z", jag: "char" });
   static readonly mapSceneIcon = this.t({

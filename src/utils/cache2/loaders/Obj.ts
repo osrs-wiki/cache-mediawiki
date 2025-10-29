@@ -11,7 +11,7 @@ import {
   MapSceneIconID,
   ModelID,
   ObjID,
-  ObjType,
+  ObjShape,
   Params,
   SoundEffectID,
   TextureID,
@@ -30,7 +30,7 @@ export class Obj extends PerFileLoadable {
   public static readonly gameval = GameValType.Objects;
 
   public models: null | ModelID[] = null;
-  public modelTypes: null | ObjType[] = null;
+  public modelShapes: null | ObjShape[] = null;
   public name = "null";
   public width = 1;
   public length = 1;
@@ -82,7 +82,9 @@ export class Obj extends PerFileLoadable {
   public randomizeAnimationStart = true;
   public blockingMask: undefined | number = undefined;
   public deferAnimChange = false;
+  public soundVisibility = 2;
   public params = new Params();
+  public unknown1 = false;
   public gameVal?: string;
 
   public static decode(r: Reader, id: ObjID): Obj {
@@ -93,11 +95,11 @@ export class Obj extends PerFileLoadable {
         case 5: {
           const len = r.u8();
           v.models = new Array(len);
-          v.modelTypes = new Array(len);
+          v.modelShapes = new Array(len);
           for (let i = 0; i < len; i++) {
             v.models[i] = <ModelID>r.u16();
-            v.modelTypes[i] =
-              opcode == 5 ? ObjType.CentrepieceStraight : <ObjType>r.u8();
+            v.modelShapes[i] =
+              opcode == 5 ? ObjShape.CentrepieceStraight : <ObjShape>r.u8();
           }
           break;
         }
@@ -273,6 +275,12 @@ export class Obj extends PerFileLoadable {
           v.ambientSoundFadeOutCurve = r.u8() as AmbientSoundCurve;
           v.ambientSoundFadeOutDuration = r.u16();
           break;
+        case 94:
+          v.unknown1 = true;
+          break;
+        case 95:
+          v.soundVisibility = r.u8();
+          break;
         case 249:
           v.params = r.params();
           break;
@@ -284,7 +292,7 @@ export class Obj extends PerFileLoadable {
     if (v.isDoor === -1) {
       v.isDoor = 0;
       if (
-        v.modelTypes?.[0] === ObjType.CentrepieceStraight ||
+        v.modelShapes?.[0] === ObjShape.CentrepieceStraight ||
         v.actions.some((a) => a !== null)
       ) {
         v.isDoor = 1;
