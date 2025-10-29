@@ -122,6 +122,10 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
   public ranged?: number = undefined;
   public magic?: number = undefined;
   public height?: number = undefined;
+  public footprintSize = -1;
+  public unknown1 = false;
+  public canHideForOverlap = false;
+  public overlapTintHSL: HSL = 39188;
   public params = new Params();
   public gameVal?: string;
 
@@ -318,6 +322,18 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
           break;
         case 124:
           v.height = r.u16();
+          break;
+        case 126:
+          v.footprintSize = r.u16();
+          break;
+        case 129:
+          v.unknown1 = true;
+          break;
+        case 145:
+          v.canHideForOverlap = true;
+          break;
+        case 146:
+          v.overlapTintHSL = <HSL>r.u16();
           break;
         case 249:
           v.params = r.params();
