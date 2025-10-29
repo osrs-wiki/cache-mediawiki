@@ -1,5 +1,15 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.9.0
+
+### Minor Changes
+
+- f7c44b2: Add support for revision 234 & 235
+
+### Patch Changes
+
+- adccd0a: Add optional chaining for newIndex in differencesArchive function
+
 ## 1.8.0
 
 ### Minor Changes
