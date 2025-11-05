@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.10.0
+
+### Minor Changes
+
+- 5462488: Add support for dbtable type to cache2
+
 ## 1.9.0
 
 ### Minor Changes
