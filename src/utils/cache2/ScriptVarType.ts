@@ -239,6 +239,12 @@ export class ScriptVarType {
     jag: "dbrow",
     type: "DBRowID",
   });
+  static readonly dbTable = this.t({
+    id: 118,
+    char: "Ø",
+    jag: "dbtable",
+    type: "DBTableID",
+  });
   static readonly varp = this.t({
     id: 209,
     char: "7",
