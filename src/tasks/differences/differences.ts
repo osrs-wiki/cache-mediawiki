@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "fs/promises";
 
+import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
 import { differencesIndex } from "./index";
 import { IndexType } from "../../utils/cache2";
@@ -85,15 +86,43 @@ const differencesCache = async ({
   const builder = differencesPageBuilder(cacheDifferences);
   const dir = `./out/differences`;
   await mkdir(dir, { recursive: true });
+
+  // Write JSON output
   await writeFile(
     `${dir}/${newVersion} JSON.json`,
     JSON.stringify(cacheDifferences)
   );
+
+  // Write MediaWiki content
   await writeFile(
     `${dir}/${newVersion} content.txt`,
     JSON.stringify(builder.content)
   );
+
+  // Write MediaWiki text
   await writeFile(`${dir}/${newVersion}.txt`, builder.build());
+
+  // Write CSV outputs
+  console.log("Generating CSV exports...");
+  const csvOutputFiles = await writeDifferencesCSV(cacheDifferences, {
+    outputDir: dir,
+    version: newVersion,
+    includeURLs: true,
+    flattenObjects: true,
+    includeTimestamp: true,
+  });
+
+  console.log(`CSV files generated:`);
+  console.log(`- Summary: ${csvOutputFiles.summary}`);
+  console.log(`- Detailed: ${csvOutputFiles.detailed}`);
+  console.log(
+    `- Index-specific: ${Object.keys(csvOutputFiles.byIndex).length} files`
+  );
+  console.log(
+    `- Change type specific: ${
+      Object.keys(csvOutputFiles.byChangeType).length
+    } files`
+  );
 };
 
 export default differencesCache;
