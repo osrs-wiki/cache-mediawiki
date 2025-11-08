@@ -12,6 +12,7 @@ import {
 } from "@/mediawiki/pages/differences";
 import { getCacheProviderGithub, getCacheProviderLocal } from "@/utils/cache";
 import { LazyPromise } from "@/utils/cache2/LazyPromise";
+import { exportMediaWikiToCSV } from "@/utils/csv";
 
 /**
  * Write cache differences to output files.
@@ -111,6 +112,27 @@ const differencesCache = async ({
     flattenObjects: true,
     includeTimestamp: true,
   });
+
+  // Write MediaWiki table CSV exports
+  console.log("Generating MediaWiki table CSV exports...");
+  try {
+    const mediaWikiCsvFiles = await exportMediaWikiToCSV(builder, dir, {
+      fileNamePrefix: `${newVersion}-mediawiki-tables`,
+      includeMetadata: true,
+      csvConfiguration: { fields: [] },
+    });
+
+    if (mediaWikiCsvFiles.length > 0) {
+      console.log(`MediaWiki table CSV files generated:`);
+      mediaWikiCsvFiles.forEach((file, index) => {
+        console.log(`- Table ${index + 1}: ${file}`);
+      });
+    } else {
+      console.log("- No MediaWiki tables found to export");
+    }
+  } catch (error) {
+    console.warn("Failed to export MediaWiki tables to CSV:", error);
+  }
 
   console.log(`CSV files generated:`);
   console.log(`- Summary: ${csvOutputFiles.summary}`);
