@@ -37,6 +37,9 @@ const options = [
     "--newContentTemplate <newContentTemplate>",
     "The template for new content."
   ).default("New Content"),
+  new Option("--output <format>", "Output format for differences.")
+    .choices(["json", "mediawiki", "csv"])
+    .default("mediawiki"),
 ];
 
 export default options;
