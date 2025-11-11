@@ -2,4 +2,4 @@
 "@osrs-wiki/cache-mediawiki": patch
 ---
 
-Fix IndexType.GameVal value
+Fix IndexType.GameVals value
