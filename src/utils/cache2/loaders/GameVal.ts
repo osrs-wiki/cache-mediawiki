@@ -2,7 +2,7 @@ import { CacheProvider } from "../Cache";
 import { Loadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
-import { GameValID, GameValType } from "../types";
+import { GameValID, IndexType } from "../types";
 
 const decoder = new TextDecoder("utf-8");
 
@@ -13,7 +13,7 @@ export class GameVal extends Loadable {
 
   public declare [Typed.type]: Typed.Any;
 
-  public static readonly index = 24;
+  public static readonly index = IndexType.GameVals;
 
   public name!: string;
   public files?: Map<number, string> = undefined;
