@@ -258,7 +258,7 @@ export enum IndexType {
   WorldMapGrounds = 19,
   DbTableIndex = 21,
   Animayas = 22,
-  GameVals = 23,
+  GameVals = 24,
 }
 
 export enum ConfigType {
