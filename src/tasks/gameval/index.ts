@@ -1,9 +1,4 @@
-export {
-  buildGameValMappings,
-  getGameValChanges,
-  buildSingleCacheMapping,
-  hasGameValChanges,
-} from "./gameval";
+export { buildGameValMappings, getGameValChanges } from "./gameval";
 
 export type {
   GameValMappingParams,
