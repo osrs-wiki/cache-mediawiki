@@ -3,6 +3,7 @@ import { program } from "commander";
 import {
   combatAchievements,
   clues,
+  dbtables,
   differences,
   gameval,
   pages,
@@ -14,7 +15,14 @@ import Context from "@/context";
 import { getExamines } from "@/utils/examines";
 import { getLatestNewsTitle } from "@/utils/news";
 
-const commands = [combatAchievements, clues, differences, gameval, pages];
+const commands = [
+  combatAchievements,
+  clues,
+  dbtables,
+  differences,
+  gameval,
+  pages,
+];
 
 program
   .name("Cache to MediaWiki tools")
