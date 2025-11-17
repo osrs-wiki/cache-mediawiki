@@ -16,7 +16,6 @@ exports[`Item Infobox Item infbox should use beta ID when Context.beta is true 1
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = beta1
 }}
@@ -40,7 +39,6 @@ exports[`Item Infobox Item infobox should be generated 1`] = `
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -64,7 +62,6 @@ exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -111,7 +108,6 @@ exports[`Item Infobox Item infobox should be generated with head wearpos 1`] = `
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -158,7 +154,6 @@ exports[`Item Infobox Item infobox should be generated with ranged ammo strength
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -210,7 +205,6 @@ exports[`Item Infobox Item infobox should be generated with ranged equipment str
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -262,7 +256,6 @@ exports[`Item Infobox Item infobox should be generated with weapon bonuses 1`] =
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -314,7 +307,6 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ammo we
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -359,7 +351,6 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ring we
 |options = Test Action
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}
@@ -404,7 +395,6 @@ exports[`Item Infobox Item infobox with sub ops 1`] = `
 |options = Test Action 1 (Sub Action 1), Test Action 2 (Sub Action 2.1, Sub Action 2.2), Test Action 3
 |examine = Examine text.
 |value = 0
-|alchable = Yes
 |weight = 0.000
 |id = 1234
 }}

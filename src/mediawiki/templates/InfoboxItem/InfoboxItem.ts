@@ -27,7 +27,7 @@ const InfoboxItem = (item: Item) => {
     options: getInventoryActions(item),
     examine: item.examine,
     value: item.price,
-    alchable: item.params.get(NO_ALCHABLE_PARAM) === 1 ? undefined : true,
+    alchable: item.params.get(NO_ALCHABLE_PARAM) === 1 ? false : undefined,
     weight: (item.weight / 1000).toFixed(3),
     id: `${Context.beta ? "beta" : ""}${item.id.toString()}`,
   });
