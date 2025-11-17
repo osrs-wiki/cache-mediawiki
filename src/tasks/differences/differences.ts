@@ -146,12 +146,6 @@ const differencesCache = async ({
     // MediaWiki output (default)
     console.log("Generating MediaWiki output...");
 
-    // Write JSON output (for compatibility)
-    await writeFile(
-      `${dir}/${newVersion} JSON.json`,
-      JSON.stringify(cacheDifferences)
-    );
-
     // Write MediaWiki content
     await writeFile(
       `${dir}/${newVersion} content.txt`,
