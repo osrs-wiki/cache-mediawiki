@@ -6,6 +6,7 @@ type CacheMediaWikiContext = {
     npcs?: { [key: string]: string };
     scenery?: { [key: string]: string };
   };
+  output?: "json" | "mediawiki" | "csv";
   pages?: boolean;
   newCache?: string;
   oldCache?: string;

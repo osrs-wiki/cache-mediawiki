@@ -46,6 +46,16 @@ on:
         default: "auto"
         required: false
 
+      output:
+        description: "Output format"
+        required: false
+        default: "mediawiki"
+        type: choice
+        options:
+          - json
+          - mediawiki
+          - csv
+
 jobs:
   run-cache-tasks:
     runs-on: ubuntu-latest
@@ -112,7 +122,8 @@ jobs:
           NEWCACHE: ${{ steps.get_releases.outputs.releases != null && fromJson(steps.get_releases.outputs.releases)[0] || github.event.inputs.newCache }}
           UPDATE: ${{ github.event.inputs.update }}
           UPDATEDATE: ${{ github.event.inputs.updateDate }}
-        run: npm run start $TASK -- --pages $PAGES --examines $EXAMINES --renders $RENDERS --oldCache $OLDCACHE --newCache $NEWCACHE --update $UPDATE --updateDate $UPDATEDATE
+          OUTPUT: ${{ github.event.inputs.output }}
+        run: npm run start $TASK -- --pages $PAGES --examines $EXAMINES --renders $RENDERS --oldCache $OLDCACHE --newCache $NEWCACHE --update $UPDATE --updateDate $UPDATEDATE --output $OUTPUT
 
       - name: Upload Output
         uses: actions/upload-artifact@v4

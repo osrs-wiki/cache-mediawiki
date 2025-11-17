@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "fs/promises";
 
+import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
 import { differencesIndex } from "./index";
 import { IndexType } from "../../utils/cache2";
@@ -11,6 +12,7 @@ import {
 } from "@/mediawiki/pages/differences";
 import { getCacheProviderGithub, getCacheProviderLocal } from "@/utils/cache";
 import { LazyPromise } from "@/utils/cache2/LazyPromise";
+import { exportMediaWikiToCSV } from "@/utils/csv";
 
 /**
  * Write cache differences to output files.
@@ -85,15 +87,75 @@ const differencesCache = async ({
   const builder = differencesPageBuilder(cacheDifferences);
   const dir = `./out/differences`;
   await mkdir(dir, { recursive: true });
-  await writeFile(
-    `${dir}/${newVersion} JSON.json`,
-    JSON.stringify(cacheDifferences)
-  );
-  await writeFile(
-    `${dir}/${newVersion} content.txt`,
-    JSON.stringify(builder.content)
-  );
-  await writeFile(`${dir}/${newVersion}.txt`, builder.build());
+
+  // Determine output format from Context
+  const outputFormat = Context.output || "mediawiki";
+
+  if (outputFormat === "json") {
+    // JSON output only
+    console.log("Generating JSON output...");
+    await writeFile(
+      `${dir}/${newVersion} JSON.json`,
+      JSON.stringify(cacheDifferences)
+    );
+    console.log(`JSON output generated: ${newVersion} JSON.json`);
+  } else if (outputFormat === "csv") {
+    // CSV output only
+    console.log("Generating CSV exports...");
+    const csvOutputFiles = await writeDifferencesCSV(cacheDifferences, {
+      outputDir: dir,
+      version: newVersion,
+      includeURLs: true,
+      flattenObjects: true,
+      includeTimestamp: true,
+    });
+
+    // Also generate MediaWiki table CSV exports
+    console.log("Generating MediaWiki table CSV exports...");
+    try {
+      const mediaWikiCsvFiles = await exportMediaWikiToCSV(builder, dir, {
+        fileNamePrefix: `${newVersion}-mediawiki-tables`,
+        includeMetadata: true,
+        csvConfiguration: { fields: [] },
+      });
+
+      if (mediaWikiCsvFiles.length > 0) {
+        console.log(`MediaWiki table CSV files generated:`);
+        mediaWikiCsvFiles.forEach((file, index) => {
+          console.log(`- Table ${index + 1}: ${file}`);
+        });
+      } else {
+        console.log("- No MediaWiki tables found to export");
+      }
+    } catch (error) {
+      console.warn("Failed to export MediaWiki tables to CSV:", error);
+    }
+
+    console.log(`CSV files generated:`);
+    console.log(`- Summary: ${csvOutputFiles.summary}`);
+    console.log(`- Detailed: ${csvOutputFiles.detailed}`);
+    console.log(
+      `- Index-specific: ${Object.keys(csvOutputFiles.byIndex).length} files`
+    );
+    console.log(
+      `- Change type specific: ${
+        Object.keys(csvOutputFiles.byChangeType).length
+      } files`
+    );
+  } else {
+    // MediaWiki output (default)
+    console.log("Generating MediaWiki output...");
+
+    // Write MediaWiki content
+    await writeFile(
+      `${dir}/${newVersion} content.txt`,
+      JSON.stringify(builder.content)
+    );
+
+    // Write MediaWiki text
+    await writeFile(`${dir}/${newVersion}.txt`, builder.build());
+    console.log(`MediaWiki output generated: ${newVersion}.txt`);
+  }
 };
 
 export default differencesCache;

@@ -25,6 +25,7 @@ program
   .hook("preAction", async (_program, command) => {
     const options = command.optsWithGlobals();
     Context.beta = options.beta;
+    Context.output = options.output;
     Context.pages = options.pages;
     Context.update = options.update;
     Context.updateDate = options.updateDate;
