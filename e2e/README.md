@@ -67,7 +67,7 @@ Update snapshots when:
 
 ## Test Cache
 
-The e2e tests use a test cache (`--newCache test-cache`) that provides sample data for testing. This ensures tests are deterministic and don't depend on external cache files.
+The e2e tests use the cache version `2025-07-23-rev231` which is fetched from GitHub/OpenRS2. This ensures tests are deterministic and work in CI without requiring local cache files.
 
 ## File Structure
 
@@ -125,7 +125,7 @@ it("should generate music page", async () => {
       "pages",
       "--",
       "--newCache",
-      "test-cache",
+      "2025-07-23-rev231",
       "--id",
       "5154",
       "--type",
