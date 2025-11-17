@@ -4,6 +4,40 @@ exports[`InfoboxItem InfoboxItem - base 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
+    "alchable": undefined,
+    "bankable": false,
+    "equipable": false,
+    "examine": "Examine text.",
+    "exchange": true,
+    "id": "1234",
+    "image": MediaWikiFile {
+      "children": undefined,
+      "fileName": "Test Item.png",
+      "options": undefined,
+    },
+    "members": true,
+    "name": "Test Item",
+    "noteable": false,
+    "options": Array [
+      "Test Action",
+    ],
+    "placeholder": undefined,
+    "quest": "No",
+    "release": undefined,
+    "stackable": false,
+    "tradeable": true,
+    "update": undefined,
+    "value": 0,
+    "weight": "0.000",
+  },
+}
+`;
+
+exports[`InfoboxItem InfoboxItem - with alchable=false (NO_ALCHABLE_PARAM=1) 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Item",
+  "params": Object {
+    "alchable": false,
     "bankable": false,
     "equipable": false,
     "examine": "Examine text.",
@@ -36,6 +70,7 @@ exports[`InfoboxItem InfoboxItem - with stack variants 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
+    "alchable": undefined,
     "bankable": false,
     "equipable": false,
     "examine": "Examine text.",
@@ -101,6 +136,7 @@ exports[`InfoboxItem InfoboxItem - with stack variants that are all 0 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
+    "alchable": undefined,
     "bankable": false,
     "equipable": false,
     "examine": "Examine text.",
@@ -133,6 +169,7 @@ exports[`InfoboxItem InfoboxItem - with wearpos1 >= 0 1`] = `
 InfoboxTemplate {
   "name": "Infobox Item",
   "params": Object {
+    "alchable": undefined,
     "bankable": false,
     "equipable": true,
     "examine": "Examine text.",
