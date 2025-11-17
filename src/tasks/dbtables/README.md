@@ -28,10 +28,10 @@ The task creates the following directory structure:
 
 ```
 ./out/dbtables/{version}/
-├── Table_Name_1.csv
-├── Table_Name_2.csv
+├── 44 - Music_Tracks.csv
+├── 45 - Quest_List.csv
 ├── ...
-└── Table_Name_N.csv
+└── N - Table_Name.csv
 ```
 
 Each CSV file contains:
