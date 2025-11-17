@@ -1,5 +1,6 @@
 import InfoboxItem from "./InfoboxItem";
 
+import { NO_ALCHABLE_PARAM } from "@/types/params";
 import { Item, ItemID, Params, WearPos } from "@/utils/cache2";
 
 const BASE_ITEM: Item = {
@@ -90,6 +91,16 @@ describe("InfoboxItem", () => {
       ...BASE_ITEM,
       stackVariantItems: [0 as ItemID, 0 as ItemID, 0 as ItemID],
       stackVariantQuantities: [0, 0, 0],
+    });
+    expect(item).toMatchSnapshot();
+  });
+
+  test("InfoboxItem - with alchable=false (NO_ALCHABLE_PARAM=1)", () => {
+    const params = new Params();
+    params.set(NO_ALCHABLE_PARAM, 1);
+    const item = InfoboxItem({
+      ...BASE_ITEM,
+      params,
     });
     expect(item).toMatchSnapshot();
   });

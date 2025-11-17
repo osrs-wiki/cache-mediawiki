@@ -4,6 +4,7 @@ import type { InfoboxItem as InfoboxItemTemplate } from "@osrs-wiki/mediawiki-bu
 import { getInventoryActions, getItemInfoboxImage } from "./InfoboxItem.utils";
 
 import Context from "@/context";
+import { NO_ALCHABLE_PARAM } from "@/types/params";
 import { Item } from "@/utils/cache2";
 
 const InfoboxItem = (item: Item) => {
@@ -26,6 +27,7 @@ const InfoboxItem = (item: Item) => {
     options: getInventoryActions(item),
     examine: item.examine,
     value: item.price,
+    alchable: item.params.get(NO_ALCHABLE_PARAM) === 1 ? undefined : true,
     weight: (item.weight / 1000).toFixed(3),
     id: `${Context.beta ? "beta" : ""}${item.id.toString()}`,
   });
