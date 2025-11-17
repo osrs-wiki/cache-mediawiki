@@ -1,5 +1,18 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.11.0
+
+### Minor Changes
+
+- b7fc9b7: Add support for output format selection via --output CLI option (json, mediawiki, csv)
+- 5ab1ee2: Add dbtables task for exporting dbtables to csv
+- f4d65f8: Add gameval task for gameval id comparison between two caches
+
+### Patch Changes
+
+- 63087e7: Fix IndexType.GameVals value
+- 529b03a: Update e2e tests to use real newCache option
+
 ## 1.10.0
 
 ### Minor Changes
