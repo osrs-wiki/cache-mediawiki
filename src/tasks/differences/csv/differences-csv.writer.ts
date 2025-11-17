@@ -6,7 +6,7 @@ import {
   CSVExportConfig,
   CSVOutputFiles,
 } from "./differences-csv.types";
-import { CacheDifferences, Difference } from "../differences.types";
+import { CacheDifferences } from "../differences.types";
 
 import { writeCSVWithConfig, CSVConfiguration } from "@/utils/csv";
 
@@ -103,13 +103,18 @@ export const writeDifferencesCSV = async (
   const rowsByChangeType = groupBy(csvRows, "changeType");
   for (const [changeType, changeRows] of Object.entries(rowsByChangeType)) {
     const filename =
-      outputFiles.byChangeType[changeType as "added" | "removed" | "changed"];
+      outputFiles.byChangeType[changeType as Difference];
 
     if (filename) {
       await writeCSVWithConfig(changeRows, csvConfigurations.detailed, {
         filename,
         outputDir: config.outputDir,
       });
+    } else {
+      // Warn if an unexpected change type is encountered
+      console.warn(
+        `[differences-csv.writer] Unexpected changeType '${changeType}' encountered. No CSV file will be written for these rows.`
+      );
     }
   }
 

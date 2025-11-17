@@ -176,8 +176,12 @@ const stripMediaWikiMarkup = (text: string): string => {
       .replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g, "$2")
       // Remove simple links [[Page]] -> Page
       .replace(/\[\[([^\]]+)\]\]/g, "$1")
-      // Remove template markup {{Template}} -> Template
-      .replace(/\{\{([^|}]+)[^}]*\}\}/g, "$1")
+      // Template handling strategy:
+      // For {{Template|display text}}, extract display text (first parameter after pipe).
+      // For {{Template}}, extract Template name.
+      // For {{Template|param1|param2}}, extract first parameter.
+      .replace(/\{\{([^\}|]+)\|([^\}|]+)[^}]*\}\}/g, "$2")
+      .replace(/\{\{([^\}|]+)\}\}/g, "$1")
       // Remove HTML tags
       .replace(/<[^>]+>/g, "")
       // Clean up whitespace
