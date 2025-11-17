@@ -70,7 +70,8 @@ describe("dbtables.utils", () => {
 
       const headers = extractColumnHeaders(mockRow, columnNames);
 
-      expect(headers).toEqual(["Column_A", "Column_B", "Column_D"]);
+      // Now includes ALL columns up to max index, even undefined ones
+      expect(headers).toEqual(["Column_A", "Column_B", "Column_2", "Column_D"]);
     });
 
     it("should use fallback names for unnamed columns", () => {
@@ -101,6 +102,40 @@ describe("dbtables.utils", () => {
       const headers = extractColumnHeaders(mockRow, columnNames);
 
       expect(headers).toEqual([]);
+    });
+
+    it("should include all columns even when first row has empty values", () => {
+      const mockRow = {
+        id: 1 as DBRowID,
+        table: 164,
+        values: [
+          ["value0"], // Column 0 has value
+          [], // Column 1 empty
+          [], // Column 2 empty
+          [], // Column 3 empty
+          ["value4"], // Column 4 has value
+        ],
+        types: [],
+      } as DBRow;
+
+      const columnNames = new Map([
+        [0, "boat_hp_max"],
+        [1, "boat_speed"],
+        [2, "boat_turning"],
+        [3, "boat_cargo"],
+        [4, "boat_defense"],
+      ]);
+
+      const headers = extractColumnHeaders(mockRow, columnNames);
+
+      // Should include ALL defined columns, not just ones with values
+      expect(headers).toEqual([
+        "boat_hp_max",
+        "boat_speed",
+        "boat_turning",
+        "boat_cargo",
+        "boat_defense",
+      ]);
     });
   });
 });
