@@ -6,7 +6,7 @@ import {
   CSVExportConfig,
   CSVOutputFiles,
 } from "./differences-csv.types";
-import { CacheDifferences } from "../differences.types";
+import { CacheDifferences, Difference } from "../differences.types";
 
 import { writeCSVWithConfig, CSVConfiguration } from "@/utils/csv";
 
@@ -102,8 +102,7 @@ export const writeDifferencesCSV = async (
   // Write change type specific CSV files
   const rowsByChangeType = groupBy(csvRows, "changeType");
   for (const [changeType, changeRows] of Object.entries(rowsByChangeType)) {
-    const filename =
-      outputFiles.byChangeType[changeType as Difference];
+    const filename = outputFiles.byChangeType[changeType as Difference];
 
     if (filename) {
       await writeCSVWithConfig(changeRows, csvConfigurations.detailed, {
