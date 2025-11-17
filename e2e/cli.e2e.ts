@@ -60,7 +60,7 @@ describe("CLI E2E Tests", () => {
     it("should require id parameter", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "test-cache"],
+        args: ["pages", "--", "--newCache", "2025-07-23-rev231"],
       });
 
       expect(result.exitCode).toBe(1);
@@ -76,7 +76,7 @@ describe("CLI E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "test-cache",
+          "2025-07-23-rev231",
           "--id",
           "123",
           "--type",
