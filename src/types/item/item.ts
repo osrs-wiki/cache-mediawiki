@@ -24,6 +24,7 @@ export type WeaponType =
   | "Bulwark"
   | "Chinchompas"
   | "Claw"
+  | "Crate"
   | "Crossbow"
   | "Gun"
   | "Multi-Style"
