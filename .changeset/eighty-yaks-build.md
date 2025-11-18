@@ -1,5 +1,5 @@
 ---
-"@osrs-wiki/cache-mediawiki": patch
+"@osrs-wiki/cache-mediawiki": minor
 ---
 
 Add db column index to dbtable csv output
