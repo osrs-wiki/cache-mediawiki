@@ -4,6 +4,7 @@ import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
 import { differencesIndex } from "./index";
 import { IndexType } from "../../utils/cache2";
+import { flushItemPages } from "../pages/types/item";
 
 import Context from "@/context";
 import {
@@ -83,6 +84,11 @@ const differencesCache = async ({
       }
     })
   );
+
+  // Flush any collected item pages after all diff processing is complete
+  if (Context.pages) {
+    await flushItemPages();
+  }
 
   const builder = differencesPageBuilder(cacheDifferences);
   const dir = `./out/differences`;

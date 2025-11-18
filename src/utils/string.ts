@@ -23,3 +23,15 @@ export const vowel = (noun: string) => {
 export const stripHtmlTags = (text: string): string => {
   return text.replaceAll(/<[^>]*>/g, "");
 };
+
+/**
+ * Extract the base name from an item name by removing parenthetical suffixes.
+ * For example: "Bronze sword (two)" -> "Bronze sword"
+ * @param name The item name that may contain a parenthetical suffix
+ * @returns The base name without parenthetical suffix
+ */
+export const getBaseName = (name: string): string => {
+  // Match and remove trailing parenthetical content like " (two)", " (broken)", etc.
+  // Only removes if there's a space before the opening parenthesis
+  return name.replace(/\s+\([^)]*\)\s*$/, "").trim();
+};
