@@ -46,7 +46,7 @@ const weaponCategoryMap: { [key: number]: WeaponType } = {
   1014: "Bulwark",
   1193: "Scythe",
   1588: "Partisan",
-  //2294: "Crate",
+  2294: "Blunt",
 };
 
 /**

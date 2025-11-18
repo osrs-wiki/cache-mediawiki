@@ -82,6 +82,7 @@ exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
 |mdmg = 0
 |prayer = 0
 |slot = cape
+|combatstyle = Unarmed
 |image = [[File:Test Item equipped male.png]]
 |altimage = [[File:Test Item equipped female.png]]
 }}
@@ -127,6 +128,7 @@ exports[`Item Infobox Item infobox should be generated with head wearpos 1`] = `
 |mdmg = 0
 |prayer = 0
 |slot = head
+|combatstyle = Unarmed
 |image = [[File:Test Item equipped male.png]]
 |altimage = [[File:Test Item equipped female.png]]
 }}
@@ -322,6 +324,7 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ammo we
 |mdmg = 0
 |prayer = 0
 |slot = ammot
+|combatstyle = Unarmed
 }}
 
 "
@@ -365,6 +368,7 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ring we
 |mdmg = 0
 |prayer = 0
 |slot = ring
+|combatstyle = Unarmed
 }}
 
 "

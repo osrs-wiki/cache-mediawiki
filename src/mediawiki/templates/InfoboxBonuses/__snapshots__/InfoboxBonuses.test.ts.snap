@@ -7,6 +7,14 @@ MediaWikiTemplate {
   "options": undefined,
   "params": Array [
     Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
+    Object {
       "key": "astab",
       "value": "0",
     },
@@ -66,6 +74,10 @@ MediaWikiTemplate {
       "key": "slot",
       "value": "ammot",
     },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
+    },
   ],
 }
 `;
@@ -76,6 +88,14 @@ MediaWikiTemplate {
   "name": "Infobox Bonuses",
   "options": undefined,
   "params": Array [
+    Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
     Object {
       "key": "astab",
       "value": "-5",
@@ -137,6 +157,10 @@ MediaWikiTemplate {
       "value": "weapon",
     },
     Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
+    },
+    Object {
       "key": "image1",
       "value": "[[File:Decorative platebody equipped male.png]]",
     },
@@ -162,6 +186,14 @@ MediaWikiTemplate {
   "name": "Infobox Bonuses",
   "options": undefined,
   "params": Array [
+    Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
     Object {
       "key": "astab",
       "value": "0",
@@ -223,6 +255,10 @@ MediaWikiTemplate {
       "value": "weapon",
     },
     Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
+    },
+    Object {
       "key": "image1",
       "value": "[[File:Crate of adamantite ore equipped male.png]]",
     },
@@ -248,6 +284,18 @@ MediaWikiTemplate {
   "name": "Infobox Bonuses",
   "options": undefined,
   "params": Array [
+    Object {
+      "key": "version1",
+      "value": "1",
+    },
+    Object {
+      "key": "version2",
+      "value": "2",
+    },
+    Object {
+      "key": "version3",
+      "value": "3",
+    },
     Object {
       "key": "astab",
       "value": "+10",
@@ -307,6 +355,10 @@ MediaWikiTemplate {
     Object {
       "key": "slot",
       "value": "weapon",
+    },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
     },
     Object {
       "key": "image1",
@@ -402,6 +454,10 @@ MediaWikiTemplate {
       "key": "slot",
       "value": "ammot",
     },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
+    },
   ],
 }
 `;
@@ -471,6 +527,10 @@ MediaWikiTemplate {
     Object {
       "key": "slot",
       "value": "weapon",
+    },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
     },
     Object {
       "key": "image",
@@ -551,6 +611,10 @@ MediaWikiTemplate {
       "value": "weapon",
     },
     Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
+    },
+    Object {
       "key": "image",
       "value": "[[File:Bronze sword equipped male.png]]",
     },
@@ -627,6 +691,10 @@ MediaWikiTemplate {
     Object {
       "key": "slot",
       "value": "weapon",
+    },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
     },
     Object {
       "key": "image",
@@ -707,6 +775,10 @@ MediaWikiTemplate {
       "value": "weapon",
     },
     Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
+    },
+    Object {
       "key": "image",
       "value": "[[File:Bronze arrows equipped male.png]]",
     },
@@ -783,6 +855,10 @@ MediaWikiTemplate {
     Object {
       "key": "slot",
       "value": "weapon",
+    },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
     },
     Object {
       "key": "image",
@@ -862,6 +938,10 @@ MediaWikiTemplate {
       "key": "slot",
       "value": "ring",
     },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
+    },
   ],
 }
 `;
@@ -939,6 +1019,10 @@ MediaWikiTemplate {
     Object {
       "key": "attackrange",
       "value": "1",
+    },
+    Object {
+      "key": "combatstyle",
+      "value": "Unarmed",
     },
     Object {
       "key": "image",
