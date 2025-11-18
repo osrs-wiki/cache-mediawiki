@@ -1,0 +1,953 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxBonuses multiple ammo items (no equipped images) 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "0",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "+10",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "0",
+    },
+    Object {
+      "key": "rstr",
+      "value": "+15",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "ammot",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses multiple items with negative bonuses 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "-5",
+    },
+    Object {
+      "key": "aslash",
+      "value": "-3",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "-10",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "0",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image1",
+      "value": "[[File:Decorative platebody equipped male.png]]",
+    },
+    Object {
+      "key": "image2",
+      "value": "[[File:Decorative platebody (2) equipped male.png]]",
+    },
+    Object {
+      "key": "altimage1",
+      "value": "[[File:Decorative platebody equipped female.png]]",
+    },
+    Object {
+      "key": "altimage2",
+      "value": "[[File:Decorative platebody (2) equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses multiple items with parenthetical suffix 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "0",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "+15",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "+18",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image1",
+      "value": "[[File:Crate of adamantite ore equipped male.png]]",
+    },
+    Object {
+      "key": "image2",
+      "value": "[[File:Crate of adamantite ore (2) equipped male.png]]",
+    },
+    Object {
+      "key": "altimage1",
+      "value": "[[File:Crate of adamantite ore equipped female.png]]",
+    },
+    Object {
+      "key": "altimage2",
+      "value": "[[File:Crate of adamantite ore (2) equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses multiple items with versioned equipped images 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "+10",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "+12",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image1",
+      "value": "[[File:Test Sword equipped male.png]]",
+    },
+    Object {
+      "key": "image2",
+      "value": "[[File:Test Sword (2) equipped male.png]]",
+    },
+    Object {
+      "key": "image3",
+      "value": "[[File:Test Sword (3) equipped male.png]]",
+    },
+    Object {
+      "key": "altimage1",
+      "value": "[[File:Test Sword equipped female.png]]",
+    },
+    Object {
+      "key": "altimage2",
+      "value": "[[File:Test Sword (2) equipped female.png]]",
+    },
+    Object {
+      "key": "altimage3",
+      "value": "[[File:Test Sword (3) equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single ammo item (no equipped images) 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "0",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "+10",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "0",
+    },
+    Object {
+      "key": "rstr",
+      "value": "+15",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "ammot",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single item with all combat bonuses 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "+15",
+    },
+    Object {
+      "key": "aslash",
+      "value": "+20",
+    },
+    Object {
+      "key": "acrush",
+      "value": "+10",
+    },
+    Object {
+      "key": "amagic",
+      "value": "+5",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "+12",
+    },
+    Object {
+      "key": "dslash",
+      "value": "+14",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "+11",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "+8",
+    },
+    Object {
+      "key": "drange",
+      "value": "+9",
+    },
+    Object {
+      "key": "str",
+      "value": "+18",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "+3",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Full helm equipped male.png]]",
+    },
+    Object {
+      "key": "altimage",
+      "value": "[[File:Full helm equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single item with basic bonuses 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "+10",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "+5",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "+8",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Bronze sword equipped male.png]]",
+    },
+    Object {
+      "key": "altimage",
+      "value": "[[File:Bronze sword equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single item with magic damage bonus 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "0",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "+15",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "+10",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "0",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "2",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Magic staff equipped male.png]]",
+    },
+    Object {
+      "key": "altimage",
+      "value": "[[File:Magic staff equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single item with ranged strength (ammo) 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "0",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "+10",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "0",
+    },
+    Object {
+      "key": "rstr",
+      "value": "+15",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Bronze arrows equipped male.png]]",
+    },
+    Object {
+      "key": "altimage",
+      "value": "[[File:Bronze arrows equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single item with ranged strength (equipment) 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "0",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "+20",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "0",
+    },
+    Object {
+      "key": "rstr",
+      "value": "+25",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Shortbow equipped male.png]]",
+    },
+    Object {
+      "key": "altimage",
+      "value": "[[File:Shortbow equipped female.png]]",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single ring item (no equipped images) 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "0",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "+5",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "0",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "+2",
+    },
+    Object {
+      "key": "slot",
+      "value": "ring",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxBonuses single weapon with attack speed and range 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Bonuses",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "astab",
+      "value": "+25",
+    },
+    Object {
+      "key": "aslash",
+      "value": "0",
+    },
+    Object {
+      "key": "acrush",
+      "value": "0",
+    },
+    Object {
+      "key": "amagic",
+      "value": "0",
+    },
+    Object {
+      "key": "arange",
+      "value": "0",
+    },
+    Object {
+      "key": "dstab",
+      "value": "0",
+    },
+    Object {
+      "key": "dslash",
+      "value": "0",
+    },
+    Object {
+      "key": "dcrush",
+      "value": "0",
+    },
+    Object {
+      "key": "dmagic",
+      "value": "0",
+    },
+    Object {
+      "key": "drange",
+      "value": "0",
+    },
+    Object {
+      "key": "str",
+      "value": "+30",
+    },
+    Object {
+      "key": "rstr",
+      "value": "0",
+    },
+    Object {
+      "key": "mdmg",
+      "value": "0",
+    },
+    Object {
+      "key": "prayer",
+      "value": "0",
+    },
+    Object {
+      "key": "slot",
+      "value": "weapon",
+    },
+    Object {
+      "key": "speed",
+      "value": "4",
+    },
+    Object {
+      "key": "attackrange",
+      "value": "1",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Dragon dagger equipped male.png]]",
+    },
+    Object {
+      "key": "altimage",
+      "value": "[[File:Dragon dagger equipped female.png]]",
+    },
+  ],
+}
+`;

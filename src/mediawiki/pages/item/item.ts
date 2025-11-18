@@ -31,7 +31,7 @@ export const itemPageBuilder = (items: Item | Item[]) => {
   let infoboxBonuses = undefined;
   let combatStyles = undefined;
   if (primaryItem.wearpos1 >= 0) {
-    infoboxBonuses = InfoboxBonuses(primaryItem);
+    infoboxBonuses = InfoboxBonuses(itemArray);
 
     if (primaryItem.wearpos1 === WearPos.Weapon && primaryItem.category > -1) {
       combatStyles = CombatStyles(primaryItem);

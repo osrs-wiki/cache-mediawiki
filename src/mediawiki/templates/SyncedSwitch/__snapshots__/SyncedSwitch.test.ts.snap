@@ -11,16 +11,26 @@ exports[`SyncedSwitch should create synced switch for NPC chatheads 1`] = `
 `;
 
 exports[`SyncedSwitch should create synced switch for item details 1`] = `
-"{{Synced switch|version1=[[File:Crate of wine detail.png|130px|left]]|version2=[[File:Crate of wine (2) detail.png|130px|left]]|version3=[[File:Crate of wine (3) detail.png|130px|left]]}}
+"{{Synced switch
+|version1 = [[File:Crate of wine detail.png|130px|left]]
+|version2 = [[File:Crate of wine (2) detail.png|130px|left]]
+|version3 = [[File:Crate of wine (3) detail.png|130px|left]]
+}}
 "
 `;
 
 exports[`SyncedSwitch should create synced switch with multiple versions 1`] = `
-"{{Synced switch|version1=[[File:Test.png|130px|left]]|version2=[[File:Test (2).png|130px|left]]|version3=[[File:Test (3).png|130px|left]]}}
+"{{Synced switch
+|version1 = [[File:Test.png|130px|left]]
+|version2 = [[File:Test (2).png|130px|left]]
+|version3 = [[File:Test (3).png|130px|left]]
+}}
 "
 `;
 
 exports[`SyncedSwitch should create synced switch with single version 1`] = `
-"{{Synced switch|version1=[[File:Test.png|130px|left]]}}
+"{{Synced switch
+|version1 = [[File:Test.png|130px|left]]
+}}
 "
 `;

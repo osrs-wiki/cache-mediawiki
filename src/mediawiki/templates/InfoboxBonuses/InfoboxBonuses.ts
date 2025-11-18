@@ -1,7 +1,11 @@
-import { InfoboxTemplate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
+import { InfoboxTemplate } from "@osrs-wiki/mediawiki-builder";
 
-import { formatBonus } from "./InfoboxBonuses.utils";
+import {
+  formatBonus,
+  generateEquippedImageParams,
+} from "./InfoboxBonuses.utils";
 
+import { getEquipmentSlot, getWeaponCategory } from "@/types/item";
 import {
   ATTACK_RANGE_PARAM,
   ATTACK_SPEED_PARAM,
@@ -21,71 +25,76 @@ import {
   STAB_ATTACK_PARAM,
   STAB_DEFENCE_PARAM,
 } from "@/types/params";
-import { getEquipmentSlot, getWeaponCategory } from "@/types/item";
 import { Item, WearPos } from "@/utils/cache2";
 
-const InfoboxBonuses = (item: Item) => {
+const InfoboxBonuses = (items: Item | Item[]) => {
+  // Normalize to array
+  const itemArray = Array.isArray(items) ? items : [items];
+  const primaryItem = itemArray[0];
+
+  // Generate versioned image parameters for equipped items
+  const imageParams = generateEquippedImageParams(items);
+
   return new InfoboxTemplate("bonuses", {
-    astab: item.params.has(STAB_ATTACK_PARAM)
-      ? formatBonus(item.params.get(STAB_ATTACK_PARAM))
+    astab: primaryItem.params.has(STAB_ATTACK_PARAM)
+      ? formatBonus(primaryItem.params.get(STAB_ATTACK_PARAM))
       : "0",
-    aslash: item.params.has(SLASH_ATTACK_PARAM)
-      ? formatBonus(item.params.get(SLASH_ATTACK_PARAM))
+    aslash: primaryItem.params.has(SLASH_ATTACK_PARAM)
+      ? formatBonus(primaryItem.params.get(SLASH_ATTACK_PARAM))
       : "0",
-    acrush: item.params.has(CRUSH_ATTACK_PARAM)
-      ? formatBonus(item.params.get(CRUSH_ATTACK_PARAM))
+    acrush: primaryItem.params.has(CRUSH_ATTACK_PARAM)
+      ? formatBonus(primaryItem.params.get(CRUSH_ATTACK_PARAM))
       : "0",
-    amagic: item.params.has(MAGIC_ATTACK_PARAM)
-      ? formatBonus(item.params.get(MAGIC_ATTACK_PARAM))
+    amagic: primaryItem.params.has(MAGIC_ATTACK_PARAM)
+      ? formatBonus(primaryItem.params.get(MAGIC_ATTACK_PARAM))
       : "0",
-    arange: item.params.has(RANGED_ATTACK_PARAM)
-      ? formatBonus(item.params.get(RANGED_ATTACK_PARAM))
+    arange: primaryItem.params.has(RANGED_ATTACK_PARAM)
+      ? formatBonus(primaryItem.params.get(RANGED_ATTACK_PARAM))
       : "0",
-    dstab: item.params.has(STAB_DEFENCE_PARAM)
-      ? formatBonus(item.params.get(STAB_DEFENCE_PARAM))
+    dstab: primaryItem.params.has(STAB_DEFENCE_PARAM)
+      ? formatBonus(primaryItem.params.get(STAB_DEFENCE_PARAM))
       : "0",
-    dslash: item.params.has(SLASH_DEFENCE_PARAM)
-      ? formatBonus(item.params.get(SLASH_DEFENCE_PARAM))
+    dslash: primaryItem.params.has(SLASH_DEFENCE_PARAM)
+      ? formatBonus(primaryItem.params.get(SLASH_DEFENCE_PARAM))
       : "0",
-    dcrush: item.params.has(CRUSH_DEFENCE_PARAM)
-      ? formatBonus(item.params.get(CRUSH_DEFENCE_PARAM))
+    dcrush: primaryItem.params.has(CRUSH_DEFENCE_PARAM)
+      ? formatBonus(primaryItem.params.get(CRUSH_DEFENCE_PARAM))
       : "0",
-    dmagic: item.params.has(MAGIC_DEFENCE_PARAM)
-      ? formatBonus(item.params.get(MAGIC_DEFENCE_PARAM))
+    dmagic: primaryItem.params.has(MAGIC_DEFENCE_PARAM)
+      ? formatBonus(primaryItem.params.get(MAGIC_DEFENCE_PARAM))
       : "0",
-    drange: item.params.has(RANGED_DEFENCE_PARAM)
-      ? formatBonus(item.params.get(RANGED_DEFENCE_PARAM))
+    drange: primaryItem.params.has(RANGED_DEFENCE_PARAM)
+      ? formatBonus(primaryItem.params.get(RANGED_DEFENCE_PARAM))
       : "0",
-    str: item.params.has(MELEE_STRENGTH_PARAM)
-      ? formatBonus(item.params.get(MELEE_STRENGTH_PARAM))
+    str: primaryItem.params.has(MELEE_STRENGTH_PARAM)
+      ? formatBonus(primaryItem.params.get(MELEE_STRENGTH_PARAM))
       : "0",
-    rstr: item.params.has(RANGED_AMMO_STRENGTH_PARAM)
-      ? formatBonus(item.params.get(RANGED_AMMO_STRENGTH_PARAM))
-      : item.params.has(RANGED_EQUIPMENT_STRENGTH_PARAM)
-      ? formatBonus(item.params.get(RANGED_EQUIPMENT_STRENGTH_PARAM))
+    rstr: primaryItem.params.has(RANGED_AMMO_STRENGTH_PARAM)
+      ? formatBonus(primaryItem.params.get(RANGED_AMMO_STRENGTH_PARAM))
+      : primaryItem.params.has(RANGED_EQUIPMENT_STRENGTH_PARAM)
+      ? formatBonus(primaryItem.params.get(RANGED_EQUIPMENT_STRENGTH_PARAM))
       : "0",
-    mdmg: item.params.has(MAGIC_DAMAGE_PARAM)
-      ? `${parseInt(item.params.get(MAGIC_DAMAGE_PARAM).toString()) / 10}`
+    mdmg: primaryItem.params.has(MAGIC_DAMAGE_PARAM)
+      ? `${
+          parseInt(primaryItem.params.get(MAGIC_DAMAGE_PARAM).toString()) / 10
+        }`
       : "0",
-    prayer: item.params.has(PRAYER_BONUS_PARAM)
-      ? formatBonus(item.params.get(PRAYER_BONUS_PARAM))
+    prayer: primaryItem.params.has(PRAYER_BONUS_PARAM)
+      ? formatBonus(primaryItem.params.get(PRAYER_BONUS_PARAM))
       : "0",
-    slot: getEquipmentSlot(item),
+    slot: getEquipmentSlot(primaryItem),
     speed:
-      item.wearpos1 === WearPos.Weapon && item.params.has(ATTACK_SPEED_PARAM)
-        ? item.params.get(ATTACK_SPEED_PARAM) ?? "0"
+      primaryItem.wearpos1 === WearPos.Weapon &&
+      primaryItem.params.has(ATTACK_SPEED_PARAM)
+        ? primaryItem.params.get(ATTACK_SPEED_PARAM) ?? "0"
         : undefined,
     attackrange:
-      item.wearpos1 === WearPos.Weapon && item.params.has(ATTACK_RANGE_PARAM)
-        ? item.params.get(ATTACK_RANGE_PARAM) ?? "0"
+      primaryItem.wearpos1 === WearPos.Weapon &&
+      primaryItem.params.has(ATTACK_RANGE_PARAM)
+        ? primaryItem.params.get(ATTACK_RANGE_PARAM) ?? "0"
         : undefined,
-    combatstyle: getWeaponCategory(item),
-    ...(item.wearpos1 !== WearPos.Ammo && item.wearpos1 !== WearPos.Ring
-      ? {
-          image: new MediaWikiFile(`${item.name} equipped male.png`),
-          altimage: new MediaWikiFile(`${item.name} equipped female.png`),
-        }
-      : {}),
+    combatstyle: getWeaponCategory(primaryItem),
+    ...imageParams,
   });
 };
 
