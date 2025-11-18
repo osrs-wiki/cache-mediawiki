@@ -4,3 +4,4 @@ export { default as dbtables } from "./dbtables";
 export { default as differences } from "./differences";
 export { default as gameval } from "./gameval";
 export { default as pages } from "./pages";
+export { default as variants } from "./variants";

@@ -7,6 +7,7 @@ import {
   differences,
   gameval,
   pages,
+  variants,
 } from "./commands";
 import options from "./options";
 import packageJson from "../../package.json";
@@ -22,6 +23,7 @@ const commands = [
   differences,
   gameval,
   pages,
+  variants,
 ];
 
 program

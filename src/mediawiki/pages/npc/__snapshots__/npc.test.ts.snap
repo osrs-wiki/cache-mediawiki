@@ -14,7 +14,7 @@ exports[`npcPageBuilder getName() integration should fall back to Unknown NPC wh
 |map = No
 |id = 3001
 }}
-'''Unknown NPC 3001''' is an NPC.
+'''Unknown NPC 3001''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -36,7 +36,7 @@ exports[`npcPageBuilder getName() integration should fall back to direct name wh
 |examine = She tries to keep order around here.
 |id = 1002
 }}
-'''Direct Name NPC''' is an NPC.
+'''Direct Name NPC''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -58,7 +58,7 @@ exports[`npcPageBuilder getName() integration should handle getName() error grac
 |examine = He guards this area.
 |id = 1003
 }}
-'''Unknown NPC 1003''' is an NPC.
+'''Unknown NPC 1003''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -80,7 +80,7 @@ exports[`npcPageBuilder getName() integration should use getName() for clean pri
 |examine = He tries to keep order around here.
 |id = 1001
 }}
-'''Cleaned Test NPC''' is an NPC.
+'''Cleaned Test NPC''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -101,7 +101,7 @@ exports[`npcPageBuilder getName() integration should use getName() for multiChil
 |map = No
 |id = 2002
 }}
-'''Child Guard''' is an NPC.
+'''Child Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -150,7 +150,7 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should handle three var
 }}
 
 }}
-'''Royal Servant''' is an NPC.
+'''Royal Servant''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -193,7 +193,7 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infob
 }}
 
 }}
-'''Royal Servant''' is an NPC.
+'''Royal Servant''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -236,7 +236,7 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use Switch infob
 }}
 
 }}
-'''Ennius Tullus''' is an NPC.
+'''Ennius Tullus''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -267,7 +267,7 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use regular info
 |id1 = 1001
 |id2 = 1002
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -295,7 +295,7 @@ exports[`npcPageBuilder mixed type NPCs (Switch infobox) should use regular info
 |id1 = 1001
 |id2 = 1002
 }}
-'''Servant''' is an NPC.
+'''Servant''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -324,7 +324,7 @@ exports[`npcPageBuilder multi-version functionality should deduplicate multiChil
 |id1 = 8001
 |id2 = 8002
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -357,7 +357,7 @@ exports[`npcPageBuilder multi-version functionality should generate numbered ima
 |id2 = 1002
 |id3 = 1003
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -400,7 +400,7 @@ exports[`npcPageBuilder multi-version functionality should handle mixed combat a
 }}
 
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -446,7 +446,7 @@ exports[`npcPageBuilder multi-version functionality should handle mixed null and
 }}
 
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -474,7 +474,7 @@ exports[`npcPageBuilder multi-version functionality should handle multiChildren 
 |id1 = 5001
 |id2 = 5002
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -508,7 +508,7 @@ exports[`npcPageBuilder multi-version functionality should handle multiChildren 
 |id2 = 6001
 |id3 = 6002
 }}
-'''Captain Guard''' is an NPC.
+'''Captain Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -537,7 +537,7 @@ exports[`npcPageBuilder multi-version functionality should handle multiple NPCs 
 |id1 = 1001
 |id2 = 1002
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -561,7 +561,7 @@ exports[`npcPageBuilder multi-version functionality should handle single NPC cor
 |range = 1
 |id = 1001
 }}
-'''Guard''' is an NPC.
+'''Guard''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -586,7 +586,7 @@ exports[`npcPageBuilder multi-version functionality should use NPC template when
 |id1 = 2001
 |id2 = 2002
 }}
-'''Banker''' is an NPC.
+'''Banker''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -610,7 +610,7 @@ exports[`npcPageBuilder should build monster infobox with combat level 1`] = `
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name''' is an NPC."
+'''name''' is a [[non-player character]]."
 `;
 
 exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
@@ -624,7 +624,7 @@ exports[`npcPageBuilder should build npc infobox without combat level 1`] = `
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name''' is an NPC."
+'''name''' is a [[non-player character]]."
 `;
 
 exports[`npcPageBuilder should build npc page with chathead when has chatheadModels 1`] = `
@@ -638,7 +638,7 @@ exports[`npcPageBuilder should build npc page with chathead when has chatheadMod
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name''' is an NPC."
+'''name''' is a [[non-player character]]."
 `;
 
 exports[`npcPageBuilder should build npc page with transcript 1`] = `
@@ -652,7 +652,7 @@ exports[`npcPageBuilder should build npc page with transcript 1`] = `
 |id = 1
 }}
 [[File:name chathead.png|left]]
-'''name''' is an NPC.
+'''name''' is a [[non-player character]].
 
 ==Dialogue==
 {{Hastranscript|npc}}
@@ -669,7 +669,7 @@ exports[`npcPageBuilder should build npc page without chathead when no chatheadM
 |combat = 1
 |id = 1
 }}
-'''name''' is an NPC."
+'''name''' is a [[non-player character]]."
 `;
 
 exports[`npcPageBuilder should strip HTML tags from NPC name in page content 1`] = `
@@ -683,7 +683,7 @@ exports[`npcPageBuilder should strip HTML tags from NPC name in page content 1`]
 |id = 1
 }}
 [[File:Tornado chathead.png|left]]
-'''Tornado''' is an NPC."
+'''Tornado''' is a [[non-player character]]."
 `;
 
 exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
@@ -697,5 +697,5 @@ exports[`npcPageBuilder should use beta id when Context.beta is true 1`] = `
 |id = beta1
 }}
 [[File:name chathead.png|left]]
-'''name''' is an NPC."
+'''name''' is a [[non-player character]]."
 `;

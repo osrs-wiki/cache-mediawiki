@@ -158,7 +158,7 @@ export const npcPageBuilder = async (
 
   builder.addContents([
     new MediaWikiText(`${cleanPrimaryName}`, { bold: true }),
-    new MediaWikiText(" is an NPC."),
+    new MediaWikiText(" is a [[non-player character]]."),
   ]);
 
   if (hasDialogue) {
