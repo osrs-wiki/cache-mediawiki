@@ -70,7 +70,7 @@ describe("dbtables.utils", () => {
 
       const headers = extractColumnHeaders(mockRow, columnNames);
 
-      expect(headers).toEqual(["Column_A", "Column_B", "Column_D"]);
+      expect(headers).toEqual(["0 - Column_A", "1 - Column_B", "3 - Column_D"]);
     });
 
     it("should use fallback names for unnamed columns", () => {
@@ -85,7 +85,7 @@ describe("dbtables.utils", () => {
 
       const headers = extractColumnHeaders(mockRow, columnNames);
 
-      expect(headers).toEqual(["Column_A", "Column_1"]);
+      expect(headers).toEqual(["0 - Column_A", "1 - Column_1"]);
     });
 
     it("should handle empty values array", () => {

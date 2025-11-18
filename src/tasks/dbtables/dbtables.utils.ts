@@ -53,7 +53,8 @@ export const dbRowToCSVRow = async (
 
   // Process each column
   for (let colIdx = 0; colIdx < row.values.length; colIdx++) {
-    const columnHeader = columnNames.get(colIdx) || `Column_${colIdx}`;
+    const columnName = columnNames.get(colIdx) || `Column_${colIdx}`;
+    const columnHeader = `${colIdx} - ${columnName}`;
     const values = row.values[colIdx];
 
     if (!values || values.length === 0) {
@@ -79,6 +80,7 @@ export const dbRowToCSVRow = async (
 
 /**
  * Extract column headers from a DBRow's values structure
+ * Format: "index - name" (e.g., "0 - task_id")
  */
 export const extractColumnHeaders = (
   row: DBRow,
@@ -88,7 +90,8 @@ export const extractColumnHeaders = (
 
   for (let colIdx = 0; colIdx < row.values.length; colIdx++) {
     if (row.values[colIdx]) {
-      headers.push(columnNames.get(colIdx) || `Column_${colIdx}`);
+      const columnName = columnNames.get(colIdx) || `Column_${colIdx}`;
+      headers.push(`${colIdx} - ${columnName}`);
     }
   }
 
