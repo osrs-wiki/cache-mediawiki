@@ -35,6 +35,7 @@ export const formatCellValue = (
 
 /**
  * Convert a DBRow to a CSV row with column names from GameVal
+ * Processes ALL columns defined in columnNames, even if row doesn't have values for them
  */
 export const dbRowToCSVRow = async (
   cache: Promise<CacheProvider>,
@@ -51,8 +52,14 @@ export const dbRowToCSVRow = async (
     csvRow.row_name = rowGameVal;
   }
 
-  // Process each column
-  for (let colIdx = 0; colIdx < row.values.length; colIdx++) {
+  // Get the max column index from either columnNames or row.values
+  const maxColIdx = Math.max(
+    columnNames.size > 0 ? Math.max(...columnNames.keys()) : -1,
+    row.values.length - 1
+  );
+
+  // Process all columns up to maxColIdx
+  for (let colIdx = 0; colIdx <= maxColIdx; colIdx++) {
     const columnHeader = columnNames.get(colIdx) || `Column_${colIdx}`;
     const values = row.values[colIdx];
 
@@ -79,6 +86,8 @@ export const dbRowToCSVRow = async (
 
 /**
  * Extract column headers from a DBRow's values structure
+ * Returns ALL columns defined in columnNames, regardless of whether
+ * the first row has values for them or not.
  */
 export const extractColumnHeaders = (
   row: DBRow,
@@ -86,10 +95,15 @@ export const extractColumnHeaders = (
 ): string[] => {
   const headers: string[] = [];
 
-  for (let colIdx = 0; colIdx < row.values.length; colIdx++) {
-    if (row.values[colIdx]) {
-      headers.push(columnNames.get(colIdx) || `Column_${colIdx}`);
-    }
+  // Get the max column index from either columnNames or row.values
+  const maxColIdx = Math.max(
+    columnNames.size > 0 ? Math.max(...columnNames.keys()) : -1,
+    row.values.length - 1
+  );
+
+  // Include all columns up to maxColIdx
+  for (let colIdx = 0; colIdx <= maxColIdx; colIdx++) {
+    headers.push(columnNames.get(colIdx) || `Column_${colIdx}`);
   }
 
   return headers;
