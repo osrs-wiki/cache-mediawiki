@@ -34,9 +34,9 @@ const createInfoboxItemData = (item: Item, index = 0): InfoboxItemType => {
     options: getInventoryActions(item),
     examine: item.examine,
     value: item.price,
-    alchable: item.params.get(NO_ALCHABLE_PARAM) === 1 ? false : undefined,
+    alchable: item.params?.get(NO_ALCHABLE_PARAM) === 1 ? false : undefined,
     weight: (item.weight / 1000).toFixed(3),
-    id: `${Context.beta ? "beta" : ""}${item.id.toString()}`,
+    id: `${Context.beta ? "beta" : ""}${item.id?.toString()}`,
   };
 };
 

@@ -8,6 +8,9 @@ import { Item } from "@/utils/cache2";
  * @returns An array of inventory actions, possibly with sub-operations included.
  */
 export const getInventoryActions = (item: Item) => {
+  if (!item.inventoryActions) {
+    return [];
+  }
   return item.inventoryActions
     .map((action, index) => {
       const subops = item.subops?.[index];
@@ -36,7 +39,8 @@ export const getItemInfoboxImage = (
   const displayName = baseName || item.name;
   const versionSuffix = index > 0 ? ` (${index + 1})` : "";
 
-  const filteredVariants = item.stackVariantItems.filter((id) => id !== 0);
+  const filteredVariants =
+    item.stackVariantItems?.filter((id) => id !== 0) ?? [];
   if (filteredVariants.length === 0) {
     return new MediaWikiFile(`${displayName}${versionSuffix}.png`);
   } else {

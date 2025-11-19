@@ -1,20 +1,17 @@
 import {
   ClueInfoTemplate,
-  InfoboxTemplate,
   MediaWikiBreak,
   MediaWikiBuilder,
-  MediaWikiDate,
   MediaWikiFile,
   MediaWikiHeader,
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
-import type { InfoboxItem } from "@osrs-wiki/mediawiki-builder";
 import _ from "underscore";
 
 import { CluePageBuilderProps } from "./clue.types";
 import { formatAnswers, getDirections, formatChallenges } from "./clue.utils";
+import { InfoboxItem } from "../../templates";
 
-import Context from "@/context";
 import { vowel } from "@/utils/string";
 
 const cluePageBuilder = ({
@@ -32,23 +29,9 @@ const cluePageBuilder = ({
 }: CluePageBuilderProps) => {
   const builder = new MediaWikiBuilder();
   builder.addContents([
-    new InfoboxTemplate<InfoboxItem>("Item", {
+    InfoboxItem({
+      ...item,
       name: itemName,
-      image: new MediaWikiFile(`${itemName}.png`),
-      release: Context.updateDate
-        ? new MediaWikiDate(new Date(Context.updateDate))
-        : "",
-      update: Context.update ?? "",
-      members: true,
-      quest: "No",
-      tradeable: false,
-      equipable: false,
-      stackable: false,
-      options: item?.inventoryActions,
-      examine: item?.examine,
-      value: item?.price,
-      weight: `${item?.weight ? (item.weight / 1000).toFixed(3) : ""}`,
-      id: `${item?.id}`,
     }).build(),
     new MediaWikiFile(`${itemName} detail.png`, {
       horizontalAlignment: "left",
