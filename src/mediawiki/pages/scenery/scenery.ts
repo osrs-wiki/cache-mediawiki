@@ -1,5 +1,4 @@
 import {
-  InfoboxTemplate,
   MediaWikiBuilder,
   MediaWikiDate,
   MediaWikiFile,
@@ -8,6 +7,7 @@ import {
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxScenery } from "./scenery.types";
+import { InfoboxTemplate } from "../../templates";
 
 import Context from "@/context";
 import { Obj } from "@/utils/cache2";

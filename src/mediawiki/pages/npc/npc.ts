@@ -13,6 +13,10 @@ import Context from "../../../context";
 import InfoboxMonsterTemplate from "@/mediawiki/templates/InfoboxMonster";
 import InfoboxNpcTemplate from "@/mediawiki/templates/InfoboxNpc";
 import { SwitchInfobox } from "@/mediawiki/templates/SwitchInfobox";
+import {
+  SyncedSwitch,
+  getVersionedImageName,
+} from "@/mediawiki/templates/SyncedSwitch";
 import { CacheProvider, NPC } from "@/utils/cache2";
 import { stripHtmlTags } from "@/utils/string";
 
@@ -126,19 +130,35 @@ export const npcPageBuilder = async (
 
   builder.addContents([infoboxContent.build()]);
 
-  // Only add chathead image if NPC has chathead models
+  // Add chathead image(s) if NPC has chathead models
   if (primaryNpc.chatheadModels?.length > 0) {
-    builder.addContents([
-      new MediaWikiFile(`${cleanPrimaryName} chathead.png`, {
-        horizontalAlignment: "left",
-      }),
-      new MediaWikiBreak(),
-    ]);
+    if (npcArray.length > 1) {
+      // Multiple NPCs - use SyncedSwitch for versioned chatheads
+      const chatheadVersions = npcArray.map((_, index) => ({
+        version: index + 1,
+        content: new MediaWikiFile(
+          getVersionedImageName(cleanPrimaryName, index, " chathead"),
+          {
+            horizontalAlignment: "left",
+          }
+        ).build(),
+      }));
+
+      builder.addContents([new SyncedSwitch(chatheadVersions).build()]);
+    } else {
+      // Single NPC - use static chathead
+      builder.addContents([
+        new MediaWikiFile(`${cleanPrimaryName} chathead.png`, {
+          horizontalAlignment: "left",
+        }),
+        new MediaWikiBreak(),
+      ]);
+    }
   }
 
   builder.addContents([
     new MediaWikiText(`${cleanPrimaryName}`, { bold: true }),
-    new MediaWikiText(" is an NPC."),
+    new MediaWikiText(" is a [[non-player character]]."),
   ]);
 
   if (hasDialogue) {

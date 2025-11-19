@@ -46,6 +46,7 @@ const weaponCategoryMap: { [key: number]: WeaponType } = {
   1014: "Bulwark",
   1193: "Scythe",
   1588: "Partisan",
+  2294: "Blunt",
 };
 
 /**
@@ -66,5 +67,5 @@ export const getEquipmentSlot = (item: Item): WeaponSlot => {
  * @returns The weapon category for the item.
  */
 export const getWeaponCategory = (item: Item): WeaponType | undefined => {
-  return weaponCategoryMap[item.category];
+  return weaponCategoryMap[item.category] ?? "Unarmed";
 };

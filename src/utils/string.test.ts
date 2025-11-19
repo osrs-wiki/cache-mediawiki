@@ -1,4 +1,10 @@
-import { capitalize, lowerCaseFirst, vowel, stripHtmlTags } from "./string";
+import {
+  capitalize,
+  lowerCaseFirst,
+  vowel,
+  stripHtmlTags,
+  getBaseName,
+} from "./string";
 
 describe("string utils", () => {
   describe("capitalize", () => {
@@ -35,7 +41,9 @@ describe("string utils", () => {
     });
 
     it("should handle multiple tags", () => {
-      expect(stripHtmlTags("<col=ff0000>Red</col> and <col=00ff00>Green</col>")).toBe("Red and Green");
+      expect(
+        stripHtmlTags("<col=ff0000>Red</col> and <col=00ff00>Green</col>")
+      ).toBe("Red and Green");
     });
 
     it("should handle nested tags", () => {
@@ -43,11 +51,45 @@ describe("string utils", () => {
     });
 
     it("should handle empty tags", () => {
-      expect(stripHtmlTags("Text with <> empty tags")).toBe("Text with  empty tags");
+      expect(stripHtmlTags("Text with <> empty tags")).toBe(
+        "Text with  empty tags"
+      );
     });
 
     it("should handle self-closing tags", () => {
-      expect(stripHtmlTags("Text with <br/> line break")).toBe("Text with  line break");
+      expect(stripHtmlTags("Text with <br/> line break")).toBe(
+        "Text with  line break"
+      );
+    });
+  });
+
+  describe("getBaseName", () => {
+    it("should remove parenthetical suffix from item name", () => {
+      expect(getBaseName("Bronze sword (two)")).toBe("Bronze sword");
+    });
+
+    it("should remove parenthetical suffix with different content", () => {
+      expect(getBaseName("Dragon dagger (broken)")).toBe("Dragon dagger");
+    });
+
+    it("should return unchanged name without parenthesis", () => {
+      expect(getBaseName("Abyssal whip")).toBe("Abyssal whip");
+    });
+
+    it("should only remove trailing parenthesis with space before", () => {
+      expect(getBaseName("Item(no space)")).toBe("Item(no space)");
+    });
+
+    it("should handle multiple parenthetical suffixes (only removes last)", () => {
+      expect(getBaseName("Item (one) (two)")).toBe("Item (one)");
+    });
+
+    it("should handle empty parentheses", () => {
+      expect(getBaseName("Item ()")).toBe("Item");
+    });
+
+    it("should trim whitespace", () => {
+      expect(getBaseName("Item (suffix)  ")).toBe("Item");
     });
   });
 });

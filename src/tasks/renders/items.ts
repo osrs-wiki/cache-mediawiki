@@ -4,6 +4,10 @@ import { copyFile, mkdir } from "fs/promises";
 import Context from "@/context";
 import { Item } from "@/utils/cache2";
 import { formatFileName } from "@/utils/files";
+import { getBaseName } from "@/utils/string";
+
+// Global map to track item name counts for versioning
+const itemNameCounts = new Map<string, number>();
 
 export const renderItems = async (item: Item) => {
   if (item.name.toLocaleLowerCase() === "null") {
@@ -14,6 +18,15 @@ export const renderItems = async (item: Item) => {
     // console.warn("Context.renders is not defined. Skipping item rendering.");
     return;
   }
+
+  // Get base name and track count for versioning
+  const baseName = getBaseName(item.name);
+  const currentCount = itemNameCounts.get(baseName) || 0;
+  itemNameCounts.set(baseName, currentCount + 1);
+
+  // Determine the display name (first one has no number, subsequent ones get (2), (3), etc.)
+  const displayName =
+    currentCount === 0 ? baseName : `${baseName} (${currentCount + 1})`;
 
   try {
     const itemBaseOutDir = `./out/${Context.renders}/item`;
@@ -30,10 +43,10 @@ export const renderItems = async (item: Item) => {
     // Main item rendering
     const mainItemNameSuffix = hasStackVariants ? " 1" : "";
     const mainItemDetailDest = formatFileName(
-      `${itemBaseOutDir}/${item.name}${mainItemNameSuffix} detail.png`
+      `${itemBaseOutDir}/${displayName}${mainItemNameSuffix} detail.png`
     );
     const mainItemMiniDest = formatFileName(
-      `${miniItemBaseOutDir}/${item.name}${mainItemNameSuffix}.png`
+      `${miniItemBaseOutDir}/${displayName}${mainItemNameSuffix}.png`
     );
 
     const mainItemSrcPath = `${itemSrcBasePath}/${item.id}.png`;
@@ -70,14 +83,14 @@ export const renderItems = async (item: Item) => {
           continue;
         }
 
-        // Destination names use the original item's name and the specific quantity for this variant
+        // Destination names use the display name and the specific quantity for this variant
         const stackItemDestDetailPath = formatFileName(
-          `${itemBaseOutDir}/${item.name} ${
+          `${itemBaseOutDir}/${displayName} ${
             i < filteredStackQuantities.length - 1 ? quantity : ""
           } detail.png`
         );
         const stackItemDestMiniPath = formatFileName(
-          `${miniItemBaseOutDir}/${item.name} ${quantity}.png`
+          `${miniItemBaseOutDir}/${displayName} ${quantity}.png`
         );
 
         // Source paths use the stackItemId
@@ -96,3 +109,7 @@ export const renderItems = async (item: Item) => {
     console.error(`Error rendering item ${item.name} (ID: ${item.id}):`, e);
   }
 };
+
+// Export for testing/debugging
+export const getItemNameCounts = () => itemNameCounts;
+export const clearItemNameCounts = () => itemNameCounts.clear();

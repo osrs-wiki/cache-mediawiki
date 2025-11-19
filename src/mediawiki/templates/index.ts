@@ -7,3 +7,4 @@ export * from "./InfoboxMusic";
 export * from "./InfoboxNpc";
 export * from "./InfoboxTemplate";
 export * from "./SwitchInfobox";
+export * from "./SyncedSwitch";
