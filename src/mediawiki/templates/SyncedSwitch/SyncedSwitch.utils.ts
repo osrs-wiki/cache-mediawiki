@@ -8,7 +8,7 @@
 export const getVersionedImageName = (
   baseName: string,
   index: number,
-  suffix: string = ""
+  suffix = ""
 ): string => {
   const versionSuffix = index === 0 ? "" : ` (${index + 1})`;
   return `${baseName}${versionSuffix}${suffix}.png`;
