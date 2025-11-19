@@ -31,8 +31,7 @@ const InfoboxBonuses = (items: Item | Item[]) => {
       ...data,
       ...imageParams,
     }));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return new InfoboxTemplate<any>("bonuses", mergedData);
+    return new InfoboxTemplate<InfoboxBonusesData[]>("bonuses", mergedData);
   }
 };
 
