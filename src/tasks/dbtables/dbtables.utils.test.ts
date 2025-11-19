@@ -71,7 +71,12 @@ describe("dbtables.utils", () => {
       const headers = extractColumnHeaders(mockRow, columnNames);
 
       // Now includes ALL columns up to max index, even undefined ones
-      expect(headers).toEqual(["Column_A", "Column_B", "Column_2", "Column_D"]);
+      expect(headers).toEqual([
+        "0 - Column_A",
+        "1 - Column_B",
+        "2 - Column_2",
+        "3 - Column_D",
+      ]);
     });
 
     it("should use fallback names for unnamed columns", () => {
@@ -86,7 +91,7 @@ describe("dbtables.utils", () => {
 
       const headers = extractColumnHeaders(mockRow, columnNames);
 
-      expect(headers).toEqual(["Column_A", "Column_1"]);
+      expect(headers).toEqual(["0 - Column_A", "1 - Column_1"]);
     });
 
     it("should handle empty values array", () => {
@@ -130,11 +135,11 @@ describe("dbtables.utils", () => {
 
       // Should include ALL defined columns, not just ones with values
       expect(headers).toEqual([
-        "boat_hp_max",
-        "boat_speed",
-        "boat_turning",
-        "boat_cargo",
-        "boat_defense",
+        "0 - boat_hp_max",
+        "1 - boat_speed",
+        "2 - boat_turning",
+        "3 - boat_cargo",
+        "4 - boat_defense",
       ]);
     });
   });
