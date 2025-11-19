@@ -87,11 +87,15 @@ export class InfoboxTemplate<T> extends Template {
     } else if (value instanceof MediaWikiContent) {
       return value.build();
     } else if (Array.isArray(value)) {
-      if (value.every((v) => typeof v === "string" || typeof v === "number")) {
-        return value.filter((v) => v && v !== null).join(", ");
+      const filteredValues = value.filter((v) => v !== undefined && v !== null);
+      if (
+        filteredValues.every(
+          (v) => typeof v === "string" || typeof v === "number"
+        )
+      ) {
+        return filteredValues.join(", ");
       } else {
-        return value
-          .filter((v) => v && v !== null)
+        return filteredValues
           .map((v) => (v instanceof MediaWikiContent ? v.build() : `${v}`))
           .join(" ");
       }
