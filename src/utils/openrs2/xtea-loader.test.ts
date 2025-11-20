@@ -3,11 +3,13 @@ import { findCacheByVersion } from "./cache-matcher";
 import { loadXTEAKeysForCache } from "./xtea-loader";
 
 import { XTEAKeyManager } from "@/utils/cache2";
+import * as fs from "fs/promises";
 
 // Mock dependencies
 jest.mock("./api");
 jest.mock("./cache-matcher");
 jest.mock("@/utils/cache2");
+jest.mock("fs/promises");
 
 describe("XTEA Loader", () => {
   const mockCacheList = [
@@ -160,5 +162,187 @@ describe("XTEA Loader", () => {
     expect(console.log).toHaveBeenCalledWith(
       "Loaded 0 XTEA keys for cache 2025-09-03-rev232 (OpenRS2 ID: 1234)"
     );
+  });
+
+  describe("Local XTEA key loading", () => {
+    beforeEach(() => {
+      // Reset file system mock for local loading tests
+      (fs.readFile as jest.Mock).mockReset();
+    });
+
+    it("should load keys from local file when available (revision.json pattern)", async () => {
+      const localKeys = [
+        {
+          archive: 5,
+          group: 100,
+          name_hash: -1153413389,
+          name: "l50_50",
+          mapsquare: 12800,
+          key: [-1, -2, -3, -4],
+        },
+      ];
+
+      // Mock directory read to return 235.json
+      (fs.readdir as jest.Mock).mockResolvedValueOnce(["235.json", "231.json"]);
+      (fs.readFile as jest.Mock).mockResolvedValueOnce(
+        JSON.stringify(localKeys)
+      );
+
+      const manager = await loadXTEAKeysForCache("2025-11-19-rev235");
+
+      // Should load from local file, not call API
+      expect(fs.readdir).toHaveBeenCalled();
+      expect(fs.readFile).toHaveBeenCalled();
+      expect(fetchCacheList).not.toHaveBeenCalled();
+      expect(fetchCacheKeys).not.toHaveBeenCalled();
+      expect(mockXTEAManagerInstance.loadKeys).toHaveBeenCalledWith(localKeys);
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining("XTEA keys from local file:")
+      );
+    });
+
+    it("should load keys from local file (revision.N.json pattern)", async () => {
+      const localKeys = [
+        {
+          archive: 5,
+          group: 200,
+          name_hash: -1153413390,
+          name: "l60_60",
+          mapsquare: 15360,
+          key: [-5, -6, -7, -8],
+        },
+      ];
+
+      // Mock directory read to return 235.4.json
+      (fs.readdir as jest.Mock).mockResolvedValueOnce([
+        "235.4.json",
+        "231.json",
+      ]);
+      (fs.readFile as jest.Mock).mockResolvedValueOnce(
+        JSON.stringify(localKeys)
+      );
+
+      const manager = await loadXTEAKeysForCache("2025-11-19-rev235");
+
+      expect(fs.readdir).toHaveBeenCalled();
+      expect(fs.readFile).toHaveBeenCalled();
+      expect(fetchCacheList).not.toHaveBeenCalled();
+      expect(mockXTEAManagerInstance.loadKeys).toHaveBeenCalledWith(localKeys);
+    });
+
+    it("should load keys from local file (full version.json pattern)", async () => {
+      const localKeys = [
+        {
+          archive: 5,
+          group: 300,
+          name_hash: -1153413391,
+          name: "l70_70",
+          mapsquare: 17920,
+          key: [-9, -10, -11, -12],
+        },
+      ];
+
+      // Mock directory doesn't have matching revision file
+      (fs.readdir as jest.Mock).mockResolvedValueOnce(["231.json", "232.json"]);
+      // Mock full cache version file exists
+      (fs.readFile as jest.Mock).mockResolvedValueOnce(
+        JSON.stringify(localKeys)
+      );
+
+      const manager = await loadXTEAKeysForCache("2025-11-19-rev235");
+
+      expect(fs.readdir).toHaveBeenCalled();
+      expect(fs.readFile).toHaveBeenCalled();
+      expect(fetchCacheList).not.toHaveBeenCalled();
+      expect(mockXTEAManagerInstance.loadKeys).toHaveBeenCalledWith(localKeys);
+    });
+
+    it("should fall back to OpenRS2 API when no local file found", async () => {
+      // Mock directory read returns no matching files
+      (fs.readdir as jest.Mock).mockResolvedValueOnce(["231.json", "232.json"]);
+      // Mock full version file doesn't exist
+      (fs.readFile as jest.Mock).mockRejectedValue(new Error("ENOENT"));
+
+      const manager = await loadXTEAKeysForCache("2025-09-03-rev232");
+
+      // Should have tried to read directory and file
+      expect(fs.readdir).toHaveBeenCalled();
+      expect(fs.readFile).toHaveBeenCalled();
+
+      // Should fall back to API
+      expect(fetchCacheList).toHaveBeenCalledTimes(1);
+      expect(fetchCacheKeys).toHaveBeenCalledWith(1234);
+      expect(mockXTEAManagerInstance.loadKeys).toHaveBeenCalledWith(mockKeys);
+      expect(console.log).toHaveBeenCalledWith(
+        "Loaded 2 XTEA keys for cache 2025-09-03-rev232 (OpenRS2 ID: 1234)"
+      );
+    });
+
+    it("should handle malformed JSON in local file", async () => {
+      // Mock directory returns matching file
+      (fs.readdir as jest.Mock).mockResolvedValueOnce(["232.json"]);
+      // Mock file exists but contains invalid JSON
+      (fs.readFile as jest.Mock).mockResolvedValueOnce(
+        "{ invalid json content"
+      );
+
+      // Should fall back to API after JSON parse error
+      const manager = await loadXTEAKeysForCache("2025-09-03-rev232");
+
+      expect(fs.readdir).toHaveBeenCalled();
+      expect(fs.readFile).toHaveBeenCalled();
+      expect(fetchCacheList).toHaveBeenCalledTimes(1);
+      expect(fetchCacheKeys).toHaveBeenCalledWith(1234);
+    });
+
+    it("should handle cache version without revision number", async () => {
+      const manager = await loadXTEAKeysForCache("2025-09-03");
+
+      // Should not try local files when no revision number exists
+      expect(fs.readdir).not.toHaveBeenCalled();
+      expect(fs.readFile).not.toHaveBeenCalled();
+
+      // Should fall back to API
+      expect(fetchCacheList).toHaveBeenCalledTimes(1);
+      expect(findCacheByVersion).toHaveBeenCalledWith(
+        "2025-09-03",
+        mockCacheList
+      );
+    });
+
+    it("should log correct source when loading from local file", async () => {
+      const localKeys = [
+        {
+          archive: 5,
+          group: 100,
+          name_hash: -1153413389,
+          name: "l50_50",
+          mapsquare: 12800,
+          key: [-1, -2, -3, -4],
+        },
+      ];
+
+      (fs.readdir as jest.Mock).mockResolvedValueOnce(["235.json"]);
+      (fs.readFile as jest.Mock).mockResolvedValueOnce(
+        JSON.stringify(localKeys)
+      );
+
+      // Override the default loadKeys mock to return 1 for this test
+      jest.spyOn(mockXTEAManagerInstance, "loadKeys").mockReturnValueOnce(1);
+
+      await loadXTEAKeysForCache("2025-11-19-rev235");
+
+      expect(console.log).toHaveBeenCalledWith(
+        "Loading XTEA keys for cache version: 2025-11-19-rev235"
+      );
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringMatching(
+          /^Loaded 1 XTEA keys from local file: .*235\.json$/
+        )
+      );
+      expect(console.log).toHaveBeenCalledWith(
+        "Loaded 1 XTEA keys for cache 2025-11-19-rev235 from local file"
+      );
+    });
   });
 });
