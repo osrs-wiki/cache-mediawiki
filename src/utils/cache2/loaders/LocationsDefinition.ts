@@ -98,7 +98,8 @@ export class LocationsDefinition extends PerArchiveLoadable {
         }
       }
     } catch (error) {
-      console.warn(`Error parsing locations data:`, error);
+      // Silently ignore parsing errors - these are expected for regions with
+      // corrupted data or missing XTEA keys. Callers handle these gracefully.
     }
   }
 

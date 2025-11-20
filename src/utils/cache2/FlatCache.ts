@@ -110,19 +110,33 @@ export class FlatCacheProvider implements CacheProvider {
   ) {}
 
   private async initializeXTEAKeys(): Promise<void> {
+    // If already initialized or in progress, don't load again
+    if (this.xteaKeyManager || this.xteaLoadPromise) {
+      if (this.xteaLoadPromise) {
+        await this.xteaLoadPromise;
+      }
+      return;
+    }
+
     if (!this.cacheVersion) {
       return;
     }
 
-    try {
-      this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion);
-    } catch (error) {
-      console.warn(
-        `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
-        error
-      );
-      this.xteaKeyManager = new XTEAKeyManager();
-    }
+    // Set the promise to prevent concurrent loads
+    this.xteaLoadPromise = (async () => {
+      try {
+        this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion!);
+      } catch (error) {
+        console.warn(
+          `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
+          error
+        );
+        this.xteaKeyManager = new XTEAKeyManager();
+      }
+      return this.xteaKeyManager;
+    })();
+
+    await this.xteaLoadPromise;
   }
 
   public async getIndex(index: number): Promise<FlatIndexData | undefined> {
@@ -159,19 +173,12 @@ export class FlatCacheProvider implements CacheProvider {
       );
       if (regionInfo) {
         // Use tryDecrypt to find and set the correct XTEA key
-        console.debug(
-          `Attempting XTEA decryption for archive ${archive} (region ${regionInfo.regionId})`
-        );
         const decryptionError = xteaManager.tryDecrypt(
           archiveData,
           regionInfo.regionId
         );
         if (decryptionError) {
-          console.warn(
-            `XTEA decryption failed for archive ${archive} (region ${regionInfo.regionId}):`,
-            decryptionError.message
-          );
-          // Return undefined to indicate the archive cannot be decrypted
+          // Missing XTEA keys are expected for many regions - silently return undefined
           return undefined;
         }
       }

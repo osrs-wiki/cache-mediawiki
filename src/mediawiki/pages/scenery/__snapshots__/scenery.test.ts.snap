@@ -5,12 +5,12 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 {{Infobox Scenery
 |name = name
 |image = [[File:name.png]]
+|release = 
 |update = update
 |members = Yes
 |quest = No
 |options = action1, action2
 |examine = 
-|map = No
 |id = 1
 }}
 '''name''' is a scenery object."
@@ -21,12 +21,12 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 {{Infobox Scenery
 |name = name
 |image = [[File:name.png]]
+|release = 
 |update = update
 |members = Yes
 |quest = No
 |options = action1, action2
 |examine = 
-|map = No
 |id = beta1
 }}
 '''name''' is a scenery object."
@@ -37,12 +37,12 @@ exports[`sceneryPageBuilder should strip HTML tags from scenery name in page con
 {{Infobox Scenery
 |name = Red Chest
 |image = [[File:Red Chest.png]]
+|release = 
 |update = update
 |members = Yes
 |quest = No
 |options = Open, Search
 |examine = 
-|map = No
 |id = 123
 }}
 '''Red Chest''' is a scenery object."

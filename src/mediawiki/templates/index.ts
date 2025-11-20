@@ -6,5 +6,7 @@ export * from "./InfoboxMonster";
 export * from "./InfoboxMusic";
 export * from "./InfoboxNpc";
 export * from "./InfoboxTemplate";
+export * from "./Map";
+export * from "./ObjectLocLine";
 export * from "./SwitchInfobox";
 export * from "./SyncedSwitch";

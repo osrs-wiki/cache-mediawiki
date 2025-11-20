@@ -1,4 +1,8 @@
-import { MediaWikiDate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
+import {
+  MediaWikiDate,
+  MediaWikiFile,
+  MediaWikiTemplate,
+} from "@osrs-wiki/mediawiki-builder";
 
 export type InfoboxScenery = {
   name: string;
@@ -12,7 +16,7 @@ export type InfoboxScenery = {
   options?: string[];
   respawn?: number;
   icon?: MediaWikiFile;
-  map: string;
+  map?: MediaWikiTemplate | string;
   examine: string;
   id: string;
 };
