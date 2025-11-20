@@ -4,6 +4,7 @@ import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
 import { differencesIndex } from "./index";
 import { IndexType } from "../../utils/cache2";
+import { preloadSceneryLocations } from "../../utils/locations";
 import { flushItemPages } from "../pages/types/item";
 
 import Context from "@/context";
@@ -40,6 +41,12 @@ const differencesCache = async ({
       ? getCacheProviderGithub(newVersion)
       : getCacheProviderLocal(newVersion, type)
   ).asPromise();
+
+  if (Context.pages) {
+    console.log("Pre-loading scenery locations for all objects...");
+    await preloadSceneryLocations(Context.newCacheProvider);
+    console.log("Scenery locations pre-loaded successfully");
+  }
 
   const cacheDifferences: CacheDifferences = {};
 

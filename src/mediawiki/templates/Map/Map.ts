@@ -16,7 +16,7 @@ export class MapTemplate extends Template {
   }
 
   build(): MediaWikiTemplate {
-    const template = new MediaWikiTemplate(this.name);
+    const template = new MediaWikiTemplate(this.name, { collapsed: true });
 
     // Add parameters in the order they appear in the template documentation
     if (this.params.name !== undefined) {

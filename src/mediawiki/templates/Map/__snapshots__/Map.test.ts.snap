@@ -1,43 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MapTemplate should build map template with all params 1`] = `
-"{{Map
-|name = Test Location
-|x = 3000
-|y = 3000
-|plane = 2
-|mapID = 1
-|mtype = pin
-|width = 200
-|height = 200
-|zoom = 2
-|label = Test Label
-|link = Test Page
-|description = A test description
-}}
+"{{Map|name=Test Location|x=3000|y=3000|plane=2|mapID=1|mtype=pin|width=200|height=200|zoom=2|label=Test Label|link=Test Page|description=A test description}}
 "
 `;
 
 exports[`MapTemplate should build map template with basic params 1`] = `
-"{{Map
-|x = 1231
-|y = 3728
-|plane = 0
-|mapID = -1
-|mtype = pin
-}}
+"{{Map|x=1231|y=3728|plane=0|mapID=-1|mtype=pin}}
 "
 `;
 
 exports[`MapTemplate should build map template with name 1`] = `
-"{{Map
-|name = Cave (Farming Guild)
-|x = 1231
-|y = 3728
-|plane = 0
-|mapID = -1
-|mtype = pin
-}}
+"{{Map|name=Cave (Farming Guild)|x=1231|y=3728|plane=0|mapID=-1|mtype=pin}}
 "
 `;
 
@@ -47,13 +21,7 @@ exports[`MapTemplate should handle optional plane parameter 1`] = `
 `;
 
 exports[`MapTemplate should support coordinates object format 1`] = `
-"{{Map
-|name = Test Location
-|x = 3000
-|y = 3500
-|plane = 1
-|mtype = pin
-}}
+"{{Map|name=Test Location|x=3000|y=3500|plane=1|mtype=pin}}
 "
 `;
 

@@ -1,4 +1,4 @@
-import { groupLocationsByProximity } from "./groupLocationsByProximity";
+import { groupLocationsByProximity } from "./grouping";
 
 import {
   Location,

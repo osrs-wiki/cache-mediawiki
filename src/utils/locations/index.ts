@@ -1,2 +1,2 @@
-export * from "./getSceneryLocations";
-export * from "./groupLocationsByProximity";
+export * from "./locations";
+export * from "./grouping";

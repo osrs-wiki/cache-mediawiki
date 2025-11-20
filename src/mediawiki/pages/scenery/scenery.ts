@@ -15,7 +15,7 @@ import {
 } from "../../templates";
 
 import Context from "@/context";
-import { CacheProvider, Obj } from "@/utils/cache2";
+import { CacheProvider, Location, Obj } from "@/utils/cache2";
 import {
   getSceneryLocations,
   groupLocationsByProximity,
@@ -28,14 +28,10 @@ export const sceneryPageBuilder = async (
 ) => {
   const cleanName = stripHtmlTags(scenery.name);
 
-  // Try to load location data if cache provider is available
-  let locations: ReturnType<typeof getSceneryLocations> extends Promise<infer T>
-    ? T
-    : never = [];
+  let locations: Location[] = [];
 
   if (cache) {
     try {
-      // Attempt to load locations - this will trigger XTEA loading automatically
       locations = await getSceneryLocations(await cache, scenery.id);
     } catch (error) {
       // Silently fail if we can't load locations (missing XTEA keys, network errors, etc.)
