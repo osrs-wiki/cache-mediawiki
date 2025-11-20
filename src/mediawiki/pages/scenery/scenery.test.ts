@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import sceneryPageBuilder from "./scenery";
 
 import Context from "@/context";
-import { CacheProvider, Location, Obj, ObjID } from "@/utils/cache2";
+import { CacheProvider, Location, ObjID } from "@/utils/cache2";
 import * as locationsModule from "@/utils/locations";
 
 // Mock the locations module
@@ -76,9 +77,8 @@ describe("sceneryPageBuilder", () => {
         .spyOn(locationsModule, "getSceneryLocations")
         .mockResolvedValue([mockLocation]);
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore Do not require all fields
       const builder = await sceneryPageBuilder(
+        // @ts-ignore Do not require all fields
         {
           name: "Altar",
           actions: ["Pray"],
@@ -108,9 +108,8 @@ describe("sceneryPageBuilder", () => {
           [mockLocations[2]],
         ]);
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore Do not require all fields
       const builder = await sceneryPageBuilder(
+        // @ts-ignore Do not require all fields
         {
           name: "Tree",
           actions: ["Chop down"],
@@ -130,8 +129,8 @@ describe("sceneryPageBuilder", () => {
       jest.spyOn(locationsModule, "getSceneryLocations").mockResolvedValue([]);
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore Do not require all fields
       const builder = await sceneryPageBuilder(
+        // @ts-ignore Do not require all fields
         {
           name: "Mysterious Object",
           actions: ["Examine"],
@@ -153,9 +152,8 @@ describe("sceneryPageBuilder", () => {
 
       const consoleDebugSpy = jest.spyOn(console, "debug").mockImplementation();
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore Do not require all fields
       const builder = await sceneryPageBuilder(
+        // @ts-ignore Do not require all fields
         {
           name: "Broken Cache Object",
           actions: ["Test"],
@@ -208,9 +206,8 @@ describe("sceneryPageBuilder", () => {
         [mockLocations[2]], // Separate group
       ]);
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore Do not require all fields
       const builder = await sceneryPageBuilder(
+        // @ts-ignore Do not require all fields
         {
           name: "Grouped Scenery",
           actions: ["Use"],
