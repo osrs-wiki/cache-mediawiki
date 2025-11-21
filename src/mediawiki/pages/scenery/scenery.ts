@@ -132,10 +132,13 @@ export const sceneryPageBuilder = async (
       }
     }
 
-    // Track which location indices belong to which group
+    // Track which location indices belong to which group and build group data
     let locationIndex = 0;
+    const groupsByArea = new Map<
+      string,
+      Array<{ x: number; y: number; plane: number }>
+    >();
 
-    // Create an ObjectLocLine for each group
     for (const group of locationGroups) {
       const coordinates = group.map((loc) => {
         const pos = loc.getPosition();
@@ -146,16 +149,35 @@ export const sceneryPageBuilder = async (
         };
       });
 
-      // Find area name for the first location in this group
-      const areaName = areaNameMap.get(locationIndex);
+      const areaName = areaNameMap.get(locationIndex) || "?";
       locationIndex += group.length;
+
+      // Combine groups with the same area name
+      const existingCoords = groupsByArea.get(areaName);
+      if (existingCoords) {
+        existingCoords.push(...coordinates);
+      } else {
+        groupsByArea.set(areaName, coordinates);
+      }
+    }
+
+    // Sort area names alphabetically
+    const sortedAreaNames = Array.from(groupsByArea.keys()).sort((a, b) =>
+      a.localeCompare(b)
+    );
+
+    // Create an ObjectLocLine for each area in sorted order
+    for (const areaName of sortedAreaNames) {
+      const coordinates = groupsByArea.get(areaName);
+      if (!coordinates) continue;
 
       builder.addContent(
         new ObjectLocLineTemplate({
           name: cleanName,
-          location: areaName
-            ? new MediaWikiLink(areaName)
-            : new MediaWikiText("?"),
+          location:
+            areaName !== "?"
+              ? new MediaWikiLink(areaName)
+              : new MediaWikiText("?"),
           members: true,
           coordinates,
           mapID: -1,

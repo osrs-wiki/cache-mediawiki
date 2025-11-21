@@ -15,7 +15,7 @@ import { InfoboxLocation, MapTemplate } from "../../templates";
 const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
   // Find the world map element for this area
   let mapTemplate: MediaWikiTemplate | undefined;
-  let nearestAreaName: string | null = null;
+  const nearestAreaName: string | null = null;
 
   if (cache) {
     try {
@@ -40,10 +40,12 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
         mapTemplate = mapTemplateObj.build();
 
         // Find nearest area for location parameter
-        const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
+        // TODO: Area mapping nees to consider grouping and not just the nearest area.
+        // It also needs to support mapping dungeons to their overworld areas.
+        /*const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
         if (nearestArea) {
           nearestAreaName = nearestArea.name;
-        }
+        }*/
       }
     } catch (error) {
       console.debug(
