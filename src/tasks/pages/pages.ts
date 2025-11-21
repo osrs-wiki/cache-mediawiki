@@ -5,6 +5,7 @@ import {
   writeNpcPageFromCache,
   writeSceneryPageFromCache,
 } from "./types";
+import Context from "../../context";
 
 import { getCacheProviderGithub, getCacheProviderLocal } from "@/utils/cache";
 import { LazyPromise } from "@/utils/cache2/LazyPromise";
@@ -31,6 +32,7 @@ const pageGenerator = async (
       ? getCacheProviderGithub(cacheVersion)
       : getCacheProviderLocal(cacheVersion, cacheType)
   ).asPromise();
+  Context.newCacheProvider = await cache;
 
   switch (type) {
     case "area":

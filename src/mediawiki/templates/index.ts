@@ -5,6 +5,7 @@ export * from "./InfoboxLocation";
 export * from "./InfoboxMonster";
 export * from "./InfoboxMusic";
 export * from "./InfoboxNpc";
+export * from "./InfoboxScenery";
 export * from "./InfoboxTemplate";
 export * from "./Map";
 export * from "./ObjectLocLine";

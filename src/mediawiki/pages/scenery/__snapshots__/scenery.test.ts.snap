@@ -4,8 +4,7 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 "{{New Content}}
 {{Infobox Scenery
 |name = name
-|image = [[File:name.png]]
-|release = 
+|image = [[File:name.png|220px]]
 |update = update
 |members = Yes
 |quest = No
@@ -20,8 +19,7 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 "{{New Content}}
 {{Infobox Scenery
 |name = name
-|image = [[File:name.png]]
-|release = 
+|image = [[File:name.png|220px]]
 |update = update
 |members = Yes
 |quest = No
@@ -36,8 +34,7 @@ exports[`sceneryPageBuilder locations should group nearby locations correctly 1`
 "{{New Content}}
 {{Infobox Scenery
 |name = Grouped Scenery
-|image = [[File:Grouped Scenery.png]]
-|release = 
+|image = [[File:Grouped Scenery.png|220px]]
 |update = update
 |members = Yes
 |quest = No
@@ -73,8 +70,7 @@ exports[`sceneryPageBuilder locations should handle cache loading errors gracefu
 "{{New Content}}
 {{Infobox Scenery
 |name = Broken Cache Object
-|image = [[File:Broken Cache Object.png]]
-|release = 
+|image = [[File:Broken Cache Object.png|220px]]
 |update = update
 |members = Yes
 |quest = No
@@ -89,8 +85,7 @@ exports[`sceneryPageBuilder locations should handle no locations gracefully 1`] 
 "{{New Content}}
 {{Infobox Scenery
 |name = Mysterious Object
-|image = [[File:Mysterious Object.png]]
-|release = 
+|image = [[File:Mysterious Object.png|220px]]
 |update = update
 |members = Yes
 |quest = No
@@ -105,8 +100,7 @@ exports[`sceneryPageBuilder locations should include locations section for multi
 "{{New Content}}
 {{Infobox Scenery
 |name = Tree
-|image = [[File:Tree.png]]
-|release = 
+|image = [[File:Tree.png|220px]]
 |update = update
 |members = Yes
 |quest = No
@@ -142,15 +136,14 @@ exports[`sceneryPageBuilder locations should include map parameter for single lo
 "{{New Content}}
 {{Infobox Scenery
 |name = Altar
-|image = [[File:Altar.png]]
-|release = 
+|image = [[File:Altar.png|220px]]
 |update = update
 |members = Yes
 |quest = No
+|map = {{Map|name=Altar|x=3200|y=3400|plane=0|mapID=-1|mtype=pin}}
 |options = Pray
 |examine = 
 |id = 100
-|map = {{Map|name=Altar|x=3200|y=3400|plane=0|mapID=-1|mtype=pin}}
 }}
 '''Altar''' is a scenery object."
 `;
@@ -159,8 +152,7 @@ exports[`sceneryPageBuilder locations should not attempt to load locations when 
 "{{New Content}}
 {{Infobox Scenery
 |name = No Cache Object
-|image = [[File:No Cache Object.png]]
-|release = 
+|image = [[File:No Cache Object.png|220px]]
 |update = update
 |members = Yes
 |quest = No
@@ -175,8 +167,7 @@ exports[`sceneryPageBuilder should strip HTML tags from scenery name in page con
 "{{New Content}}
 {{Infobox Scenery
 |name = Red Chest
-|image = [[File:Red Chest.png]]
-|release = 
+|image = [[File:Red Chest.png|220px]]
 |update = update
 |members = Yes
 |quest = No

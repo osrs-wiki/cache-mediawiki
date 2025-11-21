@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoboxSceneryTemplate should handle scenery names without HTML tags 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Scenery",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Door",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Door.png|220px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "quest",
+      "value": "No",
+    },
+    Object {
+      "key": "options",
+      "value": "Open, Close",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "5678",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxSceneryTemplate should handle scenery with no actions 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Scenery",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Rock",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Rock.png|220px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "quest",
+      "value": "No",
+    },
+    Object {
+      "key": "options",
+      "value": "",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "2222",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxSceneryTemplate should include actions as options 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Scenery",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Chest",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Chest.png|220px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "quest",
+      "value": "No",
+    },
+    Object {
+      "key": "options",
+      "value": "Open, Search, Examine",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "9012",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxSceneryTemplate should include examine text when available 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Scenery",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Mysterious Door",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Mysterious Door.png|220px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "quest",
+      "value": "No",
+    },
+    Object {
+      "key": "options",
+      "value": "Open",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "3333",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxSceneryTemplate should strip HTML tags from scenery name 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Scenery",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "Magic Door",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:Magic Door.png|220px]]",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "quest",
+      "value": "No",
+    },
+    Object {
+      "key": "options",
+      "value": "Open",
+    },
+    Object {
+      "key": "examine",
+      "value": "",
+    },
+    Object {
+      "key": "id",
+      "value": "1234",
+    },
+  ],
+}
+`;
