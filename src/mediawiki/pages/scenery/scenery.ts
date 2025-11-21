@@ -5,6 +5,7 @@ import {
   MediaWikiFile,
   MediaWikiTemplate,
   MediaWikiText,
+  MediaWikiHeader,
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxScenery } from "./scenery.types";
@@ -97,7 +98,7 @@ export const sceneryPageBuilder = async (
     builder.addContents([
       new MediaWikiBreak(),
       new MediaWikiBreak(),
-      new MediaWikiText("==Locations=="),
+      new MediaWikiHeader("Locations", 2),
       new MediaWikiBreak(),
       new MediaWikiTemplate("ObjectTableHead"),
     ]);
