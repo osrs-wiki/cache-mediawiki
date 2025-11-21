@@ -9,7 +9,6 @@ import {
 
 import Context from "../../../context";
 import { Area, CacheProvider, WorldMap } from "../../../utils/cache2";
-import { getNearestArea } from "../../../utils/locations/worldmap";
 import { InfoboxLocation, MapTemplate } from "../../templates";
 
 const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
@@ -40,7 +39,7 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
         mapTemplate = mapTemplateObj.build();
 
         // Find nearest area for location parameter
-        // TODO: Area mapping nees to consider grouping and not just the nearest area.
+        // TODO: Area mapping needs to consider grouping and not just the nearest area.
         // It also needs to support mapping dungeons to their overworld areas.
         /*const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
         if (nearestArea) {

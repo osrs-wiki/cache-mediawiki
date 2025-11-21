@@ -6,7 +6,7 @@ import type { CacheProvider } from "../Cache";
 import { Loadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
-import { WorldMapCompositeID, WorldX, WorldY } from "../types";
+import { IndexType, WorldMapCompositeID, WorldX, WorldY } from "../types";
 
 /**
  * Represents a composite world map definition containing map squares, zones, and elements.
@@ -15,7 +15,7 @@ import { WorldMapCompositeID, WorldX, WorldY } from "../types";
  */
 @Typed
 export class WorldMapComposite extends Loadable {
-  public static readonly index = 22; // WORLDMAP index
+  public static readonly index = IndexType.WorldMap;
 
   public mapSquares: MapSquare[] = [];
   public zones: Zone[] = [];
