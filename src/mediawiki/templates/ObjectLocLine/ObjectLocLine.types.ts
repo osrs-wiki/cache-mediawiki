@@ -1,4 +1,4 @@
-import { MediaWikiContents } from "@osrs-wiki/mediawiki-builder";
+import type { MediaWikiContents } from "@osrs-wiki/mediawiki-builder";
 
 import { MapParams } from "../Map/Map.types";
 
