@@ -40,12 +40,11 @@ exports[`areaPageBuilder should build area page with map and nearest location pa
 |image = [[File:Test Area.png|300px]]
 |update = Test Update
 |members = Yes
-|location = [[Strait of Khazard]]
+|location = 
 |wilderness = 
 |teleport = 
 |music = 
 |map = {{Map|name=Test Area|x=2664|y=3102|plane=0|mapID=-1|mtype=pin}}
-
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
@@ -64,7 +63,6 @@ exports[`areaPageBuilder should build area page with map parameter when WorldMap
 |teleport = 
 |music = 
 |map = {{Map|name=Test Area|x=2664|y=3102|plane=0|mapID=-1|mtype=pin}}
-
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
