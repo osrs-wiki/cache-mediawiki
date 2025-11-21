@@ -1,15 +1,21 @@
 import {
-  InfoboxTemplate,
   MediaWikiDate,
   MediaWikiFile,
+  MediaWikiLink,
+  MediaWikiTemplate,
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxLocation as InfoboxLocationType } from "./InfoboxLocation.types";
+import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
 import { Area } from "@/utils/cache2";
 
-const InfoboxLocation = (location: Area) => {
+const InfoboxLocation = (
+  location: Area,
+  mapTemplate?: MediaWikiTemplate,
+  nearestLocation?: MediaWikiLink
+) => {
   return new InfoboxTemplate<InfoboxLocationType>("Location", {
     name: location.name as string,
     image: new MediaWikiFile(`${location.name}.png`, {
@@ -20,11 +26,12 @@ const InfoboxLocation = (location: Area) => {
       : undefined,
     update: Context.update,
     members: "Yes",
-    location: "",
+    ...(nearestLocation && { location: nearestLocation }),
+    ...(!nearestLocation && { location: "" }),
     wilderness: "",
     teleport: "",
     music: "",
-    map: "",
+    ...(mapTemplate && { map: mapTemplate }),
     type: "",
   });
 };

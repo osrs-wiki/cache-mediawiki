@@ -77,6 +77,10 @@ describe("sceneryPageBuilder", () => {
         .spyOn(locationsModule, "getSceneryLocations")
         .mockResolvedValue([mockLocation]);
 
+      jest
+        .spyOn(locationsModule, "getAreaNamesForLocations")
+        .mockResolvedValue(new Map([["3200,3400,0", "Lumbridge"]]));
+
       const builder = await sceneryPageBuilder(
         // @ts-ignore Do not require all fields
         {
@@ -107,6 +111,42 @@ describe("sceneryPageBuilder", () => {
           [mockLocations[0], mockLocations[1]],
           [mockLocations[2]],
         ]);
+
+      jest.spyOn(locationsModule, "getAreaNamesForLocations").mockResolvedValue(
+        new Map([
+          ["3200,3400,0", "Test Area"],
+          ["3210,3410,0", "Test Area"],
+          ["3100,3100,1", "Another Area"],
+        ])
+      );
+
+      jest.spyOn(locationsModule, "groupLocationsByArea").mockReturnValue([
+        {
+          areaName: "Another Area",
+          coordinates: [{ x: 3100, y: 3100, plane: 1 }],
+        },
+        {
+          areaName: "Test Area",
+          coordinates: [
+            { x: 3200, y: 3400, plane: 0 },
+            { x: 3210, y: 3410, plane: 0 },
+          ],
+        },
+      ]);
+
+      jest.spyOn(locationsModule, "mergeLocationGroupsByArea").mockReturnValue([
+        {
+          areaName: "Another Area",
+          coordinates: [{ x: 3100, y: 3100, plane: 1 }],
+        },
+        {
+          areaName: "Test Area",
+          coordinates: [
+            { x: 3200, y: 3400, plane: 0 },
+            { x: 3210, y: 3410, plane: 0 },
+          ],
+        },
+      ]);
 
       const builder = await sceneryPageBuilder(
         // @ts-ignore Do not require all fields
@@ -204,6 +244,42 @@ describe("sceneryPageBuilder", () => {
       jest.spyOn(locationsModule, "groupLocationsByProximity").mockReturnValue([
         [mockLocations[0], mockLocations[1]], // Grouped together
         [mockLocations[2]], // Separate group
+      ]);
+
+      jest.spyOn(locationsModule, "getAreaNamesForLocations").mockResolvedValue(
+        new Map([
+          ["3200,3400,0", "Test Area"],
+          ["3201,3401,0", "Test Area"],
+          ["3300,3500,0", "Another Area"],
+        ])
+      );
+
+      jest.spyOn(locationsModule, "groupLocationsByArea").mockReturnValue([
+        {
+          areaName: "Another Area",
+          coordinates: [{ x: 3300, y: 3500, plane: 0 }],
+        },
+        {
+          areaName: "Test Area",
+          coordinates: [
+            { x: 3200, y: 3400, plane: 0 },
+            { x: 3201, y: 3401, plane: 0 },
+          ],
+        },
+      ]);
+
+      jest.spyOn(locationsModule, "mergeLocationGroupsByArea").mockReturnValue([
+        {
+          areaName: "Another Area",
+          coordinates: [{ x: 3300, y: 3500, plane: 0 }],
+        },
+        {
+          areaName: "Test Area",
+          coordinates: [
+            { x: 3200, y: 3400, plane: 0 },
+            { x: 3201, y: 3401, plane: 0 },
+          ],
+        },
       ]);
 
       const builder = await sceneryPageBuilder(

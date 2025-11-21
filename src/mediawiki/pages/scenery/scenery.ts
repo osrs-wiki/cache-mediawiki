@@ -3,23 +3,24 @@ import {
   MediaWikiBreak,
   MediaWikiDate,
   MediaWikiFile,
+  MediaWikiLink,
   MediaWikiTemplate,
   MediaWikiText,
   MediaWikiHeader,
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxScenery } from "./scenery.types";
-import {
-  InfoboxTemplate,
-  MapTemplate,
-  ObjectLocLineTemplate,
-} from "../../templates";
+import { getObjectLocLines } from "./scenery.utils";
+import { InfoboxTemplate, MapTemplate } from "../../templates";
 
 import Context from "@/context";
 import { CacheProvider, Location, Obj } from "@/utils/cache2";
 import {
   getSceneryLocations,
   groupLocationsByProximity,
+  groupLocationsByArea,
+  getAreaNamesForLocations,
+  mergeLocationGroupsByArea,
 } from "@/utils/locations";
 import { stripHtmlTags } from "@/utils/string";
 
@@ -43,7 +44,22 @@ export const sceneryPageBuilder = async (
     }
   }
 
-  // Build infobox params
+  // Get location name if there's a single location (needed before building params)
+  let locationName: string | undefined;
+  if (locations.length === 1 && cache) {
+    try {
+      const areaNameMap = await getAreaNamesForLocations(await cache, [
+        locations[0],
+      ]);
+      const pos = locations[0].getPosition();
+      const coordKey = `${pos.x},${pos.y},${pos.z}`;
+      locationName = areaNameMap.get(coordKey);
+    } catch (error) {
+      console.debug("Failed to load area name for single location:", error);
+    }
+  }
+
+  // Build infobox params with correct field ordering
   const infoboxParams: InfoboxScenery = {
     name: cleanName,
     image: new MediaWikiFile(`${cleanName}.png`),
@@ -53,6 +69,7 @@ export const sceneryPageBuilder = async (
     update: Context.update,
     members: true,
     quest: "No",
+    ...(locationName && { location: new MediaWikiLink(locationName) }),
     options: scenery.actions,
     examine: Context.examines?.scenery
       ? Context.examines.scenery[scenery.id]
@@ -104,30 +121,27 @@ export const sceneryPageBuilder = async (
     ]);
 
     // Group locations by proximity
-    const locationGroups = groupLocationsByProximity(locations);
+    const proximityGroups = groupLocationsByProximity(locations);
 
-    // Create an ObjectLocLine for each group
-    for (const group of locationGroups) {
-      const coordinates = group.map((loc) => {
-        const pos = loc.getPosition();
-        return {
-          x: pos.getX(),
-          y: pos.getY(),
-          plane: pos.getZ(),
-        };
-      });
-
-      builder.addContent(
-        new ObjectLocLineTemplate({
-          name: cleanName,
-          location: new MediaWikiText("?"),
-          members: true,
-          coordinates,
-          mapID: -1,
-          mtype: "pin",
-        }).build()
-      );
+    // Get area names for all locations
+    let areaNameMap = new Map<string, string>();
+    if (cache) {
+      try {
+        areaNameMap = await getAreaNamesForLocations(await cache, locations);
+      } catch (error) {
+        console.debug("Failed to load area names:", error);
+      }
     }
+
+    // Group by area and sort alphabetically
+    const locationGroups = groupLocationsByArea(proximityGroups, areaNameMap);
+
+    // Combine groups with identical area names (merge proximity groups from same area)
+    const mergedGroups = mergeLocationGroupsByArea(locationGroups);
+
+    // Generate ObjectLocLine templates
+    const objectLocLines = getObjectLocLines(cleanName, mergedGroups);
+    builder.addContents(objectLocLines);
 
     builder.addContent(new MediaWikiTemplate("ObjectTableBottom"));
   }

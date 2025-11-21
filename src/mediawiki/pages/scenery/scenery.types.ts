@@ -1,6 +1,7 @@
 import {
   MediaWikiDate,
   MediaWikiFile,
+  MediaWikiLink,
   MediaWikiTemplate,
 } from "@osrs-wiki/mediawiki-builder";
 
@@ -13,6 +14,7 @@ export type InfoboxScenery = {
   removalupdate?: MediaWikiDate;
   members?: boolean;
   quest?: string;
+  location?: MediaWikiLink;
   options?: string[];
   respawn?: number;
   icon?: MediaWikiFile;

@@ -11,8 +11,7 @@ export const writeAreaPageFromCache = async (
     const area = await Area.load(cache, id);
 
     if (area) {
-      console.log(`Area: `, JSON.stringify(area, null, 2));
-      writeAreaPage(area);
+      await writeAreaPage(area, cache);
     } else {
       console.warn(`Area with ID ${id} not found.`);
     }
@@ -21,7 +20,10 @@ export const writeAreaPageFromCache = async (
   }
 };
 
-export const writeAreaPage = async (area: Area) => {
-  const builder = areaPageBuilder(area);
+export const writeAreaPage = async (
+  area: Area,
+  cache?: Promise<CacheProvider>
+) => {
+  const builder = await areaPageBuilder(area, cache);
   writePageToFile(builder, "area", area.name, area.id.toString());
 };
