@@ -2,20 +2,25 @@ import {
   MediaWikiBreak,
   MediaWikiBuilder,
   MediaWikiFile,
+  MediaWikiLink,
   MediaWikiTemplate,
   MediaWikiText,
 } from "@osrs-wiki/mediawiki-builder";
 
 import Context from "../../../context";
 import { Area, CacheProvider, WorldMap } from "../../../utils/cache2";
+import { getNearestArea } from "../../../utils/locations/worldmap";
 import { InfoboxLocation, MapTemplate } from "../../templates";
 
 const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
   // Find the world map element for this area
   let mapTemplateStr: string | undefined;
+  let nearestAreaName: string | null = null;
+
   if (cache) {
     try {
-      const worldMap = await WorldMap.load(await cache);
+      const cacheProvider = await cache;
+      const worldMap = await WorldMap.load(cacheProvider);
       const element = worldMap
         .getElements()
         .find((el) => el.areaDefinitionId === area.id);
@@ -33,6 +38,12 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
           mtype: "pin",
         });
         mapTemplateStr = mapTemplate.build().build();
+
+        // Find nearest area for location parameter
+        const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
+        if (nearestArea) {
+          nearestAreaName = nearestArea.name;
+        }
       }
     } catch (error) {
       console.debug(
@@ -42,7 +53,11 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
     }
   }
 
-  const infoboxLocation = InfoboxLocation(area, mapTemplateStr);
+  const infoboxLocation = InfoboxLocation(
+    area,
+    mapTemplateStr,
+    nearestAreaName ? new MediaWikiLink(nearestAreaName) : undefined
+  );
 
   const builder = new MediaWikiBuilder();
 

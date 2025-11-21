@@ -1,4 +1,8 @@
-import { MediaWikiDate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
+import {
+  MediaWikiDate,
+  MediaWikiFile,
+  MediaWikiLink,
+} from "@osrs-wiki/mediawiki-builder";
 
 export type InfoboxLocation = {
   name: string;
@@ -8,7 +12,7 @@ export type InfoboxLocation = {
   removal?: MediaWikiDate;
   removalupdate?: string;
   members?: boolean | string;
-  location?: string;
+  location?: MediaWikiLink | string;
   wilderness?: boolean | string;
   teleport?: string;
   music?: string;

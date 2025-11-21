@@ -1,3 +1,5 @@
+import { MediaWikiLink } from "@osrs-wiki/mediawiki-builder";
+
 import InfoboxLocation from "./InfoboxLocation";
 
 import Context from "@/context";
@@ -35,6 +37,18 @@ describe("InfoboxLocation", () => {
     const mapTemplate =
       "{{Map|name=The White Cliffs of Lova|x=2664|y=3102|plane=0|mapID=-1|mtype=pin}}";
     const location = InfoboxLocation(BASE_LOCATION, mapTemplate);
+    expect(location.build()).toMatchSnapshot();
+  });
+
+  test("InfoboxLocation - with nearest location parameter", () => {
+    const mapTemplate =
+      "{{Map|name=The White Cliffs of Lova|x=2664|y=3102|plane=0|mapID=-1|mtype=pin}}";
+    const nearestLocation = new MediaWikiLink("Strait of Khazard");
+    const location = InfoboxLocation(
+      BASE_LOCATION,
+      mapTemplate,
+      nearestLocation
+    );
     expect(location.build()).toMatchSnapshot();
   });
 });

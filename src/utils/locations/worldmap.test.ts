@@ -2,6 +2,7 @@ import {
   clearWorldMapCache,
   getAreaNameForLocation,
   getAreaNamesForLocations,
+  getNearestArea,
 } from "./worldmap";
 import { Area, CacheProvider, Location, Position, WorldMap } from "../cache2";
 import {
@@ -282,6 +283,105 @@ describe("worldmap utilities", () => {
       await getAreaNamesForLocations(mockCache, [location]);
 
       expect(WorldMap.load).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("getNearestArea", () => {
+    it("should return nearest area to a position", async () => {
+      const mockWorldMap = {
+        getElements: jest.fn().mockReturnValue([
+          {
+            areaDefinitionId: 42 as AreaID,
+            getWorldPosition: jest
+              .fn()
+              .mockReturnValue(new Position(3200 as WorldX, 3200 as WorldY, 0)),
+          },
+          {
+            areaDefinitionId: 43 as AreaID,
+            getWorldPosition: jest
+              .fn()
+              .mockReturnValue(new Position(3400 as WorldX, 3400 as WorldY, 0)),
+          },
+        ]),
+      };
+      (WorldMap.load as jest.Mock).mockResolvedValue(mockWorldMap);
+      const mockArea = { name: "Lumbridge", id: 42 as AreaID } as Area;
+      (Area.load as jest.Mock).mockResolvedValue(mockArea);
+
+      const position = new Position(3210 as WorldX, 3210 as WorldY, 0);
+      const result = await getNearestArea(mockCache, position);
+
+      expect(result).toBe(mockArea);
+      expect(Area.load).toHaveBeenCalledWith(mockCache, 42);
+    });
+
+    it("should exclude specified area ID", async () => {
+      const mockWorldMap = {
+        getElements: jest.fn().mockReturnValue([
+          {
+            areaDefinitionId: 42 as AreaID,
+            getWorldPosition: jest
+              .fn()
+              .mockReturnValue(new Position(3200 as WorldX, 3200 as WorldY, 0)),
+          },
+          {
+            areaDefinitionId: 43 as AreaID,
+            getWorldPosition: jest
+              .fn()
+              .mockReturnValue(new Position(3400 as WorldX, 3400 as WorldY, 0)),
+          },
+        ]),
+      };
+      (WorldMap.load as jest.Mock).mockResolvedValue(mockWorldMap);
+      const mockArea = { name: "Varrock", id: 43 as AreaID } as Area;
+      (Area.load as jest.Mock).mockResolvedValue(mockArea);
+
+      // Position is closer to area 42, but we exclude it
+      const position = new Position(3210 as WorldX, 3210 as WorldY, 0);
+      const result = await getNearestArea(mockCache, position, 42);
+
+      expect(result).toBe(mockArea);
+      expect(Area.load).toHaveBeenCalledWith(mockCache, 43);
+    });
+
+    it("should return null when no elements exist", async () => {
+      const mockWorldMap = {
+        getElements: jest.fn().mockReturnValue([]),
+      };
+      (WorldMap.load as jest.Mock).mockResolvedValue(mockWorldMap);
+
+      const position = new Position(3210 as WorldX, 3210 as WorldY, 0);
+      const result = await getNearestArea(mockCache, position);
+
+      expect(result).toBeNull();
+    });
+
+    it("should return null when all elements are excluded", async () => {
+      const mockWorldMap = {
+        getElements: jest.fn().mockReturnValue([
+          {
+            areaDefinitionId: 42 as AreaID,
+            getWorldPosition: jest
+              .fn()
+              .mockReturnValue(new Position(3200 as WorldX, 3200 as WorldY, 0)),
+          },
+        ]),
+      };
+      (WorldMap.load as jest.Mock).mockResolvedValue(mockWorldMap);
+
+      const position = new Position(3210 as WorldX, 3210 as WorldY, 0);
+      const result = await getNearestArea(mockCache, position, 42);
+
+      expect(result).toBeNull();
+    });
+
+    it("should handle errors gracefully", async () => {
+      (WorldMap.load as jest.Mock).mockRejectedValue(new Error("Load failed"));
+
+      const position = new Position(3210 as WorldX, 3210 as WorldY, 0);
+      const result = await getNearestArea(mockCache, position);
+
+      expect(result).toBeNull();
     });
   });
 });

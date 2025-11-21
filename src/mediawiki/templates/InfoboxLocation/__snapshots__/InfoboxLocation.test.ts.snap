@@ -137,3 +137,53 @@ MediaWikiTemplate {
   ],
 }
 `;
+
+exports[`InfoboxLocation InfoboxLocation - with nearest location parameter 1`] = `
+MediaWikiTemplate {
+  "children": undefined,
+  "name": "Infobox Location",
+  "options": undefined,
+  "params": Array [
+    Object {
+      "key": "name",
+      "value": "The White Cliffs of Lova",
+    },
+    Object {
+      "key": "image",
+      "value": "[[File:The White Cliffs of Lova.png|300px]]",
+    },
+    Object {
+      "key": "update",
+      "value": "Test Update",
+    },
+    Object {
+      "key": "members",
+      "value": "Yes",
+    },
+    Object {
+      "key": "location",
+      "value": "[[Strait of Khazard]]",
+    },
+    Object {
+      "key": "wilderness",
+      "value": "",
+    },
+    Object {
+      "key": "teleport",
+      "value": "",
+    },
+    Object {
+      "key": "music",
+      "value": "",
+    },
+    Object {
+      "key": "map",
+      "value": "{{Map|name=The White Cliffs of Lova|x=2664|y=3102|plane=0|mapID=-1|mtype=pin}}",
+    },
+    Object {
+      "key": "type",
+      "value": "",
+    },
+  ],
+}
+`;

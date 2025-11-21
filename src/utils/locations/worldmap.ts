@@ -41,6 +41,65 @@ function distanceSquared(pos1: Position, pos2: Position): number {
 }
 
 /**
+ * Finds the nearest area to a given position.
+ *
+ * @param cache The cache provider
+ * @param position The position to find the nearest area for
+ * @param excludeAreaId Optional area ID to exclude from search (useful for finding nearest area to an area)
+ * @returns The nearest area, or null if no area found
+ */
+export async function getNearestArea(
+  cache: CacheProvider,
+  position: Position,
+  excludeAreaId?: number
+): Promise<Area | null> {
+  try {
+    const worldMap = await loadWorldMap(cache);
+    const elements = worldMap.getElements();
+
+    if (elements.length === 0) {
+      return null;
+    }
+
+    // Find the closest world map element
+    let closestElement = null;
+    let closestDistance = Infinity;
+
+    for (const element of elements) {
+      // Skip excluded area if specified
+      if (
+        excludeAreaId !== undefined &&
+        element.areaDefinitionId === excludeAreaId
+      ) {
+        continue;
+      }
+
+      const elementPos = element.getWorldPosition();
+      const distance = distanceSquared(position, elementPos);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestElement = element;
+      }
+    }
+
+    if (!closestElement) {
+      return null;
+    }
+
+    // Load the area definition
+    const area = await Area.load(cache, closestElement.areaDefinitionId);
+    return area;
+  } catch (error) {
+    console.debug(
+      `Failed to get nearest area for position ${position.x},${position.y}:`,
+      error
+    );
+    return null;
+  }
+}
+
+/**
  * Finds the area name for a location by finding the closest world map element.
  *
  * @param cache The cache provider
@@ -51,50 +110,8 @@ export async function getAreaNameForLocation(
   cache: CacheProvider,
   location: Location
 ): Promise<string | null> {
-  try {
-    const worldMap = await loadWorldMap(cache);
-    const elements = worldMap.getElements();
-
-    if (elements.length === 0) {
-      return null;
-    }
-
-    const locationPos = location.getPosition();
-
-    // Find the closest world map element
-    let closestElement = elements[0];
-    let closestDistance = distanceSquared(
-      locationPos,
-      closestElement.getWorldPosition()
-    );
-
-    for (let i = 1; i < elements.length; i++) {
-      const element = elements[i];
-      const elementPos = element.getWorldPosition();
-      const distance = distanceSquared(locationPos, elementPos);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestElement = element;
-      }
-    }
-
-    // Load the area definition
-    const area = await Area.load(cache, closestElement.areaDefinitionId);
-    if (!area) {
-      return null;
-    }
-
-    return area.name;
-  } catch (error) {
-    console.debug(
-      `Failed to get area name for location at ${location.getPosition().x},${
-        location.getPosition().y
-      }:`,
-      error
-    );
-    return null;
-  }
+  const area = await getNearestArea(cache, location.getPosition());
+  return area?.name ?? null;
 }
 
 /**
