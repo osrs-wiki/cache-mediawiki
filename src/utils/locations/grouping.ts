@@ -1,5 +1,10 @@
 import { Location } from "../cache2";
 
+export type LocationGroup = {
+  areaName: string;
+  coordinates: Array<{ x: number; y: number; plane: number }>;
+};
+
 /**
  * Groups locations by proximity using a clustering algorithm.
  * Locations within the distance threshold of each other will be grouped together.
@@ -58,4 +63,55 @@ export function groupLocationsByProximity(
   }
 
   return groups;
+}
+
+/**
+ * Groups locations by area name, combining locations from the same area,
+ * and returns them sorted alphabetically by area name.
+ *
+ * @param locationGroups Array of location groups from proximity grouping
+ * @param areaNameMap Map of location indices to area names
+ * @returns Array of location groups organized by area, sorted alphabetically
+ */
+export function groupLocationsByArea(
+  locationGroups: Location[][],
+  areaNameMap: Map<number, string>
+): LocationGroup[] {
+  let locationIndex = 0;
+  const groupsByArea = new Map<
+    string,
+    Array<{ x: number; y: number; plane: number }>
+  >();
+
+  for (const group of locationGroups) {
+    const coordinates = group.map((loc) => {
+      const pos = loc.getPosition();
+      return {
+        x: pos.getX(),
+        y: pos.getY(),
+        plane: pos.getZ(),
+      };
+    });
+
+    const areaName = areaNameMap.get(locationIndex) || "?";
+    locationIndex += group.length;
+
+    // Combine groups with the same area name
+    const existingCoords = groupsByArea.get(areaName);
+    if (existingCoords) {
+      existingCoords.push(...coordinates);
+    } else {
+      groupsByArea.set(areaName, coordinates);
+    }
+  }
+
+  // Sort area names alphabetically and build result array
+  const sortedAreaNames = Array.from(groupsByArea.keys()).sort((a, b) =>
+    a.localeCompare(b)
+  );
+
+  return sortedAreaNames.map((areaName) => ({
+    areaName,
+    coordinates: groupsByArea.get(areaName) || [],
+  }));
 }

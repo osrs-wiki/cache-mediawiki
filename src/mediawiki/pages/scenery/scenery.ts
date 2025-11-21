@@ -10,17 +10,15 @@ import {
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxScenery } from "./scenery.types";
-import {
-  InfoboxTemplate,
-  MapTemplate,
-  ObjectLocLineTemplate,
-} from "../../templates";
+import { getObjectLocLines } from "./scenery.utils";
+import { InfoboxTemplate, MapTemplate } from "../../templates";
 
 import Context from "@/context";
 import { CacheProvider, Location, Obj } from "@/utils/cache2";
 import {
   getSceneryLocations,
   groupLocationsByProximity,
+  groupLocationsByArea,
   getAreaNamesForLocations,
 } from "@/utils/locations";
 import { stripHtmlTags } from "@/utils/string";
@@ -120,7 +118,7 @@ export const sceneryPageBuilder = async (
     ]);
 
     // Group locations by proximity
-    const locationGroups = groupLocationsByProximity(locations);
+    const proximityGroups = groupLocationsByProximity(locations);
 
     // Get area names for all locations
     let areaNameMap = new Map<number, string>();
@@ -132,59 +130,12 @@ export const sceneryPageBuilder = async (
       }
     }
 
-    // Track which location indices belong to which group and build group data
-    let locationIndex = 0;
-    const groupsByArea = new Map<
-      string,
-      Array<{ x: number; y: number; plane: number }>
-    >();
+    // Group by area and sort alphabetically
+    const locationGroups = groupLocationsByArea(proximityGroups, areaNameMap);
 
-    for (const group of locationGroups) {
-      const coordinates = group.map((loc) => {
-        const pos = loc.getPosition();
-        return {
-          x: pos.getX(),
-          y: pos.getY(),
-          plane: pos.getZ(),
-        };
-      });
-
-      const areaName = areaNameMap.get(locationIndex) || "?";
-      locationIndex += group.length;
-
-      // Combine groups with the same area name
-      const existingCoords = groupsByArea.get(areaName);
-      if (existingCoords) {
-        existingCoords.push(...coordinates);
-      } else {
-        groupsByArea.set(areaName, coordinates);
-      }
-    }
-
-    // Sort area names alphabetically
-    const sortedAreaNames = Array.from(groupsByArea.keys()).sort((a, b) =>
-      a.localeCompare(b)
-    );
-
-    // Create an ObjectLocLine for each area in sorted order
-    for (const areaName of sortedAreaNames) {
-      const coordinates = groupsByArea.get(areaName);
-      if (!coordinates) continue;
-
-      builder.addContent(
-        new ObjectLocLineTemplate({
-          name: cleanName,
-          location:
-            areaName !== "?"
-              ? new MediaWikiLink(areaName)
-              : new MediaWikiText("?"),
-          members: true,
-          coordinates,
-          mapID: -1,
-          mtype: "pin",
-        }).build()
-      );
-    }
+    // Generate ObjectLocLine templates
+    const objectLocLines = getObjectLocLines(cleanName, locationGroups);
+    builder.addContents(objectLocLines);
 
     builder.addContent(new MediaWikiTemplate("ObjectTableBottom"));
   }

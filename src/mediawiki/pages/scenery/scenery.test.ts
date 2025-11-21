@@ -119,6 +119,20 @@ describe("sceneryPageBuilder", () => {
         ])
       );
 
+      jest.spyOn(locationsModule, "groupLocationsByArea").mockReturnValue([
+        {
+          areaName: "Another Area",
+          coordinates: [{ x: 3100, y: 3100, plane: 1 }],
+        },
+        {
+          areaName: "Test Area",
+          coordinates: [
+            { x: 3200, y: 3400, plane: 0 },
+            { x: 3210, y: 3410, plane: 0 },
+          ],
+        },
+      ]);
+
       const builder = await sceneryPageBuilder(
         // @ts-ignore Do not require all fields
         {
@@ -223,6 +237,20 @@ describe("sceneryPageBuilder", () => {
           [2, "Another Area"],
         ])
       );
+
+      jest.spyOn(locationsModule, "groupLocationsByArea").mockReturnValue([
+        {
+          areaName: "Another Area",
+          coordinates: [{ x: 3300, y: 3500, plane: 0 }],
+        },
+        {
+          areaName: "Test Area",
+          coordinates: [
+            { x: 3200, y: 3400, plane: 0 },
+            { x: 3201, y: 3401, plane: 0 },
+          ],
+        },
+      ]);
 
       const builder = await sceneryPageBuilder(
         // @ts-ignore Do not require all fields
