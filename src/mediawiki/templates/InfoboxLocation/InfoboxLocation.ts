@@ -9,7 +9,7 @@ import { InfoboxLocation as InfoboxLocationType } from "./InfoboxLocation.types"
 import Context from "@/context";
 import { Area } from "@/utils/cache2";
 
-const InfoboxLocation = (location: Area) => {
+const InfoboxLocation = (location: Area, mapTemplate?: string) => {
   return new InfoboxTemplate<InfoboxLocationType>("Location", {
     name: location.name as string,
     image: new MediaWikiFile(`${location.name}.png`, {
@@ -24,7 +24,7 @@ const InfoboxLocation = (location: Area) => {
     wilderness: "",
     teleport: "",
     music: "",
-    map: "",
+    ...(mapTemplate && { map: mapTemplate }),
     type: "",
   });
 };

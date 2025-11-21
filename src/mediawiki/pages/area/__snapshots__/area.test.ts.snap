@@ -10,7 +10,6 @@ exports[`areaPageBuilder should build area page 1`] = `
 |wilderness = 
 |teleport = 
 |music = 
-|map = 
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
@@ -28,7 +27,25 @@ exports[`areaPageBuilder should build area page with context 1`] = `
 |wilderness = 
 |teleport = 
 |music = 
-|map = 
+|type = 
+}}
+[[File:Test Area.png|300px|left]]
+'''Test Area''' is an area."
+`;
+
+exports[`areaPageBuilder should build area page with map parameter when WorldMap element exists 1`] = `
+"{{New Content}}
+{{Infobox Location
+|name = Test Area
+|image = [[File:Test Area.png|300px]]
+|update = Test Update
+|members = Yes
+|location = 
+|wilderness = 
+|teleport = 
+|music = 
+|map = {{Map|name=Test Area|x=2664|y=3102|plane=0|mapID=-1|mtype=pin}}
+
 |type = 
 }}
 [[File:Test Area.png|300px|left]]

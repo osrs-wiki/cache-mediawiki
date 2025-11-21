@@ -30,4 +30,11 @@ describe("InfoboxLocation", () => {
     const location = InfoboxLocation(BASE_LOCATION);
     expect(location.build()).toMatchSnapshot();
   });
+
+  test("InfoboxLocation - with map parameter", () => {
+    const mapTemplate =
+      "{{Map|name=The White Cliffs of Lova|x=2664|y=3102|plane=0|mapID=-1|mtype=pin}}";
+    const location = InfoboxLocation(BASE_LOCATION, mapTemplate);
+    expect(location.build()).toMatchSnapshot();
+  });
 });
