@@ -6,11 +6,36 @@ export type LocationGroup = {
 };
 
 /**
- * Groups locations by proximity using a clustering algorithm.
- * Locations within the distance threshold of each other will be grouped together.
+ * Calculates the centroid (center point) of a group of locations.
+ *
+ * @param group Array of locations to calculate centroid for
+ * @returns Object with x and y coordinates of the centroid
+ */
+function calculateCentroid(group: Location[]): { x: number; y: number } {
+  const sum = group.reduce(
+    (acc, loc) => {
+      const pos = loc.getPosition();
+      return {
+        x: acc.x + pos.getX(),
+        y: acc.y + pos.getY(),
+      };
+    },
+    { x: 0, y: 0 }
+  );
+
+  return {
+    x: sum.x / group.length,
+    y: sum.y / group.length,
+  };
+}
+
+/**
+ * Groups locations by proximity using a centroid-based clustering algorithm.
+ * Locations within the distance threshold of the group's centroid will be grouped together.
+ * The centroid is recalculated each time a new location is added to the group.
  *
  * @param locations Array of Location objects to group
- * @param distanceThreshold Maximum distance (in tiles) between locations in the same group (default: 64)
+ * @param distanceThreshold Maximum distance (in tiles) from the group centroid (default: 64)
  * @returns Array of location groups, where each group is an array of nearby locations
  */
 export function groupLocationsByProximity(
@@ -31,26 +56,25 @@ export function groupLocationsByProximity(
 
     const currentGroup: Location[] = [firstLocation];
 
-    // Keep checking if any remaining locations are close to any location in the current group
+    // Keep checking if any remaining locations are close to the group's centroid
     let foundNewMember = true;
     while (foundNewMember) {
       foundNewMember = false;
+
+      // Calculate the centroid of the current group
+      const centroid = calculateCentroid(currentGroup);
 
       for (let i = remaining.length - 1; i >= 0; i--) {
         const location = remaining[i];
         const pos = location.getPosition();
 
-        // Check if this location is close to any location in the current group
-        const isNearby = currentGroup.some((groupLocation) => {
-          const groupPos = groupLocation.getPosition();
-          const distance = Math.sqrt(
-            Math.pow(pos.getX() - groupPos.getX(), 2) +
-              Math.pow(pos.getY() - groupPos.getY(), 2)
-          );
-          return distance <= distanceThreshold;
-        });
+        // Check if this location is close to the group's centroid
+        const distance = Math.sqrt(
+          Math.pow(pos.getX() - centroid.x, 2) +
+            Math.pow(pos.getY() - centroid.y, 2)
+        );
 
-        if (isNearby) {
+        if (distance <= distanceThreshold) {
           // Add to current group and remove from remaining
           currentGroup.push(location);
           remaining.splice(i, 1);
@@ -66,22 +90,18 @@ export function groupLocationsByProximity(
 }
 
 /**
- * Groups locations by area name, combining locations from the same area,
- * and returns them sorted alphabetically by area name.
+ * Groups locations by area name, keeping proximity groups separate even if they share the same area.
+ * Returns groups sorted alphabetically by area name.
  *
  * @param locationGroups Array of location groups from proximity grouping
- * @param areaNameMap Map of location indices to area names
- * @returns Array of location groups organized by area, sorted alphabetically
+ * @param areaNameMap Map of location coordinate keys ("x,y,plane") to area names
+ * @returns Array of location groups with area names, sorted alphabetically
  */
 export function groupLocationsByArea(
   locationGroups: Location[][],
-  areaNameMap: Map<number, string>
+  areaNameMap: Map<string, string>
 ): LocationGroup[] {
-  let locationIndex = 0;
-  const groupsByArea = new Map<
-    string,
-    Array<{ x: number; y: number; plane: number }>
-  >();
+  const result: LocationGroup[] = [];
 
   for (const group of locationGroups) {
     const coordinates = group.map((loc) => {
@@ -93,25 +113,51 @@ export function groupLocationsByArea(
       };
     });
 
-    const areaName = areaNameMap.get(locationIndex) || "?";
-    locationIndex += group.length;
+    // Use the first location's coordinates to look up the area name
+    const firstLocation = group[0];
+    const firstPos = firstLocation.getPosition();
+    const coordKey = `${firstPos.getX()},${firstPos.getY()},${firstPos.getZ()}`;
+    const areaName = areaNameMap.get(coordKey) || "?";
 
-    // Combine groups with the same area name
-    const existingCoords = groupsByArea.get(areaName);
-    if (existingCoords) {
-      existingCoords.push(...coordinates);
+    // Keep each proximity group separate, even if they share an area name
+    result.push({
+      areaName,
+      coordinates,
+    });
+  }
+
+  // Sort alphabetically by area name
+  result.sort((a, b) => a.areaName.localeCompare(b.areaName));
+
+  return result;
+}
+
+/**
+ * Merges location groups with identical area names into single groups.
+ * This combines proximity groups that are in the same area into one entry.
+ *
+ * @param locationGroups Array of location groups with area names
+ * @returns Array of merged location groups with combined coordinates
+ */
+export function mergeLocationGroupsByArea(
+  locationGroups: LocationGroup[]
+): LocationGroup[] {
+  const mergedGroups = new Map<string, LocationGroup>();
+
+  for (const group of locationGroups) {
+    const existing = mergedGroups.get(group.areaName);
+    if (existing) {
+      // Merge coordinates into existing group
+      existing.coordinates.push(...group.coordinates);
     } else {
-      groupsByArea.set(areaName, coordinates);
+      // Create new entry (deep copy to avoid mutating original)
+      mergedGroups.set(group.areaName, {
+        areaName: group.areaName,
+        coordinates: [...group.coordinates],
+      });
     }
   }
 
-  // Sort area names alphabetically and build result array
-  const sortedAreaNames = Array.from(groupsByArea.keys()).sort((a, b) =>
-    a.localeCompare(b)
-  );
-
-  return sortedAreaNames.map((areaName) => ({
-    areaName,
-    coordinates: groupsByArea.get(areaName) || [],
-  }));
+  // Convert back to array (maintains alphabetical order from input)
+  return Array.from(mergedGroups.values());
 }

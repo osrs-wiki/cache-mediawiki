@@ -20,6 +20,7 @@ import {
   groupLocationsByProximity,
   groupLocationsByArea,
   getAreaNamesForLocations,
+  mergeLocationGroupsByArea,
 } from "@/utils/locations";
 import { stripHtmlTags } from "@/utils/string";
 
@@ -50,7 +51,9 @@ export const sceneryPageBuilder = async (
       const areaNameMap = await getAreaNamesForLocations(await cache, [
         locations[0],
       ]);
-      locationName = areaNameMap.get(0);
+      const pos = locations[0].getPosition();
+      const coordKey = `${pos.x},${pos.y},${pos.z}`;
+      locationName = areaNameMap.get(coordKey);
     } catch (error) {
       console.debug("Failed to load area name for single location:", error);
     }
@@ -121,7 +124,7 @@ export const sceneryPageBuilder = async (
     const proximityGroups = groupLocationsByProximity(locations);
 
     // Get area names for all locations
-    let areaNameMap = new Map<number, string>();
+    let areaNameMap = new Map<string, string>();
     if (cache) {
       try {
         areaNameMap = await getAreaNamesForLocations(await cache, locations);
@@ -133,8 +136,11 @@ export const sceneryPageBuilder = async (
     // Group by area and sort alphabetically
     const locationGroups = groupLocationsByArea(proximityGroups, areaNameMap);
 
+    // Combine groups with identical area names (merge proximity groups from same area)
+    const mergedGroups = mergeLocationGroupsByArea(locationGroups);
+
     // Generate ObjectLocLine templates
-    const objectLocLines = getObjectLocLines(cleanName, locationGroups);
+    const objectLocLines = getObjectLocLines(cleanName, mergedGroups);
     builder.addContents(objectLocLines);
 
     builder.addContent(new MediaWikiTemplate("ObjectTableBottom"));

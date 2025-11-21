@@ -166,7 +166,7 @@ describe("worldmap utilities", () => {
   });
 
   describe("getAreaNamesForLocations", () => {
-    it("should return map of location indices to area names", async () => {
+    it("should return map of location coordinates to area names", async () => {
       const mockWorldMap = {
         getElements: jest.fn().mockReturnValue([
           {
@@ -216,9 +216,9 @@ describe("worldmap utilities", () => {
       const areaNames = await getAreaNamesForLocations(mockCache, locations);
 
       expect(areaNames.size).toBe(3);
-      expect(areaNames.get(0)).toBe("Lumbridge"); // Closest to 42
-      expect(areaNames.get(1)).toBe("Varrock"); // Closest to 43
-      expect(areaNames.get(2)).toBe("Lumbridge"); // Closest to 42
+      expect(areaNames.get("3205,3205,0")).toBe("Lumbridge"); // Closest to 42
+      expect(areaNames.get("3395,3405,0")).toBe("Varrock"); // Closest to 43
+      expect(areaNames.get("3210,3195,0")).toBe("Lumbridge"); // Closest to 42
 
       // Should batch load - only 2 unique areas
       expect(Area.load).toHaveBeenCalledTimes(2);

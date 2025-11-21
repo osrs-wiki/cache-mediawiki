@@ -115,13 +115,13 @@ export async function getAreaNameForLocation(
  *
  * @param cache The cache provider
  * @param locations Array of locations to find areas for
- * @returns Map of location index to area name
+ * @returns Map of location coordinate key ("x,y,plane") to area name
  */
 export async function getAreaNamesForLocations(
   cache: CacheProvider,
   locations: Location[]
-): Promise<Map<number, string>> {
-  const areaNames = new Map<number, string>();
+): Promise<Map<string, string>> {
+  const areaNames = new Map<string, string>();
 
   if (locations.length === 0) {
     return areaNames;
@@ -137,10 +137,11 @@ export async function getAreaNamesForLocations(
 
     // Find closest element for each location
     const areaIds = new Set<number>();
-    const locationToAreaId = new Map<number, number>();
+    const locationToAreaId = new Map<string, number>();
 
-    for (let i = 0; i < locations.length; i++) {
-      const locationPos = locations[i].getPosition();
+    for (const location of locations) {
+      const locationPos = location.getPosition();
+      const coordKey = `${locationPos.x},${locationPos.y},${locationPos.z}`;
 
       let closestElement = elements[0];
       let closestDistance = distanceSquared(
@@ -161,7 +162,7 @@ export async function getAreaNamesForLocations(
 
       const areaId = closestElement.areaDefinitionId;
       areaIds.add(areaId);
-      locationToAreaId.set(i, areaId);
+      locationToAreaId.set(coordKey, areaId);
     }
 
     // Batch load all unique areas
@@ -179,13 +180,15 @@ export async function getAreaNamesForLocations(
       })
     );
 
-    // Map locations to area names
-    for (let i = 0; i < locations.length; i++) {
-      const areaId = locationToAreaId.get(i);
+    // Map locations to area names using coordinate keys
+    for (const location of locations) {
+      const locationPos = location.getPosition();
+      const coordKey = `${locationPos.x},${locationPos.y},${locationPos.z}`;
+      const areaId = locationToAreaId.get(coordKey);
       if (areaId !== undefined) {
         const areaName = areaCache.get(areaId);
         if (areaName) {
-          areaNames.set(i, areaName);
+          areaNames.set(coordKey, areaName);
         }
       }
     }
