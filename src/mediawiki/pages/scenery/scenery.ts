@@ -88,7 +88,7 @@ export const sceneryPageBuilder = async (
   // Add locations section for multiple spawns
   if (cache && locations.length > 1) {
     const locationsContent = await buildLocationsSection(
-      scenery.id,
+      locations,
       cleanName,
       cache
     );

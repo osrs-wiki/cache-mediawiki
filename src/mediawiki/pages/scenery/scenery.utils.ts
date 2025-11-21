@@ -9,9 +9,8 @@ import {
 
 import { ObjectLocLineTemplate } from "../../templates";
 
-import { CacheProvider, Location, ObjID } from "@/utils/cache2";
+import { CacheProvider, Location } from "@/utils/cache2";
 import {
-  getSceneryLocations,
   groupLocationsByProximity,
   groupLocationsByArea,
   getAreaNamesForLocations,
@@ -48,26 +47,16 @@ export function getObjectLocLines(
 /**
  * Builds the locations section for a scenery object with multiple spawns.
  *
- * @param sceneryId The ID of the scenery object
+ * @param locations Array of location data for the scenery object
  * @param cleanName The display name of the scenery object
- * @param cache The cache provider for loading location data
+ * @param cache The cache provider for loading area names
  * @returns Array of MediaWiki content elements for the locations section
  */
 export async function buildLocationsSection(
-  sceneryId: number,
+  locations: Location[],
   cleanName: string,
   cache: Promise<CacheProvider>
 ): Promise<MediaWikiContent[]> {
-  let locations: Location[] = [];
-
-  try {
-    locations = await getSceneryLocations(await cache, sceneryId as ObjID);
-  } catch (error) {
-    // Silently fail if we can't load locations (missing XTEA keys, network errors, etc.)
-    console.debug(`Could not load locations for scenery ${sceneryId}:`, error);
-    return [];
-  }
-
   // Only build locations section for multiple spawns
   if (locations.length <= 1) {
     return [];
