@@ -108,6 +108,13 @@ describe("sceneryPageBuilder", () => {
           [mockLocations[2]],
         ]);
 
+      jest.spyOn(locationsModule, "getAreaNamesForLocations").mockResolvedValue(
+        new Map([
+          [0, "Test Area"],
+          [2, "Another Area"],
+        ])
+      );
+
       const builder = await sceneryPageBuilder(
         // @ts-ignore Do not require all fields
         {
@@ -205,6 +212,13 @@ describe("sceneryPageBuilder", () => {
         [mockLocations[0], mockLocations[1]], // Grouped together
         [mockLocations[2]], // Separate group
       ]);
+
+      jest.spyOn(locationsModule, "getAreaNamesForLocations").mockResolvedValue(
+        new Map([
+          [0, "Test Area"],
+          [2, "Another Area"],
+        ])
+      );
 
       const builder = await sceneryPageBuilder(
         // @ts-ignore Do not require all fields

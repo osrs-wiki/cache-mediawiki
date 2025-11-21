@@ -361,6 +361,10 @@ describe("WorldMapComposite", () => {
 });
 
 describe("WorldMap", () => {
+  beforeEach(() => {
+    WorldMap.clearCache();
+  });
+
   describe("load", () => {
     it("should load all composites and aggregate elements", async () => {
       // Create mock cache with composite map archive

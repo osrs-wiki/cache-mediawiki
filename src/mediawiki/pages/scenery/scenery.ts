@@ -3,6 +3,7 @@ import {
   MediaWikiBreak,
   MediaWikiDate,
   MediaWikiFile,
+  MediaWikiLink,
   MediaWikiTemplate,
   MediaWikiText,
   MediaWikiHeader,
@@ -20,6 +21,7 @@ import { CacheProvider, Location, Obj } from "@/utils/cache2";
 import {
   getSceneryLocations,
   groupLocationsByProximity,
+  getAreaNamesForLocations,
 } from "@/utils/locations";
 import { stripHtmlTags } from "@/utils/string";
 
@@ -106,6 +108,19 @@ export const sceneryPageBuilder = async (
     // Group locations by proximity
     const locationGroups = groupLocationsByProximity(locations);
 
+    // Get area names for all locations
+    let areaNameMap = new Map<number, string>();
+    if (cache) {
+      try {
+        areaNameMap = await getAreaNamesForLocations(await cache, locations);
+      } catch (error) {
+        console.debug("Failed to load area names:", error);
+      }
+    }
+
+    // Track which location indices belong to which group
+    let locationIndex = 0;
+
     // Create an ObjectLocLine for each group
     for (const group of locationGroups) {
       const coordinates = group.map((loc) => {
@@ -117,10 +132,16 @@ export const sceneryPageBuilder = async (
         };
       });
 
+      // Find area name for the first location in this group
+      const areaName = areaNameMap.get(locationIndex);
+      locationIndex += group.length;
+
       builder.addContent(
         new ObjectLocLineTemplate({
           name: cleanName,
-          location: new MediaWikiText("?"),
+          location: areaName
+            ? new MediaWikiLink(areaName)
+            : new MediaWikiText("?"),
           members: true,
           coordinates,
           mapID: -1,

@@ -32,6 +32,14 @@ export class WorldMap {
   }
 
   /**
+   * Clears the cached world map instance.
+   * Useful for testing or forcing a reload.
+   */
+  public static clearCache(): void {
+    WORLD_MAP = null;
+  }
+
+  /**
    * Loads all world map data from the cache.
    * This includes all composites from the "compositemap" archive
    * and aggregates all elements into a single list.
