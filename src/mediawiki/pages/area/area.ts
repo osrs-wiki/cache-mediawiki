@@ -14,8 +14,8 @@ import { InfoboxLocation, MapTemplate } from "../../templates";
 
 const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
   // Find the world map element for this area
-  let mapTemplateStr: string | undefined;
-  const nearestAreaName: string | null = null;
+  let mapTemplate: MediaWikiTemplate | undefined;
+  let nearestAreaName: string | null = null;
 
   if (cache) {
     try {
@@ -27,7 +27,7 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
 
       if (element) {
         const pos = element.getWorldPosition();
-        const mapTemplate = new MapTemplate({
+        const mapTemplateObj = new MapTemplate({
           name: area.name,
           coordinates: {
             x: pos.getX(),
@@ -37,13 +37,13 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
           mapID: -1,
           mtype: "pin",
         });
-        mapTemplateStr = mapTemplate.build().build();
+        mapTemplate = mapTemplateObj.build();
 
         // Find nearest area for location parameter
-        /*const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
+        const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
         if (nearestArea) {
           nearestAreaName = nearestArea.name;
-        }*/
+        }
       }
     } catch (error) {
       console.debug(
@@ -55,7 +55,7 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
 
   const infoboxLocation = InfoboxLocation(
     area,
-    mapTemplateStr,
+    mapTemplate,
     nearestAreaName ? new MediaWikiLink(nearestAreaName) : undefined
   );
 

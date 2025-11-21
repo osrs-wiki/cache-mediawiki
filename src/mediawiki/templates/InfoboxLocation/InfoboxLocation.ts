@@ -2,6 +2,7 @@ import {
   MediaWikiDate,
   MediaWikiFile,
   MediaWikiLink,
+  MediaWikiTemplate,
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxLocation as InfoboxLocationType } from "./InfoboxLocation.types";
@@ -12,7 +13,7 @@ import { Area } from "@/utils/cache2";
 
 const InfoboxLocation = (
   location: Area,
-  mapTemplate?: string,
+  mapTemplate?: MediaWikiTemplate,
   nearestLocation?: MediaWikiLink
 ) => {
   return new InfoboxTemplate<InfoboxLocationType>("Location", {

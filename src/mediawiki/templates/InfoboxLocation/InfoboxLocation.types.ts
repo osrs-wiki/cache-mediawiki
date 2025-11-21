@@ -2,6 +2,7 @@ import {
   MediaWikiDate,
   MediaWikiFile,
   MediaWikiLink,
+  MediaWikiTemplate,
 } from "@osrs-wiki/mediawiki-builder";
 
 export type InfoboxLocation = {
@@ -16,6 +17,6 @@ export type InfoboxLocation = {
   wilderness?: boolean | string;
   teleport?: string;
   music?: string;
-  map?: string;
+  map?: MediaWikiTemplate | string;
   type?: string;
 };
