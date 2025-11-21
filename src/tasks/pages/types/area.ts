@@ -11,7 +11,6 @@ export const writeAreaPageFromCache = async (
     const area = await Area.load(cache, id);
 
     if (area) {
-      console.log(`Area: `, JSON.stringify(area, null, 2));
       await writeAreaPage(area, cache);
     } else {
       console.warn(`Area with ID ${id} not found.`);

@@ -46,7 +46,7 @@ function distanceSquared(pos1: Position, pos2: Position): number {
  * @param cache The cache provider
  * @param position The position to find the nearest area for
  * @param excludeAreaId Optional area ID to exclude from search (useful for finding nearest area to an area)
- * @returns The nearest area, or null if no area found
+ * @returns The nearest area with a valid name, or null if no area found
  */
 export async function getNearestArea(
   cache: CacheProvider,
@@ -61,35 +61,31 @@ export async function getNearestArea(
       return null;
     }
 
-    // Find the closest world map element
-    let closestElement = null;
-    let closestDistance = Infinity;
+    // Build a sorted list of all elements by distance
+    const sortedElements = elements
+      .map((element) => {
+        const elementPos = element.getWorldPosition();
+        const distance = distanceSquared(position, elementPos);
+        return { element, distance };
+      })
+      .filter(({ element }) => {
+        // Skip excluded area if specified
+        return (
+          excludeAreaId === undefined ||
+          element.areaDefinitionId !== excludeAreaId
+        );
+      })
+      .sort((a, b) => a.distance - b.distance);
 
-    for (const element of elements) {
-      // Skip excluded area if specified
-      if (
-        excludeAreaId !== undefined &&
-        element.areaDefinitionId === excludeAreaId
-      ) {
-        continue;
-      }
-
-      const elementPos = element.getWorldPosition();
-      const distance = distanceSquared(position, elementPos);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestElement = element;
+    // Try to load areas in order of distance until we find one with a valid name
+    for (const { element } of sortedElements) {
+      const area = await Area.load(cache, element.areaDefinitionId);
+      if (area && area.name) {
+        return area;
       }
     }
 
-    if (!closestElement) {
-      return null;
-    }
-
-    // Load the area definition
-    const area = await Area.load(cache, closestElement.areaDefinitionId);
-    return area;
+    return null;
   } catch (error) {
     console.debug(
       `Failed to get nearest area for position ${position.x},${position.y}:`,

@@ -1,11 +1,11 @@
 import {
-  InfoboxTemplate,
   MediaWikiDate,
   MediaWikiFile,
   MediaWikiLink,
 } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxLocation as InfoboxLocationType } from "./InfoboxLocation.types";
+import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
 import { Area } from "@/utils/cache2";

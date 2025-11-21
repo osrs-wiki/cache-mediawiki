@@ -34,7 +34,7 @@ export const areaListener: CacheChangeListener = {
       newEntry &&
       newEntry.name.toLowerCase() !== "null"
     ) {
-      writeAreaPage(newEntry);
+      writeAreaPage(newEntry, Promise.resolve(Context.newCacheProvider));
     }
   },
 };

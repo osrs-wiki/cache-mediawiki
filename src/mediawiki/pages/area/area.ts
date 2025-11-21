@@ -15,7 +15,7 @@ import { InfoboxLocation, MapTemplate } from "../../templates";
 const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
   // Find the world map element for this area
   let mapTemplateStr: string | undefined;
-  let nearestAreaName: string | null = null;
+  const nearestAreaName: string | null = null;
 
   if (cache) {
     try {
@@ -40,10 +40,10 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
         mapTemplateStr = mapTemplate.build().build();
 
         // Find nearest area for location parameter
-        const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
+        /*const nearestArea = await getNearestArea(cacheProvider, pos, area.id);
         if (nearestArea) {
           nearestAreaName = nearestArea.name;
-        }
+        }*/
       }
     } catch (error) {
       console.debug(
