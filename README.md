@@ -52,6 +52,55 @@ pages options:
   -i, --id <id>                        The ID of the item, NPC, or scenery.
 ```
 
+## Performance Optimization
+
+### Local XTEA Keys
+
+To speed up local development and testing, you can cache XTEA keys locally instead of fetching them from the OpenRS2 API each time.
+
+XTEA keys are used to decrypt map region data when loading scenery locations. By storing them locally, you can significantly reduce load times during development.
+
+#### File Location
+
+Place XTEA key files in the `data/xtea/` directory with one of these naming patterns:
+
+- `{revision}.json` (e.g., `235.json`)
+- `{revision}.{N}.json` (e.g., `235.4.json`, `235.2.json`, `235.5.json`)
+- `{full-cache-version}.json` (e.g., `2025-11-19-rev235.json`)
+
+The tool will automatically find any file matching the revision number.
+
+#### File Format
+
+The file should contain a JSON array of XTEA key objects:
+
+```json
+[
+  {
+    "archive": 5,
+    "group": 1234,
+    "name_hash": -1153413389,
+    "name": "l42_42",
+    "mapsquare": 10794,
+    "key": [-1303394492, 1234604739, -1845593033, -1096028287]
+  }
+]
+```
+
+#### Obtaining XTEA Keys
+
+You can download XTEA keys for a specific cache version from the OpenRS2 API:
+
+```bash
+# Replace 2238 with the OpenRS2 cache ID and 235 with the revision number
+# The file can be named 235.json, 235.4.json, 235.2.json, etc.
+curl -o data/xtea/235.4.json https://archive.openrs2.org/caches/runescape/2238/keys.json
+```
+
+#### Fallback Behavior
+
+If no local XTEA file is found, the tool will automatically fall back to fetching keys from the OpenRS2 API. This ensures the tool works seamlessly regardless of whether local files are available.
+
 ## Testing
 
 ### Unit Tests

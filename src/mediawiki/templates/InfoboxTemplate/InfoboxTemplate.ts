@@ -85,7 +85,7 @@ export class InfoboxTemplate<T> extends Template {
     if (typeof value === "boolean") {
       return value ? "Yes" : "No";
     } else if (value instanceof MediaWikiContent) {
-      return value.build();
+      return value.build().trimEnd();
     } else if (Array.isArray(value)) {
       const filteredValues = value.filter((v) => v !== undefined && v !== null);
       if (

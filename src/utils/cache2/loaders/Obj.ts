@@ -1,4 +1,5 @@
-import { PerFileLoadable } from "../Loadable";
+import type { CacheProvider } from "../Cache";
+import { MultiChildrenEntity } from "../MultiChildrenEntity";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
 import {
@@ -20,9 +21,16 @@ import {
 } from "../types";
 
 @Typed
-export class Obj extends PerFileLoadable {
+export class Obj extends MultiChildrenEntity<Obj, ObjID> {
   constructor(public id: ObjID) {
-    super();
+    super(id);
+  }
+
+  protected async loadChild(
+    cache: Promise<CacheProvider>,
+    childId: ObjID
+  ): Promise<Obj | null> {
+    return Obj.load(cache, childId);
   }
 
   public static readonly index = 2;

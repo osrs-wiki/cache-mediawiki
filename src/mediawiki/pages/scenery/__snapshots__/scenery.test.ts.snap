@@ -5,12 +5,12 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 {{Infobox Scenery
 |name = name
 |image = [[File:name.png]]
+|release = 
 |update = update
 |members = Yes
 |quest = No
 |options = action1, action2
 |examine = 
-|map = No
 |id = 1
 }}
 '''name''' is a scenery object."
@@ -21,15 +21,154 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 {{Infobox Scenery
 |name = name
 |image = [[File:name.png]]
+|release = 
 |update = update
 |members = Yes
 |quest = No
 |options = action1, action2
 |examine = 
-|map = No
 |id = beta1
 }}
 '''name''' is a scenery object."
+`;
+
+exports[`sceneryPageBuilder locations should group nearby locations correctly 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Grouped Scenery
+|image = [[File:Grouped Scenery.png]]
+|release = 
+|update = update
+|members = Yes
+|quest = No
+|options = Use
+|examine = 
+|id = 100
+}}
+'''Grouped Scenery''' is a scenery object.
+
+==Locations==
+{{ObjectTableHead}}
+{{ObjectLocLine
+|name = Grouped Scenery
+|location = ?
+|members = Yes
+|x:3200,y:3400|x:3201,y:3401
+|mapID = -1
+|mtype = pin
+}}
+{{ObjectLocLine
+|name = Grouped Scenery
+|location = ?
+|members = Yes
+|x:3300,y:3500
+|mapID = -1
+|mtype = pin
+}}
+{{ObjectTableBottom}}
+"
+`;
+
+exports[`sceneryPageBuilder locations should handle cache loading errors gracefully 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Broken Cache Object
+|image = [[File:Broken Cache Object.png]]
+|release = 
+|update = update
+|members = Yes
+|quest = No
+|options = Test
+|examine = 
+|id = 100
+}}
+'''Broken Cache Object''' is a scenery object."
+`;
+
+exports[`sceneryPageBuilder locations should handle no locations gracefully 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Mysterious Object
+|image = [[File:Mysterious Object.png]]
+|release = 
+|update = update
+|members = Yes
+|quest = No
+|options = Examine
+|examine = 
+|id = 100
+}}
+'''Mysterious Object''' is a scenery object."
+`;
+
+exports[`sceneryPageBuilder locations should include locations section for multiple locations 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Tree
+|image = [[File:Tree.png]]
+|release = 
+|update = update
+|members = Yes
+|quest = No
+|options = Chop down
+|examine = 
+|id = 100
+}}
+'''Tree''' is a scenery object.
+
+==Locations==
+{{ObjectTableHead}}
+{{ObjectLocLine
+|name = Tree
+|location = ?
+|members = Yes
+|x:3200,y:3400|x:3210,y:3410
+|mapID = -1
+|mtype = pin
+}}
+{{ObjectLocLine
+|name = Tree
+|location = ?
+|members = Yes
+|x:3100,y:3100,plane:1
+|mapID = -1
+|mtype = pin
+}}
+{{ObjectTableBottom}}
+"
+`;
+
+exports[`sceneryPageBuilder locations should include map parameter for single location 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = Altar
+|image = [[File:Altar.png]]
+|release = 
+|update = update
+|members = Yes
+|quest = No
+|options = Pray
+|examine = 
+|id = 100
+|map = {{Map|name=Altar|x=3200|y=3400|plane=0|mapID=-1|mtype=pin}}
+}}
+'''Altar''' is a scenery object."
+`;
+
+exports[`sceneryPageBuilder locations should not attempt to load locations when cache is not provided 1`] = `
+"{{New Content}}
+{{Infobox Scenery
+|name = No Cache Object
+|image = [[File:No Cache Object.png]]
+|release = 
+|update = update
+|members = Yes
+|quest = No
+|options = Test
+|examine = 
+|id = 100
+}}
+'''No Cache Object''' is a scenery object."
 `;
 
 exports[`sceneryPageBuilder should strip HTML tags from scenery name in page content 1`] = `
@@ -37,12 +176,12 @@ exports[`sceneryPageBuilder should strip HTML tags from scenery name in page con
 {{Infobox Scenery
 |name = Red Chest
 |image = [[File:Red Chest.png]]
+|release = 
 |update = update
 |members = Yes
 |quest = No
 |options = Open, Search
 |examine = 
-|map = No
 |id = 123
 }}
 '''Red Chest''' is a scenery object."

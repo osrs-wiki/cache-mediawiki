@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObjectLocLineTemplate should build ObjectLocLine template with multiple coordinates 1`] = `
+"{{ObjectLocLine
+|name = Lead rocks
+|location = Deepfin Point
+|members = Yes
+|x:1935,y:2795|x:1933,y:2794|x:1936,y:2794|x:1934,y:2792|x:1932,y:2791|x:1930,y:2789|x:1939,y:2789
+|mapID = -1
+|mtype = pin
+}}
+"
+`;
+
+exports[`ObjectLocLineTemplate should build ObjectLocLine template with single coordinate 1`] = `
+"{{ObjectLocLine
+|name = Lead rocks
+|location = Deepfin Point
+|members = Yes
+|x:1935,y:2795
+|mapID = -1
+|mtype = pin
+}}
+"
+`;
+
+exports[`ObjectLocLineTemplate should handle all optional parameters 1`] = `
+"{{ObjectLocLine
+|name = Fishing spot
+|location = Fishing Guild
+|members = Yes
+|x:2600,y:3400
+|mapID = 1
+|mtype = pin
+|spawns = 5
+|width = 200
+|height = 200
+}}
+"
+`;
+
+exports[`ObjectLocLineTemplate should handle coordinates with plane 1`] = `
+"{{ObjectLocLine
+|name = Lead rocks
+|location = Deepfin Mine
+|members = Yes
+|x:1997,y:9203,plane:1|x:1997,y:9205,plane:1|x:1999,y:9209,plane:1
+|mapID = -1
+|mtype = pin
+}}
+"
+`;
+
+exports[`ObjectLocLineTemplate should handle location with question mark 1`] = `
+"{{ObjectLocLine
+|name = Unknown Scenery
+|location = ?
+|members = Yes
+|x:3000,y:3000
+|mapID = -1
+|mtype = pin
+}}
+"
+`;
+
+exports[`ObjectLocLineTemplate should handle non-members location 1`] = `
+"{{ObjectLocLine
+|name = Tree
+|location = Lumbridge
+|members = No
+|x:3200,y:3200
+|mtype = pin
+}}
+"
+`;

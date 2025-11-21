@@ -54,7 +54,7 @@ export const objectListener: CacheChangeListener = {
       newEntry &&
       newEntry.name.toLowerCase() !== "null"
     ) {
-      writeSceneryPage(newEntry);
+      writeSceneryPage(newEntry, Promise.resolve(Context.newCacheProvider));
     } else if (Context.renders && newEntry) {
       renderScenery(newEntry);
     }

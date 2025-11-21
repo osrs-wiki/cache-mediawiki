@@ -197,11 +197,7 @@ export class DiskCacheProvider implements CacheProvider {
         // Use tryDecrypt to find and set the correct XTEA key
         const decryptionError = xteaManager.tryDecrypt(am, regionInfo.regionId);
         if (decryptionError) {
-          console.warn(
-            `XTEA decryption failed for archive ${archive} (region ${regionInfo.regionId}):`,
-            decryptionError.message
-          );
-          // Return undefined to indicate the archive cannot be decrypted
+          // Missing XTEA keys are expected for many regions - silently return undefined
           return undefined;
         }
       }
