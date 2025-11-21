@@ -5,12 +5,12 @@ import { Location } from "../cache2";
  * Locations within the distance threshold of each other will be grouped together.
  *
  * @param locations Array of Location objects to group
- * @param distanceThreshold Maximum distance (in tiles) between locations in the same group (default: 15)
+ * @param distanceThreshold Maximum distance (in tiles) between locations in the same group (default: 64)
  * @returns Array of location groups, where each group is an array of nearby locations
  */
 export function groupLocationsByProximity(
   locations: Location[],
-  distanceThreshold = 15
+  distanceThreshold = 64
 ): Location[][] {
   if (locations.length === 0) return [];
   if (locations.length === 1) return [locations];
