@@ -1,9 +1,10 @@
+import * as fs from "fs/promises";
+
 import { fetchCacheList, fetchCacheKeys } from "./api";
 import { findCacheByVersion } from "./cache-matcher";
 import { loadXTEAKeysForCache } from "./xtea-loader";
 
 import { XTEAKeyManager } from "@/utils/cache2";
-import * as fs from "fs/promises";
 
 // Mock dependencies
 jest.mock("./api");
@@ -188,7 +189,7 @@ describe("XTEA Loader", () => {
         JSON.stringify(localKeys)
       );
 
-      const manager = await loadXTEAKeysForCache("2025-11-19-rev235");
+      await loadXTEAKeysForCache("2025-11-19-rev235");
 
       // Should load from local file, not call API
       expect(fs.readdir).toHaveBeenCalled();
@@ -222,7 +223,7 @@ describe("XTEA Loader", () => {
         JSON.stringify(localKeys)
       );
 
-      const manager = await loadXTEAKeysForCache("2025-11-19-rev235");
+      await loadXTEAKeysForCache("2025-11-19-rev235");
 
       expect(fs.readdir).toHaveBeenCalled();
       expect(fs.readFile).toHaveBeenCalled();
@@ -249,7 +250,7 @@ describe("XTEA Loader", () => {
         JSON.stringify(localKeys)
       );
 
-      const manager = await loadXTEAKeysForCache("2025-11-19-rev235");
+      await loadXTEAKeysForCache("2025-11-19-rev235");
 
       expect(fs.readdir).toHaveBeenCalled();
       expect(fs.readFile).toHaveBeenCalled();
@@ -263,7 +264,7 @@ describe("XTEA Loader", () => {
       // Mock full version file doesn't exist
       (fs.readFile as jest.Mock).mockRejectedValue(new Error("ENOENT"));
 
-      const manager = await loadXTEAKeysForCache("2025-09-03-rev232");
+      await loadXTEAKeysForCache("2025-09-03-rev232");
 
       // Should have tried to read directory and file
       expect(fs.readdir).toHaveBeenCalled();
@@ -287,7 +288,7 @@ describe("XTEA Loader", () => {
       );
 
       // Should fall back to API after JSON parse error
-      const manager = await loadXTEAKeysForCache("2025-09-03-rev232");
+      await loadXTEAKeysForCache("2025-09-03-rev232");
 
       expect(fs.readdir).toHaveBeenCalled();
       expect(fs.readFile).toHaveBeenCalled();
@@ -296,7 +297,7 @@ describe("XTEA Loader", () => {
     });
 
     it("should handle cache version without revision number", async () => {
-      const manager = await loadXTEAKeysForCache("2025-09-03");
+      await loadXTEAKeysForCache("2025-09-03");
 
       // Should not try local files when no revision number exists
       expect(fs.readdir).not.toHaveBeenCalled();
