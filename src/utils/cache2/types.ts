@@ -65,6 +65,8 @@ export type UnderlayID = NewType<number, "UnderlayID">;
 export type VarbitID = NewType<number, "VarbitID">;
 export type VarPID = NewType<number, "VarPID">;
 export type WidgetID = NewType<number, "WidgetID">;
+export type WorldMapCompositeID = NewType<number, "WorldMapCompositeID">;
+export type WorldMapElementID = NewType<number, "WorldMapElementID">;
 
 export type HSL = AliasType<number, "HSL">;
 export type RGB = AliasType<number, "RGB">;
@@ -253,9 +255,9 @@ export enum IndexType {
   MusicSamples = 14,
   MusicPatches = 15,
   Unused = 16,
-  WorldMapGeography = 17,
-  WorldMap = 18,
-  WorldMapGrounds = 19,
+  WorldMapGeography = 18,
+  WorldMap = 19,
+  WorldMapGrounds = 20,
   DbTableIndex = 21,
   Animayas = 22,
   GameVals = 24,
