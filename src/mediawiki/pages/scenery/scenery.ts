@@ -45,7 +45,20 @@ export const sceneryPageBuilder = async (
     }
   }
 
-  // Build infobox params
+  // Get location name if there's a single location (needed before building params)
+  let locationName: string | undefined;
+  if (locations.length === 1 && cache) {
+    try {
+      const areaNameMap = await getAreaNamesForLocations(await cache, [
+        locations[0],
+      ]);
+      locationName = areaNameMap.get(0);
+    } catch (error) {
+      console.debug("Failed to load area name for single location:", error);
+    }
+  }
+
+  // Build infobox params with correct field ordering
   const infoboxParams: InfoboxScenery = {
     name: cleanName,
     image: new MediaWikiFile(`${cleanName}.png`),
@@ -55,6 +68,7 @@ export const sceneryPageBuilder = async (
     update: Context.update,
     members: true,
     quest: "No",
+    ...(locationName && { location: new MediaWikiLink(locationName) }),
     options: scenery.actions,
     examine: Context.examines?.scenery
       ? Context.examines.scenery[scenery.id]

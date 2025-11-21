@@ -77,6 +77,10 @@ describe("sceneryPageBuilder", () => {
         .spyOn(locationsModule, "getSceneryLocations")
         .mockResolvedValue([mockLocation]);
 
+      jest
+        .spyOn(locationsModule, "getAreaNamesForLocations")
+        .mockResolvedValue(new Map([[0, "Lumbridge"]]));
+
       const builder = await sceneryPageBuilder(
         // @ts-ignore Do not require all fields
         {

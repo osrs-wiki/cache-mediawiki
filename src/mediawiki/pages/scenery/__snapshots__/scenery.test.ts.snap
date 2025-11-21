@@ -147,6 +147,7 @@ exports[`sceneryPageBuilder locations should include map parameter for single lo
 |update = update
 |members = Yes
 |quest = No
+|location = [[Lumbridge]]
 |options = Pray
 |examine = 
 |id = 100
