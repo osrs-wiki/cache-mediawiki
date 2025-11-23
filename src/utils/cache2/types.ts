@@ -59,6 +59,7 @@ export type SkeletonID = NewType<number, "SkeletonID">;
 export type SoundEffectID = NewType<number, "SoundEffectID">;
 export type SpotAnimID = NewType<number, "SpotAnimID">;
 export type SpriteID = NewType<number, "SpriteID">;
+export type ScriptID = NewType<number, "ScriptID">;
 export type StructID = NewType<number, "StructID">;
 export type TextureID = NewType<number, "TextureID">;
 export type UnderlayID = NewType<number, "UnderlayID">;

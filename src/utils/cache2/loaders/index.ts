@@ -17,6 +17,7 @@ export * from "./Param";
 export * from "./Position";
 export * from "./Region";
 export * from "./RegionMapper";
+export * from "./Script";
 export * from "./SpotAnim";
 export * from "./Sprite";
 export * from "./Struct";
