@@ -2,7 +2,7 @@ name: Scheduled update-day diff tool
 
 on:
   schedule:
-    - cron: "37 10 * * 3"
+    - cron: "37 11 * * 3"
 
 jobs:
   run-diff-task:
