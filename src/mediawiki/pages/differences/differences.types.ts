@@ -170,8 +170,8 @@ export const indexNameMap: {
     },
     [ConfigType.DbRow]: {
       name: "Database Rows",
-      identifiers: ["id", "gameVal"],
-      fields: ["table", "values"],
+      identifiers: ["id", "table", "gameVal"],
+      fields: ["values"],
       urls: {
         id: ["https://abextm.github.io/cache2/#/viewer/dbrow/{id}"],
       },
