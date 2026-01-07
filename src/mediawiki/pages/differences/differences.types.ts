@@ -174,6 +174,7 @@ export const indexNameMap: {
       fields: ["values"],
       urls: {
         id: ["https://abextm.github.io/cache2/#/viewer/dbrow/{id}"],
+        table: ["https://abextm.github.io/cache2/#/viewer/dbtable/{table}"],
       },
     },
     [ConfigType.SpotAnim]: {
