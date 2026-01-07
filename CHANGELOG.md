@@ -1,5 +1,31 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.12.0
+
+### Minor Changes
+
+- 9dffcd5: Add support for loading xtea keys locally
+- 9dffcd5: Add support for generating location data in scenery page output
+- 3afc743: Add db column index to dbtable csv output
+- 9c919c9: Add support for combining item pages for duplicate names
+- f0a9658: Add support for alchable parameter in InfoboxItem and related tests
+- 9c919c9: Add a variants task & cli for replacing variants in item page outputs
+- 6af5043: Add nearest location parameter to InfoboxLocation and areaPageBuilder.
+- 9c919c9: Add support for multiple variants in InfoboxBonuses
+- 6af5043: Add world map utilities and caching, including area name retrieval for locations
+
+### Patch Changes
+
+- 228b8a9: bump js-yaml from 3.14.1 to 3.14.2
+- f3c0206: Move DBRow table field from fields to identifiers in differences page configuration
+- 35764e6: Fix empty columns causing dbtables task to end early for a table
+- a5f6506: Fix scheduled workflow to run 1 hour later
+- 8f1705b: Cleanup InfoboxScenery organization
+- 9c919c9: Fix InfoboxTemplate array string building when null values are present
+- 8f1705b: Add size to InfoboxScenery
+- 0b21572: Set default distance threshold for grouping locations to 64
+- 9c919c9: Use updated InfoboxItem for clue page generation
+
 ## 1.11.0
 
 ### Minor Changes
