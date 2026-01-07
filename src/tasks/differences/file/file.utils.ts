@@ -328,6 +328,12 @@ export const getChangedResult = <T extends Loadable>(
       newValue: newEntry.name as string,
     };
   }
+  if ("table" in oldEntry && "table" in newEntry) {
+    changed["table"] = {
+      oldValue: oldEntry.table as number,
+      newValue: newEntry.table as number,
+    };
+  }
   if ("gameVal" in oldEntry && "gameVal" in newEntry) {
     changed["gameVal"] = {
       oldValue: oldEntry.gameVal as string,
