@@ -115,6 +115,7 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
   public crawlRotate180Animation = <AnimationID>-1;
   public crawlRotateLeftAnimation = <AnimationID>-1;
   public crawlRotateRightAnimation = <AnimationID>-1;
+  public idleAnimRestart = false;
   public attack?: number = undefined;
   public defence?: number = undefined;
   public strength?: number = undefined;
@@ -126,6 +127,7 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
   public unknown1 = false;
   public canHideForOverlap = false;
   public overlapTintHSL: HSL = 39188;
+  public zbuf = true;
   public params = new Params();
   public gameVal?: string;
 
@@ -329,11 +331,17 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
         case 129:
           v.unknown1 = true;
           break;
+        case 130:
+          v.idleAnimRestart = true;
+          break;
         case 145:
           v.canHideForOverlap = true;
           break;
         case 146:
           v.overlapTintHSL = <HSL>r.u16();
+          break;
+        case 147:
+          v.zbuf = false;
           break;
         case 249:
           v.params = r.params();
