@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.12.1
+
+### Patch Changes
+
+- bf6a72c: Update cache definitions to support OSRS cache revision 236
+
 ## 1.12.0
 
 ### Minor Changes
