@@ -127,4 +127,25 @@ describe("InfoboxItem", () => {
     const infobox = InfoboxItem([item1, item2]);
     expect(infobox).toMatchSnapshot();
   });
+
+  test("InfoboxItem - combined items with different placeholder values", () => {
+    // Item 1: not a placeholder (placeholderLinkedItem = 0)
+    const item1 = {
+      ...BASE_ITEM,
+      id: 1236 as ItemID,
+      name: "Test Item (variant 1)",
+      placeholderLinkedItem: 0 as ItemID,
+    };
+
+    // Item 2: is a placeholder (placeholderLinkedItem = 2)
+    const item2 = {
+      ...BASE_ITEM,
+      id: 1237 as ItemID,
+      name: "Test Item (variant 2)",
+      placeholderLinkedItem: 2 as ItemID,
+    };
+
+    const infobox = InfoboxItem([item1, item2]);
+    expect(infobox).toMatchSnapshot();
+  });
 });

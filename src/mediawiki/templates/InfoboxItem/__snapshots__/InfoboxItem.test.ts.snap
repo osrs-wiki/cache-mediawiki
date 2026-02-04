@@ -21,7 +21,7 @@ InfoboxTemplate {
     "options": Array [
       "Test Action",
     ],
-    "placeholder": undefined,
+    "placeholder": false,
     "quest": "No",
     "release": undefined,
     "stackable": false,
@@ -55,7 +55,7 @@ InfoboxTemplate {
       "options": Array [
         "Test Action",
       ],
-      "placeholder": undefined,
+      "placeholder": false,
       "quest": "No",
       "release": undefined,
       "stackable": false,
@@ -82,7 +82,69 @@ InfoboxTemplate {
       "options": Array [
         "Test Action",
       ],
-      "placeholder": undefined,
+      "placeholder": false,
+      "quest": "No",
+      "release": undefined,
+      "stackable": false,
+      "tradeable": true,
+      "update": undefined,
+      "value": 0,
+      "weight": "0.000",
+    },
+  ],
+}
+`;
+
+exports[`InfoboxItem InfoboxItem - combined items with different placeholder values 1`] = `
+InfoboxTemplate {
+  "name": "Infobox Item",
+  "params": Array [
+    Object {
+      "alchable": true,
+      "bankable": false,
+      "equipable": false,
+      "examine": "Examine text.",
+      "exchange": true,
+      "id": "1236",
+      "image": MediaWikiFile {
+        "children": undefined,
+        "fileName": "Test Item.png",
+        "options": undefined,
+      },
+      "members": true,
+      "name": "Test Item (variant 1)",
+      "noteable": false,
+      "options": Array [
+        "Test Action",
+      ],
+      "placeholder": false,
+      "quest": "No",
+      "release": undefined,
+      "stackable": false,
+      "tradeable": true,
+      "update": undefined,
+      "value": 0,
+      "weight": "0.000",
+    },
+    Object {
+      "alchable": true,
+      "bankable": true,
+      "equipable": false,
+      "examine": "Examine text.",
+      "exchange": true,
+      "id": "1237",
+      "image": MediaWikiFile {
+        "children": undefined,
+        "fileName": "Test Item (2).png",
+        "options": undefined,
+      },
+      "members": true,
+      "name": "Test Item (variant 2)",
+      "noteable": false,
+      "options": Array [
+        "Test Action",
+      ],
+      "placeholder": true,
       "quest": "No",
       "release": undefined,
       "stackable": false,
@@ -116,7 +178,7 @@ InfoboxTemplate {
     "options": Array [
       "Test Action",
     ],
-    "placeholder": undefined,
+    "placeholder": false,
     "quest": "No",
     "release": undefined,
     "stackable": false,
@@ -182,7 +244,7 @@ InfoboxTemplate {
     "options": Array [
       "Test Action",
     ],
-    "placeholder": undefined,
+    "placeholder": false,
     "quest": "No",
     "release": undefined,
     "stackable": false,
@@ -215,7 +277,7 @@ InfoboxTemplate {
     "options": Array [
       "Test Action",
     ],
-    "placeholder": undefined,
+    "placeholder": false,
     "quest": "No",
     "release": undefined,
     "stackable": false,
@@ -248,7 +310,7 @@ InfoboxTemplate {
     "options": Array [
       "Test Action",
     ],
-    "placeholder": undefined,
+    "placeholder": false,
     "quest": "No",
     "release": undefined,
     "stackable": false,
