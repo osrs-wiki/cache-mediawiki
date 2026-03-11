@@ -104,4 +104,48 @@ describe("InfoboxItem", () => {
     });
     expect(item).toMatchSnapshot();
   });
+
+  test("InfoboxItem - combined items with different alchable values", () => {
+    // Item 1: alchable (no NO_ALCHABLE_PARAM)
+    const item1 = {
+      ...BASE_ITEM,
+      id: 1234 as ItemID,
+      name: "Test Item (variant 1)",
+      params: new Params(),
+    };
+
+    // Item 2: not alchable (NO_ALCHABLE_PARAM=1)
+    const params2 = new Params();
+    params2.set(NO_ALCHABLE_PARAM, 1);
+    const item2 = {
+      ...BASE_ITEM,
+      id: 1235 as ItemID,
+      name: "Test Item (variant 2)",
+      params: params2,
+    };
+
+    const infobox = InfoboxItem([item1, item2]);
+    expect(infobox).toMatchSnapshot();
+  });
+
+  test("InfoboxItem - combined items with different placeholder values", () => {
+    // Item 1: not a placeholder (placeholderLinkedItem = 0)
+    const item1 = {
+      ...BASE_ITEM,
+      id: 1236 as ItemID,
+      name: "Test Item (variant 1)",
+      placeholderLinkedItem: 0 as ItemID,
+    };
+
+    // Item 2: is a placeholder (placeholderLinkedItem = 2)
+    const item2 = {
+      ...BASE_ITEM,
+      id: 1237 as ItemID,
+      name: "Test Item (variant 2)",
+      placeholderLinkedItem: 2 as ItemID,
+    };
+
+    const infobox = InfoboxItem([item1, item2]);
+    expect(infobox).toMatchSnapshot();
+  });
 });
