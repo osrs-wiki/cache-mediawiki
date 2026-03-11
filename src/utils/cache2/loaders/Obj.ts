@@ -91,6 +91,7 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
   public blockingMask: undefined | number = undefined;
   public deferAnimChange = false;
   public soundVisibility = 2;
+  public raise = 0;
   public params = new Params();
   public unknown1 = false;
   public gameVal?: string;
@@ -288,6 +289,9 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
           break;
         case 95:
           v.soundVisibility = r.u8();
+          break;
+        case 96:
+          v.raise = r.u8();
           break;
         case 249:
           v.params = r.params();
