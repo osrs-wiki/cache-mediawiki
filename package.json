@@ -30,7 +30,7 @@
     "@osrs-wiki/mediawiki-builder": "^1.9.2",
     "base64-arraybuffer-es6": "^3.0.1",
     "commander": "^13.1.0",
-    "diff": "^7.0.0",
+    "diff": "^8.0.3",
     "dotenv": "^16.5.0",
     "fflate": "^0.8.2",
     "rss-parser": "^3.13.0",
