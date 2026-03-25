@@ -198,14 +198,14 @@ export class Item extends PerFileLoadable {
           v.maleModel1 = r.model();
           break;
         case 47:
+          v.maleModel2 = r.model();
+          break;
+        case 48:
           v.femaleModel = r.model();
           v.femaleOffset = r.u8();
           break;
-        case 48:
-          v.femaleModel1 = r.model();
-          break;
         case 49:
-          v.maleModel2 = r.model();
+          v.femaleModel1 = r.model();
           break;
         case 50:
           v.femaleModel2 = r.model();
@@ -214,10 +214,10 @@ export class Item extends PerFileLoadable {
           v.maleChatheadModel = r.model();
           break;
         case 52:
-          v.femaleChatheadModel = r.model();
+          v.maleChatheadModel1 = r.model();
           break;
         case 53:
-          v.maleChatheadModel1 = r.model();
+          v.femaleChatheadModel = r.model();
           break;
         case 54:
           v.femaleChatheadModel1 = r.model();
