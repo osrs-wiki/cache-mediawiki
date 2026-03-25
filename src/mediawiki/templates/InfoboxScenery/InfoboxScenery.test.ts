@@ -1,6 +1,6 @@
 import InfoboxSceneryTemplate from "./InfoboxScenery";
 
-import { Obj, ObjID, Params } from "@/utils/cache2";
+import { EntityOps, Obj, ObjID, Params } from "@/utils/cache2";
 
 // Helper function to create mock scenery objects for testing
 const createMockScenery = (
@@ -12,6 +12,9 @@ const createMockScenery = (
     name,
     id: id as ObjID,
     actions,
+    ops: new EntityOps(
+      actions.map((a, i) => [i, { text: a }] as [number, { text: string }])
+    ),
     params: new Params(),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any);

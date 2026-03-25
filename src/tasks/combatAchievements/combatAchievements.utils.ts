@@ -38,9 +38,9 @@ export const MONSTER_PARAM_ID = 1312;
  */
 export const getCombatAchievement = (
   struct: Struct,
-  tierMap: Map<number, string | number>,
-  typeMap: Map<number, string | number>,
-  monsterMap: Map<number, string | number>
+  tierMap: Map<number, string | number | bigint>,
+  typeMap: Map<number, string | number | bigint>,
+  monsterMap: Map<number, string | number | bigint>
 ): CombatAchievement => {
   const id = struct.params.get(CAID_PARAM_ID as ParamID) as number;
   const title = struct.params.get(TITLE_PARAM_ID as ParamID) as string;

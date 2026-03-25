@@ -62,9 +62,19 @@ export type InfoboxBonusesData = {
  * @param bonus The bonus to format. Can be a string or a number.
  * @returns A formatted string representing the bonus.
  */
-export const formatBonus = (bonus: string | number) => {
-  const numberBonus = typeof bonus === "string" ? parseInt(bonus) : bonus;
-  return numberBonus > 0 ? `+${bonus}` : numberBonus < 0 ? `${bonus}` : "0";
+export const formatBonus = (bonus: string | number | bigint | undefined) => {
+  if (bonus === undefined) return "0";
+  const numberBonus =
+    typeof bonus === "string"
+      ? parseInt(bonus)
+      : typeof bonus === "bigint"
+      ? Number(bonus)
+      : bonus;
+  return numberBonus > 0
+    ? `+${numberBonus}`
+    : numberBonus < 0
+    ? `${numberBonus}`
+    : "0";
 };
 
 /**

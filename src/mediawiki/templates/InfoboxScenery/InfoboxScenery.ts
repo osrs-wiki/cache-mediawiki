@@ -27,7 +27,9 @@ const createInfoboxSceneryData = (
     quest: "No",
     location: options?.location,
     map: options?.map,
-    options: scenery.actions,
+    options: [...scenery.ops.values()]
+      .map((op) => op.text)
+      .filter((v): v is string => v != null),
     examine: Context.examines?.scenery
       ? Context.examines.scenery[scenery.id]
       : "",

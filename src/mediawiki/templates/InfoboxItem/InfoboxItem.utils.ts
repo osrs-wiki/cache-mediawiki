@@ -8,10 +8,10 @@ import { Item } from "@/utils/cache2";
  * @returns An array of inventory actions, possibly with sub-operations included.
  */
 export const getInventoryActions = (item: Item) => {
-  if (!item.inventoryActions) {
+  if (!item.inventoryOps) {
     return [];
   }
-  return item.inventoryActions
+  return item.inventoryOps
     .map((action, index) => {
       const subops = item.subops?.[index];
       return subops?.length > 0

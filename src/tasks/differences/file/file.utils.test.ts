@@ -97,10 +97,10 @@ describe("file utils", () => {
           // @ts-ignore Do not require entire NPC
           {
             actions: ["Talk", null, null, null, null],
-          },
+          } as any,
           {
             actions: ["Talk", null, "Trade", null, null],
-          }
+          } as any
         )
       ).toEqual({
         actions: {
@@ -117,10 +117,10 @@ describe("file utils", () => {
           // @ts-ignore Do not require entire NPC
           {
             actions: ["Talk", null, "Trade", null, null],
-          },
+          } as any,
           {
             actions: ["Talk", null, null, null, null],
-          }
+          } as any
         )
       ).toEqual({
         actions: {
@@ -137,10 +137,10 @@ describe("file utils", () => {
           // @ts-ignore Do not require entire NPC
           {
             actions: null,
-          },
+          } as any,
           {
             actions: ["Talk", null, null, null, null],
-          }
+          } as any
         )
       ).toEqual({
         actions: {
@@ -157,10 +157,10 @@ describe("file utils", () => {
           // @ts-ignore Do not require entire NPC
           {
             actions: ["Talk", null, null, null, null],
-          },
+          } as any,
           {
             actions: null,
-          }
+          } as any
         )
       ).toEqual({
         actions: {

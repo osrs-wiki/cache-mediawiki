@@ -5,7 +5,7 @@ import {
   flushItemPages,
 } from "./item";
 
-import { Item, ItemID } from "@/utils/cache2";
+import { EntityOps, Item, ItemID } from "@/utils/cache2";
 
 // Mock dependencies
 jest.mock("../../renders", () => ({
@@ -45,8 +45,8 @@ const createMockItem = (id: number, name: string): Item => {
     femaleModel: undefined,
     femaleOffset: 0,
     femaleModel1: undefined,
-    groundActions: [],
-    inventoryActions: [],
+    groundOps: new EntityOps(),
+    inventoryOps: [],
     subops: [],
     recolorFrom: [],
     recolorTo: [],

@@ -1,3 +1,4 @@
+import { EntityOps } from "./EntityOps";
 import type { CacheProvider } from "../Cache";
 import { MultiChildrenEntity } from "../MultiChildrenEntity";
 import { Reader } from "../Reader";
@@ -53,7 +54,7 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
   public ambient = 0;
   public contrast = 0;
   public category = <CategoryID>-1;
-  public actions: (string | null)[] = [null, null, null, null, null];
+  public ops = new EntityOps();
   public recolorFrom: HSL[] = <HSL[]>[];
   public recolorTo: HSL[] = <HSL[]>[];
   public retextureFrom: TextureID[] = <TextureID[]>[];
@@ -112,6 +113,18 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
           }
           break;
         }
+        case 6:
+        case 7: {
+          const len = r.u8();
+          v.models = new Array(len);
+          v.modelShapes = new Array(len);
+          for (let i = 0; i < len; i++) {
+            v.models[i] = r.model();
+            v.modelShapes[i] =
+              opcode == 7 ? ObjShape.CentrepieceStraight : <ObjShape>r.u8();
+          }
+          break;
+        }
         case 2:
           v.name = r.string();
           break;
@@ -160,7 +173,7 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
         case 32:
         case 33:
         case 34:
-          v.actions[opcode - 30] = r.stringNullHidden();
+          v.ops.decodeOp(r, opcode - 30);
           break;
         case 40: {
           const len = r.u8();
@@ -296,6 +309,15 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
         case 249:
           v.params = r.params();
           break;
+        case 100:
+          v.ops.decodeSubOp(r);
+          break;
+        case 101:
+          v.ops.decodeConditionalOp(r);
+          break;
+        case 102:
+          v.ops.decodeConditionalSubOp(r);
+          break;
         default:
           throw new Error(`unknown opcode ${opcode}`);
       }
@@ -305,7 +327,7 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
       v.isDoor = 0;
       if (
         v.modelShapes?.[0] === ObjShape.CentrepieceStraight ||
-        v.actions.some((a) => a !== null)
+        [...v.ops.values()].some((a) => a.text != null)
       ) {
         v.isDoor = 1;
       }

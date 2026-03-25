@@ -1,7 +1,7 @@
 import npcPageBuilder from "./npc";
 import Context from "../../../context";
 
-import { NPC, NPCID, Params, CacheProvider } from "@/utils/cache2";
+import { EntityOps, NPC, NPCID, Params, CacheProvider } from "@/utils/cache2";
 
 // Mock NPC.load for multiChildren tests
 jest.mock("@/utils/cache2", () => ({
@@ -37,6 +37,10 @@ describe("npcPageBuilder", () => {
       id: id as NPCID,
       combatLevel,
       actions: ["Talk-to", "Trade"],
+      ops: new EntityOps([
+        [0, { text: "Talk-to" }],
+        [1, { text: "Trade" }],
+      ]),
       params: new Params(),
       size: 1,
       hitpoints: 1,
@@ -53,7 +57,10 @@ describe("npcPageBuilder", () => {
     const builder = await npcPageBuilder({
       name: "name",
       combatLevel: 1,
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as NPCID,
       params: new Params(),
       chatheadModels: [1, 2], // NPC with chathead models
@@ -66,7 +73,10 @@ describe("npcPageBuilder", () => {
     const builder = await npcPageBuilder({
       name: "name",
       combatLevel: 100,
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as NPCID,
       size: 2,
       hitpoints: 100,
@@ -88,7 +98,10 @@ describe("npcPageBuilder", () => {
     const builder = await npcPageBuilder({
       name: "name",
       combatLevel: 1,
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as NPCID,
       params: new Params(),
       chatheadModels: [1, 2], // NPC with chathead models
@@ -103,7 +116,7 @@ describe("npcPageBuilder", () => {
     const builder = await npcPageBuilder({
       name: "name",
       combatLevel: 1,
-      actions: ["Talk-to"],
+      ops: new EntityOps([[0, { text: "Talk-to" }]]),
       id: 1 as NPCID,
       params: new Params(),
       chatheadModels: [1, 2], // NPC with chathead models
@@ -116,7 +129,10 @@ describe("npcPageBuilder", () => {
     const builder = await npcPageBuilder({
       name: "name",
       combatLevel: 1,
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as NPCID,
       params: new Params(),
       chatheadModels: [], // NPC without chathead models
@@ -129,7 +145,10 @@ describe("npcPageBuilder", () => {
     const builder = await npcPageBuilder({
       name: "name",
       combatLevel: 1,
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as NPCID,
       params: new Params(),
       chatheadModels: [1, 2], // NPC with chathead models
@@ -142,7 +161,10 @@ describe("npcPageBuilder", () => {
     const builder = await npcPageBuilder({
       name: "<col=00ffff>Tornado</col>",
       combatLevel: 1,
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as NPCID,
       params: new Params(),
       chatheadModels: [1, 2], // NPC with chathead models
