@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.13.0
+
+### Minor Changes
+
+- f3c3ca0: Support for revision 237
+
 ## 1.12.1
 
 ### Patch Changes
