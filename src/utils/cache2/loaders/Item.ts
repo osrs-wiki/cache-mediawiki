@@ -1,3 +1,4 @@
+import { EntityOps } from "./EntityOps";
 import { PerFileLoadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
@@ -43,8 +44,8 @@ export class Item extends PerFileLoadable {
   public femaleModel = <ModelID>-1;
   public femaleOffset = 0;
   public femaleModel1 = <ModelID>-1;
-  public groundActions: (string | null)[] = [null, null, "Take", null, null];
-  public inventoryActions: (string | null)[] = [null, null, null, null, "Drop"];
+  public groundOps = new EntityOps();
+  public inventoryOps: (string | null)[] = [null, null, null, null, "Drop"];
   public subops: string[][] = [];
   public recolorFrom: HSL[] = <HSL[]>[];
   public recolorTo: HSL[] = <HSL[]>[];
@@ -56,8 +57,8 @@ export class Item extends PerFileLoadable {
   public femaleModel2 = <ModelID>-1;
   public maleChatheadModel = <ModelID>-1;
   public femaleChatheadModel = <ModelID>-1;
-  public maleChatheadModel2 = <ModelID>-1;
-  public femaleChatheadModel2 = <ModelID>-1;
+  public maleChatheadModel1 = <ModelID>-1;
+  public femaleChatheadModel1 = <ModelID>-1;
   public category = <CategoryID>-1;
   public zan2d = 0;
   public noteLinkedItem = <ItemID>-1;
@@ -142,14 +143,14 @@ export class Item extends PerFileLoadable {
         case 32:
         case 33:
         case 34:
-          v.groundActions[opcode - 30] = r.stringNullHidden();
+          v.groundOps.decodeOp(r, opcode - 30);
           break;
         case 35:
         case 36:
         case 37:
         case 38:
         case 39:
-          v.inventoryActions[opcode - 35] = r.string();
+          v.inventoryOps[opcode - 35] = r.string();
           break;
         case 40: {
           const len = r.u8();
@@ -186,6 +187,41 @@ export class Item extends PerFileLoadable {
           }
           break;
         }
+        case 44:
+          v.inventoryModel = r.model();
+          break;
+        case 45:
+          v.maleModel = r.model();
+          v.maleOffset = r.u8();
+          break;
+        case 46:
+          v.maleModel1 = r.model();
+          break;
+        case 47:
+          v.maleModel2 = r.model();
+          break;
+        case 48:
+          v.femaleModel = r.model();
+          v.femaleOffset = r.u8();
+          break;
+        case 49:
+          v.femaleModel1 = r.model();
+          break;
+        case 50:
+          v.femaleModel2 = r.model();
+          break;
+        case 51:
+          v.maleChatheadModel = r.model();
+          break;
+        case 52:
+          v.maleChatheadModel1 = r.model();
+          break;
+        case 53:
+          v.femaleChatheadModel = r.model();
+          break;
+        case 54:
+          v.femaleChatheadModel1 = r.model();
+          break;
         case 65:
           v.isGrandExchangable = true;
           break;
@@ -205,10 +241,10 @@ export class Item extends PerFileLoadable {
           v.femaleChatheadModel = <ModelID>r.u16();
           break;
         case 92:
-          v.maleChatheadModel2 = <ModelID>r.u16();
+          v.maleChatheadModel1 = <ModelID>r.u16();
           break;
         case 93:
-          v.femaleChatheadModel2 = <ModelID>r.u16();
+          v.femaleChatheadModel1 = <ModelID>r.u16();
           break;
         case 94:
           v.category = <CategoryID>r.u16();
@@ -267,6 +303,15 @@ export class Item extends PerFileLoadable {
           break;
         case 249:
           v.params = r.params();
+          break;
+        case 200:
+          v.groundOps.decodeSubOp(r);
+          break;
+        case 201:
+          v.groundOps.decodeConditionalOp(r);
+          break;
+        case 202:
+          v.groundOps.decodeConditionalSubOp(r);
           break;
         default:
           throw new Error(`unknown opcode ${opcode}`);

@@ -15,6 +15,7 @@ import {
   VarbitID,
   VarPID,
 } from "../types";
+import { EntityOps } from "./EntityOps";
 
 @Typed
 export class NPC extends MultiChildrenEntity<NPC, NPCID> {
@@ -83,7 +84,7 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
   public rotateLeftAnimation = <AnimationID>-1;
   public rotateRightAnimation = <AnimationID>-1;
   public category = <CategoryID>-1;
-  public actions: (string | null)[] = [null, null, null, null, null];
+  public ops = new EntityOps();
   public recolorFrom: HSL[] = <HSL[]>[];
   public recolorTo: HSL[] = <HSL[]>[];
   public retextureFrom: TextureID[] = <TextureID[]>[];
@@ -175,7 +176,7 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
         case 32:
         case 33:
         case 34:
-          v.actions[opcode - 30] = r.stringNullHidden();
+          v.ops.decodeOp(r, opcode - 30);
           break;
         case 40: {
           const len = r.u8();
@@ -202,6 +203,22 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
           v.chatheadModels = new Array(len);
           for (let i = 0; i < len; i++) {
             v.chatheadModels[i] = <ModelID>r.u16();
+          }
+          break;
+        }
+        case 61: {
+          const len = r.u8();
+          v.models = new Array(len);
+          for (let i = 0; i < len; i++) {
+            v.models[i] = r.model();
+          }
+          break;
+        }
+        case 62: {
+          const len = r.u8();
+          v.chatheadModels = new Array(len);
+          for (let i = 0; i < len; i++) {
+            v.chatheadModels[i] = r.model();
           }
           break;
         }
@@ -345,6 +362,15 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
           break;
         case 249:
           v.params = r.params();
+          break;
+        case 251:
+          v.ops.decodeSubOp(r);
+          break;
+        case 252:
+          v.ops.decodeConditionalOp(r);
+          break;
+        case 253:
+          v.ops.decodeConditionalSubOp(r);
           break;
         default:
           throw new Error(`unknown opcode ${opcode}`);

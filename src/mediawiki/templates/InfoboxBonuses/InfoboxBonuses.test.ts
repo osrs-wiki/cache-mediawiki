@@ -19,7 +19,7 @@ import {
   STAB_ATTACK_PARAM,
   STAB_DEFENCE_PARAM,
 } from "@/types/params";
-import { Item, ItemID, Params, WearPos } from "@/utils/cache2";
+import { EntityOps, Item, ItemID, Params, WearPos } from "@/utils/cache2";
 
 const BASE_EQUIPABLE_ITEM: Item = {
   name: "Test Equipment",
@@ -45,8 +45,8 @@ const BASE_EQUIPABLE_ITEM: Item = {
   femaleModel: undefined,
   femaleOffset: 0,
   femaleModel1: undefined,
-  groundActions: [],
-  inventoryActions: ["Wield"],
+  groundOps: new EntityOps(),
+  inventoryOps: ["Wield"],
   subops: [],
   recolorFrom: [],
   recolorTo: [],
@@ -57,8 +57,8 @@ const BASE_EQUIPABLE_ITEM: Item = {
   femaleModel2: undefined,
   maleChatheadModel: undefined,
   femaleChatheadModel: undefined,
-  maleChatheadModel2: undefined,
-  femaleChatheadModel2: undefined,
+  maleChatheadModel1: undefined,
+  femaleChatheadModel1: undefined,
   category: undefined,
   zan2d: 0,
   noteLinkedItem: undefined,

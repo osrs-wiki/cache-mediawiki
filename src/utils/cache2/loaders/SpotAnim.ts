@@ -37,6 +37,9 @@ export class SpotAnim extends PerFileLoadable {
         case 2:
           v.animationId = r.u16();
           break;
+        case 3:
+          v.modelId = r.model();
+          break;
         case 4:
           v.resizeX = r.u16();
           break;

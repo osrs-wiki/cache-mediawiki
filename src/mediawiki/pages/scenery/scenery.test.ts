@@ -2,7 +2,7 @@
 import sceneryPageBuilder from "./scenery";
 
 import Context from "@/context";
-import { CacheProvider, Location, ObjID } from "@/utils/cache2";
+import { CacheProvider, EntityOps, Location, ObjID } from "@/utils/cache2";
 import * as locationsModule from "@/utils/locations";
 
 // Mock the locations module
@@ -34,7 +34,10 @@ describe("sceneryPageBuilder", () => {
     // @ts-ignore Do not require all fields
     const builder = await sceneryPageBuilder({
       name: "name",
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as ObjID,
     });
     expect(builder?.build()).toMatchSnapshot();
@@ -48,7 +51,10 @@ describe("sceneryPageBuilder", () => {
     // @ts-ignore Do not require all fields
     const builder = await sceneryPageBuilder({
       name: "name",
-      actions: ["action1", "action2"],
+      ops: new EntityOps([
+        [0, { text: "action1" }],
+        [1, { text: "action2" }],
+      ]),
       id: 1 as ObjID,
     });
     expect(builder?.build()).toMatchSnapshot();
@@ -61,7 +67,10 @@ describe("sceneryPageBuilder", () => {
     // @ts-ignore Do not require all fields
     const builder = await sceneryPageBuilder({
       name: "<col=ff0000>Red Chest</col>",
-      actions: ["Open", "Search"],
+      ops: new EntityOps([
+        [0, { text: "Open" }],
+        [1, { text: "Search" }],
+      ]),
       id: 123 as ObjID,
     });
     expect(builder?.build()).toMatchSnapshot();
@@ -85,7 +94,7 @@ describe("sceneryPageBuilder", () => {
         // @ts-ignore Do not require all fields
         {
           name: "Altar",
-          actions: ["Pray"],
+          ops: new EntityOps([[0, { text: "Pray" }]]),
           id: 100 as ObjID,
         },
         mockCache
@@ -152,7 +161,7 @@ describe("sceneryPageBuilder", () => {
         // @ts-ignore Do not require all fields
         {
           name: "Tree",
-          actions: ["Chop down"],
+          ops: new EntityOps([[0, { text: "Chop down" }]]),
           id: 100 as ObjID,
         },
         mockCache
@@ -173,7 +182,7 @@ describe("sceneryPageBuilder", () => {
         // @ts-ignore Do not require all fields
         {
           name: "Mysterious Object",
-          actions: ["Examine"],
+          ops: new EntityOps([[0, { text: "Examine" }]]),
           id: 100 as ObjID,
         },
         mockCache
@@ -196,7 +205,7 @@ describe("sceneryPageBuilder", () => {
         // @ts-ignore Do not require all fields
         {
           name: "Broken Cache Object",
-          actions: ["Test"],
+          ops: new EntityOps([[0, { text: "Test" }]]),
           id: 100 as ObjID,
         },
         mockCache
@@ -221,7 +230,7 @@ describe("sceneryPageBuilder", () => {
       // @ts-ignore Do not require all fields
       const builder = await sceneryPageBuilder({
         name: "No Cache Object",
-        actions: ["Test"],
+        ops: new EntityOps([[0, { text: "Test" }]]),
         id: 100 as ObjID,
       });
 
@@ -286,7 +295,7 @@ describe("sceneryPageBuilder", () => {
         // @ts-ignore Do not require all fields
         {
           name: "Grouped Scenery",
-          actions: ["Use"],
+          ops: new EntityOps([[0, { text: "Use" }]]),
           id: 100 as ObjID,
         },
         mockCache

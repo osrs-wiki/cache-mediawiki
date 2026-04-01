@@ -99,7 +99,7 @@ export type OverlayPath = NewType<number, "OverlayPath">;
 export type OverlayRotation = NewType<number, "OverlayRotation">;
 export type TileSettings = NewType<number, "TileSettings">;
 
-export class Params extends Map<ParamID, string | number> {}
+export class Params extends Map<ParamID, string | number | bigint> {}
 
 export type KitOrItem = { kit: KitID } | { item: ItemID } | undefined;
 

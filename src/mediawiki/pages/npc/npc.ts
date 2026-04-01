@@ -120,7 +120,9 @@ export const npcPageBuilder = async (
     infoboxContent = new SwitchInfobox(switchItems);
   }
 
-  const hasDialogue = npcArray.some((npc) => npc.actions.includes("Talk-to"));
+  const hasDialogue = npcArray.some((npc) =>
+    [...npc.ops.values()].some((op) => op.text === "Talk-to")
+  );
 
   const builder = new MediaWikiBuilder();
 

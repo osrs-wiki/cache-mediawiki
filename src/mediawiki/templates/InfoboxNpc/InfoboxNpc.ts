@@ -12,7 +12,7 @@ import { stripHtmlTags } from "@/utils/string";
  */
 const createInfoboxNpcData = (npc: NPC, index = 0): InfoboxNpc => {
   const cleanName = stripHtmlTags(npc.name);
-  
+
   return {
     name: cleanName,
     image: new MediaWikiFile(
@@ -30,7 +30,11 @@ const createInfoboxNpcData = (npc: NPC, index = 0): InfoboxNpc => {
     race: "[[Human]]",
     location: "",
     gender: "Male",
-    options: npc.actions.filter((action) => action && action !== "null"),
+    options: [...npc.ops.values()]
+      .map((op) => op.text)
+      .filter(
+        (action): action is string => action != null && action !== "null"
+      ),
     map: "No",
     examine: Context.examines?.npcs ? Context.examines.npcs[npc.id] : "",
     id: `${Context.beta ? "beta" : ""}${npc.id.toString()}`,

@@ -95,7 +95,7 @@ export const indexNameMap: {
     [ConfigType.Object]: {
       name: "Objects",
       identifiers: ["name", "id", "gameVal"],
-      fields: ["actions"],
+      fields: ["ops"],
       urls: {
         id: [
           "https://chisel.weirdgloop.org/moid/object_id.html#{id}",
@@ -117,7 +117,7 @@ export const indexNameMap: {
     [ConfigType.Npc]: {
       name: "Npcs",
       identifiers: ["name", "id", "gameVal"],
-      fields: ["combatLevel", "actions"],
+      fields: ["combatLevel", "ops"],
       urls: {
         id: [
           "https://chisel.weirdgloop.org/moid/npc_id.html#{id}",
@@ -134,7 +134,7 @@ export const indexNameMap: {
         "isGrandExchangable",
         "isStackable",
         "noteLinkedItem",
-        "inventoryActions",
+        "inventoryOps",
         "placeholderLinkedItem",
         "price",
         "weight",
@@ -149,7 +149,7 @@ export const indexNameMap: {
     [ConfigType.Params]: {
       name: "Params",
       identifiers: ["id"],
-      fields: ["type", "defaultInt", "defaultString", "isMembers"],
+      fields: ["typeChar", "defaultInt", "defaultString", "isMembers"],
       urls: {
         id: [
           "https://chisel.weirdgloop.org/structs/index.html?type=enums&id={id}",

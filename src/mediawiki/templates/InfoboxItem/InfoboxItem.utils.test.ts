@@ -4,7 +4,7 @@ describe("InfoboxItem utils", () => {
   test("getInventoryActions - no sub ops", () => {
     expect(
       getInventoryActions({
-        inventoryActions: ["Test Action"],
+        inventoryOps: ["Test Action"],
         subops: [],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any)
@@ -14,7 +14,7 @@ describe("InfoboxItem utils", () => {
   test("getInventoryActions - multiple actions", () => {
     expect(
       getInventoryActions({
-        inventoryActions: ["Test Action", null, undefined, " Test Action 2"],
+        inventoryOps: ["Test Action", null, undefined, " Test Action 2"],
         subops: [],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any)
@@ -24,7 +24,7 @@ describe("InfoboxItem utils", () => {
   test("getInventoryActions - with sub ops", () => {
     expect(
       getInventoryActions({
-        inventoryActions: ["Test Action 1", "Test Action 2", "Test Action 3"],
+        inventoryOps: ["Test Action 1", "Test Action 2", "Test Action 3"],
         subops: [["Sub Action 1"], ["Sub Action 2.1", "Sub Action 2.2"], []],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any)

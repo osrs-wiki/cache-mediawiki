@@ -17,7 +17,14 @@ import {
   RANGED_AMMO_STRENGTH_PARAM,
   RANGED_EQUIPMENT_STRENGTH_PARAM,
 } from "@/types/params";
-import { CategoryID, Item, ItemID, Params, WearPos } from "@/utils/cache2";
+import {
+  CategoryID,
+  EntityOps,
+  Item,
+  ItemID,
+  Params,
+  WearPos,
+} from "@/utils/cache2";
 
 const BASE_ITEM: Item = {
   name: "Test Item",
@@ -43,8 +50,8 @@ const BASE_ITEM: Item = {
   femaleModel: undefined,
   femaleOffset: 0,
   femaleModel1: undefined,
-  groundActions: [],
-  inventoryActions: ["Test Action"],
+  groundOps: new EntityOps(),
+  inventoryOps: ["Test Action"],
   subops: [],
   recolorFrom: [],
   recolorTo: [],
@@ -55,8 +62,8 @@ const BASE_ITEM: Item = {
   femaleModel2: undefined,
   maleChatheadModel: undefined,
   femaleChatheadModel: undefined,
-  maleChatheadModel2: undefined,
-  femaleChatheadModel2: undefined,
+  maleChatheadModel1: undefined,
+  femaleChatheadModel1: undefined,
   category: undefined,
   zan2d: 0,
   noteLinkedItem: undefined,
@@ -116,7 +123,7 @@ describe("Item Infobox", () => {
   test("Item infobox with sub ops", async () => {
     const itemInfobox = await itemPageBuilder({
       ...BASE_ITEM,
-      inventoryActions: ["Test Action 1", "Test Action 2", "Test Action 3"],
+      inventoryOps: ["Test Action 1", "Test Action 2", "Test Action 3"],
       subops: [["Sub Action 1"], ["Sub Action 2.1", "Sub Action 2.2"], []],
     });
     expect(itemInfobox.build()).toMatchSnapshot();

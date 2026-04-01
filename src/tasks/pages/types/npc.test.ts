@@ -7,7 +7,7 @@ import {
 import { writePageToFile } from "../pages.utils";
 
 import { npcPageBuilder } from "@/mediawiki/pages/npc";
-import { NPC, NPCID, Params, CacheProvider } from "@/utils/cache2";
+import { EntityOps, NPC, NPCID, Params, CacheProvider } from "@/utils/cache2";
 
 // Mock the dependencies
 jest.mock("../../renders", () => ({
@@ -51,7 +51,7 @@ describe("NPC name mapping", () => {
       name,
       id: id as NPCID,
       combatLevel,
-      actions: [],
+      ops: new EntityOps(),
       params: new Params(),
       multiChildren: multiChildren as NPCID[],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

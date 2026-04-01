@@ -4,7 +4,7 @@ import { copyFile } from "fs/promises";
 import { renderNpcs, clearNpcNameCounts, getNpcNameCounts } from "./npcs";
 
 import Context from "@/context";
-import { CacheProvider, NPC, NPCID, Params } from "@/utils/cache2";
+import { CacheProvider, EntityOps, NPC, NPCID, Params } from "@/utils/cache2";
 import { formatFileName } from "@/utils/files";
 
 // Mock the fs functions
@@ -38,7 +38,7 @@ describe("renderNpcs multi-version functionality", () => {
       name,
       id: id as NPCID,
       combatLevel: 21,
-      actions: [],
+      ops: new EntityOps(),
       params: new Params(),
       multiChildren: multiChildren || [],
       getMultiChildren: jest.fn().mockResolvedValue([]),

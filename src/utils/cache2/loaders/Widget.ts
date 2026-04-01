@@ -458,15 +458,8 @@ export class Widget extends PerArchiveParentLoadable {
 
   private decodeModelWidget(r: Reader): void {
     this.modelType = 1;
-    this.modelId = <ModelID>r.u16();
-    if (this.modelId === 0xffff) {
-      this.modelId = <ModelID>-1;
-    }
-
-    this.alternateModelId = <ModelID>r.u16();
-    if (this.alternateModelId === 0xffff) {
-      this.alternateModelId = <ModelID>-1;
-    }
+    this.modelId = r.model();
+    this.alternateModelId = r.model();
 
     this.animation = <AnimationID>r.u16();
     if (this.animation === 0xffff) {
@@ -680,10 +673,7 @@ export class Widget extends PerArchiveParentLoadable {
 
       case 6: // Model
         this.modelType = 1;
-        this.modelId = <ModelID>r.u16();
-        if (this.modelId === 0xffff) {
-          this.modelId = <ModelID>-1;
-        }
+        this.modelId = r.model();
         this.offsetX2d = r.i16();
         this.offsetY2d = r.i16();
         this.rotationX = r.u16();

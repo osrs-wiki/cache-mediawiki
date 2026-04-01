@@ -1,6 +1,6 @@
 import { groupNpcsByType } from "./npc.utils";
 
-import { NPC, NPCID, Params } from "@/utils/cache2";
+import { EntityOps, NPC, NPCID, Params } from "@/utils/cache2";
 
 const createMockNpc = (
   name: string,
@@ -13,6 +13,10 @@ const createMockNpc = (
     id: id as NPCID,
     combatLevel,
     actions: ["Talk-to", "Trade"],
+    ops: new EntityOps([
+      [0, { text: "Talk-to" }],
+      [1, { text: "Trade" }],
+    ]),
     params: new Params(),
     size: 1,
     hitpoints: 1,
