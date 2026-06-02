@@ -34,6 +34,7 @@ export class Item extends PerFileLoadable {
   public isStackable = false;
   public price = 1;
   public isMembers = false;
+  public isTradeable = true;
   public wearpos1 = <WearPos>-1;
   public wearpos2 = <WearPos>-1;
   public wearpos3 = <WearPos>-1;
@@ -118,6 +119,8 @@ export class Item extends PerFileLoadable {
         case 14:
           v.wearpos2 = <WearPos>r.u8();
           break;
+        case 15:
+          v.isTradeable = false;
         case 16:
           v.isMembers = true;
           break;

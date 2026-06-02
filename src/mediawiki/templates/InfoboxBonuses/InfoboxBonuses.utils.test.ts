@@ -8,6 +8,7 @@ import { EntityOps, Item, ItemID, Params, WearPos } from "@/utils/cache2";
 const BASE_ITEM: Item = {
   name: "Test Item",
   isMembers: true,
+  isTradeable: true,
   isGrandExchangable: true,
   id: 1234 as ItemID,
   inventoryModel: undefined,

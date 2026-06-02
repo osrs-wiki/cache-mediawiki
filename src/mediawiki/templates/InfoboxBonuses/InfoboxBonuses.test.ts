@@ -24,6 +24,7 @@ import { EntityOps, Item, ItemID, Params, WearPos } from "@/utils/cache2";
 const BASE_EQUIPABLE_ITEM: Item = {
   name: "Test Equipment",
   isMembers: true,
+  isTradeable: true,
   isGrandExchangable: true,
   id: 1234 as ItemID,
   inventoryModel: undefined,
