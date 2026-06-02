@@ -36,7 +36,7 @@
     "rss-parser": "^3.13.0",
     "tsconfig-paths": "^4.2.0",
     "typescript-transform-paths": "^3.5.5",
-    "underscore": "^1.13.7"
+    "underscore": "^1.13.8"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.9",
