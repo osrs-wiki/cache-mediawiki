@@ -1,5 +1,17 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.13.0
+
+### Minor Changes
+
+- f3c3ca0: Support for revision 237
+- 61edbd8: Add support for cache revision 238
+
+### Patch Changes
+
+- 6fe2776: Bump minimatch from 3.1.2 to 3.1.5 to fix ReDoS security vulnerabilities
+- b72eca4: bump underscore from 1.13.7 to 1.13.8
+
 ## 1.12.1
 
 ### Patch Changes
