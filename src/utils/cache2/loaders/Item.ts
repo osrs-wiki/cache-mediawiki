@@ -32,6 +32,7 @@ export class Item extends PerFileLoadable {
   public offsetX2d = 0;
   public offsetY2d = 0;
   public isStackable = false;
+  public hasVar = false;
   public price = 1;
   public isMembers = false;
   public isTradeable = true;
@@ -303,6 +304,10 @@ export class Item extends PerFileLoadable {
           break;
         case 149:
           v.placeholderTemplate = <ItemID>r.u16();
+          break;
+        case 160:
+          v.isStackable = false;
+          v.hasVar = true;
           break;
         case 249:
           v.params = r.params();
