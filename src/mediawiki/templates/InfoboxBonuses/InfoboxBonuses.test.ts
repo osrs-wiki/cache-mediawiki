@@ -26,6 +26,7 @@ const BASE_EQUIPABLE_ITEM: Item = {
   isMembers: true,
   isTradeable: true,
   isGrandExchangable: true,
+  hasVar: false,
   id: 1234 as ItemID,
   inventoryModel: undefined,
   examine: "Test equipment.",
