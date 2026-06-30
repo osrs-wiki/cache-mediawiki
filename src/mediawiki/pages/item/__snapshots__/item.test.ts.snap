@@ -323,7 +323,7 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ammo we
 |rstr = 0
 |mdmg = 0
 |prayer = 0
-|slot = ammot
+|slot = ammo
 |combatstyle = Unarmed
 }}
 

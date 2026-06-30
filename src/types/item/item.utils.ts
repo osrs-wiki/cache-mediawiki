@@ -9,7 +9,7 @@ const weaponSlotMap: { [key: WearPos]: WeaponSlot } = {
   [WearPos.Legs]: "legs",
   [WearPos.Shield]: "shield",
   [WearPos.Cape]: "cape",
-  [WearPos.Ammo]: "ammot",
+  [WearPos.Ammo]: "ammo",
   [WearPos.Hands]: "hands",
   [WearPos.Boots]: "feet",
   [WearPos.Amulet]: "neck",
