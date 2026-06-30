@@ -9,7 +9,7 @@ export type WeaponSlot =
   | "hands"
   | "feet"
   | "neck"
-  | "ammot"
+  | "ammo"
   | "ring";
 
 export type WeaponType =
