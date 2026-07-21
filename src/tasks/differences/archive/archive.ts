@@ -30,20 +30,6 @@ const differencesArchive = async ({
   const oldKeys = oldArchive ? Array.from(oldArchive.files.keys()) : [];
   const archiveDifferences: ArchiveDifferences = {};
 
-  if (newIndex?.id === IndexType.Maps) {
-    const regionInfo = RegionMapper.getRegionFromArchiveId(newArchive.namehash);
-    if (regionInfo && Context.newCacheProvider.getKeys().hasKeys()) {
-      Context.newCacheProvider
-        .getKeys()
-        .tryDecrypt(newArchive, regionInfo.regionId);
-      if (oldArchive && Context.oldCacheProvider.getKeys().hasKeys()) {
-        Context.oldCacheProvider
-          .getKeys()
-          .tryDecrypt(oldArchive, regionInfo.regionId);
-      }
-    }
-  }
-
   if (newArchive && oldArchive) {
     const sharedKeys = newKeys.filter((key) => oldArchive.files.has(key));
     await Promise.all(

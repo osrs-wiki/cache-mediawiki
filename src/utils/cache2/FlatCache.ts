@@ -125,7 +125,7 @@ export class FlatCacheProvider implements CacheProvider {
     // Set the promise to prevent concurrent loads
     this.xteaLoadPromise = (async () => {
       try {
-        this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion!);
+        this.xteaKeyManager = new XTEAKeyManager();
       } catch (error) {
         console.warn(
           `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
@@ -162,27 +162,6 @@ export class FlatCacheProvider implements CacheProvider {
   ): Promise<ArchiveData | undefined> {
     const idx = await this.getIndex(index);
     const archiveData = idx?.getArchive(archive);
-
-    // Set XTEA key for Maps index
-    if (archiveData && index === IndexType.Maps) {
-      const xteaManager = this.getKeys();
-
-      // Convert archive ID to region ID using RegionMapper
-      const regionInfo = RegionMapper.getRegionFromArchiveId(
-        archiveData.namehash
-      );
-      if (regionInfo) {
-        // Use tryDecrypt to find and set the correct XTEA key
-        const decryptionError = xteaManager.tryDecrypt(
-          archiveData,
-          regionInfo.regionId
-        );
-        if (decryptionError) {
-          // Missing XTEA keys are expected for many regions - silently return undefined
-          return undefined;
-        }
-      }
-    }
 
     return archiveData;
   }

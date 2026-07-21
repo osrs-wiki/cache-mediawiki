@@ -58,7 +58,6 @@ export class DiskCacheProvider implements CacheProvider {
   public async getIndex(index: number): Promise<DiskIndexData | undefined> {
     if (index === IndexType.Maps) {
       RegionMapper.initialize();
-      await this.initializeXTEAKeys();
     }
     let id = this.indexData.get(index);
     if (!id) {
@@ -185,22 +184,6 @@ export class DiskCacheProvider implements CacheProvider {
         return;
       }
       am.compressedData = d;
-    }
-
-    // Set XTEA key for Maps index
-    if (index === IndexType.Maps) {
-      const xteaManager = this.getKeys();
-
-      // Convert archive ID to region ID using RegionMapper
-      const regionInfo = RegionMapper.getRegionFromArchiveId(am.namehash);
-      if (regionInfo) {
-        // Use tryDecrypt to find and set the correct XTEA key
-        const decryptionError = xteaManager.tryDecrypt(am, regionInfo.regionId);
-        if (decryptionError) {
-          // Missing XTEA keys are expected for many regions - silently return undefined
-          return undefined;
-        }
-      }
     }
 
     return am;

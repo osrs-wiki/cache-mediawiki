@@ -75,16 +75,6 @@ const differencesCache = async ({
         console.log(
           `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
         );
-        if (
-          index === IndexType.Maps &&
-          (Context.oldCacheProvider.getKeys().hasKeys() === false ||
-            Context.newCacheProvider.getKeys().hasKeys() === false)
-        ) {
-          console.warn(
-            `Warning: XTEA keys are missing for Maps index decryption.`
-          );
-          return;
-        }
         cacheDifferences[index] = await differencesIndex(oldIndex, newIndex);
       } else {
         console.log(`No changes in index ${index}.`);

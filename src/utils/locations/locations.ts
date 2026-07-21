@@ -106,10 +106,18 @@ async function loadAllLocations(
         archiveIds.map(async (archiveId) => {
           try {
             const archive = await cache.getArchive(IndexType.Maps, archiveId);
+            console.debug(
+              `[getSceneryLocations] Retrieved archive ${archiveId}:`,
+              archive
+            );
             if (!archive) return [];
 
             const regionInfo = RegionMapper.getRegionFromArchiveId(
               archive.namehash
+            );
+            console.debug(
+              `[getSceneryLocations] Processing archive ${archiveId} with region info:`,
+              regionInfo
             );
             if (!regionInfo || regionInfo.type !== "locations") return [];
 
