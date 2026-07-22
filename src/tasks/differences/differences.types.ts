@@ -34,6 +34,7 @@ export type ResultValue =
   | string
   | number
   | boolean
+  | bigint
   | string[]
   | ItemID
   | ModelID

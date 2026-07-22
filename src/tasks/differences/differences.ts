@@ -109,7 +109,9 @@ const differencesCache = async ({
     console.log("Generating JSON output...");
     await writeFile(
       `${dir}/${newVersion} JSON.json`,
-      JSON.stringify(cacheDifferences)
+      JSON.stringify(cacheDifferences, (_key, value) =>
+        typeof value === "bigint" ? value.toString() : value
+      )
     );
     console.log(`JSON output generated: ${newVersion} JSON.json`);
   } else if (outputFormat === "csv") {

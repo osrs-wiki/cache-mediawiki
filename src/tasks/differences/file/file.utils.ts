@@ -272,7 +272,11 @@ export const getChangedResult = <T extends Loadable>(
       ((typeof oldEntryValue === "string" ||
         typeof newEntryValue === "string" ||
         typeof oldEntryValue === "number" ||
-        typeof newEntryValue === "number") &&
+        typeof newEntryValue === "number" ||
+        typeof oldEntryValue === "boolean" ||
+        typeof newEntryValue === "boolean" ||
+        typeof oldEntryValue === "bigint" ||
+        typeof newEntryValue === "bigint") &&
         oldEntryValue !== newEntryValue) ||
       (isOldArray &&
         isNewArray &&
