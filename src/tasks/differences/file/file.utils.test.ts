@@ -90,6 +90,116 @@ describe("file utils", () => {
       });
     });
 
+    test("type: boolean", () => {
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            isVisible: false,
+          },
+          {
+            isVisible: true,
+          }
+        )
+      ).toEqual({
+        isVisible: {
+          oldValue: false,
+          newValue: true,
+        },
+      });
+    });
+
+    test("type: boolean (true -> false)", () => {
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            isVisible: true,
+          },
+          {
+            isVisible: false,
+          }
+        )
+      ).toEqual({
+        isVisible: {
+          oldValue: true,
+          newValue: false,
+        },
+      });
+    });
+
+    test("type: boolean (no change)", () => {
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            isVisible: true,
+          },
+          {
+            isVisible: true,
+          }
+        )
+      ).toEqual({});
+    });
+
+    test("type: bigint", () => {
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            defaultLong: 0n,
+          } as any,
+          {
+            defaultLong: 100n,
+          } as any
+        )
+      ).toEqual({
+        defaultLong: {
+          oldValue: 0n,
+          newValue: 100n,
+        },
+      });
+    });
+
+    test("type: new bigint", () => {
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            defaultLong: null,
+          } as any,
+          {
+            defaultLong: 100n,
+          } as any
+        )
+      ).toEqual({
+        defaultLong: {
+          oldValue: null,
+          newValue: 100n,
+        },
+      });
+    });
+
+    test("type: bigint (no change)", () => {
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            defaultLong: 100n,
+          } as any,
+          {
+            defaultLong: 100n,
+          } as any
+        )
+      ).toEqual({});
+    });
+
     test("type: array added elements", () => {
       expect(
         getChangedResult<NPC>(
