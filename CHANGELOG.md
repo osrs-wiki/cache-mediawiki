@@ -1,5 +1,16 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.14.0
+
+### Minor Changes
+
+- 695711f: Add support for cache 239
+
+### Patch Changes
+
+- 7bd6e0c: ammo
+- 709a0c4: Fix boolean and bigint field changes (e.g. `isStackable`) not being detected in cache differences
+
 ## 1.13.0
 
 ### Minor Changes
