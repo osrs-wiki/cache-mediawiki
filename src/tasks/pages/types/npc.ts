@@ -67,7 +67,7 @@ export const writeNpcPage = async (
 
     // Write to multiChildren directory for null names, regular directory for named NPCs
     const isMultiChildrenDir = !npc.name || npc.name.toLowerCase() === "null";
-    writePageToFile(
+    await writePageToFile(
       builder,
       "npc",
       cleanName,
@@ -97,7 +97,7 @@ export const writeNpcPage = async (
   const builder = await npcPageBuilder(npcsWithSameName, cache);
 
   // Use the first NPC's ID for the file name
-  writePageToFile(builder, "npc", npc.name, npcsWithSameName[0].id.toString());
+  await writePageToFile(builder, "npc", npc.name, npcsWithSameName[0].id.toString());
 
   if (Context.renders) {
     // Render all NPCs with this name, passing cache parameter

@@ -9,7 +9,6 @@ exports[`Pages Command E2E Tests Area Pages should generate area page content th
 |wilderness = 
 |teleport = 
 |music = 
-|map = 
 |type = 
 }}
 [[File:undefined.png|300px|left]]
@@ -83,19 +82,20 @@ exports[`Pages Command E2E Tests NPC Pages should generate npc page content that
 |dmagic = 30
 |id = 1
 }}
-'''Molanisk''' is an NPC."
+'''Molanisk''' is a [[non-player character]]."
 `;
 
 exports[`Pages Command E2E Tests Scenery Pages should generate scenery page content that matches snapshot: scenery-1-output.txt 1`] = `
 "{{New Content}}
 {{Infobox Scenery
 |name = Crate
-|image = [[File:Crate.png]]
+|image = [[File:Crate.png|220px]]
 |members = Yes
 |quest = No
+|location = Here be goblins
+|map = {{Map|name=Crate|x=2571|y=9850|plane=0|mapID=-1|mtype=pin}}
 |options = Search
 |examine = 
-|map = No
 |id = 1
 }}
 '''Crate''' is a scenery object."
