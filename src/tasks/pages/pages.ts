@@ -36,19 +36,19 @@ const pageGenerator = async (
 
   switch (type) {
     case "area":
-      writeAreaPageFromCache(cache, id);
+      await writeAreaPageFromCache(cache, id);
       break;
     case "item":
-      writeItemPageFromCache(cache, id);
+      await writeItemPageFromCache(cache, id);
       break;
     case "music":
-      writeMusicPageFromCache(cache, id);
+      await writeMusicPageFromCache(cache, id);
       break;
     case "npc":
-      writeNpcPageFromCache(cache, id);
+      await writeNpcPageFromCache(cache, id);
       break;
     case "scenery":
-      writeSceneryPageFromCache(cache, id);
+      await writeSceneryPageFromCache(cache, id);
       break;
     default:
       console.error(`Unknown type: ${type}`);

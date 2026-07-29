@@ -25,5 +25,5 @@ export const writeAreaPage = async (
   cache?: Promise<CacheProvider>
 ) => {
   const builder = await areaPageBuilder(area, cache);
-  writePageToFile(builder, "area", area.name, area.id.toString());
+  await writePageToFile(builder, "area", area.name, area.id.toString());
 };

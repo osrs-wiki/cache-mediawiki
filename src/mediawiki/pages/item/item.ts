@@ -72,8 +72,8 @@ export const itemPageBuilder = (items: Item | Item[]) => {
   }
 
   builder.addContents([
+    new MediaWikiBreak(),
     new MediaWikiText(baseName, { bold: true }),
-    new MediaWikiText(" is an item."),
   ]);
 
   if (infoboxBonuses) {

@@ -369,7 +369,7 @@ describe("npcPageBuilder", () => {
 
       // Should use "Guard" as the primary name and Switch infobox for mixed types
       expect(built).toContain("{{Switch infobox");
-      expect(built).toContain("'''Guard''' is a [[non-player character]].");
+      expect(built).toContain("'''Guard'''");
       expect(built).toMatchSnapshot();
     });
   });
