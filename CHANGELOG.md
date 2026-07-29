@@ -1,5 +1,18 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.14.0
+
+### Minor Changes
+
+- 84a7d73: Remove generic "is an item/area/scenery object/non-player character" filler sentence from item, area, scenery, and npc pages
+- 695711f: Add support for cache 239
+
+### Patch Changes
+
+- 7bd6e0c: ammo
+- 84a7d73: Fix missing newline between detail image and article text on item pages
+- 709a0c4: Fix boolean and bigint field changes (e.g. `isStackable`) not being detected in cache differences
+
 ## 1.13.0
 
 ### Minor Changes
