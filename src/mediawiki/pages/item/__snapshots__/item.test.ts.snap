@@ -20,7 +20,7 @@ exports[`Item Infobox Item infbox should use beta ID when Context.beta is true 1
 |id = beta1
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item."
+'''Test Item'''"
 `;
 
 exports[`Item Infobox Item infobox should be generated 1`] = `
@@ -43,7 +43,7 @@ exports[`Item Infobox Item infobox should be generated 1`] = `
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item."
+'''Test Item'''"
 `;
 
 exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
@@ -66,7 +66,7 @@ exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item.
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -113,7 +113,7 @@ exports[`Item Infobox Item infobox should be generated with head wearpos 1`] = `
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item.
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -160,7 +160,7 @@ exports[`Item Infobox Item infobox should be generated with ranged ammo strength
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item.
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -211,7 +211,7 @@ exports[`Item Infobox Item infobox should be generated with ranged equipment str
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item.
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -262,7 +262,7 @@ exports[`Item Infobox Item infobox should be generated with weapon bonuses 1`] =
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item.
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -313,7 +313,7 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ammo we
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item.
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -358,7 +358,7 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ring we
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item.
+'''Test Item'''
 
 ==Combat stats==
 {{Infobox Bonuses
@@ -403,5 +403,5 @@ exports[`Item Infobox Item infobox with sub ops 1`] = `
 |id = 1234
 }}
 [[File:Test Item detail.png|130px|left]]
-'''Test Item''' is an item."
+'''Test Item'''"
 `;
