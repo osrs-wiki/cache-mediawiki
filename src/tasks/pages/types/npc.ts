@@ -77,7 +77,7 @@ export const writeNpcPage = async (
 
     if (Context.renders) {
       // Render the parent NPC and its multiChildren with cache parameter
-      renderNpcs(npc, cache);
+      await renderNpcs(npc, cache);
     }
     return;
   }
@@ -97,11 +97,16 @@ export const writeNpcPage = async (
   const builder = await npcPageBuilder(npcsWithSameName, cache);
 
   // Use the first NPC's ID for the file name
-  await writePageToFile(builder, "npc", npc.name, npcsWithSameName[0].id.toString());
+  await writePageToFile(
+    builder,
+    "npc",
+    npc.name,
+    npcsWithSameName[0].id.toString()
+  );
 
   if (Context.renders) {
     // Render all NPCs with this name, passing cache parameter
-    npcsWithSameName.forEach((npc) => renderNpcs(npc, cache));
+    await Promise.all(npcsWithSameName.map((npc) => renderNpcs(npc, cache)));
   }
 };
 
