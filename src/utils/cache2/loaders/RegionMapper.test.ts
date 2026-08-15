@@ -141,4 +141,105 @@ describe("RegionMapper", () => {
       }
     });
   });
+
+  describe("getRegionFromUnnamedArchive", () => {
+    test("should decode map (file 0) region info from archive ID", () => {
+      const archiveId = (25 << 8) | 59; // 6459
+      const result = RegionMapper.getRegionFromUnnamedArchive(archiveId, 0);
+
+      expect(result).toEqual({
+        regionX: 25,
+        regionY: 59,
+        regionId: archiveId,
+        type: "map",
+        archiveName: "m25_59",
+      });
+    });
+
+    test("should decode locations (file 1) region info from archive ID", () => {
+      const archiveId = (25 << 8) | 59; // 6459
+      const result = RegionMapper.getRegionFromUnnamedArchive(archiveId, 1);
+
+      expect(result).toEqual({
+        regionX: 25,
+        regionY: 59,
+        regionId: archiveId,
+        type: "locations",
+        archiveName: "l25_59",
+      });
+    });
+
+    test("should treat archive ID 0 as a legitimate region (0,0), not missing", () => {
+      const result = RegionMapper.getRegionFromUnnamedArchive(0, 0);
+
+      expect(result).toEqual({
+        regionX: 0,
+        regionY: 0,
+        regionId: 0,
+        type: "map",
+        archiveName: "m0_0",
+      });
+    });
+
+    test("should return null for file IDs other than 0 or 1", () => {
+      const archiveId = (25 << 8) | 59;
+      expect(RegionMapper.getRegionFromUnnamedArchive(archiveId, 2)).toBeNull();
+      expect(RegionMapper.getRegionFromUnnamedArchive(archiveId, 3)).toBeNull();
+      expect(RegionMapper.getRegionFromUnnamedArchive(archiveId, 4)).toBeNull();
+      expect(
+        RegionMapper.getRegionFromUnnamedArchive(archiveId, -1)
+      ).toBeNull();
+    });
+
+    test("should return null for out-of-range archive IDs", () => {
+      expect(RegionMapper.getRegionFromUnnamedArchive(-1, 0)).toBeNull();
+      expect(RegionMapper.getRegionFromUnnamedArchive(0x10000, 0)).toBeNull();
+    });
+
+    test("should handle the maximum valid archive ID (region 255,255)", () => {
+      const archiveId = 0xffff;
+      const result = RegionMapper.getRegionFromUnnamedArchive(archiveId, 1);
+
+      expect(result).toEqual({
+        regionX: 255,
+        regionY: 255,
+        regionId: archiveId,
+        type: "locations",
+        archiveName: "l255_255",
+      });
+    });
+  });
+
+  describe("getRegionInfo", () => {
+    test("should prefer the legacy named-archive lookup when the namehash resolves", () => {
+      const archiveIds = RegionMapper.getAllRegionArchiveIds();
+      const validNamehash = archiveIds[0];
+      const expected = RegionMapper.getRegionFromArchiveId(validNamehash);
+
+      // Pass an archiveId/fileId that would resolve to a completely different
+      // region via the unnamed fallback, to prove the named lookup takes priority.
+      const result = RegionMapper.getRegionInfo(validNamehash, 9999, 0);
+
+      expect(result).toEqual(expected);
+    });
+
+    test("should fall back to the unnamed archive format when the namehash doesn't resolve", () => {
+      const archiveId = (25 << 8) | 59;
+      const result = RegionMapper.getRegionInfo(0, archiveId, 1);
+
+      expect(result).toEqual({
+        regionX: 25,
+        regionY: 59,
+        regionId: archiveId,
+        type: "locations",
+        archiveName: "l25_59",
+      });
+    });
+
+    test("should return null when neither lookup resolves", () => {
+      const result = RegionMapper.getRegionInfo(0, -1, 5);
+
+      expect(result).toBeNull();
+    });
+  });
 });
