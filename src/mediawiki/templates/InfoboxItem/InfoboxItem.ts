@@ -27,7 +27,6 @@ const createInfoboxItemData = (item: Item, index = 0): InfoboxItemType => {
     exchange: Context.beta ? false : item.isGrandExchangable,
     tradeable: item.isGrandExchangable,
     bankable: item.placeholderLinkedItem > 0,
-    placeholder: item.placeholderLinkedItem > 1 ? true : undefined,
     equipable: item.wearpos1 >= 0,
     stackable: item.isStackable,
     noteable: item.noteLinkedItem > 0,

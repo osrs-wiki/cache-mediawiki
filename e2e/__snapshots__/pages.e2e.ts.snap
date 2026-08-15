@@ -25,7 +25,6 @@ exports[`Pages Command E2E Tests Item Pages should generate different item page 
 |exchange = Yes
 |tradeable = Yes
 |bankable = Yes
-|placeholder = Yes
 |equipable = No
 |stackable = Yes
 |noteable = No
@@ -49,7 +48,6 @@ exports[`Pages Command E2E Tests Item Pages should generate item page content th
 |exchange = No
 |tradeable = No
 |bankable = Yes
-|placeholder = Yes
 |equipable = No
 |stackable = No
 |noteable = No
