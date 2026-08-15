@@ -11,19 +11,12 @@ interface MockIndex {
   archives?: Map<number, ArchiveData>;
 }
 
-// Mock openrs2 module
-jest.mock("@/utils/openrs2", () => ({
-  loadXTEAKeysForCache: jest.fn(),
-}));
-
 // Mock RegionMapper
 jest.mock("../loaders/RegionMapper", () => ({
   RegionMapper: {
     getRegionFromArchiveId: jest.fn(),
   },
 }));
-
-import { loadXTEAKeysForCache } from "@/utils/openrs2";
 
 describe("XTEA Integration", () => {
   let mockFileProvider: FileProvider;
@@ -38,13 +31,14 @@ describe("XTEA Integration", () => {
 
     mockXTEAManager = new XTEAKeyManager();
 
-    // Mock RegionMapper to return RegionInfo object for archive ID 12345
+    // Mock RegionMapper to return RegionInfo object for archive ID 12345.
+    // Only "locations" archives are ever XTEA-encrypted (map terrain never is), matching RuneLite's RegionLoader.
     (RegionMapper.getRegionFromArchiveId as jest.Mock).mockReturnValue({
       regionX: 123,
       regionY: 45,
       regionId: 12345,
-      type: "map" as const,
-      archiveName: "m123_45",
+      type: "locations" as const,
+      archiveName: "l123_45",
     });
 
     // Add test keys using the public API
@@ -59,8 +53,6 @@ describe("XTEA Integration", () => {
       },
     ];
     mockXTEAManager.loadKeys(testKeys);
-
-    (loadXTEAKeysForCache as jest.Mock).mockResolvedValue(mockXTEAManager);
 
     // Mock console methods
     jest.spyOn(console, "warn").mockImplementation();
@@ -101,6 +93,38 @@ describe("XTEA Integration", () => {
 
       expect(result).toBe(mockArchiveData);
       expect(result?.key).toEqual([1, 2, 3, 4]);
+    });
+
+    it("should not attempt decryption for map (terrain) archives", async () => {
+      const provider = new FlatCacheProvider(
+        mockFileProvider,
+        "2025-09-03-rev232"
+      );
+
+      (RegionMapper.getRegionFromArchiveId as jest.Mock).mockReturnValue({
+        regionX: 123,
+        regionY: 45,
+        regionId: 12345,
+        type: "map" as const,
+        archiveName: "m123_45",
+      });
+
+      const mockArchiveData = new ArchiveData(IndexType.Maps, 12345);
+      const mockIndex: MockIndex = {
+        getArchive: jest.fn().mockReturnValue(mockArchiveData),
+      };
+
+      jest
+        .spyOn(provider, "getIndex")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .mockResolvedValue(mockIndex as any);
+      jest.spyOn(provider, "getKeys").mockReturnValue(mockXTEAManager);
+      const tryDecryptSpy = jest.spyOn(mockXTEAManager, "tryDecrypt");
+
+      const result = await provider.getArchive(IndexType.Maps, 12345);
+
+      expect(result).toBe(mockArchiveData);
+      expect(tryDecryptSpy).not.toHaveBeenCalled();
     });
 
     it("should not set XTEA key for non-Maps index archives", async () => {
@@ -155,6 +179,38 @@ describe("XTEA Integration", () => {
 
       expect(result).toBe(mockArchiveData);
       expect(result?.key).toEqual([1, 2, 3, 4]);
+    });
+
+    it("should not attempt decryption for map (terrain) archives", async () => {
+      const provider = new DiskCacheProvider(
+        mockFileProvider,
+        "2025-09-03-rev232"
+      );
+
+      (RegionMapper.getRegionFromArchiveId as jest.Mock).mockReturnValue({
+        regionX: 123,
+        regionY: 45,
+        regionId: 12345,
+        type: "map" as const,
+        archiveName: "m123_45",
+      });
+
+      const mockArchiveData = new ArchiveData(IndexType.Maps, 12345);
+      mockArchiveData.compressedData = new Uint8Array([1, 2, 3, 4]);
+
+      const mockIndex: MockIndex = {
+        archives: new Map([[12345, mockArchiveData]]),
+      };
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(provider, "getIndex").mockResolvedValue(mockIndex as any);
+      jest.spyOn(provider, "getKeys").mockReturnValue(mockXTEAManager);
+      const tryDecryptSpy = jest.spyOn(mockXTEAManager, "tryDecrypt");
+
+      const result = await provider.getArchive(IndexType.Maps, 12345);
+
+      expect(result).toBe(mockArchiveData);
+      expect(tryDecryptSpy).not.toHaveBeenCalled();
     });
 
     it("should not set XTEA key for non-Maps index archives", async () => {

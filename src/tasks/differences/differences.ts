@@ -3,7 +3,6 @@ import { mkdir, writeFile } from "fs/promises";
 import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
 import { differencesIndex } from "./index";
-import { IndexType } from "../../utils/cache2";
 import { preloadSceneryLocations } from "../../utils/locations";
 import { flushItemPages } from "../pages/types/item";
 
@@ -75,16 +74,6 @@ const differencesCache = async ({
         console.log(
           `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
         );
-        if (
-          index === IndexType.Maps &&
-          (Context.oldCacheProvider.getKeys().hasKeys() === false ||
-            Context.newCacheProvider.getKeys().hasKeys() === false)
-        ) {
-          console.warn(
-            `Warning: XTEA keys are missing for Maps index decryption.`
-          );
-          return;
-        }
         cacheDifferences[index] = await differencesIndex(oldIndex, newIndex);
       } else {
         console.log(`No changes in index ${index}.`);

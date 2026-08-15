@@ -108,12 +108,26 @@ async function loadAllLocations(
             const archive = await cache.getArchive(IndexType.Maps, archiveId);
             if (!archive) return [];
 
-            const regionInfo = RegionMapper.getRegionFromArchiveId(
+            // Legacy caches name the locations archive ("l{x}_{y}") with its data in file 0.
+            // Newer caches are unnamed - the archive ID directly encodes the region and
+            // locations live in file 1 alongside terrain in file 0.
+            let regionInfo = RegionMapper.getRegionFromArchiveId(
               archive.namehash
             );
+            let locationsFileId = 0;
+            if (!regionInfo || regionInfo.type !== "locations") {
+              regionInfo = RegionMapper.getRegionFromUnnamedArchive(
+                archiveId,
+                1
+              );
+              locationsFileId = 1;
+            }
             if (!regionInfo || regionInfo.type !== "locations") return [];
 
-            const locationData = Buffer.from(archive.getFile(0).data);
+            const file = archive.getFile(locationsFileId);
+            if (!file) return [];
+
+            const locationData = Buffer.from(file.data);
             const locationsDef = LocationsDefinition.decode(
               locationData,
               regionInfo.regionX,

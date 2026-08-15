@@ -1,6 +1,20 @@
+import { gzipSync } from "zlib";
+
 import { XTEAKeyManager } from "./xtea";
 import { ArchiveData } from "../Cache";
-import { IndexType } from "../types";
+import { CompressionType, IndexType } from "../types";
+
+/** Builds a compressedData buffer matching ArchiveData's on-disk format for a GZIP-compressed archive. */
+const buildGzipArchiveData = (contents: Uint8Array): Uint8Array => {
+  const gzipped = gzipSync(contents);
+  const buf = new Uint8Array(5 + 4 + gzipped.length);
+  const dv = new DataView(buf.buffer);
+  dv.setUint8(0, CompressionType.GZIP);
+  dv.setInt32(1, gzipped.length);
+  dv.setUint32(5, contents.length);
+  buf.set(gzipped, 9);
+  return buf;
+};
 
 describe("XTEA Direct Key Setting", () => {
   it("should properly set and use XTEA keys on ArchiveData", () => {
@@ -51,5 +65,34 @@ describe("XTEA Direct Key Setting", () => {
         fail("No key found in KeySet");
       }
     }
+  });
+
+  describe("tryDecrypt", () => {
+    it("decodes unencrypted archives with zero keys loaded, matching current caches with an empty keys.json", () => {
+      const manager = new XTEAKeyManager();
+      const archive = new ArchiveData(IndexType.Maps, 12345);
+      archive.compressedData = buildGzipArchiveData(new Uint8Array([1, 2, 3]));
+
+      const error = manager.tryDecrypt(archive, 12345);
+
+      expect(error).toBeUndefined();
+      expect(archive.key).toBeUndefined();
+      expect(archive.getDecryptedData()).toEqual(new Uint8Array([1, 2, 3]));
+    });
+
+    it("returns an error for genuinely encrypted archives with no matching key", () => {
+      const manager = new XTEAKeyManager();
+      // Garbage bytes with no valid GZIP header - simulates data that's actually encrypted
+      // and can't be decompressed without the (unavailable) key.
+      const undecodable = new ArchiveData(IndexType.Maps, 12345);
+      undecodable.compressedData = buildGzipArchiveData(
+        new Uint8Array([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
+      );
+      undecodable.compressedData[9] = 0x00; // corrupt the GZIP magic bytes
+
+      const error = manager.tryDecrypt(undecodable, 12345);
+
+      expect(error).toBeInstanceOf(Error);
+    });
   });
 });

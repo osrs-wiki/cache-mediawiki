@@ -29,6 +29,60 @@ export class RegionMapper {
   }
 
   /**
+   * Newer cache revisions no longer name Maps archives ("m{x}_{y}"/"l{x}_{y}") - the
+   * index is unnamed and the archive ID directly encodes the region (archiveId = (x << 8) | y),
+   * with terrain in file 0 and locations in file 1, matching RuneLite's RegionLoader layout.
+   */
+  public static getRegionFromUnnamedArchive(
+    archiveId: number,
+    fileId: number
+  ): RegionInfo | null {
+    if (archiveId < 0 || archiveId > 0xffff) {
+      return null;
+    }
+
+    const regionX = (archiveId >> 8) as RegionX;
+    const regionY = (archiveId & 0xff) as RegionY;
+    const regionId = archiveId as RegionID;
+
+    if (fileId === 0) {
+      return {
+        regionX,
+        regionY,
+        regionId,
+        type: "map",
+        archiveName: `m${regionX}_${regionY}`,
+      };
+    }
+    if (fileId === 1) {
+      return {
+        regionX,
+        regionY,
+        regionId,
+        type: "locations",
+        archiveName: `l${regionX}_${regionY}`,
+      };
+    }
+    return null;
+  }
+
+  /**
+   * Get region information for a Maps archive/file, supporting both the legacy named
+   * ("m{x}_{y}"/"l{x}_{y}") archive format and the newer unnamed format where the archive
+   * ID directly encodes the region.
+   */
+  public static getRegionInfo(
+    namehash: number,
+    archiveId: number,
+    fileId: number
+  ): RegionInfo | null {
+    return (
+      this.getRegionFromArchiveId(namehash) ??
+      this.getRegionFromUnnamedArchive(archiveId, fileId)
+    );
+  }
+
+  /**
    * Check if an archive ID corresponds to a region archive.
    * Initializes the mapping lazily on first access.
    */

@@ -11,8 +11,6 @@ import { Reader } from "./Reader";
 import { IndexType } from "./types";
 import { XTEAKeyManager } from "./xtea/xtea";
 
-import { loadXTEAKeysForCache } from "@/utils/openrs2";
-
 export class DiskIndexData implements IndexData {
   public id!: number;
   public protocol!: number;
@@ -29,7 +27,7 @@ export class DiskCacheProvider implements CacheProvider {
   private indexData: Map<number, Promise<DiskIndexData | undefined>> =
     new Map();
   private pointers: Map<number, Promise<Reader | undefined>> = new Map();
-  private xteaKeyManager?: XTEAKeyManager = new XTEAKeyManager();
+  private xteaKeyManager: XTEAKeyManager = new XTEAKeyManager();
 
   public constructor(
     private readonly disk: FileProvider,
@@ -39,26 +37,9 @@ export class DiskCacheProvider implements CacheProvider {
     this.getPointers(255);
   }
 
-  private async initializeXTEAKeys(): Promise<void> {
-    if (!this.cacheVersion) {
-      return;
-    }
-
-    try {
-      this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion);
-    } catch (error) {
-      console.warn(
-        `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
-        error
-      );
-      this.xteaKeyManager = new XTEAKeyManager();
-    }
-  }
-
   public async getIndex(index: number): Promise<DiskIndexData | undefined> {
     if (index === IndexType.Maps) {
       RegionMapper.initialize();
-      await this.initializeXTEAKeys();
     }
     let id = this.indexData.get(index);
     if (!id) {
@@ -187,17 +168,16 @@ export class DiskCacheProvider implements CacheProvider {
       am.compressedData = d;
     }
 
-    // Set XTEA key for Maps index
+    // Only locations ("l") archives are ever XTEA-encrypted; map ("m") terrain never is, matching RuneLite's RegionLoader.
     if (index === IndexType.Maps) {
-      const xteaManager = this.getKeys();
-
-      // Convert archive ID to region ID using RegionMapper
       const regionInfo = RegionMapper.getRegionFromArchiveId(am.namehash);
-      if (regionInfo) {
-        // Use tryDecrypt to find and set the correct XTEA key
-        const decryptionError = xteaManager.tryDecrypt(am, regionInfo.regionId);
+      if (regionInfo?.type === "locations") {
+        const decryptionError = this.getKeys().tryDecrypt(
+          am,
+          regionInfo.regionId
+        );
         if (decryptionError) {
-          // Missing XTEA keys are expected for many regions - silently return undefined
+          // No matching key and the data isn't valid unencrypted content either - skip this region's locations
           return undefined;
         }
       }
@@ -300,13 +280,6 @@ export class DiskCacheProvider implements CacheProvider {
   }
 
   public getKeys(): XTEAKeyManager {
-    // Return cached manager if available
-    if (this.xteaKeyManager) {
-      return this.xteaKeyManager;
-    }
-
-    // If no cache version specified, return empty manager
-    this.xteaKeyManager = new XTEAKeyManager();
     return this.xteaKeyManager;
   }
 }

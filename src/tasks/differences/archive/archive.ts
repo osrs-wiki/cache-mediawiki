@@ -32,11 +32,11 @@ const differencesArchive = async ({
 
   if (newIndex?.id === IndexType.Maps) {
     const regionInfo = RegionMapper.getRegionFromArchiveId(newArchive.namehash);
-    if (regionInfo && Context.newCacheProvider.getKeys().hasKeys()) {
+    if (regionInfo?.type === "locations") {
       Context.newCacheProvider
         .getKeys()
         .tryDecrypt(newArchive, regionInfo.regionId);
-      if (oldArchive && Context.oldCacheProvider.getKeys().hasKeys()) {
+      if (oldArchive) {
         Context.oldCacheProvider
           .getKeys()
           .tryDecrypt(oldArchive, regionInfo.regionId);
