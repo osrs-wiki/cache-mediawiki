@@ -12,7 +12,7 @@ export const writeMusicPageFromCache = async (
     const dbRow = await DBRow.load(cache, id);
 
     if (dbRow && dbRow.table === 44) {
-      writeMusicPage(dbRow);
+      await writeMusicPage(dbRow);
     }
   } catch (e) {
     console.error(`Error generating page for music track ${id}: `, e);
@@ -24,5 +24,5 @@ export const writeMusicPage = async (dbRow: DBRow) => {
   const trackName = musicTrack.displayName || musicTrack.sortName || `Track ${musicTrack.id}`;
 
   const builder = musicPageBuilder(musicTrack);
-  writePageToFile(builder, "music", trackName, musicTrack.id.toString());
+  await writePageToFile(builder, "music", trackName, musicTrack.id.toString());
 };

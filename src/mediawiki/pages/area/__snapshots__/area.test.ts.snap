@@ -13,7 +13,7 @@ exports[`areaPageBuilder should build area page 1`] = `
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
-'''Test Area''' is an area."
+'''Test Area'''"
 `;
 
 exports[`areaPageBuilder should build area page with context 1`] = `
@@ -30,7 +30,7 @@ exports[`areaPageBuilder should build area page with context 1`] = `
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
-'''Test Area''' is an area."
+'''Test Area'''"
 `;
 
 exports[`areaPageBuilder should build area page with map and nearest location parameters 1`] = `
@@ -48,7 +48,7 @@ exports[`areaPageBuilder should build area page with map and nearest location pa
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
-'''Test Area''' is an area."
+'''Test Area'''"
 `;
 
 exports[`areaPageBuilder should build area page with map parameter when WorldMap element exists 1`] = `
@@ -66,5 +66,5 @@ exports[`areaPageBuilder should build area page with map parameter when WorldMap
 |type = 
 }}
 [[File:Test Area.png|300px|left]]
-'''Test Area''' is an area."
+'''Test Area'''"
 `;

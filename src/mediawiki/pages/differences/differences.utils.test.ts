@@ -101,6 +101,15 @@ describe("differences builder utils", () => {
       expect(formatEntryValue("count", 42)).toBe("42");
     });
 
+    test("should return value as string for boolean values", () => {
+      expect(formatEntryValue("isStackable", true)).toBe("true");
+      expect(formatEntryValue("isStackable", false)).toBe("false");
+    });
+
+    test("should return value as string for bigint values", () => {
+      expect(formatEntryValue("defaultLong", 100n)).toBe("100");
+    });
+
     test("should format objects by converting to string with custom formatting", () => {
       const objectValue = { key1: "value1", key2: 2 };
       expect(formatEntryValue("config", objectValue)).toBe(

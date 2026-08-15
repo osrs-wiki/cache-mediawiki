@@ -74,6 +74,8 @@ export const formatEntryValue = (field: string, value: ResultValue): string => {
       .replaceAll(",", ", ");
   } else if (typeof value === "string" || typeof value === "number") {
     return value.toString();
+  } else if (typeof value === "bigint") {
+    return value.toString();
   }
   return JSON.stringify(value)
     .replaceAll('"', "'")

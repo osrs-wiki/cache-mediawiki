@@ -12,7 +12,7 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 |examine = 
 |id = 1
 }}
-'''name''' is a scenery object."
+'''name'''"
 `;
 
 exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
@@ -27,7 +27,7 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 |examine = 
 |id = beta1
 }}
-'''name''' is a scenery object."
+'''name'''"
 `;
 
 exports[`sceneryPageBuilder locations should group nearby locations correctly 1`] = `
@@ -42,7 +42,7 @@ exports[`sceneryPageBuilder locations should group nearby locations correctly 1`
 |examine = 
 |id = 100
 }}
-'''Grouped Scenery''' is a scenery object.
+'''Grouped Scenery'''
 
 ==Locations==
 {{ObjectTableHead}}
@@ -78,7 +78,7 @@ exports[`sceneryPageBuilder locations should handle cache loading errors gracefu
 |examine = 
 |id = 100
 }}
-'''Broken Cache Object''' is a scenery object."
+'''Broken Cache Object'''"
 `;
 
 exports[`sceneryPageBuilder locations should handle no locations gracefully 1`] = `
@@ -93,7 +93,7 @@ exports[`sceneryPageBuilder locations should handle no locations gracefully 1`] 
 |examine = 
 |id = 100
 }}
-'''Mysterious Object''' is a scenery object."
+'''Mysterious Object'''"
 `;
 
 exports[`sceneryPageBuilder locations should include locations section for multiple locations 1`] = `
@@ -108,7 +108,7 @@ exports[`sceneryPageBuilder locations should include locations section for multi
 |examine = 
 |id = 100
 }}
-'''Tree''' is a scenery object.
+'''Tree'''
 
 ==Locations==
 {{ObjectTableHead}}
@@ -145,7 +145,7 @@ exports[`sceneryPageBuilder locations should include map parameter for single lo
 |examine = 
 |id = 100
 }}
-'''Altar''' is a scenery object."
+'''Altar'''"
 `;
 
 exports[`sceneryPageBuilder locations should not attempt to load locations when cache is not provided 1`] = `
@@ -160,7 +160,7 @@ exports[`sceneryPageBuilder locations should not attempt to load locations when 
 |examine = 
 |id = 100
 }}
-'''No Cache Object''' is a scenery object."
+'''No Cache Object'''"
 `;
 
 exports[`sceneryPageBuilder should strip HTML tags from scenery name in page content 1`] = `
@@ -175,5 +175,5 @@ exports[`sceneryPageBuilder should strip HTML tags from scenery name in page con
 |examine = 
 |id = 123
 }}
-'''Red Chest''' is a scenery object."
+'''Red Chest'''"
 `;

@@ -74,7 +74,6 @@ const areaPageBuilder = async (area: Area, cache?: Promise<CacheProvider>) => {
     }),
     new MediaWikiBreak(),
     new MediaWikiText(area.name, { bold: true }),
-    new MediaWikiText(" is an area."),
   ]);
 
   return builder;

@@ -13,7 +13,7 @@ export const writeSceneryPageFromCache = async (
     const scenery = await Obj.load(cache, id);
 
     if (scenery) {
-      writeSceneryPage(scenery, cache);
+      await writeSceneryPage(scenery, cache);
     }
   } catch (e) {
     console.error(`Error generating page for scenery ${id}: `, e);
@@ -25,7 +25,7 @@ export const writeSceneryPage = async (
   cache?: Promise<CacheProvider>
 ) => {
   const builder = await sceneryPageBuilder(scenery, cache);
-  writePageToFile(builder, "scenery", scenery.name, scenery.id.toString());
+  await writePageToFile(builder, "scenery", scenery.name, scenery.id.toString());
 
   if (Context.renders) {
     renderScenery(scenery);

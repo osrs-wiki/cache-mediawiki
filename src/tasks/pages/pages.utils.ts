@@ -10,22 +10,23 @@ export const writePageToFile = async (
   id: string,
   isMultiChildren?: boolean
 ) => {
+  const content = builder.build();
   await mkdir(`./out/pages/${type}`, { recursive: true });
-  writeFile(`./out/pages/${type}/${id}.txt`, builder.build());
+  await writeFile(`./out/pages/${type}/${id}.txt`, content);
 
   if (isMultiChildren) {
     await mkdir(`./out/pages/${type}/named/multiChildren`, { recursive: true });
-    writeFile(
+    await writeFile(
       formatFileName(
         `./out/pages/${type}/named/multiChildren/${name}-${id}.txt`
       ),
-      builder.build()
+      content
     );
   } else {
     await mkdir(`./out/pages/${type}/named`, { recursive: true });
-    writeFile(
+    await writeFile(
       formatFileName(`./out/pages/${type}/named/${name}-${id}.txt`),
-      builder.build()
+      content
     );
   }
 };

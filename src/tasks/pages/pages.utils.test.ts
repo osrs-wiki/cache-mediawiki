@@ -44,9 +44,9 @@ describe("writePageToFile", () => {
     );
   });
 
-  it("calls builder.build() for both files", async () => {
+  it("calls builder.build() once for both files", async () => {
     const builder = new MockMediaWikiBuilder();
     await writePageToFile(builder as any, "item", "Sword", "456");
-    expect(builder.build).toHaveBeenCalledTimes(2);
+    expect(builder.build).toHaveBeenCalledTimes(1);
   });
 });

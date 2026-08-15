@@ -82,7 +82,6 @@ export const sceneryPageBuilder = async (
   builder.addContents([
     infoboxscenery.build(),
     new MediaWikiText(cleanName, { bold: true }),
-    new MediaWikiText(" is a scenery object."),
   ]);
 
   // Add locations section for multiple spawns
