@@ -12,8 +12,6 @@ import { RegionMapper } from "./loaders";
 import { IndexType, XTEAKey } from "./types";
 import { XTEAKeyManager } from "./xtea/xtea";
 
-import { loadXTEAKeysForCache } from "@/utils/openrs2";
-
 export class FlatIndexData implements IndexData {
   public revision!: number;
   public compression!: number;
@@ -101,48 +99,16 @@ export class FlatIndexData implements IndexData {
 
 export class FlatCacheProvider implements CacheProvider {
   private indexes: Map<number, Promise<FlatIndexData | undefined>> = new Map();
-  private xteaKeyManager?: XTEAKeyManager;
-  private xteaLoadPromise?: Promise<XTEAKeyManager>;
+  private xteaKeyManager: XTEAKeyManager = new XTEAKeyManager();
 
   constructor(
     private disk: FileProvider,
     private readonly cacheVersion?: string
   ) {}
 
-  private async initializeXTEAKeys(): Promise<void> {
-    // If already initialized or in progress, don't load again
-    if (this.xteaKeyManager || this.xteaLoadPromise) {
-      if (this.xteaLoadPromise) {
-        await this.xteaLoadPromise;
-      }
-      return;
-    }
-
-    if (!this.cacheVersion) {
-      return;
-    }
-
-    // Set the promise to prevent concurrent loads
-    this.xteaLoadPromise = (async () => {
-      try {
-        this.xteaKeyManager = await loadXTEAKeysForCache(this.cacheVersion!);
-      } catch (error) {
-        console.warn(
-          `Failed to load XTEA keys for cache version ${this.cacheVersion}:`,
-          error
-        );
-        this.xteaKeyManager = new XTEAKeyManager();
-      }
-      return this.xteaKeyManager;
-    })();
-
-    await this.xteaLoadPromise;
-  }
-
   public async getIndex(index: number): Promise<FlatIndexData | undefined> {
     if (index === IndexType.Maps) {
       RegionMapper.initialize();
-      await this.initializeXTEAKeys();
     }
     let idxp = this.indexes.get(index);
     if (!idxp) {
@@ -163,22 +129,18 @@ export class FlatCacheProvider implements CacheProvider {
     const idx = await this.getIndex(index);
     const archiveData = idx?.getArchive(archive);
 
-    // Set XTEA key for Maps index
+    // Only locations ("l") archives are ever XTEA-encrypted; map ("m") terrain never is, matching RuneLite's RegionLoader.
     if (archiveData && index === IndexType.Maps) {
-      const xteaManager = this.getKeys();
-
-      // Convert archive ID to region ID using RegionMapper
       const regionInfo = RegionMapper.getRegionFromArchiveId(
         archiveData.namehash
       );
-      if (regionInfo) {
-        // Use tryDecrypt to find and set the correct XTEA key
-        const decryptionError = xteaManager.tryDecrypt(
+      if (regionInfo?.type === "locations") {
+        const decryptionError = this.getKeys().tryDecrypt(
           archiveData,
           regionInfo.regionId
         );
         if (decryptionError) {
-          // Missing XTEA keys are expected for many regions - silently return undefined
+          // No matching key and the data isn't valid unencrypted content either - skip this region's locations
           return undefined;
         }
       }
@@ -212,13 +174,6 @@ export class FlatCacheProvider implements CacheProvider {
   }
 
   public getKeys(): XTEAKeyManager {
-    // Return cached manager if available
-    if (this.xteaKeyManager) {
-      return this.xteaKeyManager;
-    }
-
-    // If no cache version specified, return empty manager
-    this.xteaKeyManager = new XTEAKeyManager();
     return this.xteaKeyManager;
   }
 }

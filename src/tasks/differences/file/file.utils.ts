@@ -399,9 +399,15 @@ export function createRegionCompareFunction(): CompareFn {
       oldFile?.archive.archive || newFile?.archive.archive || -1;
     const archiveNameHash =
       oldFile?.archive.namehash || newFile?.archive.namehash || -1;
+    const fileId = oldFile?.file.id ?? newFile?.file.id ?? -1;
 
-    // Use RegionMapper to get region coordinates from archive ID
-    const regionInfo = RegionMapper.getRegionFromArchiveId(archiveNameHash);
+    // Use RegionMapper to get region coordinates from archive ID, supporting both
+    // the legacy named ("m{x}_{y}"/"l{x}_{y}") format and newer unnamed archives.
+    const regionInfo = RegionMapper.getRegionInfo(
+      archiveNameHash,
+      archiveId,
+      fileId
+    );
     if (!regionInfo) {
       return results;
     }

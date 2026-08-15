@@ -216,10 +216,6 @@ export class XTEAKeyManager {
   }
 
   public tryDecrypt(ad: ArchiveData, region?: number): Error | undefined {
-    if (this.allKeys.length <= 0) {
-      return new Error(`No keys added`);
-    }
-
     if (ad.decryptedData) {
       return;
     }
