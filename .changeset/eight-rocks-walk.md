@@ -2,4 +2,4 @@
 "@osrs-wiki/cache-mediawiki": patch
 ---
 
-detect when varbits and varplayers are newly transmitted
+Detect VarBit and VarPlayer GameVal name changes when generating cache diffs.
