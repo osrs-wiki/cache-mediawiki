@@ -1,12 +1,8 @@
+import { configArchiveGameValMap } from "../differences.utils";
 import { differencesArchive } from "../archive";
 import { IndexDifferences } from "../differences.types";
 
-import { ConfigType, DiskIndexData, FlatIndexData, GameValType, IndexType } from "@/utils/cache2";
-
-const configArchiveGameValMap = new Map<number, GameValType>([
-  [ConfigType.VarBit, GameValType.VarBits],
-  [ConfigType.VarPlayer, GameValType.Varps],
-]);
+import { DiskIndexData, FlatIndexData, IndexType } from "@/utils/cache2";
 
 /**
  * Retrieve the differences between two indices, their archives, and their files.

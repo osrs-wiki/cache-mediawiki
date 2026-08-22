@@ -1,3 +1,10 @@
+import { ConfigType, GameValType } from "@/utils/cache2";
+
+export const configArchiveGameValMap = new Map<number, GameValType>([
+  [ConfigType.VarBit, GameValType.VarBits],
+  [ConfigType.VarPlayer, GameValType.Varps],
+]);
+
 export function isEqualBytes(bytes1: Uint8Array, bytes2: Uint8Array): boolean {
   if (bytes1.length !== bytes2.length) {
     return false;

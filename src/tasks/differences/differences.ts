@@ -2,10 +2,11 @@ import { mkdir, writeFile } from "fs/promises";
 
 import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
+import { configArchiveGameValMap } from "./differences.utils";
 import { differencesIndex } from "./index";
 import { preloadSceneryLocations } from "../../utils/locations";
 import { flushItemPages } from "../pages/types/item";
-import { ConfigType, GameValType, IndexType } from "@/utils/cache2";
+import { IndexType } from "@/utils/cache2";
 
 import Context from "@/context";
 import {
@@ -41,11 +42,6 @@ const differencesCache = async ({
       ? getCacheProviderGithub(newVersion)
       : getCacheProviderLocal(newVersion, type)
   ).asPromise();
-
-  const configArchiveGameValMap = new Map<number, GameValType>([
-    [ConfigType.VarBit, GameValType.VarBits],
-    [ConfigType.VarPlayer, GameValType.Varps],
-  ]);
 
   const forcedConfigArchives = new Set<number>();
 
