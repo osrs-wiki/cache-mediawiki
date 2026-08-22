@@ -1,3 +1,4 @@
+import { configArchiveGameValMap } from "../differences.utils";
 import { differencesArchive } from "../archive";
 import { IndexDifferences } from "../differences.types";
 
@@ -11,7 +12,8 @@ import { DiskIndexData, FlatIndexData, IndexType } from "@/utils/cache2";
  */
 const differencesIndex = async (
   oldIndex: FlatIndexData | DiskIndexData,
-  newIndex: FlatIndexData | DiskIndexData
+  newIndex: FlatIndexData | DiskIndexData,
+  forcedConfigArchives: Set<number> = new Set()
 ): Promise<IndexDifferences> => {
   const newKeys = Array.from(newIndex.archives.keys());
   const oldKeys = Array.from(oldIndex.archives.keys());
@@ -23,7 +25,11 @@ const differencesIndex = async (
       const newArchive = newIndex.archives.get(archiveKey);
       const oldArchive = oldIndex.archives.get(archiveKey);
 
-      if (newArchive.crc !== oldArchive.crc) {
+      const forcedGameValArchive = 
+        newIndex.id === IndexType.Configs && forcedConfigArchives.has(archiveKey)
+        ? configArchiveGameValMap.get(archiveKey)
+        : undefined;
+      if (newArchive.crc !== oldArchive.crc || forcedGameValArchive !== undefined) {
         console.log(
           `[Index=${newIndex.id}] Changed archive: ${newArchive.archive} - (${oldArchive.files.size} -> ${newArchive.files.size})`
         );
@@ -32,6 +38,7 @@ const differencesIndex = async (
           oldArchive,
           newIndex,
           newArchive,
+          forcedGameValArchive,
         });
       }
     })

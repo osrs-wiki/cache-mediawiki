@@ -7,6 +7,7 @@ import {
   ArchiveData,
   DiskIndexData,
   FlatIndexData,
+  GameValType,
   IndexType,
   RegionMapper,
 } from "@/utils/cache2";
@@ -20,15 +21,26 @@ const differencesArchive = async ({
   oldArchive,
   newIndex,
   newArchive,
+  forcedGameValArchive,
 }: {
   oldIndex?: FlatIndexData | DiskIndexData;
   oldArchive?: ArchiveData;
   newIndex?: FlatIndexData | DiskIndexData;
   newArchive?: ArchiveData;
+  forcedGameValArchive?: GameValType;
 }): Promise<ArchiveDifferences> => {
   const newKeys = newArchive ? Array.from(newArchive.files.keys()) : [];
   const oldKeys = oldArchive ? Array.from(oldArchive.files.keys()) : [];
   const archiveDifferences: ArchiveDifferences = {};
+
+  const oldGameValArchive =
+    forcedGameValArchive !== undefined
+    ? await Context.oldCacheProvider.getArchive(IndexType.GameVals, forcedGameValArchive)
+    : undefined;
+  const newGameValArchive =
+    forcedGameValArchive !== undefined
+    ? await Context.newCacheProvider.getArchive(IndexType.GameVals, forcedGameValArchive)
+    : undefined;
 
   if (newIndex?.id === IndexType.Maps) {
     const regionInfo = RegionMapper.getRegionFromArchiveId(newArchive.namehash);
@@ -51,14 +63,31 @@ const differencesArchive = async ({
         try {
           const newFile = newArchive.getFile(fileKey);
           const oldFile = oldArchive.getFile(fileKey);
-          if (!isEqualBytes(oldFile.data, newFile.data)) {
-            console.log(
-              `[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`
-            );
+          let gameValChanged = false;
+
+          if (forcedGameValArchive !== undefined) {
+            const oldGameValFile = oldGameValArchive?.files.has(fileKey)
+            ? oldGameValArchive.getFile(fileKey)
+            : undefined;
+            const newGameValFile = newGameValArchive?.files.has(fileKey)
+            ? newGameValArchive.getFile(fileKey)
+            : undefined;
+            if (oldGameValFile && newGameValFile) {
+              gameValChanged = !isEqualBytes(oldGameValFile.data, newGameValFile.data);
+            } else {
+              gameValChanged = !!oldGameValFile !== !!newGameValFile;
+            }
+          }
+
+          if (!isEqualBytes(oldFile.data, newFile.data) || gameValChanged) {
+            console.log(`[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`);
+          
+
             const results = await differencesFile({
-              newFile: { index: newIndex, archive: newArchive, file: newFile },
               oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
+              newFile: { index: newIndex, archive: newArchive, file: newFile },
             });
+
             archiveDifferences[fileKey] = results;
           }
         } catch (error) {

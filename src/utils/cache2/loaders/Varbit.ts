@@ -10,7 +10,7 @@ export class Varbit extends PerFileLoadable {
   }
 
   public static readonly index = IndexType.Configs;
-  public static readonly archive = ConfigType.VarPlayer;
+  public static readonly archive = ConfigType.VarBit;
   public static readonly gameval = GameValType.VarBits;
 
   public index: number;

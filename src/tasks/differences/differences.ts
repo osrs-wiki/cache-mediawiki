@@ -2,9 +2,11 @@ import { mkdir, writeFile } from "fs/promises";
 
 import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
+import { configArchiveGameValMap } from "./differences.utils";
 import { differencesIndex } from "./index";
 import { preloadSceneryLocations } from "../../utils/locations";
 import { flushItemPages } from "../pages/types/item";
+import { IndexType } from "@/utils/cache2";
 
 import Context from "@/context";
 import {
@@ -41,6 +43,21 @@ const differencesCache = async ({
       : getCacheProviderLocal(newVersion, type)
   ).asPromise();
 
+  const forcedConfigArchives = new Set<number>();
+
+  await Promise.all(
+    Array.from(configArchiveGameValMap.entries()).map(
+      async ([configArchive, gameValArchive]) => {
+        const oldGameValArchive = await Context.oldCacheProvider.getArchive(IndexType.GameVals, gameValArchive);
+        const newGameValArchive = await Context.newCacheProvider.getArchive(IndexType.GameVals, gameValArchive);
+
+        if (oldGameValArchive?.crc !== newGameValArchive?.crc) {
+          forcedConfigArchives.add(configArchive);
+        }
+      }
+    )
+  );
+
   if (Context.pages) {
     console.log("Pre-loading scenery locations for all objects...");
     await preloadSceneryLocations(Context.newCacheProvider);
@@ -70,11 +87,12 @@ const differencesCache = async ({
       console.log(`Checking index ${index} differences`);
       const oldIndex = await Context.oldCacheProvider.getIndex(index);
       const newIndex = await Context.newCacheProvider.getIndex(index);
-      if (oldIndex.crc !== newIndex.crc) {
-        console.log(
-          `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`
-        );
-        cacheDifferences[index] = await differencesIndex(oldIndex, newIndex);
+      const forceConfigGameValCheck = index === IndexType.Configs && forcedConfigArchives.size > 0;
+      if (oldIndex.crc !== newIndex.crc || forceConfigGameValCheck) {
+
+        console.log( `[Index=${index}] ${oldIndex.revision} -> ${newIndex.revision}`);
+        
+        cacheDifferences[index] = await differencesIndex(oldIndex, newIndex, forceConfigGameValCheck ? forcedConfigArchives : new Set<number>());
       } else {
         console.log(`No changes in index ${index}.`);
       }
