@@ -19,6 +19,7 @@ import {
   ConfigType,
   Reader,
   GameVal,
+  GameValID,
   Animation,
   AnimationID,
   Area,
@@ -523,32 +524,26 @@ export function createDBTableCompareFunction(): CompareFn {
       : undefined;
 
     if (oldEntry) {
-      oldEntry.gameVal = await GameVal.nameFor(
-        Context.oldCacheProvider,
-        oldEntry
-      );
-
       const gameVal = await GameVal.load(
         Context.oldCacheProvider,
-        DBTable.gameval,
+        DBTable.gameval as GameValID,
         oldEntry.id
       );
+
+      oldEntry.gameVal = gameVal?.name;
 
       (oldEntry as DBTable & { columns: Map<number, string> }).columns =
         gameVal?.files ?? new Map();
     }
 
     if (newEntry) {
-      newEntry.gameVal = await GameVal.nameFor(
-        Context.newCacheProvider,
-        newEntry
-      );
-
       const gameVal = await GameVal.load(
         Context.newCacheProvider,
-        DBTable.gameval,
+        DBTable.gameval as GameValID,
         newEntry.id
       );
+
+      newEntry.gameVal = gameVal?.name;
 
       (newEntry as DBTable & { columns: Map<number, string> }).columns =
         gameVal?.files ?? new Map();
