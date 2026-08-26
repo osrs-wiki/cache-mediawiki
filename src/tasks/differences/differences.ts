@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 
 import { writeDifferencesCSV } from "./csv";
 import { CacheDifferences, DifferencesParams } from "./differences.types";
-import { configArchiveGameValMap } from "./differences.utils";
+import { addDatabaseColumnDifferences, configArchiveGameValMap } from "./differences.utils";
 import { differencesIndex } from "./index";
 import { preloadSceneryLocations } from "../../utils/locations";
 import { flushItemPages } from "../pages/types/item";
@@ -104,6 +104,7 @@ const differencesCache = async ({
     await flushItemPages();
   }
 
+  addDatabaseColumnDifferences(cacheDifferences);
   const builder = differencesPageBuilder(cacheDifferences);
   const dir = `./out/differences`;
   await mkdir(dir, { recursive: true });

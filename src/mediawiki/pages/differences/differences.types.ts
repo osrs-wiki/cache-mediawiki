@@ -1,10 +1,11 @@
-import { Difference } from "../../../tasks/differences/differences.types";
+import { DATABASE_COLUMNS_ARCHIVE, DatabaseColumn, Difference } from "../../../tasks/differences/differences.types";
 
 import {
   Animation,
   Area,
   ConfigType,
   DBRow,
+  DBTable,
   Enum,
   IndexType,
   Item,
@@ -57,6 +58,8 @@ export type IndexFeatures =
   | IndexFeature<Animation, "Animations">
   | IndexFeature<Area, "Areas">
   | IndexFeature<DBRow, "Database Rows">
+  | IndexFeature<DBTable, "Database Tables">
+  | IndexFeature<DatabaseColumn, "Database Columns">
   | IndexFeature<Enum, "Enums">
   | IndexFeature<Item, "Items">
   | IndexFeature<NPC, "Npcs">
@@ -174,6 +177,22 @@ export const indexNameMap: {
       fields: ["values"],
       urls: {
         id: ["https://abextm.github.io/cache2/#/viewer/dbrow/{id}"],
+        table: ["https://abextm.github.io/cache2/#/viewer/dbtable/{table}"],
+      },
+    },
+    [ConfigType.DbTable]: {
+      name: "Database Tables",
+      identifiers: ["id", "gameVal"],
+      fields: [],
+      urls: {
+        id: ["https://abextm.github.io/cache2/#/viewer/dbtable/{id}"],
+      },
+    },
+    [DATABASE_COLUMNS_ARCHIVE]: {
+      name: "Database Columns",
+      identifiers: ["table", "column"],
+      fields: ["tableName", "name"],
+      urls: {
         table: ["https://abextm.github.io/cache2/#/viewer/dbtable/{table}"],
       },
     },
