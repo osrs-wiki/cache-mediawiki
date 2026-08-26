@@ -132,13 +132,39 @@ describe("item page combining", () => {
 
     await flushItemPages();
 
-    expect(writePageToFile).toHaveBeenCalledTimes(1);
-    expect(writePageToFile).toHaveBeenCalledWith(
+    // Combined multiChildren page + one individual named page per item
+    expect(writePageToFile).toHaveBeenCalledTimes(4);
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      1,
       expect.objectContaining({ build: expect.any(Function) }),
       "item",
       "Bronze sword",
       "1",
       true // isMultiChildren flag should be true for 3 items
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword",
+      "1",
+      false
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      3,
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword (two)",
+      "2",
+      false
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      4,
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword (three)",
+      "3",
+      false
     );
   });
 
