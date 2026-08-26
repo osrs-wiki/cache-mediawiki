@@ -20,9 +20,14 @@ export const writeItemPageFromCache = async (
 
     if (item) {
       // Direct page generation - write immediately
-      const baseName = getBaseName(item.name);
       const builder = itemPageBuilder([item]);
-      await writePageToFile(builder, "item", baseName, item.id.toString(), false);
+      await writePageToFile(
+        builder,
+        "item",
+        item.name,
+        item.id.toString(),
+        false
+      );
 
       if (Context.renders) {
         renderItems(item);
@@ -77,6 +82,21 @@ export const flushItemPages = async () => {
       items[0].id.toString(),
       items.length > 1
     );
+
+    if (items.length > 1) {
+      // Also write each variant's own page so it's reachable individually,
+      // not only folded into the combined multiChildren page.
+      for (const item of items) {
+        const itemBuilder = itemPageBuilder([item]);
+        await writePageToFile(
+          itemBuilder,
+          "item",
+          item.name,
+          item.id.toString(),
+          false
+        );
+      }
+    }
 
     if (Context.renders) {
       // Render all items with this base name

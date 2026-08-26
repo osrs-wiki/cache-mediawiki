@@ -2,10 +2,11 @@ import {
   getItemNameMap,
   clearItemNameMap,
   writeItemPage,
+  writeItemPageFromCache,
   flushItemPages,
 } from "./item";
 
-import { EntityOps, Item, ItemID } from "@/utils/cache2";
+import { CacheProvider, EntityOps, Item, ItemID } from "@/utils/cache2";
 
 // Mock dependencies
 jest.mock("../../renders", () => ({
@@ -18,6 +19,11 @@ jest.mock("../pages.utils", () => ({
 
 jest.mock("@/mediawiki/pages/item", () => ({
   itemPageBuilder: jest.fn(() => ({ build: () => "mock page content" })),
+}));
+
+jest.mock("@/utils/cache2", () => ({
+  ...jest.requireActual("@/utils/cache2"),
+  Item: { load: jest.fn() },
 }));
 
 const createMockItem = (id: number, name: string): Item => {
@@ -73,6 +79,29 @@ const createMockItem = (id: number, name: string): Item => {
     category: -1,
   } as Item;
 };
+
+describe("writeItemPageFromCache", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("writes the individual page using the item's full name, not its base name", async () => {
+    const { writePageToFile } = jest.requireMock("../pages.utils");
+    const { Item } = jest.requireMock("@/utils/cache2");
+    const item = createMockItem(2, "Bronze sword (two)");
+    Item.load.mockResolvedValue(item);
+
+    await writeItemPageFromCache(Promise.resolve({} as CacheProvider), 2);
+
+    expect(writePageToFile).toHaveBeenCalledWith(
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword (two)",
+      "2",
+      false
+    );
+  });
+});
 
 describe("item page combining", () => {
   beforeEach(() => {
@@ -132,13 +161,39 @@ describe("item page combining", () => {
 
     await flushItemPages();
 
-    expect(writePageToFile).toHaveBeenCalledTimes(1);
-    expect(writePageToFile).toHaveBeenCalledWith(
+    // Combined multiChildren page + one individual named page per item
+    expect(writePageToFile).toHaveBeenCalledTimes(4);
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      1,
       expect.objectContaining({ build: expect.any(Function) }),
       "item",
       "Bronze sword",
       "1",
       true // isMultiChildren flag should be true for 3 items
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword",
+      "1",
+      false
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      3,
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword (two)",
+      "2",
+      false
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      4,
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword (three)",
+      "3",
+      false
     );
   });
 
