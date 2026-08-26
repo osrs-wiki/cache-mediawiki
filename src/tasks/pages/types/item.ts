@@ -20,12 +20,11 @@ export const writeItemPageFromCache = async (
 
     if (item) {
       // Direct page generation - write immediately
-      const baseName = getBaseName(item.name);
       const builder = itemPageBuilder([item]);
       await writePageToFile(
         builder,
         "item",
-        baseName,
+        item.name,
         item.id.toString(),
         false
       );

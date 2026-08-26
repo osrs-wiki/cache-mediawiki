@@ -2,10 +2,11 @@ import {
   getItemNameMap,
   clearItemNameMap,
   writeItemPage,
+  writeItemPageFromCache,
   flushItemPages,
 } from "./item";
 
-import { EntityOps, Item, ItemID } from "@/utils/cache2";
+import { CacheProvider, EntityOps, Item, ItemID } from "@/utils/cache2";
 
 // Mock dependencies
 jest.mock("../../renders", () => ({
@@ -18,6 +19,11 @@ jest.mock("../pages.utils", () => ({
 
 jest.mock("@/mediawiki/pages/item", () => ({
   itemPageBuilder: jest.fn(() => ({ build: () => "mock page content" })),
+}));
+
+jest.mock("@/utils/cache2", () => ({
+  ...jest.requireActual("@/utils/cache2"),
+  Item: { load: jest.fn() },
 }));
 
 const createMockItem = (id: number, name: string): Item => {
@@ -73,6 +79,29 @@ const createMockItem = (id: number, name: string): Item => {
     category: -1,
   } as Item;
 };
+
+describe("writeItemPageFromCache", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("writes the individual page using the item's full name, not its base name", async () => {
+    const { writePageToFile } = jest.requireMock("../pages.utils");
+    const { Item } = jest.requireMock("@/utils/cache2");
+    const item = createMockItem(2, "Bronze sword (two)");
+    Item.load.mockResolvedValue(item);
+
+    await writeItemPageFromCache(Promise.resolve({} as CacheProvider), 2);
+
+    expect(writePageToFile).toHaveBeenCalledWith(
+      expect.objectContaining({ build: expect.any(Function) }),
+      "item",
+      "Bronze sword (two)",
+      "2",
+      false
+    );
+  });
+});
 
 describe("item page combining", () => {
   beforeEach(() => {
