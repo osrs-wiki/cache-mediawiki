@@ -22,7 +22,13 @@ export const writeItemPageFromCache = async (
       // Direct page generation - write immediately
       const baseName = getBaseName(item.name);
       const builder = itemPageBuilder([item]);
-      await writePageToFile(builder, "item", baseName, item.id.toString(), false);
+      await writePageToFile(
+        builder,
+        "item",
+        baseName,
+        item.id.toString(),
+        false
+      );
 
       if (Context.renders) {
         renderItems(item);
