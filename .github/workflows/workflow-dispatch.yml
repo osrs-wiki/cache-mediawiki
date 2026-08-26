@@ -123,7 +123,7 @@ jobs:
           UPDATE: ${{ github.event.inputs.update }}
           UPDATEDATE: ${{ github.event.inputs.updateDate }}
           OUTPUT: ${{ github.event.inputs.output }}
-        run: npm run start $TASK -- --pages $PAGES --examines $EXAMINES --renders $RENDERS --oldCache $OLDCACHE --newCache $NEWCACHE --update $UPDATE --updateDate $UPDATEDATE --output $OUTPUT
+        run: npm run start "$TASK" -- --pages "$PAGES" --examines "$EXAMINES" --renders "$RENDERS" --oldCache "$OLDCACHE" --newCache "$NEWCACHE" --update "$UPDATE" --updateDate "$UPDATEDATE" --output "$OUTPUT"
 
       - name: Upload Output
         uses: actions/upload-artifact@v4
