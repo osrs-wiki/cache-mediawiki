@@ -1,9 +1,13 @@
+import { mkdir, writeFile } from "fs/promises";
+
 import Context from "../../../context";
 import { renderItems } from "../../renders";
 import { writePageToFile } from "../pages.utils";
 
 import { itemPageBuilder } from "@/mediawiki/pages/item";
+import { exchangePageBuilder } from "@/mediawiki/pages/item/exchange";
 import { CacheProvider, Item } from "@/utils/cache2";
+import { formatFileName } from "@/utils/files";
 import { getBaseName } from "@/utils/string";
 
 // Global map to track items by base name
@@ -32,6 +36,8 @@ export const writeItemPageFromCache = async (
       if (Context.renders) {
         renderItems(item);
       }
+
+      await writeExchangePage(item);
     }
   } catch (e) {
     console.error(`Error generating page for item ${id}: `, e);
@@ -47,6 +53,21 @@ const addItemToMap = (item: Item) => {
   if (itemList) {
     itemList.push(item);
   }
+};
+
+const writeExchangePage = async (item: Item) => {
+  if (Context.beta || !item.isGrandExchangable) {
+    return;
+  }
+
+  const exchangePage = exchangePageBuilder(item);
+  const content = exchangePage.build();
+
+  await mkdir("./out/pages/exchange", { recursive: true });
+  await writeFile(
+    `./out/pages/exchange/${formatFileName(item.name)}.txt`,
+    content
+  );
 };
 
 /**
@@ -101,6 +122,10 @@ export const flushItemPages = async () => {
     if (Context.renders) {
       // Render all items with this base name
       items.forEach((item) => renderItems(item));
+    }
+
+    for (const item of items) {
+      await writeExchangePage(item);
     }
   }
 };
