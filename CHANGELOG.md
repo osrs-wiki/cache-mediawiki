@@ -1,5 +1,19 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.15.0
+
+### Minor Changes
+
+- cc7c21b: Add support for cache revision 241
+
+### Patch Changes
+
+- dadc4ac: Detect VarBit and VarPlayer GameVal name changes when generating cache diffs.
+- deb6379: Fix Maps index (region/scenery location) decoding so it matches RuneLite's cache loading: only locations archives are ever XTEA-decrypted (terrain never is), unencrypted archives no longer fail to load when no XTEA keys are available, and both the legacy named ("m{x}_{y}"/"l{x}_{y}") and newer unnamed archive formats are supported when resolving a region from an archive.
+- 1a59e35: Remove placeholder param from InfoboxItem
+- bfe2ece: Generate individual item pages for multiChildren items
+- deb6379: Remove the OpenRS2 XTEA key fetching attempt from cache providers since the game no longer encrypts map data, and delete the now-unused OpenRS2 cache/key-fetching utilities.
+
 ## 1.14.0
 
 ### Minor Changes
