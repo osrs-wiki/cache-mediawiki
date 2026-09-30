@@ -87,6 +87,7 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
   public ops = new EntityOps();
   public recolorFrom: HSL[] = <HSL[]>[];
   public recolorTo: HSL[] = <HSL[]>[];
+  public fullRecolor = <HSL>-1;
   public retextureFrom: TextureID[] = <TextureID[]>[];
   public retextureTo: TextureID[] = <TextureID[]>[];
   public chatheadModels: ModelID[] = <ModelID[]>[];
@@ -198,6 +199,9 @@ export class NPC extends MultiChildrenEntity<NPC, NPCID> {
           }
           break;
         }
+        case 42:
+          v.fullRecolor = <HSL>r.u16();
+          break;
         case 60: {
           const len = r.u8();
           v.chatheadModels = new Array(len);
