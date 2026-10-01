@@ -1,5 +1,11 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.15.1
+
+### Patch Changes
+
+- 293a0ca: Ignore built dist in jest
+
 ## 1.15.0
 
 ### Minor Changes
