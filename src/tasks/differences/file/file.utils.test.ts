@@ -4,9 +4,10 @@ import {
   createSimpleCompareFunction,
   createArchiveCompareFunction,
   createRegionCompareFunction,
+  createDBTableCompareFunction,
 } from "./file.utils";
 
-import { NPC, Reader, GameVal } from "@/utils/cache2";
+import { DBTable, NPC, Reader, GameVal } from "@/utils/cache2";
 
 describe("file utils", () => {
   describe("getChangedResult", () => {
@@ -815,6 +816,107 @@ describe("file utils", () => {
       // Should attempt region loading but will fail due to missing cache provider
       // The compare function will fall back to handling the regions normally
       expect(result).toBeDefined();
+    });
+  });
+  describe("createDBTableCompareFunction", () => {
+    let mockDBTableDecode: jest.SpyInstance;
+    let mockGameValLoad: jest.SpyInstance;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+
+      mockDBTableDecode = jest.spyOn(DBTable, "decode");
+      mockGameValLoad = jest.spyOn(GameVal, "load");
+    });
+
+    afterEach(() => {
+      mockDBTableDecode.mockRestore();
+      mockGameValLoad.mockRestore();
+    });
+
+    const createMockFileContext = (fileId: number) => ({
+      file: {
+        data: Buffer.from([1, 2, 3]),
+        id: fileId,
+        namehash: 0,
+      },
+      archive: {
+        archive: fileId,
+        index: 0,
+        compressedData: Buffer.from([]),
+        namehash: 0,
+        revision: 100,
+        crc: 0,
+        version: 0,
+        entryIds: [],
+        fileCount: 1,
+        diskSize: 0,
+        uncompressedData: Buffer.from([]),
+      } as any,
+      index: { revision: 100 } as any,
+    });
+
+    test("should compare DBTable GameVal columns", async () => {
+      const oldEntry = {
+        id: 197,
+        types: [],
+        defaultValues: [],
+        gameVal: undefined,
+      } as any;
+
+      const newEntry = {
+        id: 197,
+        types: [],
+        defaultValues: [],
+        gameVal: undefined,
+      } as any;
+
+      mockDBTableDecode
+        .mockReturnValueOnce(oldEntry)
+        .mockReturnValueOnce(newEntry);
+
+      mockGameValLoad
+        .mockResolvedValueOnce({
+          name: "port_task",
+          files: new Map([
+            [0, "task_id"],
+            [1, "status"],
+          ]),
+        })
+        .mockResolvedValueOnce({
+          name: "port_task",
+          files: new Map([
+            [0, "task_id"],
+            [1, "status"],
+            [28, "side_effect_id"],
+          ]),
+        });
+
+      const compareFn = createDBTableCompareFunction();
+
+      const result = await compareFn({
+        oldFile: createMockFileContext(197),
+        newFile: createMockFileContext(197),
+      });
+
+      expect(mockDBTableDecode).toHaveBeenCalledTimes(2);
+
+      expect(mockGameValLoad).toHaveBeenCalledTimes(2);
+
+      expect(oldEntry.gameVal).toBe("port_task");
+      expect(newEntry.gameVal).toBe("port_task");
+
+      expect(result.changed?.columns).toEqual({
+        oldValue: {
+          0: "task_id",
+          1: "status",
+        },
+        newValue: {
+          0: "task_id",
+          1: "status",
+          28: "side_effect_id",
+        },
+      });
     });
   });
 });

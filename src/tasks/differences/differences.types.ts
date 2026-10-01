@@ -82,3 +82,12 @@ export type CompareFn = (params: {
   oldFile?: FileContext;
   newFile?: FileContext;
 }) => Promise<FileDifferences>;
+
+export const DATABASE_COLUMNS_ARCHIVE = -1;
+
+export type DatabaseColumn = {
+  table: number;
+  tableName?: string;
+  column: number;
+  name: string;
+};

@@ -19,12 +19,15 @@ import {
   ConfigType,
   Reader,
   GameVal,
+  GameValID,
   Animation,
   AnimationID,
   Area,
   AreaID,
   DBRow,
   DBRowID,
+  DBTable,
+  DBTableID,
   Enum,
   EnumID,
   Item,
@@ -63,6 +66,7 @@ export const indexMap: {
     ),
     [ConfigType.Area]: createSimpleCompareFunction<Area, AreaID>(Area),
     [ConfigType.DbRow]: createCompareFunction<DBRow, DBRowID>(DBRow),
+    [ConfigType.DbTable]: createDBTableCompareFunction(),
     [ConfigType.Enum]: createSimpleCompareFunction<Enum, EnumID>(Enum),
     [ConfigType.Item]: createCompareFunction<Item, ItemID>(Item),
     [ConfigType.Npc]: createCompareFunction<NPC, NPCID>(NPC),
@@ -494,5 +498,57 @@ export function createRegionCompareFunction(): CompareFn {
       );
       return results;
     }
+  };
+}
+
+export function createDBTableCompareFunction(): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const oldEntry = oldFile
+      ? DBTable.decode(
+          new Reader(oldFile.file.data, {
+            era: "osrs",
+            indexRevision: oldFile.index.revision,
+          }),
+          oldFile.file.id as DBTableID
+        )
+      : undefined;
+
+    const newEntry = newFile
+      ? DBTable.decode(
+          new Reader(newFile.file.data, {
+            era: "osrs",
+            indexRevision: newFile.index.revision,
+          }),
+          newFile.file.id as DBTableID
+        )
+      : undefined;
+
+    if (oldEntry) {
+      const gameVal = await GameVal.load(
+        Context.oldCacheProvider,
+        DBTable.gameval as GameValID,
+        oldEntry.id
+      );
+
+      oldEntry.gameVal = gameVal?.name;
+
+      (oldEntry as DBTable & { columns: Map<number, string> }).columns =
+        gameVal?.files ?? new Map();
+    }
+
+    if (newEntry) {
+      const gameVal = await GameVal.load(
+        Context.newCacheProvider,
+        DBTable.gameval as GameValID,
+        newEntry.id
+      );
+
+      newEntry.gameVal = gameVal?.name;
+
+      (newEntry as DBTable & { columns: Map<number, string> }).columns =
+        gameVal?.files ?? new Map();
+    }
+
+    return getFileDifferences(oldEntry, newEntry);
   };
 }
