@@ -10,7 +10,7 @@ exports[`sceneryPageBuilder build scenery page 1`] = `
 |quest = No
 |options = action1, action2
 |examine = 
-|id = 1
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+1 1]
 }}
 '''name'''"
 `;
@@ -25,7 +25,7 @@ exports[`sceneryPageBuilder build scenery page with beta id 1`] = `
 |quest = No
 |options = action1, action2
 |examine = 
-|id = beta1
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+1 beta1]
 }}
 '''name'''"
 `;
@@ -40,7 +40,7 @@ exports[`sceneryPageBuilder locations should group nearby locations correctly 1`
 |quest = No
 |options = Use
 |examine = 
-|id = 100
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+100 100]
 }}
 '''Grouped Scenery'''
 
@@ -76,7 +76,7 @@ exports[`sceneryPageBuilder locations should handle cache loading errors gracefu
 |quest = No
 |options = Test
 |examine = 
-|id = 100
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+100 100]
 }}
 '''Broken Cache Object'''"
 `;
@@ -91,7 +91,7 @@ exports[`sceneryPageBuilder locations should handle no locations gracefully 1`] 
 |quest = No
 |options = Examine
 |examine = 
-|id = 100
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+100 100]
 }}
 '''Mysterious Object'''"
 `;
@@ -106,7 +106,7 @@ exports[`sceneryPageBuilder locations should include locations section for multi
 |quest = No
 |options = Chop down
 |examine = 
-|id = 100
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+100 100]
 }}
 '''Tree'''
 
@@ -143,7 +143,7 @@ exports[`sceneryPageBuilder locations should include map parameter for single lo
 |map = {{Map|name=Altar|x=3200|y=3400|plane=0|mapID=-1|mtype=pin}}
 |options = Pray
 |examine = 
-|id = 100
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+100 100]
 }}
 '''Altar'''"
 `;
@@ -158,7 +158,7 @@ exports[`sceneryPageBuilder locations should not attempt to load locations when 
 |quest = No
 |options = Test
 |examine = 
-|id = 100
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+100 100]
 }}
 '''No Cache Object'''"
 `;
@@ -173,7 +173,7 @@ exports[`sceneryPageBuilder should strip HTML tags from scenery name in page con
 |quest = No
 |options = Open, Search
 |examine = 
-|id = 123
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+123 123]
 }}
 '''Red Chest'''"
 `;

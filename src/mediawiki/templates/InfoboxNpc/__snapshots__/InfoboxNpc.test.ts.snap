@@ -76,15 +76,15 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id1",
-      "value": "1001",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+1001 1001]",
     },
     Object {
       "key": "id2",
-      "value": "1002",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+1002 1002]",
     },
     Object {
       "key": "id3",
-      "value": "1003",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+1003 1003]",
     },
   ],
 }
@@ -138,7 +138,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "2001",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+2001 2001]",
     },
   ],
 }
@@ -217,11 +217,11 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id1",
-      "value": "3001",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+3001 3001]",
     },
     Object {
       "key": "id2",
-      "value": "3002",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+3002 3002]",
     },
   ],
 }
@@ -275,7 +275,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "5678",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+5678 5678]",
     },
   ],
 }
@@ -329,7 +329,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "1234",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+1234 1234]",
     },
   ],
 }

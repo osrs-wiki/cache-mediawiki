@@ -33,6 +33,17 @@ const createMockNpc = (
 } as any);
 
 describe("InfoboxMonsterTemplate", () => {
+  it("should link monster ID to the NPC bucket", () => {
+    const template = InfoboxMonsterTemplate(
+      createMockNpc("Test Monster", 1234)
+    );
+    const id = template.build().params?.find((param) => param.key === "id");
+
+    expect(id?.value).toBe(
+      "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+1234 1234]"
+    );
+  });
+
   it("should include NPC params in the infobox when they exist", () => {
     const params = new Params();
     params.set(STAB_ATTACK_PARAM, 50);
@@ -147,9 +158,15 @@ describe("InfoboxMonsterTemplate", () => {
       expect(templateParams.find(p => p.key === "combat2")?.value).toBe("150");
       expect(templateParams.find(p => p.key === "combat3")?.value).toBe("120");
 
-      expect(templateParams.find(p => p.key === "id1")?.value).toBe("4001");
-      expect(templateParams.find(p => p.key === "id2")?.value).toBe("4002");
-      expect(templateParams.find(p => p.key === "id3")?.value).toBe("4003");
+      expect(templateParams.find(p => p.key === "id1")?.value).toContain(
+        " 4001]"
+      );
+      expect(templateParams.find(p => p.key === "id2")?.value).toContain(
+        " 4002]"
+      );
+      expect(templateParams.find(p => p.key === "id3")?.value).toContain(
+        " 4003]"
+      );
 
       // Check image naming convention
       expect(templateParams.find(p => p.key === "image1")?.value).toContain("Dragon.png");
@@ -199,8 +216,12 @@ describe("InfoboxMonsterTemplate", () => {
       expect(templateParams.find(p => p.key === "dslash")?.value).toBe("80");
 
       // Different IDs should be numbered
-      expect(templateParams.find(p => p.key === "id1")?.value).toBe("6001");
-      expect(templateParams.find(p => p.key === "id2")?.value).toBe("6002");
+      expect(templateParams.find(p => p.key === "id1")?.value).toContain(
+        " 6001]"
+      );
+      expect(templateParams.find(p => p.key === "id2")?.value).toContain(
+        " 6002]"
+      );
     });
 
     it("should handle empty array", () => {

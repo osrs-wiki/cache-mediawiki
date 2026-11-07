@@ -20,6 +20,17 @@ const createMockScenery = (
   } as any);
 
 describe("InfoboxSceneryTemplate", () => {
+  it("should link object ID to the object bucket", () => {
+    const template = InfoboxSceneryTemplate(
+      createMockScenery("Test Object", 1234)
+    );
+    const id = template.build().params?.find((param) => param.key === "id");
+
+    expect(id?.value).toBe(
+      "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+1234 1234]"
+    );
+  });
+
   it("should strip HTML tags from scenery name", () => {
     const scenery = createMockScenery("<col=00ffff>Magic Door</col>", 1234, [
       "Open",

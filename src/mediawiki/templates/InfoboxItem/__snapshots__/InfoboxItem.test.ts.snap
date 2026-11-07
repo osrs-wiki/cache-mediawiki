@@ -9,7 +9,7 @@ InfoboxTemplate {
     "equipable": false,
     "examine": "Examine text.",
     "exchange": true,
-    "id": "1234",
+    "id": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]",
     "image": MediaWikiFile {
       "children": undefined,
       "fileName": "Test Item.png",
@@ -41,7 +41,7 @@ InfoboxTemplate {
     "equipable": false,
     "examine": "Examine text.",
     "exchange": true,
-    "id": "1234",
+    "id": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]",
     "image": MediaWikiFile {
       "children": undefined,
       "fileName": "Test Item.png",
@@ -73,7 +73,7 @@ InfoboxTemplate {
     "equipable": false,
     "examine": "Examine text.",
     "exchange": true,
-    "id": "1234",
+    "id": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]",
     "image": Array [
       MediaWikiFile {
         "children": undefined,
@@ -138,7 +138,7 @@ InfoboxTemplate {
     "equipable": false,
     "examine": "Examine text.",
     "exchange": true,
-    "id": "1234",
+    "id": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]",
     "image": MediaWikiFile {
       "children": undefined,
       "fileName": "Test Item.png",
@@ -170,7 +170,7 @@ InfoboxTemplate {
     "equipable": true,
     "examine": "Examine text.",
     "exchange": true,
-    "id": "1234",
+    "id": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]",
     "image": MediaWikiFile {
       "children": undefined,
       "fileName": "Test Item.png",

@@ -1,6 +1,7 @@
 import { MediaWikiDate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxNpc } from "./InfoboxNpc.types";
+import { bucketIdLink } from "../bucketLink";
 import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
@@ -37,7 +38,11 @@ const createInfoboxNpcData = (npc: NPC, index = 0): InfoboxNpc => {
       ),
     map: "No",
     examine: Context.examines?.npcs ? Context.examines.npcs[npc.id] : "",
-    id: `${Context.beta ? "beta" : ""}${npc.id.toString()}`,
+    id: bucketIdLink(
+      "npc_id",
+      npc.id,
+      `${Context.beta ? "beta" : ""}${npc.id}`
+    ),
   };
 };
 

@@ -1,6 +1,7 @@
 import { MediaWikiDate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxScenery, InfoboxSceneryOptions } from "./InfoboxScenery.types";
+import { bucketIdLink } from "../bucketLink";
 import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
@@ -33,7 +34,11 @@ const createInfoboxSceneryData = (
     examine: Context.examines?.scenery
       ? Context.examines.scenery[scenery.id]
       : "",
-    id: `${Context.beta ? "beta" : ""}${scenery.id.toString()}`,
+    id: bucketIdLink(
+      "object_id",
+      scenery.id,
+      `${Context.beta ? "beta" : ""}${scenery.id}`
+    ),
   };
 };
 

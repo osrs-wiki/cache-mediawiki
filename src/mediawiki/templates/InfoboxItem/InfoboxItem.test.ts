@@ -66,6 +66,15 @@ const BASE_ITEM: Item = {
 };
 
 describe("InfoboxItem", () => {
+  test("links item ID to the item bucket", () => {
+    const item = InfoboxItem(BASE_ITEM).build();
+    const id = item.params?.find((param) => param.key === "id");
+
+    expect(id?.value).toBe(
+      "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]"
+    );
+  });
+
   test("InfoboxItem - base", () => {
     const item = InfoboxItem(BASE_ITEM);
     expect(item).toMatchSnapshot();

@@ -25,6 +25,15 @@ const createMockNpc = (
   } as any);
 
 describe("InfoboxNpcTemplate", () => {
+  it("should link NPC ID to the NPC bucket", () => {
+    const template = InfoboxNpcTemplate(createMockNpc("Test NPC", 1234));
+    const id = template.build().params?.find((param) => param.key === "id");
+
+    expect(id?.value).toBe(
+      "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+1234 1234]"
+    );
+  });
+
   it("should strip HTML tags from NPC name", () => {
     const npc = createMockNpc("<col=00ffff>Tornado</col>", 1234, 1);
 
@@ -96,9 +105,15 @@ describe("InfoboxNpcTemplate", () => {
       expect(templateParams.find((p) => p.key === "name")?.value).toBe("Guard");
 
       // Check numbered parameters (different values)
-      expect(templateParams.find((p) => p.key === "id1")?.value).toBe("1001");
-      expect(templateParams.find((p) => p.key === "id2")?.value).toBe("1002");
-      expect(templateParams.find((p) => p.key === "id3")?.value).toBe("1003");
+      expect(templateParams.find((p) => p.key === "id1")?.value).toContain(
+        " 1001]"
+      );
+      expect(templateParams.find((p) => p.key === "id2")?.value).toContain(
+        " 1002]"
+      );
+      expect(templateParams.find((p) => p.key === "id3")?.value).toContain(
+        " 1003]"
+      );
 
       // Check image naming convention
       expect(templateParams.find((p) => p.key === "image1")?.value).toContain(
@@ -127,7 +142,9 @@ describe("InfoboxNpcTemplate", () => {
       expect(templateParams.find((p) => p.key === "name")?.value).toBe(
         "Single Guard"
       );
-      expect(templateParams.find((p) => p.key === "id")?.value).toBe("2001");
+      expect(templateParams.find((p) => p.key === "id")?.value).toContain(
+        " 2001]"
+      );
     });
 
     it("should handle multiple NPCs with HTML tags in names", () => {

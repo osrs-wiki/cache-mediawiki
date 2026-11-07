@@ -32,7 +32,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "5678",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+5678 5678]",
     },
   ],
 }
@@ -70,7 +70,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "2222",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+2222 2222]",
     },
   ],
 }
@@ -108,7 +108,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "9012",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+9012 9012]",
     },
   ],
 }
@@ -146,7 +146,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "3333",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+3333 3333]",
     },
   ],
 }
@@ -184,7 +184,7 @@ MediaWikiTemplate {
     },
     Object {
       "key": "id",
-      "value": "1234",
+      "value": "[https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+1234 1234]",
     },
   ],
 }

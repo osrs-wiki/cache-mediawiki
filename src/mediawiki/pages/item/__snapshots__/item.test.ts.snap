@@ -17,7 +17,7 @@ exports[`Item Infobox Item infbox should use beta ID when Context.beta is true 1
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = beta1
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1 beta1]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''"
@@ -40,7 +40,7 @@ exports[`Item Infobox Item infobox should be generated 1`] = `
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''"
@@ -63,7 +63,7 @@ exports[`Item Infobox Item infobox should be generated with cape bonuses 1`] = `
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''
@@ -110,7 +110,7 @@ exports[`Item Infobox Item infobox should be generated with head wearpos 1`] = `
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''
@@ -157,7 +157,7 @@ exports[`Item Infobox Item infobox should be generated with ranged ammo strength
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''
@@ -208,7 +208,7 @@ exports[`Item Infobox Item infobox should be generated with ranged equipment str
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''
@@ -259,7 +259,7 @@ exports[`Item Infobox Item infobox should be generated with weapon bonuses 1`] =
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''
@@ -310,7 +310,7 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ammo we
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''
@@ -355,7 +355,7 @@ exports[`Item Infobox Item infobox should not set image and altimage for Ring we
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''
@@ -400,7 +400,7 @@ exports[`Item Infobox Item infobox with sub ops 1`] = `
 |examine = Examine text.
 |value = 0
 |weight = 0.000
-|id = 1234
+|id = [https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+1234 1234]
 }}
 [[File:Test Item detail.png|130px|left]]
 '''Test Item'''"

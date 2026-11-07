@@ -2,6 +2,7 @@ import { MediaWikiDate } from "@osrs-wiki/mediawiki-builder";
 import type { InfoboxItem as InfoboxItemType } from "@osrs-wiki/mediawiki-builder";
 
 import { getInventoryActions, getItemInfoboxImage } from "./InfoboxItem.utils";
+import { bucketIdLink } from "../bucketLink";
 import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
@@ -35,7 +36,11 @@ const createInfoboxItemData = (item: Item, index = 0): InfoboxItemType => {
     value: item.price,
     alchable: item.params?.get(NO_ALCHABLE_PARAM) === 1 ? false : undefined,
     weight: (item.weight / 1000).toFixed(3),
-    id: `${Context.beta ? "beta" : ""}${item.id?.toString()}`,
+    id: bucketIdLink(
+      "item_id",
+      item.id,
+      `${Context.beta ? "beta" : ""}${item.id}`
+    ),
   };
 };
 

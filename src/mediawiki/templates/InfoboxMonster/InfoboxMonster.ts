@@ -1,6 +1,7 @@
 import { MediaWikiDate, MediaWikiFile } from "@osrs-wiki/mediawiki-builder";
 
 import { InfoboxMonster } from "./InfoboxMonster.types";
+import { bucketIdLink } from "../bucketLink";
 import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
@@ -25,7 +26,7 @@ import { stripHtmlTags } from "@/utils/string";
  */
 const createInfoboxMonsterData = (npc: NPC, index = 0): InfoboxMonster => {
   const cleanName = stripHtmlTags(npc.name);
-  
+
   return {
     "name": cleanName,
     "image": new MediaWikiFile(
@@ -82,7 +83,11 @@ const createInfoboxMonsterData = (npc: NPC, index = 0): InfoboxMonster => {
     "dmagic": npc.params.has(MAGIC_DEFENCE_PARAM)
       ? parseInt(npc.params.get(MAGIC_DEFENCE_PARAM)?.toString() || "0")
       : undefined,
-    "id": `${Context.beta ? "beta" : ""}${npc.id.toString()}`,
+    "id": bucketIdLink(
+      "npc_id",
+      npc.id,
+      `${Context.beta ? "beta" : ""}${npc.id}`
+    ),
   };
 };
 
