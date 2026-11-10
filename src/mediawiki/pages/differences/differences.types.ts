@@ -100,6 +100,7 @@ export const indexNameMap: {
         id: [
           "https://chisel.weirdgloop.org/moid/object_id.html#{id}",
           "https://abextm.github.io/cache2/#/viewer/obj/{id}",
+          "https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+{id}",
         ],
       },
     },
@@ -122,6 +123,7 @@ export const indexNameMap: {
         id: [
           "https://chisel.weirdgloop.org/moid/npc_id.html#{id}",
           "https://abextm.github.io/cache2/#/viewer/npc/{id}",
+          "https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+{id}",
         ],
       },
     },
@@ -143,6 +145,7 @@ export const indexNameMap: {
         id: [
           "https://chisel.weirdgloop.org/moid/item_id.html#{id}",
           "https://abextm.github.io/cache2/#/viewer/item/{id}",
+          "https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+{id}",
         ],
       },
     },
