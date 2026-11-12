@@ -5,6 +5,7 @@ import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
 import { NPC } from "@/utils/cache2";
+import { getEntityOpsActions } from "@/utils/cache2/loaders/EntityOps.utils";
 import { stripHtmlTags } from "@/utils/string";
 
 /**
@@ -30,11 +31,7 @@ const createInfoboxNpcData = (npc: NPC, index = 0): InfoboxNpc => {
     race: "[[Human]]",
     location: "",
     gender: "Male",
-    options: [...npc.ops.values()]
-      .map((op) => op.text)
-      .filter(
-        (action): action is string => action != null && action !== "null"
-      ),
+    options: getEntityOpsActions(npc.ops),
     map: "No",
     examine: Context.examines?.npcs ? Context.examines.npcs[npc.id] : "",
     id: `${Context.beta ? "beta" : ""}${npc.id.toString()}`,

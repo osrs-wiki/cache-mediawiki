@@ -6,7 +6,7 @@ import {
   createRegionCompareFunction,
 } from "./file.utils";
 
-import { NPC, Reader, GameVal } from "@/utils/cache2";
+import { EntityOps, NPC, Reader, GameVal } from "@/utils/cache2";
 
 describe("file utils", () => {
   describe("getChangedResult", () => {
@@ -276,6 +276,194 @@ describe("file utils", () => {
         actions: {
           oldValue: ["Talk", null, null, null, null],
           newValue: null,
+        },
+      });
+    });
+
+    test("type: Map (no change)", () => {
+      const oldOps = new EntityOps();
+      oldOps.set(1, { text: "Talk-to" });
+      const newOps = new EntityOps();
+      newOps.set(1, { text: "Talk-to" });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: oldOps,
+          } as any,
+          {
+            ops: newOps,
+          } as any
+        )
+      ).toEqual({});
+    });
+
+    test("type: Map (bigint values unchanged)", () => {
+      const oldParams = new Map([[1, 1n]]);
+      const newParams = new Map([[1, 1n]]);
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            params: oldParams,
+          } as any,
+          {
+            params: newParams,
+          } as any
+        )
+      ).toEqual({});
+    });
+
+    test("type: Map (entry insertion order differs)", () => {
+      const oldOps = new EntityOps();
+      oldOps.set(1, { text: "Talk-to" });
+      oldOps.set(2, { text: "Attack" });
+      const newOps = new EntityOps();
+      newOps.set(2, { text: "Attack" });
+      newOps.set(1, { text: "Talk-to" });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: oldOps,
+          } as any,
+          {
+            ops: newOps,
+          } as any
+        )
+      ).toEqual({});
+    });
+
+    test("type: Map (changed value)", () => {
+      const oldOps = new EntityOps();
+      oldOps.set(1, { text: "Talk-to" });
+      const newOps = new EntityOps();
+      newOps.set(1, { text: "Attack" });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: oldOps,
+          } as any,
+          {
+            ops: newOps,
+          } as any
+        )
+      ).toEqual({
+        ops: {
+          oldValue: { 1: { text: "Talk-to" } },
+          newValue: { 1: { text: "Attack" } },
+        },
+      });
+    });
+
+    test("type: Map (nested sub-ops changed)", () => {
+      const oldSubs = new EntityOps();
+      oldSubs.set(0, { text: "Sub 1" });
+      const oldOps = new EntityOps();
+      oldOps.set(1, { text: "Action 1", subs: oldSubs });
+
+      const newSubs = new EntityOps();
+      newSubs.set(0, { text: "Sub 1 changed" });
+      const newOps = new EntityOps();
+      newOps.set(1, { text: "Action 1", subs: newSubs });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: oldOps,
+          } as any,
+          {
+            ops: newOps,
+          } as any
+        )
+      ).toEqual({
+        ops: {
+          oldValue: { 1: { text: "Action 1", subs: { 0: { text: "Sub 1" } } } },
+          newValue: {
+            1: { text: "Action 1", subs: { 0: { text: "Sub 1 changed" } } },
+          },
+        },
+      });
+    });
+
+    test("type: Map (nested sub-ops unchanged)", () => {
+      const oldSubs = new EntityOps();
+      oldSubs.set(0, { text: "Sub 1" });
+      const oldOps = new EntityOps();
+      oldOps.set(1, { text: "Action 1", subs: oldSubs });
+
+      const newSubs = new EntityOps();
+      newSubs.set(0, { text: "Sub 1" });
+      const newOps = new EntityOps();
+      newOps.set(1, { text: "Action 1", subs: newSubs });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: oldOps,
+          } as any,
+          {
+            ops: newOps,
+          } as any
+        )
+      ).toEqual({});
+    });
+
+    test("type: Map (new)", () => {
+      const newOps = new EntityOps();
+      newOps.set(1, { text: "Talk-to" });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: undefined,
+          } as any,
+          {
+            ops: newOps,
+          } as any
+        )
+      ).toEqual({
+        ops: {
+          oldValue: "",
+          newValue: { 1: { text: "Talk-to" } },
+        },
+      });
+    });
+
+    test("type: Map (removed)", () => {
+      const oldOps = new EntityOps();
+      oldOps.set(1, { text: "Talk-to" });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: oldOps,
+          } as any,
+          {
+            ops: undefined,
+          } as any
+        )
+      ).toEqual({
+        ops: {
+          oldValue: { 1: { text: "Talk-to" } },
+          newValue: "",
         },
       });
     });
