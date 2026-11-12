@@ -253,6 +253,35 @@ export function createArchiveParentCompareFunction<
 }
 
 /**
+ * Recursively converts Maps (and any nested Maps, such as `EntityOps.subs`)
+ * into plain objects so the result can be safely serialized/compared.
+ * @param value The value to convert
+ * @returns A plain-object representation of the value
+ */
+export const deepMapToObject = (value: unknown): unknown => {
+  if (value instanceof Map) {
+    return Object.fromEntries(
+      Array.from(value.entries(), ([key, mapValue]) => [
+        key,
+        deepMapToObject(mapValue),
+      ])
+    );
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => deepMapToObject(item));
+  }
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entryValue]) => [
+        key,
+        deepMapToObject(entryValue),
+      ])
+    );
+  }
+  return value;
+};
+
+/**
  * Retrieve the ChangedResult from two file entries
  * @param oldEntry The old file
  * @param newEntry The new file
@@ -290,33 +319,24 @@ export const getChangedResult = <T extends Loadable>(
         newValue: newEntryValue,
       };
     } else if (oldEntryValue instanceof Map && newEntryValue instanceof Map) {
-      const oldKeys = Array.from(oldEntryValue.keys());
-      const newKeys = Array.from(newEntryValue.keys());
+      const oldObject = deepMapToObject(oldEntryValue);
+      const newObject = deepMapToObject(newEntryValue);
 
-      const addedKeys = newKeys.filter((key) => !oldKeys.includes(key));
-      const removedKeys = oldKeys.filter((key) => !newKeys.includes(key));
-      const sharedKeys = newKeys.filter((key) => oldKeys.includes(key));
-      const changedKeys = sharedKeys.filter(
-        (key) => oldEntryValue.get(key) !== newEntryValue.get(key)
-      );
-      if (
-        addedKeys.length > 0 ||
-        removedKeys.length > 0 ||
-        changedKeys.length > 0
-      )
+      if (JSON.stringify(oldObject) !== JSON.stringify(newObject)) {
         changed[key] = {
-          oldValue: Object.fromEntries(oldEntryValue),
-          newValue: Object.fromEntries(newEntryValue),
+          oldValue: oldObject as ResultValue,
+          newValue: newObject as ResultValue,
         };
+      }
     } else if (oldEntryValue instanceof Map) {
       changed[key] = {
-        oldValue: Object.fromEntries(oldEntryValue),
+        oldValue: deepMapToObject(oldEntryValue) as ResultValue,
         newValue: "",
       };
     } else if (newEntryValue instanceof Map) {
       changed[key] = {
         oldValue: "",
-        newValue: Object.fromEntries(newEntryValue),
+        newValue: deepMapToObject(newEntryValue) as ResultValue,
       };
     }
   });
@@ -358,7 +378,7 @@ export const getFileResult = <T extends Loadable>(entry: T) => {
     const newEntryValue = entry[key as keyof T] as ResultValue;
     result[key] =
       newEntryValue instanceof Map
-        ? Object.fromEntries(newEntryValue)
+        ? (deepMapToObject(newEntryValue) as ResultValue)
         : newEntryValue;
   });
   return result;

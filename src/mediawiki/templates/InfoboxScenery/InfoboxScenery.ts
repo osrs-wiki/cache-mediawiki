@@ -5,6 +5,7 @@ import { InfoboxTemplate } from "../InfoboxTemplate";
 
 import Context from "@/context";
 import { Obj } from "@/utils/cache2";
+import { getEntityOpsActions } from "@/utils/cache2/loaders/EntityOps.utils";
 import { stripHtmlTags } from "@/utils/string";
 
 /**
@@ -27,9 +28,7 @@ const createInfoboxSceneryData = (
     quest: "No",
     location: options?.location,
     map: options?.map,
-    options: [...scenery.ops.values()]
-      .map((op) => op.text)
-      .filter((v): v is string => v != null),
+    options: getEntityOpsActions(scenery.ops),
     examine: Context.examines?.scenery
       ? Context.examines.scenery[scenery.id]
       : "",
