@@ -12,21 +12,36 @@ export const getEntityOpsActions = (ops: EntityOps | undefined) => {
   }
   return [...ops.values()]
     .map((op) => {
-      if (op.text == null || op.text === "null") {
-        return undefined;
-      }
-
+      const actions = [
+        ...(op.text != null && op.text !== "null"
+          ? [{ text: op.text, conditional: false }]
+          : []),
+        ...(op.conditionals ?? [])
+          .filter(({ text }) => text !== "null" && text.trim() !== "")
+          .map(({ text }) => ({ text, conditional: true })),
+      ];
       const subActions = op.subs
         ? [...op.subs.values()]
-            .map((sub) => sub.text)
-            .filter(
-              (text): text is string => text != null && text !== "null"
-            )
+            .flatMap((sub) => [
+              ...(sub.text != null && sub.text !== "null" ? [sub.text] : []),
+              ...(sub.conditionals ?? [])
+                .filter(({ text }) => text !== "null" && text.trim() !== "")
+                .map(({ text }) => `${text} (conditional)`),
+            ])
+            .filter((text) => text.trim() !== "")
         : [];
 
-      return subActions.length > 0
-        ? `${op.text} (${subActions.join(", ")})`
-        : op.text.trim();
+      if (actions.length === 0) {
+        return subActions.length > 0 ? subActions : undefined;
+      }
+
+      return actions.map(({ text, conditional }) => {
+        const action = conditional ? `${text} (conditional)` : text.trim();
+        return subActions.length > 0
+          ? `${action} (${subActions.join(", ")})`
+          : action;
+      });
     })
+    .flat()
     .filter((action): action is string => action != null && action !== "");
 };

@@ -1,5 +1,6 @@
 import { EntityOps } from "./EntityOps";
 import { getEntityOpsActions } from "./EntityOps.utils";
+import { Reader } from "../Reader";
 
 describe("EntityOps utils", () => {
   test("getEntityOpsActions - no ops", () => {
@@ -45,5 +46,59 @@ describe("EntityOps utils", () => {
     ops.set(1, { text: "Action 1", subs });
 
     expect(getEntityOpsActions(ops)).toEqual(["Action 1 (Sub Action 1)"]);
+  });
+
+  test("getEntityOpsActions - conditional parent labels decoded from cache", () => {
+    const ops = new EntityOps();
+    const data = new Uint8Array([
+      1,
+      255,
+      255,
+      255,
+      255,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      ...Buffer.from("Conditional action\0"),
+    ]);
+
+    ops.decodeConditionalOp(new Reader(data));
+
+    expect(getEntityOpsActions(ops)).toEqual([
+      "Conditional action (conditional)",
+    ]);
+  });
+
+  test("getEntityOpsActions - conditional sub-option labels decoded from cache", () => {
+    const ops = new EntityOps();
+    const data = new Uint8Array([
+      1,
+      0,
+      1,
+      255,
+      255,
+      255,
+      255,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      ...Buffer.from("Conditional sub-option\0"),
+    ]);
+
+    ops.decodeConditionalSubOp(new Reader(data));
+
+    expect(getEntityOpsActions(ops)).toEqual([
+      "Conditional sub-option (conditional)",
+    ]);
   });
 });
