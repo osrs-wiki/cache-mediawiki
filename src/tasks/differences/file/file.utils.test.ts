@@ -300,6 +300,46 @@ describe("file utils", () => {
       ).toEqual({});
     });
 
+    test("type: Map (bigint values unchanged)", () => {
+      const oldParams = new Map([[1, 1n]]);
+      const newParams = new Map([[1, 1n]]);
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            params: oldParams,
+          } as any,
+          {
+            params: newParams,
+          } as any
+        )
+      ).toEqual({});
+    });
+
+    test("type: Map (entry insertion order differs)", () => {
+      const oldOps = new EntityOps();
+      oldOps.set(1, { text: "Talk-to" });
+      oldOps.set(2, { text: "Attack" });
+      const newOps = new EntityOps();
+      newOps.set(2, { text: "Attack" });
+      newOps.set(1, { text: "Talk-to" });
+
+      expect(
+        getChangedResult<NPC>(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require entire NPC
+          {
+            ops: oldOps,
+          } as any,
+          {
+            ops: newOps,
+          } as any
+        )
+      ).toEqual({});
+    });
+
     test("type: Map (changed value)", () => {
       const oldOps = new EntityOps();
       oldOps.set(1, { text: "Talk-to" });

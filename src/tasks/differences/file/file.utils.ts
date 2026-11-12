@@ -322,7 +322,7 @@ export const getChangedResult = <T extends Loadable>(
       const oldObject = deepMapToObject(oldEntryValue);
       const newObject = deepMapToObject(newEntryValue);
 
-      if (JSON.stringify(oldObject) !== JSON.stringify(newObject)) {
+      if (!_.isEqual(oldObject, newObject)) {
         changed[key] = {
           oldValue: oldObject as ResultValue,
           newValue: newObject as ResultValue,
