@@ -1,5 +1,16 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.16.0
+
+### Minor Changes
+
+- 671c1cc: Add Special:Bucket ID column links for items, npcs, and objects
+- 674fa69: Add support for NPC and Object EntityOps sub-options in infoboxes and fix EntityOps differences to include nested sub-operations
+
+### Patch Changes
+
+- 293a0ca: Ignore built dist in jest
+
 ## 1.15.0
 
 ### Minor Changes
