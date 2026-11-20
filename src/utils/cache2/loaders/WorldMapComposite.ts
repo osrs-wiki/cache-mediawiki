@@ -2,7 +2,7 @@ import { MapSquare } from "./MapSquare";
 import { Position } from "./Position";
 import { WorldMapElement } from "./WorldMapElement";
 import { Zone } from "./Zone";
-import type { CacheProvider } from "../Cache";
+import type { ArchiveData, CacheProvider } from "../Cache";
 import { Loadable } from "../Loadable";
 import { Reader } from "../Reader";
 import { Typed } from "../reflect";
@@ -16,6 +16,7 @@ import { IndexType, WorldMapCompositeID, WorldX, WorldY } from "../types";
 @Typed
 export class WorldMapComposite extends Loadable {
   public static readonly index = IndexType.WorldMap;
+  public static readonly compositeMapArchiveId = 1;
 
   public mapSquares: MapSquare[] = [];
   public zones: Zone[] = [];
@@ -23,6 +24,23 @@ export class WorldMapComposite extends Loadable {
 
   constructor(public id: WorldMapCompositeID) {
     super();
+  }
+
+  public static async getCompositeArchive(
+    cache: CacheProvider
+  ): Promise<ArchiveData | undefined> {
+    const index = await cache.getIndex(this.index);
+    if (!index) {
+      console.warn("World map index not found");
+      return undefined;
+    }
+    const archive = index.named
+      ? await cache.getArchiveByName(this.index, "compositemap")
+      : await cache.getArchive(this.index, this.compositeMapArchiveId);
+    if (!archive) {
+      console.warn("World map composite archive not found");
+    }
+    return archive;
   }
 
   /**
@@ -131,7 +149,7 @@ export class WorldMapComposite extends Loadable {
   ): Promise<WorldMapComposite[]> {
     const cache = await cache0;
     const index = this.index;
-    const archive = await cache.getArchiveByName(index, "compositemap");
+    const archive = await this.getCompositeArchive(cache);
 
     if (!archive) {
       return [];
@@ -158,7 +176,10 @@ export class WorldMapComposite extends Loadable {
     cache: CacheProvider,
     archiveName: string
   ): Promise<Reader | undefined> {
-    const archive = await cache.getArchiveByName(this.index, archiveName);
+    const archive =
+      archiveName === "compositemap"
+        ? await WorldMapComposite.getCompositeArchive(cache)
+        : await cache.getArchiveByName(this.index, archiveName);
     const version = await cache.getVersion(this.index);
     const data = archive?.getFile(0)?.data;
     return data ? new Reader(data, version) : undefined;

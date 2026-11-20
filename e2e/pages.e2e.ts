@@ -1,6 +1,7 @@
 import { existsSync } from "fs";
 
 import { runCLICommand, cleanupOutput } from "./utils/cli";
+import { NEW_CACHE_VERSION } from "./utils/cache-versions";
 
 describe("Pages Command E2E Tests", () => {
   afterEach(async () => {
@@ -15,7 +16,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",
@@ -36,7 +37,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",
@@ -56,7 +57,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "2",
           "--type",
@@ -78,7 +79,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",
@@ -98,7 +99,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",
@@ -120,7 +121,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",
@@ -140,7 +141,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",
@@ -162,7 +163,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",
@@ -182,7 +183,7 @@ describe("Pages Command E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "1",
           "--type",

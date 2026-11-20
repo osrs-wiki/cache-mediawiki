@@ -1,4 +1,5 @@
 import { runCLICommand } from "./utils/cli";
+import { NEW_CACHE_VERSION, OLD_CACHE_VERSION } from "./utils/cache-versions";
 
 describe("Per-Cache XTEA Integration", () => {
   it("should load XTEA keys for each cache provider independently", async () => {
@@ -8,9 +9,9 @@ describe("Per-Cache XTEA Integration", () => {
         "diffs",
         "--",
         "-o",
-        "2025-07-09-rev231",
+        OLD_CACHE_VERSION,
         "-n",
-        "2025-07-23-rev231",
+        NEW_CACHE_VERSION,
       ],
     });
 
@@ -27,7 +28,7 @@ describe("Per-Cache XTEA Integration", () => {
         "pages",
         "--",
         "--newCache",
-        "2025-07-23-rev231",
+        NEW_CACHE_VERSION,
         "--type",
         "npc",
         "--id",
@@ -68,9 +69,9 @@ describe("Per-Cache XTEA Integration", () => {
         "diffs",
         "--",
         "-o",
-        "2025-07-09-rev231", // Old cache version
+        OLD_CACHE_VERSION, // Old cache version
         "-n",
-        "2025-07-23-rev231", // New cache version
+        NEW_CACHE_VERSION, // New cache version
         "--pages",
         "true",
       ],

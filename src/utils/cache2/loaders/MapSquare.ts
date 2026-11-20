@@ -37,8 +37,10 @@ export class MapSquare {
     v.sourceSquareZ = r.u16();
     v.displaySquareX = r.u16();
     v.displaySquareZ = r.u16();
-    v.groupId = r.s2o4n();
-    v.fileId = r.s2o4n();
+    if (!r.isAfter({ era: "osrs", indexRevision: 425 })) {
+      v.groupId = r.s2o4n();
+      v.fileId = r.s2o4n();
+    }
 
     return v;
   }

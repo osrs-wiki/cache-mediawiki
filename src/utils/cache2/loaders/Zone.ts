@@ -46,8 +46,10 @@ export class Zone {
     v.displaySquareZ = r.u16();
     v.displayZoneX = r.u8();
     v.displayZoneZ = r.u8();
-    v.groupId = r.s2o4n();
-    v.fileId = r.s2o4n();
+    if (!r.isAfter({ era: "osrs", indexRevision: 425 })) {
+      v.groupId = r.s2o4n();
+      v.fileId = r.s2o4n();
+    }
 
     return v;
   }
