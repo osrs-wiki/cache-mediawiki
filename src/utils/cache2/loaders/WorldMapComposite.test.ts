@@ -8,6 +8,9 @@ import type { CacheProvider } from "../Cache";
 import { Reader } from "../Reader";
 import { WorldMapCompositeID, WorldX, WorldY } from "../types";
 
+const legacyVersion = { era: "osrs" as const, indexRevision: 425 };
+const modernVersion = { era: "osrs" as const, indexRevision: 426 };
+
 describe("MapSquare", () => {
   describe("decodeFromStream", () => {
     it("should decode a map square with type 0", () => {
@@ -40,7 +43,7 @@ describe("MapSquare", () => {
       // fileId (BigSmart2 - using simple value)
       view.setUint16(offset, 200);
 
-      const reader = new Reader(buffer);
+      const reader = new Reader(buffer, legacyVersion);
       const mapSquare = MapSquare.decodeFromStream(reader);
 
       expect(mapSquare.minLevel).toBe(0);
@@ -58,7 +61,7 @@ describe("MapSquare", () => {
       const view = new DataView(buffer);
       view.setUint8(0, 1); // Wrong type
 
-      const reader = new Reader(buffer);
+      const reader = new Reader(buffer, legacyVersion);
       expect(() => MapSquare.decodeFromStream(reader)).toThrow(
         "Expected worldMapDataType 0 got 1"
       );
@@ -106,7 +109,7 @@ describe("Zone", () => {
       // fileId (BigSmart2)
       view.setUint16(offset, 200);
 
-      const reader = new Reader(buffer);
+      const reader = new Reader(buffer, legacyVersion);
       const zone = Zone.decodeFromStream(reader);
 
       expect(zone.minLevel).toBe(0);
@@ -207,6 +210,64 @@ describe("WorldMapElement", () => {
 
 describe("WorldMapComposite", () => {
   describe("decode", () => {
+    it.each([
+      ["legacy", legacyVersion, true],
+      ["modern", modernVersion, false],
+    ])(
+      "decodes a %s composite without misaligning records",
+      (_label, version, legacy) => {
+        const bytes: number[] = [];
+        const byte = (value: number) => bytes.push(value);
+        const short = (value: number) => bytes.push(value >> 8, value & 0xff);
+        short(1);
+        byte(0);
+        byte(0);
+        byte(4);
+        short(50);
+        short(50);
+        short(50);
+        short(50);
+        if (legacy) {
+          short(100);
+          short(200);
+        }
+        short(1);
+        byte(1);
+        byte(0);
+        byte(4);
+        short(50);
+        short(50);
+        byte(3);
+        byte(5);
+        short(50);
+        short(50);
+        byte(2);
+        byte(4);
+        if (legacy) {
+          short(101);
+          short(201);
+        }
+        short(1);
+        short(42);
+        const packed = (3200 << 14) | 3200;
+        byte(packed >>> 24);
+        byte((packed >>> 16) & 0xff);
+        byte((packed >>> 8) & 0xff);
+        byte(packed & 0xff);
+        byte(1);
+
+        const reader = new Reader(Uint8Array.from(bytes), version);
+        const composite = WorldMapComposite.decode(
+          reader,
+          0 as WorldMapCompositeID
+        );
+        expect(reader.remaining).toBe(0);
+        expect(composite.mapSquares[0].groupId).toBe(legacy ? 100 : 0);
+        expect(composite.zones[0].fileId).toBe(legacy ? 201 : 0);
+        expect(composite.elements[0].areaDefinitionId).toBe(42);
+      }
+    );
+
     it("should decode a complete world map composite", () => {
       // Create a minimal composite with 1 map square, 1 zone, 1 element
       const buffer = new ArrayBuffer(100);
@@ -250,7 +311,7 @@ describe("WorldMapComposite", () => {
       offset += 4; // position
       view.setUint8(offset, 1); // membersOnly
 
-      const reader = new Reader(buffer);
+      const reader = new Reader(buffer, legacyVersion);
       const composite = WorldMapComposite.decode(
         reader,
         0 as WorldMapCompositeID
@@ -429,8 +490,9 @@ describe("WorldMap", () => {
       };
 
       const mockCache: CacheProvider = {
+        getIndex: jest.fn().mockResolvedValue({ named: true }),
         getArchiveByName: jest.fn().mockResolvedValue(mockArchive),
-        getVersion: jest.fn().mockResolvedValue(1),
+        getVersion: jest.fn().mockResolvedValue(legacyVersion),
       } as unknown as CacheProvider;
 
       const worldMap = await WorldMap.load(mockCache);
@@ -452,15 +514,21 @@ describe("WorldMap", () => {
     });
 
     it("should return empty WorldMap when archive not found", async () => {
+      const warning = jest.spyOn(console, "warn").mockImplementation();
       const mockCache: CacheProvider = {
+        getIndex: jest.fn().mockResolvedValue({ named: true }),
         getArchiveByName: jest.fn().mockResolvedValue(null),
-        getVersion: jest.fn().mockResolvedValue(1),
+        getVersion: jest.fn().mockResolvedValue(legacyVersion),
       } as unknown as CacheProvider;
 
       const worldMap = await WorldMap.load(mockCache);
 
       expect(worldMap.getComposites()).toHaveLength(0);
       expect(worldMap.getElements()).toHaveLength(0);
+      expect(warning).toHaveBeenCalledWith(
+        "World map composite archive not found"
+      );
+      warning.mockRestore();
     });
 
     it("should handle composites with no elements", async () => {
@@ -488,14 +556,54 @@ describe("WorldMap", () => {
       };
 
       const mockCache: CacheProvider = {
+        getIndex: jest.fn().mockResolvedValue({ named: true }),
         getArchiveByName: jest.fn().mockResolvedValue(mockArchive),
-        getVersion: jest.fn().mockResolvedValue(1),
+        getVersion: jest.fn().mockResolvedValue(legacyVersion),
       } as unknown as CacheProvider;
 
       const worldMap = await WorldMap.load(mockCache);
 
       expect(worldMap.getComposites()).toHaveLength(1);
       expect(worldMap.getElements()).toHaveLength(0);
+    });
+
+    it("loads unnamed composite archives by ID", async () => {
+      const data = Uint8Array.from([
+        0, 0, 0, 0, 0, 1, 0, 42, 3, 32, 12, 128, 1,
+      ]);
+      const mockArchive = { getFiles: () => new Map([[0, { data }]]) };
+      const mockCache: CacheProvider = {
+        getIndex: jest.fn().mockResolvedValue({ named: false }),
+        getArchive: jest.fn().mockResolvedValue(mockArchive),
+        getArchiveByName: jest.fn(),
+        getVersion: jest.fn().mockResolvedValue(modernVersion),
+      } as unknown as CacheProvider;
+
+      const worldMap = await WorldMap.load(mockCache);
+      expect(mockCache.getArchive).toHaveBeenCalledWith(WorldMap.index, 1);
+      expect(mockCache.getArchiveByName).not.toHaveBeenCalled();
+      expect(worldMap.getElements()).toHaveLength(1);
+      expect(worldMap.getElements()[0].areaDefinitionId).toBe(42);
+    });
+
+    it("loads composite data from unnamed archives by ID", async () => {
+      const data = Uint8Array.from([0, 0, 0, 0, 0, 0]);
+      const mockArchive = { getFile: jest.fn().mockReturnValue({ data }) };
+      const mockCache: CacheProvider = {
+        getIndex: jest.fn().mockResolvedValue({ named: false }),
+        getArchive: jest.fn().mockResolvedValue(mockArchive),
+        getArchiveByName: jest.fn(),
+        getVersion: jest.fn().mockResolvedValue(modernVersion),
+      } as unknown as CacheProvider;
+
+      const reader = await WorldMapComposite.loadData(
+        mockCache,
+        "compositemap"
+      );
+      expect(mockCache.getArchive).toHaveBeenCalledWith(WorldMap.index, 1);
+      expect(mockCache.getArchiveByName).not.toHaveBeenCalled();
+      expect(reader?.length).toBe(data.length);
+      expect(reader?.version).toEqual(modernVersion);
     });
   });
 });

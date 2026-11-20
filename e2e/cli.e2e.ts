@@ -1,4 +1,5 @@
 import { runCLICommand, cleanupOutput } from "./utils/cli";
+import { NEW_CACHE_VERSION } from "./utils/cache-versions";
 
 describe("CLI E2E Tests", () => {
   afterEach(async () => {
@@ -60,7 +61,7 @@ describe("CLI E2E Tests", () => {
     it("should require id parameter", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "2025-07-23-rev231"],
+        args: ["pages", "--", "--newCache", NEW_CACHE_VERSION],
       });
 
       expect(result.exitCode).toBe(1);
@@ -76,7 +77,7 @@ describe("CLI E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "123",
           "--type",

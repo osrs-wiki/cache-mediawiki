@@ -18,8 +18,8 @@ exports[`Pages Command E2E Tests Area Pages should generate area page content th
 exports[`Pages Command E2E Tests Item Pages should generate different item page for different ID: item-2-output.txt 1`] = `
 "{{New Content}}
 {{Infobox Item
-|name = Cannonball
-|image = [[File:Cannonball.png]]
+|name = Steel cannonball
+|image = [[File:Steel cannonball.png]]
 |members = Yes
 |quest = No
 |exchange = Yes
@@ -29,13 +29,13 @@ exports[`Pages Command E2E Tests Item Pages should generate different item page 
 |stackable = Yes
 |noteable = No
 |options = Drop
-|examine = Ammo for the Dwarf Cannon.
+|examine = Ammo suited for a boat's cannon or for a dwarf multicannon.
 |value = 5
 |weight = 3.628
 |id = 2
 }}
-[[File:Cannonball detail.png|130px|left]]
-'''Cannonball'''"
+[[File:Steel cannonball detail.png|130px|left]]
+'''Steel cannonball'''"
 `;
 
 exports[`Pages Command E2E Tests Item Pages should generate item page content that matches snapshot: item-1-output.txt 1`] = `

@@ -1,8 +1,7 @@
 import { WorldMapComposite } from "./WorldMapComposite";
 import { WorldMapElement } from "./WorldMapElement";
 import type { CacheProvider } from "../Cache";
-import { Reader } from "../Reader";
-import { IndexType, WorldMapCompositeID } from "../types";
+import { IndexType } from "../types";
 
 let WORLD_MAP: WorldMap | null = null;
 
@@ -54,27 +53,13 @@ export class WorldMap {
       return WORLD_MAP;
     }
 
-    const cache = await cache0;
     const worldMap = new WorldMap();
-
-    // Get the compositemap archive
-    const archive = await cache.getArchiveByName(this.index, "compositemap");
-    if (!archive) {
+    const composites = await WorldMapComposite.loadAll(cache0);
+    if (composites.length === 0) {
       return worldMap;
     }
 
-    const version = await cache.getVersion(this.index);
-    const files = [...archive.getFiles().values()];
-
-    // Load all composites
-    for (let idx = 0; idx < files.length; idx++) {
-      const reader = new Reader(files[idx].data, version);
-      const composite = WorldMapComposite.decode(
-        reader,
-        idx as WorldMapCompositeID
-      );
-      worldMap.composites.push(composite);
-    }
+    worldMap.composites.push(...composites);
 
     // Aggregate all elements from all composites
     for (const composite of worldMap.composites) {

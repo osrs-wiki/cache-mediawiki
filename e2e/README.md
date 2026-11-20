@@ -10,6 +10,9 @@ This directory contains end-to-end (e2e) tests for the cache-mediawiki CLI appli
 npm run test:e2e
 ```
 
+The tests delete `./out` during cleanup. Preserve any output you need before
+running them.
+
 ### Update snapshots
 
 When the CLI output changes intentionally, update the snapshots:
@@ -67,7 +70,17 @@ Update snapshots when:
 
 ## Test Cache
 
-The e2e tests use the cache version `2025-07-23-rev231` which is fetched from GitHub/OpenRS2. This ensures tests are deterministic and work in CI without requiring local cache files.
+Before each run, the e2e tests query GitHub for the two newest published
+`abextm/osrs-cache` releases, excluding tags containing `-c...-`.
+The newer release is used for page tests, and both releases
+are used for comparisons. If the lookup fails or finds fewer than two releases,
+the tests log a warning and use `2026-11-11-rev242` and `2026-11-18-rev242`.
+The cache data itself is still fetched from GitHub, so the fallback does not
+make the tests offline.
+
+The selected versions are printed at startup. New releases can change generated
+content and cause snapshot failures; review those differences before updating
+snapshots.
 
 ## File Structure
 
@@ -118,6 +131,8 @@ To add new e2e tests:
 Example:
 
 ```typescript
+import { NEW_CACHE_VERSION } from "./utils/cache-versions";
+
 it("should generate music page", async () => {
   const result = await runCLICommand({
     command: "npm run start",
@@ -125,7 +140,7 @@ it("should generate music page", async () => {
       "pages",
       "--",
       "--newCache",
-      "2025-07-23-rev231",
+      NEW_CACHE_VERSION,
       "--id",
       "5154",
       "--type",
