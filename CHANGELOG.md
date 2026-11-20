@@ -1,5 +1,12 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.16.1
+
+### Patch Changes
+
+- df3b768: Restore scenery location names and area map markers for caches with unnamed world map indexes and revision 238 or newer composite data.
+- df3b768: Run end-to-end tests against the two latest standard osrs-cache releases, with pinned fallback versions when release lookup fails.
+
 ## 1.16.0
 
 ### Minor Changes
