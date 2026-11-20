@@ -46,8 +46,8 @@ export async function getCacheVersions(): Promise<CacheVersions> {
         if (
           !release.draft &&
           !release.prerelease &&
-          release.tag_name.length > 0 &&
-          !/-c[^-]*-/i.test(release.tag_name) &&
+          /^\d{4}-\d{2}-\d{2}-rev\d+$/.test(release.tag_name) &&
+          release.tag_name.trim() === release.tag_name &&
           !tags.includes(release.tag_name)
         ) {
           tags.push(release.tag_name);

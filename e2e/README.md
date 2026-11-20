@@ -71,7 +71,8 @@ Update snapshots when:
 ## Test Cache
 
 Before each run, the e2e tests query GitHub for the two newest published
-`abextm/osrs-cache` releases, excluding tags containing `-c...-`.
+`abextm/osrs-cache` releases whose tags match `YYYY-MM-DD-rev<number>`,
+excluding `-c...-` variants and other nonstandard tags.
 The newer release is used for page tests, and both releases
 are used for comparisons. If the lookup fails or finds fewer than two releases,
 the tests log a warning and use `2026-11-11-rev242` and `2026-11-18-rev242`.

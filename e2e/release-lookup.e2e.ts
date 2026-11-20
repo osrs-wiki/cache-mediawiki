@@ -29,6 +29,10 @@ describe("Cache release lookup", () => {
         new Response(
           JSON.stringify([
             release("2026-11-18-c1-rev242"),
+            release("2026-11-18-rev242$(printf${IFS}INJECTED)"),
+            release("2026-11-18-rev242;echo INJECTED"),
+            release("2026-11-18-rev242\n"),
+            release("latest"),
             release("2026-11-18-rev242"),
             release("2026-11-17-c12-rev242"),
             release("draft", true),
