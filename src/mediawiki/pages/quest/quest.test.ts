@@ -65,7 +65,14 @@ describe("questPageBuilder", () => {
     expect(output).toContain(
       "|update = Quest Month Week 3 & TFA Practice Mode"
     );
+    expect(output).toContain("{{Hastranscript|quest}}");
     expect(output).toMatchSnapshot();
+  });
+
+  it("uses the miniquest transcript type for miniquests", () => {
+    const output = questPageBuilder({ ...quest, type: 1 }).build();
+
+    expect(output).toContain("{{Hastranscript|miniquest}}");
   });
 
   it("includes stat XP awards in the rewards template", () => {

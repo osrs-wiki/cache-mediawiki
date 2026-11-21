@@ -229,6 +229,7 @@ describe("Pages Command E2E Tests", () => {
         "* {{SCP|Slayer|58|link=yes}} {{Boostable|no}} {{Questreqstart|yes}}"
       );
       expect(result.outputContent).toContain("|update = Test-update");
+      expect(result.outputContent).toContain("{{Hastranscript|quest}}");
       expect(result.outputContent).toContain("**[[Rag and Bone Man II]]");
       expect(result.outputContent.replace(/[ \t]+$/gm, "")).toMatchSnapshot(
         "quest-13730-output.txt"
@@ -255,6 +256,26 @@ describe("Pages Command E2E Tests", () => {
       expect(result.outputContent).toContain(
         "*{{SCP|Crafting|1,406}} [[Crafting]] [[experience]]"
       );
+    });
+
+    it("should use the miniquest transcript type for a miniquest DBRow", async () => {
+      const result = await runCLICommand({
+        command: "npm run start",
+        args: [
+          "pages",
+          "--",
+          "--newCache",
+          NEW_CACHE_VERSION,
+          "--id",
+          "4",
+          "--type",
+          "quest",
+        ],
+        expectedOutputFile: "./out/pages/quest/4.txt",
+      });
+
+      expect(result.exitCode).toBe(0);
+      expect(result.outputContent).toContain("{{Hastranscript|miniquest}}");
     });
   });
 });

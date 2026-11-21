@@ -1,5 +1,6 @@
 export * from "./Boostable";
 export * from "./CombatStyles";
+export * from "./Hastranscript";
 export * from "./InfoboxBonuses";
 export * from "./InfoboxItem";
 export * from "./InfoboxLocation";
