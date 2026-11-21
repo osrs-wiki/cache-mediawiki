@@ -1,5 +1,3 @@
-import { mkdir, writeFile } from "fs/promises";
-
 import Context from "../../../context";
 import { renderItems } from "../../renders";
 import { writePageToFile } from "../pages.utils";
@@ -7,7 +5,6 @@ import { writePageToFile } from "../pages.utils";
 import { itemPageBuilder } from "@/mediawiki/pages/item";
 import { exchangePageBuilder } from "@/mediawiki/pages/item/exchange";
 import { CacheProvider, Item } from "@/utils/cache2";
-import { formatFileName } from "@/utils/files";
 import { getBaseName } from "@/utils/string";
 
 // Global map to track items by base name
@@ -60,13 +57,13 @@ const writeExchangePage = async (item: Item) => {
     return;
   }
 
-  const exchangePage = exchangePageBuilder(item);
-  const content = exchangePage.build();
-
-  await mkdir("./out/pages/exchange", { recursive: true });
-  await writeFile(
-    `./out/pages/exchange/${formatFileName(item.name)}.txt`,
-    content
+  await writePageToFile(
+    exchangePageBuilder(item),
+    "exchange",
+    item.name,
+    item.id.toString(),
+    false,
+    item.name
   );
 };
 
@@ -104,29 +101,28 @@ export const flushItemPages = async () => {
       items.length > 1
     );
 
-    if (items.length > 1) {
-      // Also write each variant's own page so it's reachable individually,
-      // not only folded into the combined multiChildren page.
-      for (const item of items) {
-        const itemBuilder = itemPageBuilder([item]);
-        await writePageToFile(
-          itemBuilder,
-          "item",
-          item.name,
-          item.id.toString(),
-          false
-        );
-      }
-    }
+    await Promise.all(
+      items.map(async (item) => {
+        if (items.length > 1) {
+          // Also write each variant's own page so it's reachable individually,
+          // not only folded into the combined multiChildren page.
+          const itemBuilder = itemPageBuilder([item]);
+          await writePageToFile(
+            itemBuilder,
+            "item",
+            item.name,
+            item.id.toString(),
+            false
+          );
+        }
 
-    if (Context.renders) {
-      // Render all items with this base name
-      items.forEach((item) => renderItems(item));
-    }
+        if (Context.renders) {
+          renderItems(item);
+        }
 
-    for (const item of items) {
-      await writeExchangePage(item);
-    }
+        await writeExchangePage(item);
+      })
+    );
   }
 };
 

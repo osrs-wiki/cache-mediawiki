@@ -49,4 +49,30 @@ describe("writePageToFile", () => {
     await writePageToFile(builder as any, "item", "Sword", "456");
     expect(builder.build).toHaveBeenCalledTimes(1);
   });
+
+  it("writes a custom-named page without a duplicate named file", async () => {
+    const builder = new MockMediaWikiBuilder();
+
+    await writePageToFile(
+      builder as any,
+      "exchange",
+      "Amulet of fire",
+      "34425",
+      false,
+      "Amulet of fire"
+    );
+
+    expect(mkdir).toHaveBeenCalledTimes(1);
+    expect(mkdir).toHaveBeenCalledWith("./out/pages/exchange", {
+      recursive: true,
+    });
+    expect(formatFileName).toHaveBeenCalledWith(
+      "./out/pages/exchange/Amulet of fire.txt"
+    );
+    expect(writeFile).toHaveBeenCalledTimes(1);
+    expect(writeFile).toHaveBeenCalledWith(
+      "./out/pages/exchange/Amulet of fire.txt",
+      "page content"
+    );
+  });
 });

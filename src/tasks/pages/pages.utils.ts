@@ -8,11 +8,19 @@ export const writePageToFile = async (
   type: string,
   name: string,
   id: string,
-  isMultiChildren?: boolean
+  isMultiChildren?: boolean,
+  fileName?: string
 ) => {
   const content = builder.build();
   await mkdir(`./out/pages/${type}`, { recursive: true });
-  await writeFile(`./out/pages/${type}/${id}.txt`, content);
+  await writeFile(
+    formatFileName(`./out/pages/${type}/${fileName ?? id}.txt`),
+    content
+  );
+
+  if (fileName) {
+    return;
+  }
 
   if (isMultiChildren) {
     await mkdir(`./out/pages/${type}/named/multiChildren`, { recursive: true });

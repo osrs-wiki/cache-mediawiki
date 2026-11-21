@@ -21,6 +21,12 @@ jest.mock("@/mediawiki/pages/item", () => ({
   itemPageBuilder: jest.fn(() => ({ build: () => "mock page content" })),
 }));
 
+jest.mock("@/mediawiki/pages/item/exchange", () => ({
+  exchangePageBuilder: jest.fn(() => ({
+    build: () => "mock exchange page content",
+  })),
+}));
+
 jest.mock("@/utils/cache2", () => ({
   ...jest.requireActual("@/utils/cache2"),
   Item: { load: jest.fn() },
@@ -100,6 +106,14 @@ describe("writeItemPageFromCache", () => {
       "2",
       false
     );
+    expect(writePageToFile).toHaveBeenCalledWith(
+      expect.objectContaining({ build: expect.any(Function) }),
+      "exchange",
+      "Bronze sword (two)",
+      "2",
+      false,
+      "Bronze sword (two)"
+    );
   });
 });
 
@@ -161,8 +175,8 @@ describe("item page combining", () => {
 
     await flushItemPages();
 
-    // Combined multiChildren page + one individual named page per item
-    expect(writePageToFile).toHaveBeenCalledTimes(4);
+    // Combined page, individual pages, and one exchange page per item
+    expect(writePageToFile).toHaveBeenCalledTimes(7);
     expect(writePageToFile).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({ build: expect.any(Function) }),
@@ -179,21 +193,43 @@ describe("item page combining", () => {
       "1",
       false
     );
-    expect(writePageToFile).toHaveBeenNthCalledWith(
-      3,
+    expect(writePageToFile).toHaveBeenCalledWith(
+      expect.objectContaining({ build: expect.any(Function) }),
+      "exchange",
+      "Bronze sword",
+      "1",
+      false,
+      "Bronze sword"
+    );
+    expect(writePageToFile).toHaveBeenCalledWith(
       expect.objectContaining({ build: expect.any(Function) }),
       "item",
       "Bronze sword (two)",
       "2",
       false
     );
-    expect(writePageToFile).toHaveBeenNthCalledWith(
-      4,
+    expect(writePageToFile).toHaveBeenCalledWith(
+      expect.objectContaining({ build: expect.any(Function) }),
+      "exchange",
+      "Bronze sword (two)",
+      "2",
+      false,
+      "Bronze sword (two)"
+    );
+    expect(writePageToFile).toHaveBeenCalledWith(
       expect.objectContaining({ build: expect.any(Function) }),
       "item",
       "Bronze sword (three)",
       "3",
       false
+    );
+    expect(writePageToFile).toHaveBeenCalledWith(
+      expect.objectContaining({ build: expect.any(Function) }),
+      "exchange",
+      "Bronze sword (three)",
+      "3",
+      false,
+      "Bronze sword (three)"
     );
   });
 
@@ -207,7 +243,7 @@ describe("item page combining", () => {
 
     await flushItemPages();
 
-    expect(writePageToFile).toHaveBeenCalledTimes(2);
+    expect(writePageToFile).toHaveBeenCalledTimes(4);
     expect(writePageToFile).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({ build: expect.any(Function) }),
@@ -219,10 +255,28 @@ describe("item page combining", () => {
     expect(writePageToFile).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({ build: expect.any(Function) }),
+      "exchange",
+      "Bronze sword",
+      "1",
+      false,
+      "Bronze sword"
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      3,
+      expect.objectContaining({ build: expect.any(Function) }),
       "item",
       "Iron dagger",
       "2",
       false // single item
+    );
+    expect(writePageToFile).toHaveBeenNthCalledWith(
+      4,
+      expect.objectContaining({ build: expect.any(Function) }),
+      "exchange",
+      "Iron dagger",
+      "2",
+      false,
+      "Iron dagger"
     );
   });
 });
