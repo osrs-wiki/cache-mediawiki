@@ -47,7 +47,7 @@ exports[`questPageBuilder builds a quest stub from cache-derived data 1`] = `
 }}
 
 ==Transcript==
-{{Hastranscript|Quest}}
+{{Hastranscript|quest}}
 
 {{Rag and Bone Man III}}
 "

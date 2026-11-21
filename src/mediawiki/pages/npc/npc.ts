@@ -10,6 +10,7 @@ import {
 import { groupNpcsByType } from "./npc.utils";
 import Context from "../../../context";
 
+import { HastranscriptTemplate } from "@/mediawiki/templates/Hastranscript";
 import InfoboxMonsterTemplate from "@/mediawiki/templates/InfoboxMonster";
 import InfoboxNpcTemplate from "@/mediawiki/templates/InfoboxNpc";
 import { SwitchInfobox } from "@/mediawiki/templates/SwitchInfobox";
@@ -163,14 +164,12 @@ export const npcPageBuilder = async (
   ]);
 
   if (hasDialogue) {
-    const transcriptTemplate = new MediaWikiTemplate("Hastranscript");
-    transcriptTemplate.add("", "npc");
     builder.addContents([
       new MediaWikiBreak(),
       new MediaWikiBreak(),
       new MediaWikiHeader("Dialogue", 2),
       new MediaWikiBreak(),
-      transcriptTemplate,
+      new HastranscriptTemplate({ type: "npc" }).build(),
     ]);
   }
 

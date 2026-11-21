@@ -17,6 +17,7 @@ import {
 
 import Context from "@/context";
 import {
+  HastranscriptTemplate,
   InfoboxQuestTemplate,
   QuestDetailsTemplate,
   QuestRewardsTemplate,
@@ -103,12 +104,12 @@ export const questPageBuilder = (quest: Quest): MediaWikiBuilder => {
     new MediaWikiBreak(),
     new MediaWikiHeader("Transcript", 2),
     new MediaWikiBreak(),
+    new HastranscriptTemplate({
+      type: quest.type === 1 ? "miniquest" : "quest",
+    }).build(),
+    new MediaWikiBreak(),
+    new MediaWikiTemplate(name),
   ]);
-
-  const transcript = new MediaWikiTemplate("Hastranscript");
-  transcript.add("", "Quest");
-  builder.addContent(transcript);
-  builder.addContents([new MediaWikiBreak(), new MediaWikiTemplate(name)]);
 
   return builder;
 };
