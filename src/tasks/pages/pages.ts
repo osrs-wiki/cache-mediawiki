@@ -3,6 +3,7 @@ import {
   writeItemPageFromCache,
   writeMusicPageFromCache,
   writeNpcPageFromCache,
+  writeQuestPageFromCache,
   writeSceneryPageFromCache,
 } from "./types";
 import Context from "../../context";
@@ -46,6 +47,9 @@ const pageGenerator = async (
       break;
     case "npc":
       await writeNpcPageFromCache(cache, id);
+      break;
+    case "quest":
+      await writeQuestPageFromCache(cache, id);
       break;
     case "scenery":
       await writeSceneryPageFromCache(cache, id);

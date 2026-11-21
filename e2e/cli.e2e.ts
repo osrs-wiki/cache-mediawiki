@@ -39,7 +39,7 @@ describe("CLI E2E Tests", () => {
 
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain(
-        "Generate a page for an area, item, npc, or scenery"
+        "Generate a page for an area, item, music track, npc, quest, or scenery"
       );
       expect(result.stdout).toContain("-t, --type <type>");
       expect(result.stdout).toContain("-i, --id <id>");
@@ -90,7 +90,7 @@ describe("CLI E2E Tests", () => {
         "error: option '-t, --type <type>' argument 'invalid' is invalid"
       );
       expect(result.stderr).toContain(
-        "Allowed choices are area, item, music, npc, scenery"
+        "Allowed choices are area, item, music, npc, quest, scenery"
       );
     });
   });
