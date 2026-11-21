@@ -71,4 +71,9 @@ describe("HastranscriptTemplate", () => {
         .build()
     ).toBe("{{Hastranscript|Lift manual|Lift manual/part 2|transclude=yes}}\n");
   });
+
+  it("rejects a link without a type at compile time", () => {
+    // @ts-expect-error `link` requires `type` per the Hastranscript docs.
+    new HastranscriptTemplate({ link: "Transcript:Example/Alternate" });
+  });
 });
