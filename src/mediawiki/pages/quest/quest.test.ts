@@ -65,6 +65,7 @@ describe("questPageBuilder", () => {
     expect(output).toContain(
       "|update = Quest Month Week 3 & TFA Practice Mode"
     );
+    expect(output).toContain("{{Hastranscript|Quest}}");
     expect(output).toMatchSnapshot();
   });
 

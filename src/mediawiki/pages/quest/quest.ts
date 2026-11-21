@@ -105,7 +105,7 @@ export const questPageBuilder = (quest: Quest): MediaWikiBuilder => {
     new MediaWikiBreak(),
   ]);
 
-  const transcript = new MediaWikiTemplate("hastranscript");
+  const transcript = new MediaWikiTemplate("Hastranscript");
   transcript.add("", "Quest");
   builder.addContent(transcript);
   builder.addContents([new MediaWikiBreak(), new MediaWikiTemplate(name)]);

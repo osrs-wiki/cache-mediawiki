@@ -229,6 +229,7 @@ describe("Pages Command E2E Tests", () => {
         "* {{SCP|Slayer|58|link=yes}} {{Boostable|no}} {{Questreqstart|yes}}"
       );
       expect(result.outputContent).toContain("|update = Test-update");
+      expect(result.outputContent).toContain("{{Hastranscript|Quest}}");
       expect(result.outputContent).toContain("**[[Rag and Bone Man II]]");
       expect(result.outputContent.replace(/[ \t]+$/gm, "")).toMatchSnapshot(
         "quest-13730-output.txt"
