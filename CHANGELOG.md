@@ -1,5 +1,17 @@
 # @osrs-wiki/cache-mediawiki
 
+## 1.17.0
+
+### Minor Changes
+
+- 9d5b2dd: Add quest page stub generation from DBTable 0 for direct page commands and `differences --pages`, including cache-backed infobox details, quest requirements, recursive prerequisites, reward experience, and the Infobox Quest, Quest details, Quest rewards, SCP, Boostable, and Questreqstart templates.
+- 523f71c: Add exchange page generation for new Grand Exchange items
+
+### Patch Changes
+
+- df3b768: Restore scenery location names and area map markers for caches with unnamed world map indexes and revision 238 or newer composite data.
+- df3b768: Run end-to-end tests against the two latest standard osrs-cache releases, with pinned fallback versions when release lookup fails.
+
 ## 1.16.0
 
 ### Minor Changes
