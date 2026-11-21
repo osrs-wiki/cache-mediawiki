@@ -2,10 +2,13 @@ import {
   sanitizeFilename,
   formatCellValue,
   extractColumnHeaders,
+  dbRowToCatalogRow,
+  dbTableToCatalogColumns,
+  groupDBRowsByTable,
 } from "./dbtables.utils";
 
-import { DBRow } from "@/utils/cache2/loaders/DBRow";
-import { DBRowID } from "@/utils/cache2/types";
+import { DBRow, DBTable } from "@/utils/cache2/loaders/DBRow";
+import { DBRowID, DBTableID, ScriptVarID } from "@/utils/cache2/types";
 
 describe("dbtables.utils", () => {
   describe("sanitizeFilename", () => {
@@ -141,6 +144,122 @@ describe("dbtables.utils", () => {
         "3 - boat_cargo",
         "4 - boat_defense",
       ]);
+    });
+
+    it("should include columns only present in later rows", () => {
+      const rows = [
+        {
+          id: 1 as DBRowID,
+          table: 44,
+          values: [["first"]],
+          types: [],
+        },
+        {
+          id: 2 as DBRowID,
+          table: 44,
+          values: [["second"], [], ["third"]],
+          types: [],
+        },
+      ] as DBRow[];
+
+      expect(extractColumnHeaders(rows, new Map([[0, "name"]]))).toEqual([
+        "0 - name",
+        "1 - Column_1",
+        "2 - Column_2",
+      ]);
+    });
+  });
+
+  describe("catalog helpers", () => {
+    it("groups and sorts rows by table", () => {
+      const rows = [
+        { id: 9 as DBRowID, table: 2 as DBTableID },
+        { id: 4 as DBRowID, table: 1 as DBTableID },
+        { id: 2 as DBRowID, table: 2 as DBTableID },
+      ].map((row) => row as DBRow);
+
+      const grouped = groupDBRowsByTable(rows);
+
+      expect(
+        Array.from(grouped.get(1 as DBTableID) ?? []).map((row) => row.id)
+      ).toEqual([4]);
+      expect(
+        Array.from(grouped.get(2 as DBTableID) ?? []).map((row) => row.id)
+      ).toEqual([2, 9]);
+    });
+
+    it("preserves table types, defaults, and raw tuple boundaries", () => {
+      const table = new DBTable(0 as DBTableID);
+      table.types = [[36 as ScriptVarID], [22 as ScriptVarID]];
+      table.defaultValues = [[], [0]];
+      const rows = [
+        {
+          id: 5 as DBRowID,
+          table: 0,
+          values: [["quest"], [123]],
+          types: table.types,
+        },
+      ] as DBRow[];
+
+      expect(
+        dbTableToCatalogColumns(
+          table,
+          new Map([
+            [0, "name"],
+            [1, "coordinate"],
+          ]),
+          rows
+        )
+      ).toEqual([
+        {
+          index: 0,
+          name: "name",
+          types: [
+            {
+              id: 36,
+              name: "string",
+              jagexName: "string",
+              typeName: undefined,
+              baseType: "string",
+            },
+          ],
+          defaultValues: [],
+        },
+        {
+          index: 1,
+          name: "coordinate",
+          types: [
+            {
+              id: 22,
+              name: "coord",
+              jagexName: "coordgrid",
+              typeName: "WorldPoint",
+              baseType: "int",
+            },
+          ],
+          defaultValues: [0],
+        },
+      ]);
+    });
+
+    it("retains raw and effective values, including bigint serialization", () => {
+      const table = new DBTable(44 as DBTableID);
+      table.types = [[], [11 as ScriptVarID]];
+      table.defaultValues = [["fallback"], [123]];
+      const row = {
+        id: 8 as DBRowID,
+        table: 44,
+        values: [undefined, [999999999999999999n]],
+        types: [undefined, [11 as ScriptVarID]],
+      } as DBRow;
+
+      expect(dbRowToCatalogRow(row, table, "track")).toEqual({
+        id: 8,
+        name: "track",
+        values: [null, ["999999999999999999"]],
+        effectiveValues: [["fallback"], ["999999999999999999"]],
+        typeIds: [null, [11]],
+      });
     });
   });
 });

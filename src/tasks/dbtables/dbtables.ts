@@ -1,9 +1,22 @@
-import { mkdir } from "fs/promises";
+import { mkdir, writeFile } from "fs/promises";
+import { join } from "path";
 
-import { DBTableCSVRow, DBTableExportResult } from "./dbtables.types";
+import {
+  identifyDBTable,
+  loadDBTableIdentifications,
+} from "./dbtables.identification";
+import {
+  DBTableCatalog,
+  DBTableCatalogTable,
+  DBTableCSVRow,
+  DBTableExportResult,
+} from "./dbtables.types";
 import {
   dbRowToCSVRow,
+  dbRowToCatalogRow,
+  dbTableToCatalogColumns,
   extractColumnHeaders,
+  groupDBRowsByTable,
   sanitizeFilename,
 } from "./dbtables.utils";
 
@@ -14,9 +27,9 @@ import {
   getCacheProviderLocal,
 } from "@/utils/cache";
 import { LazyPromise } from "@/utils/cache2/LazyPromise";
-import { DBTable } from "@/utils/cache2/loaders/DBRow";
+import { DBRow, DBTable } from "@/utils/cache2/loaders/DBRow";
 import { GameVal } from "@/utils/cache2/loaders/GameVal";
-import { GameValID, GameValType } from "@/utils/cache2/types";
+import { DBTableID, GameValID, GameValType } from "@/utils/cache2/types";
 import { writeCSV } from "@/utils/csv/csv.writer";
 
 /**
@@ -44,72 +57,66 @@ const exportDBTablesToCSV = async (
   const dir = `./out/dbtables/${version}`;
   await mkdir(dir, { recursive: true });
   console.log(`Output directory: ${dir}`);
+  const identificationsPath = join(
+    process.cwd(),
+    "cache-identification",
+    "dbtables.json"
+  );
+  const identifications = await loadDBTableIdentifications(identificationsPath);
 
-  // Load all DBTables
-  const tables = await DBTable.all(cache);
-  if (!tables || tables.length === 0) {
+  const [tableGameVals, rowGameVals, allRows] = await Promise.all([
+    GameVal.all(cache, GameValType.DBTables as GameValID),
+    GameVal.all(cache, GameValType.DBRows as GameValID),
+    DBRow.all(cache),
+  ]);
+  const rowsByTable = groupDBRowsByTable(allRows);
+  const tableIds = Array.from(
+    new Set([...tableGameVals.keys(), ...rowsByTable.keys()])
+  ).sort((left, right) => left - right);
+
+  if (tableIds.length === 0) {
     console.log("No DBTables found in cache");
     return;
   }
 
-  console.log(`Found ${tables.length} DBTables`);
+  console.log(`Found ${tableIds.length} DBTable identities`);
+  console.log(`Found ${allRows.length} DBRows`);
 
   const results: DBTableExportResult[] = [];
+  const catalogTables: DBTableCatalogTable[] = [];
   let successCount = 0;
   let errorCount = 0;
 
-  // Process each table
-  for (const table of tables) {
+  for (const tableIdValue of tableIds) {
+    const tableId = tableIdValue as DBTableID;
     try {
-      console.log(`\nProcessing table ${table.id}...`);
+      console.log(`\nProcessing table ${tableId}...`);
 
-      // Load GameVal for table name and column headers
-      const gameVal = await GameVal.load(
-        cache,
-        GameValType.DBTables as GameValID,
-        table.id
-      );
-      const tableName = gameVal?.name || `Table_${table.id}`;
+      const table =
+        (await DBTable.load(cache, tableId)) ?? new DBTable(tableId);
+      const gameVal = tableGameVals.get(tableId);
+      const tableName = gameVal?.name || `Table_${tableId}`;
       const columnNames = gameVal?.files || new Map<number, string>();
+      const rows = rowsByTable.get(tableId) ?? [];
 
       console.log(`  Table name: ${tableName}`);
       console.log(`  Columns defined: ${columnNames.size}`);
-
-      // Load all rows for this table
-      const rows = await DBTable.loadRows(cache, table.id);
-      if (!rows || rows.length === 0) {
-        console.log(`  ⚠️  No rows found, skipping`);
-        results.push({
-          tableId: table.id,
-          tableName,
-          filename: "",
-          rowCount: 0,
-          error: "No rows found",
-        });
-        continue;
-      }
-
       console.log(`  Rows found: ${rows.length}`);
 
-      // Build CSV data
-      const csvData: DBTableCSVRow[] = [];
-
-      // Convert each row to CSV format
-      for (const row of rows) {
-        const csvRow = await dbRowToCSVRow(cache, row, columnNames);
-        csvData.push(csvRow);
-      }
-
-      // Extract headers from first row's structure
-      const dataHeaders =
-        rows.length > 0 ? extractColumnHeaders(rows[0], columnNames) : [];
-
-      // Build full header list
+      const csvData: DBTableCSVRow[] = await Promise.all(
+        rows.map((row) =>
+          dbRowToCSVRow(
+            cache,
+            row,
+            columnNames,
+            rowGameVals.get(row.id)?.name ?? null
+          )
+        )
+      );
+      const dataHeaders = extractColumnHeaders(rows, columnNames);
       const headers = ["row_id", "row_name", ...dataHeaders];
-
-      // Write CSV file
       const sanitizedName = sanitizeFilename(tableName);
-      const filename = `${table.id} - ${sanitizedName}.csv`;
+      const filename = `${tableId} - ${sanitizedName}.csv`;
 
       await writeCSV(csvData, {
         filename,
@@ -121,20 +128,31 @@ const exportDBTablesToCSV = async (
       console.log(`  ✅ Exported to ${filename}`);
 
       results.push({
-        tableId: table.id,
+        tableId,
         tableName,
         filename,
         rowCount: rows.length,
       });
+      catalogTables.push({
+        id: tableId,
+        name: tableName,
+        schemaLight: !table.types.some(Boolean),
+        identification: identifyDBTable(identifications, tableName),
+        rowCount: rows.length,
+        columns: dbTableToCatalogColumns(table, columnNames, rows),
+        rows: rows.map((row) =>
+          dbRowToCatalogRow(row, table, rowGameVals.get(row.id)?.name)
+        ),
+      });
 
       successCount++;
     } catch (error) {
-      console.error(`  ❌ Error processing table ${table.id}:`, error);
+      console.error(`  ❌ Error processing table ${tableId}:`, error);
       errorCount++;
 
       results.push({
-        tableId: table.id,
-        tableName: `Table_${table.id}`,
+        tableId,
+        tableName: `Table_${tableId}`,
         filename: "",
         rowCount: 0,
         error: error instanceof Error ? error.message : String(error),
@@ -142,13 +160,32 @@ const exportDBTablesToCSV = async (
     }
   }
 
-  // Print summary
+  const catalog: DBTableCatalog = {
+    schemaVersion: 1,
+    cacheVersion: version,
+    tableCount: catalogTables.length,
+    rowCount: catalogTables.reduce((total, table) => total + table.rowCount, 0),
+    schemaTableCount: catalogTables.filter((table) => !table.schemaLight)
+      .length,
+    schemaLightTableCount: catalogTables.filter((table) => table.schemaLight)
+      .length,
+    tables: catalogTables,
+  };
+  await writeFile(
+    `${dir}/catalog.json`,
+    JSON.stringify(catalog, (_key, value) =>
+      typeof value === "bigint" ? value.toString() : value
+    )
+  );
+
   console.log("\n" + "=".repeat(60));
   console.log("Export Summary");
   console.log("=".repeat(60));
-  console.log(`Total tables: ${tables.length}`);
+  console.log(`Total table identities: ${tableIds.length}`);
+  console.log(`Total rows: ${catalog.rowCount}`);
   console.log(`Successfully exported: ${successCount}`);
   console.log(`Errors: ${errorCount}`);
+  console.log(`Catalog: ${dir}/catalog.json`);
   console.log(`Output directory: ${dir}`);
   console.log("=".repeat(60));
 

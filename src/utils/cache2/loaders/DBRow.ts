@@ -113,6 +113,7 @@ export class DBTable extends PerFileLoadable {
   public types: (ScriptVarID | undefined)[][] = [];
   public defaultValues: (string | number | bigint | undefined)[][] = [];
   public gameVal?: string;
+  public columnNames?: Map<number, string>;
 
   public static decode(r: Reader, id: DBTableID): DBTable {
     const v = new DBTable(id);

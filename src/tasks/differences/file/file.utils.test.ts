@@ -1,11 +1,13 @@
 import {
   getChangedResult,
   createCompareFunction,
+  createDBTableCompareFunction,
   createSimpleCompareFunction,
   createArchiveCompareFunction,
   createRegionCompareFunction,
 } from "./file.utils";
 
+import Context from "@/context";
 import { EntityOps, NPC, Reader, GameVal } from "@/utils/cache2";
 
 describe("file utils", () => {
@@ -600,6 +602,64 @@ describe("file utils", () => {
       expect(mockDecoder.decode).not.toHaveBeenCalled();
       expect(mockGameValNameFor).not.toHaveBeenCalled();
       expect(result).toEqual({});
+    });
+  });
+
+  describe("createDBTableCompareFunction", () => {
+    const createMockFileContext = (fileId: number) => ({
+      file: {
+        data: Buffer.from([0]),
+        id: fileId,
+        namehash: 0,
+      },
+      archive: {
+        archive: 39,
+      },
+      index: {
+        id: 2,
+        revision: 100,
+      },
+    });
+
+    test("compares DBTable GameVal names and column maps", async () => {
+      const previousOldCache = Context.oldCacheProvider;
+      const previousNewCache = Context.newCacheProvider;
+      Context.oldCacheProvider = {} as typeof Context.oldCacheProvider;
+      Context.newCacheProvider = {} as typeof Context.newCacheProvider;
+      const gameValLoad = jest.spyOn(GameVal, "load") as unknown as jest.Mock;
+      gameValLoad
+        .mockResolvedValueOnce({
+          name: "old_table",
+          files: new Map([[0, "old_column"]]),
+        } as GameVal)
+        .mockResolvedValueOnce({
+          name: "new_table",
+          files: new Map([
+            [0, "new_column"],
+            [1, "added_column"],
+          ]),
+        } as GameVal);
+
+      try {
+        const result = await createDBTableCompareFunction()({
+          oldFile: createMockFileContext(1) as never,
+          newFile: createMockFileContext(1) as never,
+        });
+
+        expect(gameValLoad).toHaveBeenCalledTimes(2);
+        expect(result.changed?.gameVal).toEqual({
+          oldValue: "old_table",
+          newValue: "new_table",
+        });
+        expect(result.changed?.columnNames).toEqual({
+          oldValue: { 0: "old_column" },
+          newValue: { 0: "new_column", 1: "added_column" },
+        });
+      } finally {
+        gameValLoad.mockRestore();
+        Context.oldCacheProvider = previousOldCache;
+        Context.newCacheProvider = previousNewCache;
+      }
     });
   });
 

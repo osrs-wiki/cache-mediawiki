@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "match": "exact",
+      "value": "quest",
+      "domain": "Quests",
+      "use": "page",
+      "confidence": "high",
+      "wikiUse": "Generate quest and miniquest page stubs.",
+      "notes": "Rows contain release dates, requirements, prerequisites, coordinates, NPC/object starts, quest points, and rewards."
+    },
+    {
+      "match": "exact",
+      "value": "music",
+      "domain": "Music",
+      "use": "page",
+      "confidence": "high",
+      "wikiUse": "Generate music track pages and unlock hints.",
+      "notes": "Rows link music tracks to area/default-area data and unlock variable positions."
+    },
+    {
+      "match": "prefix",
+      "value": "cluehelper_",
+      "domain": "Treasure Trails",
+      "use": "page",
+      "confidence": "high",
+      "wikiUse": "Generate clue pages and resolve clue targets, requirements, challenges, outfits, and locations.",
+      "notes": "Treat related rows as a graph rooted at clue definition tables."
+    },
+    {
+      "match": "exact",
+      "value": "furniture",
+      "domain": "Construction",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate furniture, flatpack, material, Construction level, and upgrade data."
+    },
+    {
+      "match": "prefix",
+      "value": "poh_",
+      "domain": "Construction / POH",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate player-owned house room, hotspot, furniture, and heraldic decoration pages."
+    },
+    {
+      "match": "prefix",
+      "value": "slayer_",
+      "domain": "Slayer",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate Slayer task, master weighting, area, unlock, modifier, and monster requirement data."
+    },
+    {
+      "match": "prefix",
+      "value": "sailing_",
+      "domain": "Sailing",
+      "use": "feature-data",
+      "confidence": "high",
+      "wikiUse": "Populate Sailing boats, facilities, ports, crew, seas, charting, encounters, shipwrecks, and combat data."
+    },
+    {
+      "match": "prefix",
+      "value": "boat_",
+      "domain": "Sailing",
+      "use": "feature-data",
+      "confidence": "high",
+      "wikiUse": "Populate boat and boat-facility data."
+    },
+    {
+      "match": "exact",
+      "value": "port_task",
+      "domain": "Sailing",
+      "use": "feature-data",
+      "confidence": "high",
+      "wikiUse": "Populate port task, cargo, reward, route, level, and requirement data."
+    },
+    {
+      "match": "prefix",
+      "value": "omnishop_",
+      "domain": "Shops",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate shop inventories, prices, currencies, restrictions, and item acquisition sections."
+    },
+    {
+      "match": "exact",
+      "value": "teleport_generic",
+      "domain": "Transportation",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate teleport destination and requirement data on item, location, and transportation pages."
+    },
+    {
+      "match": "exact",
+      "value": "minigame_teleport",
+      "domain": "Transportation",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate minigame teleport availability and labels."
+    },
+    {
+      "match": "prefix",
+      "value": "chartering_",
+      "domain": "Transportation",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate chartering destinations, coordinates, and costs."
+    },
+    {
+      "match": "exact",
+      "value": "skill_features",
+      "domain": "Skill content",
+      "use": "feature-data",
+      "confidence": "high",
+      "wikiUse": "Populate skill-feature lists and cross-skill requirements, including Construction and Sailing metadata."
+    },
+    {
+      "match": "prefix",
+      "value": "hiscores_",
+      "domain": "Hiscores",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Identify ranked skills, activities, and bosses and detect new wiki page candidates."
+    },
+    {
+      "match": "exact",
+      "value": "region_data",
+      "domain": "World regions",
+      "use": "enrichment",
+      "confidence": "high",
+      "wikiUse": "Populate region names, coordinates, graphics, and area metadata."
+    },
+    {
+      "match": "exact",
+      "value": "combat_interface_weapon_category",
+      "domain": "Combat UI",
+      "use": "technical",
+      "confidence": "high",
+      "wikiUse": "Use as supporting data only unless a weapon-category page is specifically needed."
+    },
+    {
+      "match": "exact",
+      "value": "synth",
+      "domain": "Audio",
+      "use": "technical",
+      "confidence": "high",
+      "wikiUse": "Resolve sound-effect relationships without generating standalone wiki pages."
+    },
+    {
+      "match": "prefix",
+      "value": "ui_",
+      "domain": "Interface",
+      "use": "technical",
+      "confidence": "high",
+      "wikiUse": "Use as supporting interface data; do not generate standalone content pages from generic UI rows."
+    }
+  ]
+}
