@@ -83,6 +83,90 @@ exports[`Pages Command E2E Tests NPC Pages should generate npc page content that
 '''Molanisk'''"
 `;
 
+exports[`Pages Command E2E Tests Quest Pages should generate a quest page with cache-derived data: quest-13730-output.txt 1`] = `
+"{{New Content}}
+{{Has quick guide}}
+{{Infobox Quest
+|name = Rag and Bone Man III
+|number =
+|image = [[File:Rag and Bone Man III.png|300px]]
+|release = [[18 November]] [[2026]]
+|update = Test-update
+|members = Yes
+|series = [[Quests/Series#Rag and Bone Man|Rag and Bone Man]], #3
+|developer =
+}}
+'''Rag and Bone Man III'''
+
+==Details==
+{{Quest details
+|start = Talk to the [[Odd Old Man]] in [[Silvarea]].
+|startmap = 3360,3506
+|difficulty = Experienced
+|description = Finish assisting the Odd Old Man with his collection.
+|length = Medium
+|requirements = * {{SCP|Slayer|58|link=yes}} {{Boostable|no}} {{Questreqstart|yes}}
+*Completion of the following quests:
+**[[Rag and Bone Man II]]
+***[[Rag and Bone Man I]]
+***[[Horror from the Deep]]
+****[[Alfred Grimhand's Barcrawl]]
+***[[Skippy and the Mogres]]
+**[[Dragon Slayer I]]
+**[[The Great Brain Robbery]]
+***[[Cabin Fever]]
+****[[Rum Deal]]
+*****[[Zogre Flesh Eaters]]
+******[[Big Chompy Bird Hunting]]
+******[[Jungle Potion]]
+*******[[Druidic Ritual]]
+*****[[Priest in Peril]]
+****[[Pirate's Treasure]]
+***[[Creature of Fenkenstrain]]
+****[[Priest in Peril]]
+****[[The Restless Ghost]]
+**[[Defender of Varrock]]
+***[[Shield of Arrav]]
+***[[Temple of Ikov]]
+***[[Below Ice Mountain]]
+***[[Family Crest]]
+***[[Garden of Tranquillity]]
+****[[Creature of Fenkenstrain]]
+*****[[Priest in Peril]]
+*****[[The Restless Ghost]]
+***[[What Lies Below]]
+****[[Rune Mysteries]]
+***[[Demon Slayer]]
+***[[Romeo & Juliet]]
+**[[Tower of Life]]
+**[[A Soul's Bane]]
+|items =
+|recommended = *{{SCP|Combat|65|link=yes}}
+|kills =
+|members = Yes
+|leagueRegion =
+}}
+
+==Walkthrough==
+
+
+'''Congratulations, quest complete!'''
+
+==Rewards==
+{{Quest rewards
+|name = Rag and Bone Man III
+|image = [[File:Rag and Bone Man III reward scroll.png|center]]
+|qp = 3
+|rewards =
+}}
+
+==Transcript==
+{{hastranscript|Quest}}
+
+{{Rag and Bone Man III}}
+"
+`;
+
 exports[`Pages Command E2E Tests Scenery Pages should generate scenery page content that matches snapshot: scenery-1-output.txt 1`] = `
 "{{New Content}}
 {{Infobox Scenery

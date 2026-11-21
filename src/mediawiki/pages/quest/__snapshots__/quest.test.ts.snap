@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`questPageBuilder builds a quest stub from cache-derived data 1`] = `
+"{{New Content}}
+{{Has quick guide}}
+{{Infobox Quest
+|name = Rag and Bone Man III
+|number =
+|image = [[File:Rag and Bone Man III.png|300px]]
+|release = [[18 November]] [[2026]]
+|update = Quest Month Week 3 & TFA Practice Mode
+|members = Yes
+|series = [[Quests/Series#Rag and Bone Man|Rag and Bone Man]], #3
+|developer =
+}}
+'''Rag and Bone Man III'''
+
+==Details==
+{{Quest details
+|start = Talk to the [[Odd Old Man]] in [[Silvarea]].
+|startmap = 3360,3506
+|difficulty = Experienced
+|description = Finish assisting the Odd Old Man with his collection.
+|length = Medium
+|requirements = * {{SCP|Slayer|58|link=yes}} {{Boostable|no}} {{Questreqstart|yes}}
+*Completion of the following quests:
+**[[Rag and Bone Man II]]
+***[[Rag and Bone Man I]]
+|items =
+|recommended = *{{SCP|Combat|65|link=yes}}
+|kills =
+|members = Yes
+|leagueRegion =
+}}
+
+==Walkthrough==
+
+
+'''Congratulations, quest complete!'''
+
+==Rewards==
+{{Quest rewards
+|name = Rag and Bone Man III
+|image = [[File:Rag and Bone Man III reward scroll.png|center]]
+|qp = 3
+|rewards =
+}}
+
+==Transcript==
+{{hastranscript|Quest}}
+
+{{Rag and Bone Man III}}
+"
+`;
