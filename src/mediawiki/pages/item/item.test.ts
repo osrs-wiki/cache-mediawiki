@@ -82,6 +82,9 @@ const BASE_ITEM: Item = {
   noted3: undefined,
   placeholderLinkedItem: undefined,
   placeholderTemplate: undefined,
+  fullRecolor: undefined,
+  holdingWhitelist: [],
+  isBronzeman: false,
   params: new Params(),
 };
 

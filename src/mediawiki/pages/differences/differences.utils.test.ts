@@ -4,12 +4,14 @@ import {
   MediaWikiLink,
 } from "@osrs-wiki/mediawiki-builder";
 
+import { indexNameMap, IndexFeatures } from "./differences.types";
 import {
   getFieldDifferencesRow,
   formatEntryValue,
   formatEntryIdentifier,
 } from "./differences.utils";
 
+import { ConfigType, IndexType } from "@/utils/cache2";
 import { jagexHSLtoHex } from "@/utils/colors";
 import { regionToWorldMapURL } from "@/utils/url-generation";
 
@@ -278,5 +280,34 @@ describe("differences builder utils", () => {
       expect(firstBuilt).toContain("[https://first.com/456 456]");
       expect(secondBuilt).toContain("[https://second.com/456 (1)]");
     });
+  });
+});
+
+describe("indexNameMap bucket links", () => {
+  test("should include item_id bucket link for items", () => {
+    const itemFeature = (
+      indexNameMap[IndexType.Configs] as { [key: number]: IndexFeatures }
+    )[ConfigType.Item];
+    expect(itemFeature.urls.id).toContain(
+      "https://oldschool.runescape.wiki/w/Special:Bucket?bucket=item_id&select=*&where=%27id%27%2C+{id}"
+    );
+  });
+
+  test("should include npc_id bucket link for npcs", () => {
+    const npcFeature = (
+      indexNameMap[IndexType.Configs] as { [key: number]: IndexFeatures }
+    )[ConfigType.Npc];
+    expect(npcFeature.urls.id).toContain(
+      "https://oldschool.runescape.wiki/w/Special:Bucket?bucket=npc_id&select=*&where=%27id%27%2C+{id}"
+    );
+  });
+
+  test("should include object_id bucket link for objects", () => {
+    const objectFeature = (
+      indexNameMap[IndexType.Configs] as { [key: number]: IndexFeatures }
+    )[ConfigType.Object];
+    expect(objectFeature.urls.id).toContain(
+      "https://oldschool.runescape.wiki/w/Special:Bucket?bucket=object_id&select=*&where=%27id%27%2C+{id}"
+    );
   });
 });

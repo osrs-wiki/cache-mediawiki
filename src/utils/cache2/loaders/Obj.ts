@@ -57,6 +57,7 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
   public ops = new EntityOps();
   public recolorFrom: HSL[] = <HSL[]>[];
   public recolorTo: HSL[] = <HSL[]>[];
+  public fullRecolor = <HSL>-1;
   public retextureFrom: TextureID[] = <TextureID[]>[];
   public retextureTo: TextureID[] = <TextureID[]>[];
   public mapIconId = <MapElementID>-1;
@@ -195,6 +196,9 @@ export class Obj extends MultiChildrenEntity<Obj, ObjID> {
           }
           break;
         }
+        case 42:
+          v.fullRecolor = <HSL>r.u16();
+          break;
         case 61:
           v.category = <CategoryID>r.u16();
           break;

@@ -20,10 +20,12 @@ export class SpotAnim extends PerFileLoadable {
   public animationId = -1;
   public recolorToFind: number[];
   public recolorToReplace: number[];
+  public fullRecolor = -1;
   public resizeX = 128;
   public modelId: number;
   public ambient = 0;
   public contrast = 0;
+  public clickable = true;
   public debugName?: string;
   public gameVal?: string;
 
@@ -58,6 +60,9 @@ export class SpotAnim extends PerFileLoadable {
         case 9:
           v.debugName = r.string();
           break;
+        case 10:
+          v.clickable = false;
+          break;
         case 40:
           const length = r.u8();
           v.recolorToFind = new Array(length);
@@ -75,6 +80,9 @@ export class SpotAnim extends PerFileLoadable {
             v.textureToFind[i] = r.u16();
             v.textureToReplace[i] = r.u16();
           }
+          break;
+        case 42:
+          v.fullRecolor = r.u16();
           break;
         default:
           throw new Error(`unknown opcode ${opcode}`);

@@ -1,4 +1,5 @@
 import { runCLICommand, cleanupOutput } from "./utils/cli";
+import { NEW_CACHE_VERSION } from "./utils/cache-versions";
 
 describe("CLI E2E Tests", () => {
   afterEach(async () => {
@@ -38,7 +39,7 @@ describe("CLI E2E Tests", () => {
 
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain(
-        "Generate a page for an area, item, npc, or scenery"
+        "Generate a page for an area, item, music track, npc, quest, or scenery"
       );
       expect(result.stdout).toContain("-t, --type <type>");
       expect(result.stdout).toContain("-i, --id <id>");
@@ -60,7 +61,7 @@ describe("CLI E2E Tests", () => {
     it("should require id parameter", async () => {
       const result = await runCLICommand({
         command: "npm run start",
-        args: ["pages", "--", "--newCache", "2025-07-23-rev231"],
+        args: ["pages", "--", "--newCache", NEW_CACHE_VERSION],
       });
 
       expect(result.exitCode).toBe(1);
@@ -76,7 +77,7 @@ describe("CLI E2E Tests", () => {
           "pages",
           "--",
           "--newCache",
-          "2025-07-23-rev231",
+          NEW_CACHE_VERSION,
           "--id",
           "123",
           "--type",
@@ -89,7 +90,7 @@ describe("CLI E2E Tests", () => {
         "error: option '-t, --type <type>' argument 'invalid' is invalid"
       );
       expect(result.stderr).toContain(
-        "Allowed choices are area, item, music, npc, scenery"
+        "Allowed choices are area, item, music, npc, quest, scenery"
       );
     });
   });

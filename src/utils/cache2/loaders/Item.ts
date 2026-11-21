@@ -77,6 +77,9 @@ export class Item extends PerFileLoadable {
   public noted3 = <ItemID>-1;
   public placeholderLinkedItem = <ItemID>-1;
   public placeholderTemplate = <ItemID>-1;
+  public fullRecolor = <HSL>-1;
+  public holdingWhitelist: ItemID[] = [];
+  public isBronzeman = false;
   public params = new Params();
   public gameVal?: string;
 
@@ -262,6 +265,9 @@ export class Item extends PerFileLoadable {
         case 98:
           v.noteTemplate = <ItemID>r.u16();
           break;
+        case 99:
+          v.fullRecolor = <HSL>r.u16();
+          break;
         case 100:
         case 101:
         case 102:
@@ -309,8 +315,19 @@ export class Item extends PerFileLoadable {
           v.isStackable = false;
           v.hasVar = true;
           break;
+        case 161: {
+          const len = r.u16();
+          v.holdingWhitelist = new Array(len);
+          for (let i = 0; i < len; i++) {
+            v.holdingWhitelist[i] = <ItemID>r.u16();
+          }
+          break;
+        }
         case 249:
           v.params = r.params();
+          break;
+        case 251:
+          v.isBronzeman = true;
           break;
         case 200:
           v.groundOps.decodeSubOp(r);
