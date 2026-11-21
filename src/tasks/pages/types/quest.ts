@@ -7,17 +7,23 @@ export const writeQuestPageFromCache = async (
   cache: Promise<CacheProvider>,
   id: number
 ) => {
-  const dbRow = await DBRow.load(cache, id);
-  if (!dbRow) {
-    throw new Error(`Quest DBRow ${id} was not found.`);
-  }
-  if (dbRow.table !== 0) {
-    throw new Error(`DBRow ${id} belongs to table ${dbRow.table}, not quest.`);
-  }
+  try {
+    const dbRow = await DBRow.load(cache, id);
+    if (!dbRow) {
+      console.warn(`Quest DBRow ${id} was not found.`);
+      return;
+    }
+    if (dbRow.table !== 0) {
+      console.warn(
+        `DBRow ${id} belongs to table ${dbRow.table}, not the quest table.`
+      );
+      return;
+    }
 
-  const quest = await dbRowToQuest(cache, dbRow);
-  const builder = questPageBuilder(quest);
-  await writePageToFile(builder, "quest", quest.name, dbRow.id.toString());
+    await writeQuestPage(cache, dbRow);
+  } catch (error) {
+    console.error(`Error generating page for quest ${id}: `, error);
+  }
 };
 
 export const writeQuestPage = async (
