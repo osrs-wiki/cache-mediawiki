@@ -3,11 +3,13 @@ import {
   formatCellValue,
   extractColumnHeaders,
   collectDBTableIds,
+  decodeDBRows,
   dbRowToCatalogRow,
   dbTableToCatalogColumns,
   groupDBRowsByTable,
 } from "./dbtables.utils";
 
+import { ArchiveFile } from "@/utils/cache2/Cache";
 import { DBRow, DBTable } from "@/utils/cache2/loaders/DBRow";
 import { DBRowID, DBTableID, ScriptVarID } from "@/utils/cache2/types";
 
@@ -169,6 +171,17 @@ describe("dbtables.utils", () => {
         "2 - Column_2",
       ]);
     });
+
+    it("should include columns defined only by the table schema", () => {
+      const table = new DBTable(200 as DBTableID);
+      table.types = [[36 as ScriptVarID], undefined, [22 as ScriptVarID]];
+
+      expect(extractColumnHeaders([], new Map(), table)).toEqual([
+        "0 - Column_0",
+        "1 - Column_1",
+        "2 - Column_2",
+      ]);
+    });
   });
 
   describe("catalog helpers", () => {
@@ -176,6 +189,28 @@ describe("dbtables.utils", () => {
       const rows = [{ id: 7 as DBRowID, table: 2 as DBTableID }] as DBRow[];
 
       expect(collectDBTableIds([1], rows, [3])).toEqual([1, 2, 3]);
+    });
+
+    it("continues decoding valid rows after a malformed row", () => {
+      const valid = new ArchiveFile(7, 0);
+      valid.data = new Uint8Array([4, 12, 0]);
+      const malformed = new ArchiveFile(8, 0);
+      malformed.data = new Uint8Array([99, 0]);
+
+      const result = decodeDBRows([malformed, valid], {
+        era: "osrs",
+        indexRevision: 1,
+      });
+
+      expect(result.rows).toHaveLength(1);
+      expect(result.rows[0].id).toBe(7);
+      expect(result.rows[0].table).toBe(12);
+      expect(result.failures).toEqual([
+        {
+          id: 8,
+          error: "unknown opcode 99",
+        },
+      ]);
     });
 
     it("groups and sorts rows by table", () => {
@@ -245,6 +280,29 @@ describe("dbtables.utils", () => {
             },
           ],
           defaultValues: [0],
+        },
+      ]);
+    });
+
+    it("preserves unresolved type IDs without losing tuple positions", () => {
+      const table = new DBTable(90 as DBTableID);
+      table.types = [[49 as ScriptVarID, 36 as ScriptVarID]];
+
+      expect(dbTableToCatalogColumns(table, new Map(), [])).toEqual([
+        {
+          index: 0,
+          name: "Column_0",
+          types: [
+            { id: 49 },
+            {
+              id: 36,
+              name: "string",
+              jagexName: "string",
+              typeName: undefined,
+              baseType: "string",
+            },
+          ],
+          defaultValues: [],
         },
       ]);
     });

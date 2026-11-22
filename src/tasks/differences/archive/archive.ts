@@ -4,6 +4,7 @@ import { isEqualBytes } from "../differences.utils";
 import { differencesFile } from "../file";
 
 import {
+  ArchiveFile,
   ArchiveData,
   DiskIndexData,
   FlatIndexData,
@@ -29,18 +30,58 @@ const differencesArchive = async ({
   newArchive?: ArchiveData;
   forcedGameValArchive?: GameValType;
 }): Promise<ArchiveDifferences> => {
-  const newKeys = newArchive ? Array.from(newArchive.files.keys()) : [];
-  const oldKeys = oldArchive ? Array.from(oldArchive.files.keys()) : [];
   const archiveDifferences: ArchiveDifferences = {};
 
   const oldGameValArchive =
     forcedGameValArchive !== undefined
-    ? await Context.oldCacheProvider.getArchive(IndexType.GameVals, forcedGameValArchive)
-    : undefined;
+      ? await Context.oldCacheProvider.getArchive(
+          IndexType.GameVals,
+          forcedGameValArchive
+        )
+      : undefined;
   const newGameValArchive =
     forcedGameValArchive !== undefined
-    ? await Context.newCacheProvider.getArchive(IndexType.GameVals, forcedGameValArchive)
-    : undefined;
+      ? await Context.newCacheProvider.getArchive(
+          IndexType.GameVals,
+          forcedGameValArchive
+        )
+      : undefined;
+  const includeGameValOnlyTables =
+    forcedGameValArchive === GameValType.DBTables;
+  const newKeys = Array.from(
+    new Set([
+      ...(newArchive ? Array.from(newArchive.files.keys()) : []),
+      ...(includeGameValOnlyTables && newGameValArchive
+        ? Array.from(newGameValArchive.files.keys())
+        : []),
+    ])
+  );
+  const oldKeys = Array.from(
+    new Set([
+      ...(oldArchive ? Array.from(oldArchive.files.keys()) : []),
+      ...(includeGameValOnlyTables && oldGameValArchive
+        ? Array.from(oldGameValArchive.files.keys())
+        : []),
+    ])
+  );
+  const comparisonFileFor = (
+    archive: ArchiveData | undefined,
+    gameValArchive: ArchiveData | undefined,
+    fileKey: number
+  ) => {
+    const file = archive?.files.has(fileKey)
+      ? archive.getFile(fileKey)
+      : undefined;
+    if (file) {
+      return file;
+    }
+    if (includeGameValOnlyTables && gameValArchive?.files.has(fileKey)) {
+      const schemaLightFile = new ArchiveFile(fileKey, 0);
+      schemaLightFile.data = new Uint8Array([0]);
+      return schemaLightFile;
+    }
+    return undefined;
+  };
 
   if (newIndex?.id === IndexType.Maps) {
     const regionInfo = RegionMapper.getRegionFromArchiveId(newArchive.namehash);
@@ -57,31 +98,48 @@ const differencesArchive = async ({
   }
 
   if (newArchive && oldArchive) {
-    const sharedKeys = newKeys.filter((key) => oldArchive.files.has(key));
+    const sharedKeys = newKeys.filter((key) =>
+      comparisonFileFor(oldArchive, oldGameValArchive, key)
+    );
     await Promise.all(
       sharedKeys.map(async (fileKey) => {
         try {
-          const newFile = newArchive.getFile(fileKey);
-          const oldFile = oldArchive.getFile(fileKey);
+          const newFile = comparisonFileFor(
+            newArchive,
+            newGameValArchive,
+            fileKey
+          );
+          const oldFile = comparisonFileFor(
+            oldArchive,
+            oldGameValArchive,
+            fileKey
+          );
+          if (!oldFile || !newFile) {
+            return;
+          }
           let gameValChanged = false;
 
           if (forcedGameValArchive !== undefined) {
             const oldGameValFile = oldGameValArchive?.files.has(fileKey)
-            ? oldGameValArchive.getFile(fileKey)
-            : undefined;
+              ? oldGameValArchive.getFile(fileKey)
+              : undefined;
             const newGameValFile = newGameValArchive?.files.has(fileKey)
-            ? newGameValArchive.getFile(fileKey)
-            : undefined;
+              ? newGameValArchive.getFile(fileKey)
+              : undefined;
             if (oldGameValFile && newGameValFile) {
-              gameValChanged = !isEqualBytes(oldGameValFile.data, newGameValFile.data);
+              gameValChanged = !isEqualBytes(
+                oldGameValFile.data,
+                newGameValFile.data
+              );
             } else {
               gameValChanged = !!oldGameValFile !== !!newGameValFile;
             }
           }
 
           if (!isEqualBytes(oldFile.data, newFile.data) || gameValChanged) {
-            console.log(`[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`);
-          
+            console.log(
+              `[Index=${newArchive.index}][Archive=${newArchive.archive}] Changed file: ${newFile.id}`
+            );
 
             const results = await differencesFile({
               oldFile: { index: oldIndex, archive: oldArchive, file: oldFile },
@@ -101,13 +159,22 @@ const differencesArchive = async ({
   }
 
   const addedKeys = oldArchive
-    ? newKeys.filter((key) => !oldArchive.files.has(key))
+    ? newKeys.filter(
+        (key) => !comparisonFileFor(oldArchive, oldGameValArchive, key)
+      )
     : newKeys;
   if (addedKeys) {
     await Promise.all(
       addedKeys.map(async (fileKey) => {
         try {
-          const newFile = newArchive.getFile(fileKey);
+          const newFile = comparisonFileFor(
+            newArchive,
+            newGameValArchive,
+            fileKey
+          );
+          if (!newFile) {
+            return;
+          }
           console.log(
             `[Index=${newArchive.index}][Archive=${newArchive.archive}] Added file: ${newFile.id}`
           );
@@ -128,12 +195,21 @@ const differencesArchive = async ({
   }
 
   const removedKeys = newArchive
-    ? oldKeys.filter((key) => !newArchive.files.has(key))
+    ? oldKeys.filter(
+        (key) => !comparisonFileFor(newArchive, newGameValArchive, key)
+      )
     : oldKeys;
   if (removedKeys) {
     await Promise.all(
       removedKeys.map(async (fileKey) => {
-        const oldFile = oldArchive.getFile(fileKey);
+        const oldFile = comparisonFileFor(
+          oldArchive,
+          oldGameValArchive,
+          fileKey
+        );
+        if (!oldFile) {
+          return;
+        }
         console.log(
           `[Index=${oldArchive.index}][Archive=${
             oldArchive.archive

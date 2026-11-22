@@ -26,10 +26,10 @@ export type SerializedDBValue = string | number | bigint;
 
 export type DBTableCatalogType = {
   id: ScriptVarID;
-  name: string;
+  name?: string;
   jagexName?: string;
   typeName?: string;
-  baseType: BaseVarType;
+  baseType?: BaseVarType;
 };
 
 export type DBTableCatalogColumn = {

@@ -18,6 +18,7 @@ import {
   dbTableToCatalogColumns,
   extractColumnHeaders,
   groupDBRowsByTable,
+  loadDBRows,
   sanitizeFilename,
 } from "./dbtables.utils";
 
@@ -28,7 +29,7 @@ import {
   getCacheProviderLocal,
 } from "@/utils/cache";
 import { LazyPromise } from "@/utils/cache2/LazyPromise";
-import { DBRow, DBTable } from "@/utils/cache2/loaders/DBRow";
+import { DBTable } from "@/utils/cache2/loaders/DBRow";
 import { GameVal } from "@/utils/cache2/loaders/GameVal";
 import { DBTableID, GameValID, GameValType } from "@/utils/cache2/types";
 import { writeCSV } from "@/utils/csv/csv.writer";
@@ -65,15 +66,17 @@ const exportDBTablesToCSV = async (
   );
   const identifications = await loadDBTableIdentifications(identificationsPath);
 
-  const [loadedTableGameVals, loadedRowGameVals, allRows, cacheProvider] =
+  const [loadedTableGameVals, loadedRowGameVals, cacheProvider] =
     await Promise.all([
       GameVal.all(cache, GameValType.DBTables as GameValID),
       GameVal.all(cache, GameValType.DBRows as GameValID),
-      DBRow.all(cache),
       cache,
     ]);
   const tableGameVals = loadedTableGameVals ?? new Map();
   const rowGameVals = loadedRowGameVals ?? new Map();
+  const { rows: allRows, failures: rowDecodeFailures } = await loadDBRows(
+    cacheProvider
+  );
   const tableDefinitionArchive = await cacheProvider.getArchive(
     DBTable.index,
     DBTable.archive
@@ -127,7 +130,7 @@ const exportDBTablesToCSV = async (
           )
         )
       );
-      const dataHeaders = extractColumnHeaders(rows, columnNames);
+      const dataHeaders = extractColumnHeaders(rows, columnNames, table);
       const headers = ["row_id", "row_name", ...dataHeaders];
       const sanitizedName = sanitizeFilename(tableName);
       const filename = `${tableId} - ${sanitizedName}.csv`;
@@ -199,6 +202,7 @@ const exportDBTablesToCSV = async (
   console.log(`Total rows: ${catalog.rowCount}`);
   console.log(`Successfully exported: ${successCount}`);
   console.log(`Errors: ${errorCount}`);
+  console.log(`DBRow decode errors: ${rowDecodeFailures.length}`);
   console.log(`Catalog: ${dir}/catalog.json`);
   console.log(`Output directory: ${dir}`);
   console.log("=".repeat(60));
@@ -211,6 +215,12 @@ const exportDBTablesToCSV = async (
       .forEach((r) => {
         console.log(`  - Table ${r.tableId} (${r.tableName}): ${r.error}`);
       });
+  }
+  if (rowDecodeFailures.length > 0) {
+    console.log("\nDBRows with errors:");
+    rowDecodeFailures.forEach(({ id, error }) => {
+      console.log(`  - DBRow ${id}: ${error}`);
+    });
   }
 };
 
