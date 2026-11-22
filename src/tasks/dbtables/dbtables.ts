@@ -12,6 +12,7 @@ import {
   DBTableExportResult,
 } from "./dbtables.types";
 import {
+  collectDBTableIds,
   dbRowToCSVRow,
   dbRowToCatalogRow,
   dbTableToCatalogColumns,
@@ -64,15 +65,28 @@ const exportDBTablesToCSV = async (
   );
   const identifications = await loadDBTableIdentifications(identificationsPath);
 
-  const [tableGameVals, rowGameVals, allRows] = await Promise.all([
-    GameVal.all(cache, GameValType.DBTables as GameValID),
-    GameVal.all(cache, GameValType.DBRows as GameValID),
-    DBRow.all(cache),
-  ]);
+  const [loadedTableGameVals, loadedRowGameVals, allRows, cacheProvider] =
+    await Promise.all([
+      GameVal.all(cache, GameValType.DBTables as GameValID),
+      GameVal.all(cache, GameValType.DBRows as GameValID),
+      DBRow.all(cache),
+      cache,
+    ]);
+  const tableGameVals = loadedTableGameVals ?? new Map();
+  const rowGameVals = loadedRowGameVals ?? new Map();
+  const tableDefinitionArchive = await cacheProvider.getArchive(
+    DBTable.index,
+    DBTable.archive
+  );
+  const definitionTableIds = tableDefinitionArchive
+    ? Array.from(tableDefinitionArchive.getFiles().keys())
+    : [];
   const rowsByTable = groupDBRowsByTable(allRows);
-  const tableIds = Array.from(
-    new Set([...tableGameVals.keys(), ...rowsByTable.keys()])
-  ).sort((left, right) => left - right);
+  const tableIds = collectDBTableIds(
+    tableGameVals.keys(),
+    allRows,
+    definitionTableIds
+  );
 
   if (tableIds.length === 0) {
     console.log("No DBTables found in cache");

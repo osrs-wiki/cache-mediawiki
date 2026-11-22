@@ -242,6 +242,49 @@ describe("file utils", () => {
       });
     });
 
+    test("type: nested array with equal values", () => {
+      expect(
+        getChangedResult(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require an entire DBTable
+          {
+            types: [[0, 36], [22]],
+            defaultValues: [undefined, ["fallback"]],
+          },
+          {
+            types: [[0, 36], [22]],
+            defaultValues: [undefined, ["fallback"]],
+          }
+        )
+      ).toEqual({});
+    });
+
+    test("type: nested array with changed values", () => {
+      expect(
+        getChangedResult(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Do not require an entire DBTable
+          {
+            types: [[0, 36]],
+            defaultValues: [["old"]],
+          },
+          {
+            types: [[0, 22]],
+            defaultValues: [["new"]],
+          }
+        )
+      ).toEqual({
+        types: {
+          oldValue: [[0, 36]],
+          newValue: [[0, 22]],
+        },
+        defaultValues: {
+          oldValue: [["old"]],
+          newValue: [["new"]],
+        },
+      });
+    });
+
     test("type: new array", () => {
       expect(
         getChangedResult<NPC>(

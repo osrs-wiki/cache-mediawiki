@@ -143,6 +143,21 @@ export const groupDBRowsByTable = (rows: DBRow[]): Map<DBTableID, DBRow[]> => {
   return groupedRows;
 };
 
+export const collectDBTableIds = (
+  gameValTableIds: Iterable<number>,
+  rows: DBRow[],
+  definitionTableIds: Iterable<number>
+): DBTableID[] =>
+  Array.from(
+    new Set([
+      ...gameValTableIds,
+      ...rows.map((row) => row.table),
+      ...definitionTableIds,
+    ])
+  )
+    .sort((left, right) => left - right)
+    .map((tableId) => tableId as DBTableID);
+
 export const serializeDBValue = (
   value: string | number | bigint | undefined
 ): SerializedDBValue | undefined =>

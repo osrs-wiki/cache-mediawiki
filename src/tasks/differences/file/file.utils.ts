@@ -345,10 +345,7 @@ export const getChangedResult = <T extends Loadable>(
         typeof oldEntryValue === "bigint" ||
         typeof newEntryValue === "bigint") &&
         oldEntryValue !== newEntryValue) ||
-      (isOldArray &&
-        isNewArray &&
-        (_.difference<unknown>(oldEntryValue, newEntryValue).length > 0 ||
-          _.difference<unknown>(newEntryValue, oldEntryValue).length > 0)) ||
+      (isOldArray && isNewArray && !_.isEqual(oldEntryValue, newEntryValue)) ||
       (isOldArray && !isNewArray) ||
       (isNewArray && !isOldArray)
     ) {

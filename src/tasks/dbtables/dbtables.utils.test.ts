@@ -2,6 +2,7 @@ import {
   sanitizeFilename,
   formatCellValue,
   extractColumnHeaders,
+  collectDBTableIds,
   dbRowToCatalogRow,
   dbTableToCatalogColumns,
   groupDBRowsByTable,
@@ -171,6 +172,12 @@ describe("dbtables.utils", () => {
   });
 
   describe("catalog helpers", () => {
+    it("collects GameVal, row-derived, and definition-only table IDs", () => {
+      const rows = [{ id: 7 as DBRowID, table: 2 as DBTableID }] as DBRow[];
+
+      expect(collectDBTableIds([1], rows, [3])).toEqual([1, 2, 3]);
+    });
+
     it("groups and sorts rows by table", () => {
       const rows = [
         { id: 9 as DBRowID, table: 2 as DBTableID },
