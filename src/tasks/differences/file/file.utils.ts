@@ -11,6 +11,7 @@ import {
   Result,
   FileDifferences,
   CompareFn,
+  FileContext,
 } from "../differences.types";
 
 import Context from "@/context";
@@ -46,10 +47,12 @@ import {
   VarPlayer,
   VarPID,
   Widget,
+  DBTable,
 } from "@/utils/cache2";
 import { Loadable, PerArchiveLoadable } from "@/utils/cache2/Loadable";
 import { Region } from "@/utils/cache2/loaders/Region";
 import { RegionMapper } from "@/utils/cache2/loaders/RegionMapper";
+import { GameValID, GameValType } from "@/utils/cache2/types";
 
 /**
  * A map of index and archive types to decoding functions.
@@ -62,6 +65,7 @@ export const indexMap: {
       Animation
     ),
     [ConfigType.Area]: createSimpleCompareFunction<Area, AreaID>(Area),
+    [ConfigType.DbTable]: createDBTableCompareFunction(),
     [ConfigType.DbRow]: createCompareFunction<DBRow, DBRowID>(DBRow),
     [ConfigType.Enum]: createSimpleCompareFunction<Enum, EnumID>(Enum),
     [ConfigType.Item]: createCompareFunction<Item, ItemID>(Item),
@@ -79,6 +83,40 @@ export const indexMap: {
   [IndexType.Maps]: createRegionCompareFunction(),
   [IndexType.Sprites]: createArchiveCompareFunction<Sprites, SpriteID>(Sprites),
 };
+
+export function createDBTableCompareFunction(): CompareFn {
+  return async ({ oldFile, newFile }) => {
+    const loadEntry = async (
+      fileContext: FileContext | undefined,
+      cache: typeof Context.oldCacheProvider
+    ) => {
+      if (!fileContext || !cache) {
+        return undefined;
+      }
+      const entry = DBTable.decode(
+        new Reader(fileContext.file.data, {
+          era: "osrs",
+          indexRevision: fileContext.index.revision,
+        }),
+        fileContext.file.id as DBTable["id"]
+      );
+      const gameVal = await GameVal.load(
+        cache,
+        GameValType.DBTables as GameValID,
+        entry.id
+      );
+      entry.gameVal = gameVal?.name;
+      entry.columnNames = gameVal?.files;
+      return entry;
+    };
+
+    const [oldEntry, newEntry] = await Promise.all([
+      loadEntry(oldFile, Context.oldCacheProvider),
+      loadEntry(newFile, Context.newCacheProvider),
+    ]);
+    return getFileDifferences(oldEntry, newEntry);
+  };
+}
 
 /**
  * Creates a generic compare function for cache entries that need GameVal lookup
@@ -307,10 +345,7 @@ export const getChangedResult = <T extends Loadable>(
         typeof oldEntryValue === "bigint" ||
         typeof newEntryValue === "bigint") &&
         oldEntryValue !== newEntryValue) ||
-      (isOldArray &&
-        isNewArray &&
-        (_.difference<unknown>(oldEntryValue, newEntryValue).length > 0 ||
-          _.difference<unknown>(newEntryValue, oldEntryValue).length > 0)) ||
+      (isOldArray && isNewArray && !_.isEqual(oldEntryValue, newEntryValue)) ||
       (isOldArray && !isNewArray) ||
       (isNewArray && !isOldArray)
     ) {

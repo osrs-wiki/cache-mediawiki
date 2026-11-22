@@ -1,6 +1,8 @@
 import { ConfigType, GameValType } from "@/utils/cache2";
 
 export const configArchiveGameValMap = new Map<number, GameValType>([
+  [ConfigType.DbRow, GameValType.DBRows],
+  [ConfigType.DbTable, GameValType.DBTables],
   [ConfigType.VarBit, GameValType.VarBits],
   [ConfigType.VarPlayer, GameValType.Varps],
 ]);

@@ -4,6 +4,7 @@ import {
   Animation,
   Area,
   ConfigType,
+  DBTable,
   DBRow,
   Enum,
   IndexType,
@@ -56,6 +57,7 @@ export type IndexFieldURLs = {
 export type IndexFeatures =
   | IndexFeature<Animation, "Animations">
   | IndexFeature<Area, "Areas">
+  | IndexFeature<DBTable, "Database Tables">
   | IndexFeature<DBRow, "Database Rows">
   | IndexFeature<Enum, "Enums">
   | IndexFeature<Item, "Items">
@@ -178,6 +180,14 @@ export const indexNameMap: {
       urls: {
         id: ["https://abextm.github.io/cache2/#/viewer/dbrow/{id}"],
         table: ["https://abextm.github.io/cache2/#/viewer/dbtable/{table}"],
+      },
+    },
+    [ConfigType.DbTable]: {
+      name: "Database Tables",
+      identifiers: ["id", "gameVal"],
+      fields: ["columnNames", "types", "defaultValues"],
+      urls: {
+        id: ["https://abextm.github.io/cache2/#/viewer/dbtable/{id}"],
       },
     },
     [ConfigType.SpotAnim]: {

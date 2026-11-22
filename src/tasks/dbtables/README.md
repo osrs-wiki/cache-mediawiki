@@ -1,10 +1,15 @@
 # DBTables Export Task
 
-Exports all DBTables and their DBRows from the OSRS cache to CSV files.
+Exports all named DBTables and their DBRows from the OSRS cache to CSV files,
+plus a typed JSON catalog.
 
 ## Overview
 
-This task reads all DBTable definitions from the cache, loads their associated DBRows, and generates one CSV file per table. The column headers are derived from the DBTable's GameVal `files` mapping, and each row includes the DBRow's GameVal name.
+This task enumerates the DBTable GameVal archive and groups all DBRows by their
+`table` field. This includes schema-light tables whose DBTable definition is a
+one-byte sentinel and tables without a DBTableIndex master entry. The column
+headers are derived from the DBTable's GameVal `files` mapping, and each row
+includes the DBRow's GameVal name.
 
 ## Usage
 
@@ -28,6 +33,7 @@ The task creates the following directory structure:
 
 ```
 ./out/dbtables/{version}/
+├── catalog.json
 ├── 44 - Music_Tracks.csv
 ├── 45 - Quest_List.csv
 ├── ...
@@ -39,6 +45,16 @@ Each CSV file contains:
 - `row_id` - The DBRow's unique identifier
 - `row_name` - The DBRow's GameVal name (if available)
 - Data columns with names from the DBTable's GameVal `files` mapping
+
+`catalog.json` additionally contains:
+
+- Every GameVal table identity, including tables without decoded schemas
+- Stable semantic identification loaded from
+  `cache-identification/dbtables.json`
+- Column names, ScriptVar types, and DBTable default values
+- Raw and effective row values with tuple boundaries preserved
+- Row and table GameVal names
+- Per-table and overall schema/schema-light counts
 
 ## CSV Format
 
@@ -63,11 +79,14 @@ row_id,row_name,sort_name,display_name,unlock_hint,duration
 
 ### Data Loading
 
-1. Loads all DBTable definitions using `DBTable.all(cache)`
-2. For each table:
-   - Loads GameVal for table name and column headers
-   - Loads all DBRows using `DBTable.loadRows(cache, tableId)`
-   - Loads GameVal for each DBRow's name
+1. Loads all DBTable and DBRow GameVals
+2. Loads all DBRows with `DBRow.all(cache)` and groups them by `row.table`
+3. Loads semantic identification rules from `cache-identification/dbtables.json`
+4. For each table:
+   - Loads the optional typed DBTable definition
+   - Loads GameVal names for table and column headers
+   - Preserves schema-light tables and empty tables
+   - Uses preloaded GameVal names for each DBRow
 
 ### Value Handling
 
@@ -86,7 +105,7 @@ Table names are sanitized for filesystem compatibility:
 
 ### Error Handling
 
-- Tables with no rows are skipped with a warning
+- Tables with no rows produce header-only CSV files and remain in the catalog
 - Errors processing individual tables don't stop the entire export
 - Summary report shows successful exports and any errors
 
